@@ -11,7 +11,7 @@ import PaymentsRoundedIcon from '@mui/icons-material/PaymentsRounded';
 
 const navItems = [
   { label: 'HOME', icon: <HomeOutlinedIcon />, path: '/latest-booba/' },
-  { label: 'TASKS', icon: <PaymentsRoundedIcon />, path: '/vite-react-router/user-details' },
+  { label: 'TASKS', icon: <PaymentsRoundedIcon />, path: '/latest-booba/user-details' },
 
   { label: 'CALCULATOR', icon: <CurrencyExchangeOutlinedIcon />,         path: "/latest-booba/user-profile-page",
   },
