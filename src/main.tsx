@@ -24,36 +24,36 @@ import TradingViewWidgetVertical from "./pages/extras/DataComponent.tsx";
 
 const router = createBrowserRouter([
   {
-    path: "/vite-react-router/",
+    path: "/latest-booba/",
     element: <App />,
     children: [
       {
-        path: "/vite-react-router/calculator",
+        path: "/latest-booba/calculator",
         element: <Calculator />,
       },
      
       {
-        path: "/vite-react-router/farm",
+        path: "/latest-booba/farm",
         element: <AccountEquityCard />,
       },
       {
-        path: "/vite-react-router/task",
+        path: "/latest-booba/task",
         element: <Task />,
       },
       {
-        path: "/vite-react-router/news",
+        path: "/latest-booba/news",
         element: <TradingViewWidgetVertical />,
       },
       {
-        path: "/vite-react-router/user-details",
+        path: "/latest-booba/user-details",
         element: <DPRdata />,
       },
       {
-        path: "/vite-react-router/user-profile-page",
+        path: "/latest-booba/user-profile-page",
         element: <SwapComponent />,
       },
       {
-        path: "/vite-react-router/",
+        path: "/latest-booba/",
         element: <LocalStorageViewer />,
       },
     ],

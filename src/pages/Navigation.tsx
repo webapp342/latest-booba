@@ -10,16 +10,16 @@ import PaymentsRoundedIcon from '@mui/icons-material/PaymentsRounded';
 
 
 const navItems = [
-  { label: 'HOME', icon: <HomeOutlinedIcon />, path: '/vite-react-router/' },
+  { label: 'HOME', icon: <HomeOutlinedIcon />, path: '/latest-booba/' },
   { label: 'TASKS', icon: <PaymentsRoundedIcon />, path: '/vite-react-router/user-details' },
 
-  { label: 'CALCULATOR', icon: <CurrencyExchangeOutlinedIcon />,         path: "/vite-react-router/user-profile-page",
+  { label: 'CALCULATOR', icon: <CurrencyExchangeOutlinedIcon />,         path: "/latest-booba/user-profile-page",
   },
 
 
-  { label: 'PROFILE', icon: <QueryStatsOutlinedIcon />, path: '/vite-react-router/news' },
+  { label: 'PROFILE', icon: <QueryStatsOutlinedIcon />, path: '/latest-booba/news' },
 
-  { label: 'WALLET', icon: <WalletIcon />, path: '/vite-react-router/farm' },
+  { label: 'WALLET', icon: <WalletIcon />, path: '/latest-booba/farm' },
 ];
 
 export default function SimpleBottomNavigation() {
@@ -41,7 +41,7 @@ export default function SimpleBottomNavigation() {
   };
 
   // Sadece /vite-react-router/calculator sayfasında gizlemek için kontrol
-  const shouldHideBottomNav = location.pathname === '/vite-react-router/calculator';
+  const shouldHideBottomNav = location.pathname === '/latest-booba/calculator';
 
   // Eğer gizlenecekse null döndür
   if (shouldHideBottomNav) {

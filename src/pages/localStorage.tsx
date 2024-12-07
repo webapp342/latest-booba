@@ -96,7 +96,7 @@ const PointsManager: React.FC = () => {
                   color="success"
                   endIcon={<VerticalAlignBottomIcon />}
                   component={Link}
-                  to="/vite-react-router/farm"
+                  to="/latest-booba/farm"
                   sx={{
                     marginBottom: -1,
                     textTransform: 'none', // Harfleri büyük yapmayı devre dışı bırakır
@@ -113,7 +113,7 @@ const PointsManager: React.FC = () => {
        {/* Kart: Total Balance ve Buton */}
 <Box p={1} display="flex" justifyContent="center" mt={-1}>
   <Card
-          onClick={() => navigate('/vite-react-router/task')} // Tıklanma olayında yönlendirme
+          onClick={() => navigate('/latest-booba/task')} // Tıklanma olayında yönlendirme
     sx={{
       width: '100%',
       maxWidth: '400px',
