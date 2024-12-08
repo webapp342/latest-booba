@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
+import "./i18n/i18n";
 
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 //import Home  from "./pages/Home.tsx"; 
@@ -16,6 +17,7 @@ import Task from "./pages/Tasks/Task.tsx";
 
 import SwapComponent from "./pages/SwapComponent.tsx";
 import TradingViewWidgetVertical from "./pages/extras/DataComponent.tsx";
+import TestComponent from "./pages/TestComponent.tsx";
 
 
 
@@ -39,6 +41,10 @@ const router = createBrowserRouter([
       {
         path: "/latest-booba/task",
         element: <Task />,
+      },
+      {
+        path: "/latest-booba/test",
+        element: <TestComponent />,
       },
       {
         path: "/latest-booba/news",
