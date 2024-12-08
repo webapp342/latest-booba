@@ -15,7 +15,7 @@ const navItems = [
   { label: 'TASKS', icon: <PaymentsRoundedIcon />, path: '/latest-booba/test' },
   { label: 'CALCULATOR', icon: <CurrencyExchangeOutlinedIcon />, path: "/latest-booba/user-profile-page" },
   { label: 'PROFILE', icon: <QueryStatsOutlinedIcon />, path: '/latest-booba/news' },
-  { label: 'WALLET', icon: <WalletIcon />, path: '/latest-booba/farm' },
+  { label: 'WALLET', icon: <WalletIcon />, path: '/latest-booba/spin' },
 ];
 
 export default function SimpleBottomNavigation() {
@@ -69,24 +69,31 @@ export default function SimpleBottomNavigation() {
 >
 
       {navItems.map((item, index) => (
-        <BottomNavigationAction
-          key={item.label}
-          icon={item.icon}
-          label={item.label}
-          sx={{
-            borderRadius: 2,
-            pb: 1,
-            color: value === index ? 'black' : '#616161',
-            '& .MuiSvgIcon-root': {
-              fontSize: '1.5rem', // Sabit ikon boyutu
-              color: value === index ? 'black' : '#9E9E9E', // Renk değişimi
-            },
-            '& .MuiBottomNavigationAction-label': {
-              fontSize: '0.7rem', // Sabit label boyutu
-              color: value === index ? 'black' : '#9E9E9E', // Label renk değişimi
-            },
-          }}
-        />
+      <BottomNavigationAction
+      key={item.label}
+      icon={item.icon}
+      label={item.label}
+      sx={{
+        borderRadius: 2,
+        pb: 1,
+        color: value === index ? 'black' : '#616161',
+        '& .MuiSvgIcon-root': {
+          fontSize: '1.4rem', // Sabit ikon boyutu
+          color: value === index ? 'black' : '#9E9E9E', // Renk değişimi
+        },
+        '& .MuiBottomNavigationAction-label': {
+          fontSize: '0.7rem', // Sabit label boyutu
+          fontWeight: 500, // Varsayılan font ağırlığı
+          transition: 'none', // Animasyonu iptal eder
+          color: value === index ? 'black' : '#9E9E9E', // Label renk değişimi
+        },
+        '&.Mui-selected .MuiBottomNavigationAction-label': {
+          fontSize: '0.7rem', // Seçili olan için sabit boyut
+          fontWeight: 500, // Aynı font ağırlığı
+        },
+      }}
+    />
+    
       ))}
     </BottomNavigation>
     </ThemeProvider>

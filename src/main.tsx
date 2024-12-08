@@ -1,12 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
+
 import "./index.css";
 import "./i18n/i18n";
 
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 //import Home  from "./pages/Home.tsx"; 
-import  AccountEquityCard  from "./pages/extras/AccountEquityCard.tsx";
 import DPRdata from "./pages/DPRdata.tsx";
 // import UserProfilePage from "./pages/UserProfilePage.tsx";
 //import WheelSpin from "./pages/WheelSpin.tsx";
@@ -18,6 +18,7 @@ import Task from "./pages/Tasks/Task.tsx";
 import SwapComponent from "./pages/SwapComponent.tsx";
 import TradingViewWidgetVertical from "./pages/extras/DataComponent.tsx";
 import TestComponent from "./pages/TestComponent.tsx";
+import { SlotMachine } from './pages/spot/SlotMachine';
 
 
 
@@ -35,8 +36,8 @@ const router = createBrowserRouter([
       },
      
       {
-        path: "/latest-booba/farm",
-        element: <AccountEquityCard />,
+        path: "/latest-booba/spin",
+        element:     <SlotMachine />,
       },
       {
         path: "/latest-booba/task",
@@ -68,6 +69,7 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
+  <RouterProvider
+      router={router}
+    />  </React.StrictMode>
 );

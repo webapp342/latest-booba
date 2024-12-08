@@ -16,7 +16,6 @@ html, body, #root {
 
 a {
   font-weight: 500;
-  text-decoration: inherit;
 }
 
 
@@ -25,6 +24,8 @@ body {
   display: flex;
   place-items: center;
   min-width: 320px;
+
+
   min-height: 100vh;
  align-items: center;
  justify-content: center;
