@@ -32,8 +32,11 @@ function App() {
         i18n.changeLanguage(lang); // i18n dilini değiştir
     };
 
+    
+
     return (
         <div id="root">
+
             {/* Navbar'ı üstte göster */}
             <Navbar currentLanguage={language} onLanguageChange={handleLanguageChange} />
 
@@ -47,6 +50,7 @@ function App() {
 
             {/* Alt gezinme */}
             <SimpleBottomNavigation />
+
         </div>
     );
 }

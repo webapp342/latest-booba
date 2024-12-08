@@ -8,6 +8,8 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
+import WalletIcon from '@mui/icons-material/Wallet';
+
 import LanguageRoundedIcon from "@mui/icons-material/LanguageRounded"; // Dünya ikonu
 
 interface NavbarProps {
@@ -35,7 +37,9 @@ const Navbar: React.FC<NavbarProps> = ({  onLanguageChange }) => {
     <AppBar
       position="static"
       sx={{
-        backgroundColor: "#1A202C", // Modern koyu gri
+        borderBottom: '1px solid #E0E0E0', // Gri ince top border
+
+        backgroundColor: "white", // Modern koyu gri
         boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.2)", // Hafif gölge
       }}
     >
@@ -45,20 +49,30 @@ const Navbar: React.FC<NavbarProps> = ({  onLanguageChange }) => {
           paddingX: 2, // Yatayda iç boşluk
         }}
       >
-        <Typography
-          variant="h6"
-          sx={{
-            fontWeight: "bold",
-            letterSpacing: 1.2,
-          }}
-        >
-          CAPVERSAL
-        </Typography>
+        
         <Box>
           <IconButton
             size="large"
             edge="end"
-            color="inherit"
+            sx={{
+              padding: 0,
+              "&:hover": {
+                backgroundColor: "rgba(255, 255, 255, 0.1)", // Hover efekti
+              },
+            }}
+          >
+            <WalletIcon />
+          </IconButton>
+       
+        </Box>
+
+        
+
+
+        <Box>
+          <IconButton
+            size="large"
+            edge="end"
             onClick={handleMenuOpen}
             sx={{
               padding: 1,
