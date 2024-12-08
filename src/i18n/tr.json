@@ -1,5 +1,10 @@
 {
     "welcome": "CAPVERSAL'a Hoş Geldiniz",
-    "description": "Bu, Türkçe bir test açıklamasıdır."
+    "description": "Bu, Türkçe bir test açıklamasıdır.",
+    "exchange": "Takas",
+    "sell": "Sat",
+    "buy": "Al",
+    "use_max": "Maksimumu kullan",
+    "swap": "Takas"
   }
   
