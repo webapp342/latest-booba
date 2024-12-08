@@ -15,7 +15,7 @@ interface NavbarProps {
   onLanguageChange: (language: string) => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ currentLanguage, onLanguageChange }) => {
+const Navbar: React.FC<NavbarProps> = ({  onLanguageChange }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
