@@ -1,0 +1,50 @@
+.slotsContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .slot-item {
+    position: relative; /* Nokta için referans pozisyon */
+    margin: 0 5px;
+  }
+  
+  .slot-row {
+    width: 35px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+  }
+  
+  .green-slot {
+    background-color: green;
+  }
+  
+  .red-slot {
+    background-color: red;
+  }
+  
+  .static-number {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+  }
+  
+  .slot-char {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+  }
+  
+  /* Noktanın stilini düzenliyoruz */
+  .dot {
+    position: absolute;
+    right: -15px; /* Sağ tarafa hizalama */
+    top: 50%; /* Dikey ortalama */
+    transform: translateY(-25%); /* Dikey hizalama */
+    font-size: 30px;
+    color: black;
+  }
+  

@@ -1,237 +1,279 @@
-import React, { FC, useRef, useState, useEffect } from 'react';
-import SlotCounter from 'react-slot-counter';
-import { Button } from '../button/Button';
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  FormControl,
-  Drawer,
-  Snackbar,
-  IconButton,
-} from '@mui/material';
+import React, { FC, useState, useRef } from 'react';
 import { styles } from './styles';
 import { generateRandomNumber } from './utils/random';
-import spinSound from '../../assets/spin.mp3';
-import winSound from '../../assets/win.mp3';
-import CloseIcon from '@mui/icons-material/Close';
+import SlotDisplay from './SlotDisplay';
+import BalanceSelector from './BalanceSelector';
+import SpinAndDepositButtons from './SpinAndDepositButtons';
+import ResultDisplay from './ResultDisplay';
+import DepositDrawer from './DepositDrawer';
+import SnackbarComponent from './SnackbarComponent';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 export const SlotMachine: FC = () => {
   const [numbers, setNumbers] = useState<string>('000000');
-  const [total, setTotal] = useState<number>(500); // Başlangıç total
-  const [tickets, setTickets] = useState<number>(5); // Başlangıç ticket
-  const [selectedSpinType, setSelectedSpinType] = useState<string>('total'); // Spin tipi
+  const [total, setTotal] = useState<number>(500);
+  const [tickets, setTickets] = useState<number>(5);
+  const [bblip, setBblip] = useState<number>(1200);
+  const [selectedSpinType, setSelectedSpinType] = useState<string>('total');
+  const [selectedBalance, setSelectedBalance] = useState<string>('total');
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
-  const [winAmount, setWinAmount] = useState<string>('');
+  const [winAmount, setWinAmount] = useState<string>('');  
+  const [history, setHistory] = useState<{ spinType: string; balanceType: string; amount: string }[]>([]);
+
   const counterRefs = Array(6)
     .fill(null)
     .map(() => useRef<any>(null));
 
-  const spinAudio = useRef(new Audio(spinSound));
-  const winAudio = useRef(new Audio(winSound));
+  const spinAudio = useRef(new Audio('spin.mp3'));
+  const winAudio = useRef(new Audio('win.mp3'));
 
-  const handleSpinTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedSpinType(event.target.value);
+  const handleSpinTypeChange = (event: React.ChangeEvent<{}>, value: string) => {
+    
+    setSelectedSpinType(value);
   };
-
-  const handleCopy = (text: string) => {
-    navigator.clipboard.writeText(text);
-    setSnackbarOpen(true);
+  
+  const handleBalanceChange = (event: React.ChangeEvent<{}>, value: string) => {
+    setSelectedBalance(value); // Yeni seçimi ayarla
   };
+  
 
-  const handleSnackbarClose = () => setSnackbarOpen(false);
-
-  const generateFirstDigit = () => {
-    return selectedSpinType === 'ticket' ? generateRandomNumber(0, 1) : 0;
-  };
+  
 
   const handleSpin = () => {
-    if (selectedSpinType === 'ticket' && tickets === 0) return; // Yetersiz ticket
-    if (selectedSpinType === 'total' && total < 250) return; // Yetersiz total
+    if (selectedSpinType === 'ticket' && tickets === 0) return;
+    if (selectedSpinType === 'total' && total < 250) return;
+    if (selectedSpinType === 'bblip' && bblip < 1000) return;
   
     spinAudio.current.play();
   
-    const newNumber = [
-      generateFirstDigit(),
-      generateRandomNumber(0, 0),
-      generateRandomNumber(0, 1),
-      generateRandomNumber(0, 1),
-      generateRandomNumber(0, 7),
-      generateRandomNumber(0, 9),
+    const newNumbers: string[] = [...Array(6)].map((_, index) => {
+      // Kombinasyona göre sayı aralıkları
+      if (selectedBalance === 'total' && selectedSpinType === 'total') {
+        switch (index) {
+          case 0:
+            return '0'; // Kırmızı kutu
+          case 1:
+            return generateRandomNumber(0, 0).toString();
+          case 2:
+            return generateRandomNumber(0, 0).toString();
+          case 3:
+            return generateRandomNumber(0, 0).toString();
+          case 4:
+            return generateRandomNumber(0, 0).toString();
+          case 5:
+            return generateRandomNumber(0, 9).toString();
+          default:
+            return generateRandomNumber(0, 9).toString();
+        }
+      }
+  
+      if (selectedBalance === 'total' && selectedSpinType === 'bblip') {
+        switch (index) {
+          case 0:
+            return '0'; // Kırmızı kutu
+          case 1:
+            return '0'; // Kırmızı kutu
+          case 2:
+            return generateRandomNumber(0, 0).toString();
+          case 3:
+            return generateRandomNumber(0, 0).toString();
+          case 4:
+            return generateRandomNumber(0, 0).toString();
+          case 5:
+            return generateRandomNumber(7, 9).toString();
+          default:
+            return generateRandomNumber(0, 9).toString();
+        }
+      }
+  
+      if (selectedBalance === 'total' && selectedSpinType === 'ticket') {
+        switch (index) {
+          case 0:
+            return generateRandomNumber(0, 0).toString();
+          case 1:
+            return generateRandomNumber(0, 0).toString();
+          case 2:
+            return generateRandomNumber(0, 0).toString();
+          case 3:
+            return generateRandomNumber(0, 0).toString();
+          case 4:
+            return generateRandomNumber(0, 0).toString();
+          case 5:
+            return generateRandomNumber(6, 9).toString();
+          default:
+            return generateRandomNumber(0, 9).toString();
+        }
+      }
+  
+      if (selectedBalance === 'bblip' && selectedSpinType === 'total') {
+        switch (index) {
+          case 0:
+            return '0'; // Kırmızı kutular
 
-    ];
+          case 1:
+            return generateRandomNumber(0, 0).toString();
+          case 2:
+            return generateRandomNumber(0, 0).toString();
+          case 3:
+            return generateRandomNumber(0, 0).toString();
+          case 4:
+            return generateRandomNumber(0, 0).toString();
+          case 5:
+            return generateRandomNumber(6, 9).toString();
+          default:
+            return generateRandomNumber(0, 9).toString();
+        }
+      }
   
-    const combinedNumber = newNumber.join(''); // Sayıları düz bir şekilde birleştir
-    setNumbers(combinedNumber); // Nokta veya virgül eklenmeden ayarlandı
+      if (selectedBalance === 'bblip' && selectedSpinType === 'bblip') {
+        switch (index) {
+          case 0:
+          case 1:
+            return '0'; // Kırmızı kutular
+          case 2:
+            return generateRandomNumber(0, 0).toString();
+          case 3:
+            return generateRandomNumber(0, 0).toString();
+          case 4:
+            return generateRandomNumber(0, 0).toString();
+          case 5:
+            return generateRandomNumber(7, 9).toString();
+          default:
+            return generateRandomNumber(0, 9).toString();
+        }
+      }
   
-    if (selectedSpinType === 'ticket') {
-      setTickets((prev) => prev - 1);
-    } else {
-      setTotal((prev) => prev - 250);
-    }
+      if (selectedBalance === 'bblip' && selectedSpinType === 'ticket') {
+        switch (index) {
+          case 0:
+            return generateRandomNumber(0, 0).toString();
+
+          case 1:
+            return generateRandomNumber(0, 0).toString();
+          case 2:
+            return generateRandomNumber(0, 0).toString();
+          case 3:
+            return generateRandomNumber(0, 0).toString();
+          case 4:
+            return generateRandomNumber(0, 0).toString();
+          case 5:
+            return generateRandomNumber(7, 9).toString();
+          default:
+            return generateRandomNumber(0, 9).toString();
+        }
+      }
   
-    setTotal((prev) => prev + parseInt(combinedNumber, 10)); // Total'e düz değer ekleniyor
+      // Varsayılan durumda 0-9 aralığı
+      return generateRandomNumber(0, 9).toString();
+    });
   
-    if (parseInt(combinedNumber, 10) > 100) {
+    const newNumberString = newNumbers.join('');
+    setNumbers(newNumberString);
+  
+    // Bakiyeleri güncelle
+    if (selectedSpinType === 'ticket') setTickets((prev) => prev - 1);
+    if (selectedSpinType === 'total') setTotal((prev) => prev - 500);
+    if (selectedSpinType === 'bblip') setBblip((prev) => prev - 1000);
+  
+    // Kazançları hesapla ve bakiyeyi güncelle
+    const newNumberValue = parseInt(newNumberString, 10);
+    if (selectedBalance === 'total') setTotal((prev) => prev + newNumberValue);
+    if (selectedBalance === 'bblip') setBblip((prev) => prev + newNumberValue);
+  
+    if (newNumberValue > 0) {
       winAudio.current.play();
-      setWinAmount(combinedNumber); // Nokta veya virgül eklenmeden
+      setWinAmount(newNumberString);
       setOpenDialog(true);
+  
+      // Kazançları geçmişe ekleme
+      setHistory((prevHistory) => [
+        ...prevHistory,
+        {
+          spinType: selectedSpinType.toUpperCase(),
+          balanceType: selectedBalance.toUpperCase(),
+          amount: newNumberString,
+        },
+      ]);
     }
   
     counterRefs.forEach((ref, index) => {
+      const isRed =
+        (selectedSpinType === 'total' && index === 0) ||
+        (selectedSpinType === 'bblip' && index < 2);
+  
       setTimeout(() => {
+        if (isRed) return; // Kırmızı kutuların animasyonu iptal
         ref.current?.startAnimation({
-          duration: 1,
-          dummyCharacterCount: 50,
+          duration: 20,
+          dummyCharacterCount: 100,
           direction: 'top-down',
-          value: newNumber[index],
+          value: newNumberString[index],
         });
-      }, index * 100);
+      }, index * 0);
     });
   };
+  
+  
 
-  const handleDialogClose = () => setOpenDialog(false);
-
-  // Debug logları
-  useEffect(() => {
-    console.log('Selected Spin Type:', selectedSpinType);
-    console.log('Total:', total);
-    console.log('Tickets:', tickets);
-  }, [selectedSpinType, total, tickets]);
+  // Aktif kutulara göre stil belirleme
+  const getActiveIndexes = () => {
+    const activeIndexes = [];
+    if (selectedSpinType === 'ticket') {
+      activeIndexes.push(...[0, 1, 2, 3, 4, 5]); // Tüm kutular aktif
+    } else if (selectedSpinType === 'total') {
+      activeIndexes.push(...[0, 1, 2, 3, 4]); // İlk 5 kutu aktif
+    } else if (selectedSpinType === 'bblip') {
+      activeIndexes.push(...[0, 1, 2, 3]); // İlk 4 kutu aktif
+    }
+    return activeIndexes;
+  };
 
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>Slot Machine</h1>
-      <div style={styles.slotsContainer}>
-        {[...numbers].map((char, index) => (
-          <div
-            key={index}
-            style={{
-              ...styles.slotRow,
-              color: selectedSpinType === 'total' && index === 0 ? 'grey' : 'black',
-              borderTop:
-                selectedSpinType === 'total' && index === 0
-                  ? '2px solid red'
-                  : 'none',
-            }}
-          >
-            <SlotCounter
-              ref={counterRefs[index]}
-              value={char}
-              useMonospaceWidth
-              charClassName="slot-char"
-              containerClassName="slot-container"
-            />
-          </div>
-        ))}
-      </div>
+      <ResultDisplay total={total} bblip={bblip} tickets={tickets} />
 
-      <FormControl>
-        <RadioGroup value={selectedSpinType} onChange={handleSpinTypeChange}>
-          <FormControlLabel
-            value="total"
-            control={<Radio />}
-            label="Total ile Spin"
-            style={{ color: 'black' }}
-          />
-          <FormControlLabel
-            value="ticket"
-            control={<Radio />}
-            label="Ticket ile Spin"
-            style={{ color: 'black' }}
-          />
-        </RadioGroup>
-      </FormControl>
-      <Button
-        onClick={() => {
-          console.log('Button Clicked!');
-          if (selectedSpinType === 'total') {
-            if (total < 250) {
-              console.log('Yetersiz total, Deposit açılıyor.');
-              setDrawerOpen(true); // Total yetersizse Deposit Drawer açılır
-            } else {
-              console.log('Total ile spin yapılıyor.');
-              handleSpin(); // Total ile spin yapılır
-            }
-          } else if (selectedSpinType === 'ticket') {
-            if (tickets > 0) {
-              console.log('Ticket ile spin yapılıyor.');
-              handleSpin(); // Ticket ile spin yapılır
-            } else {
-              console.log('Yetersiz Ticket.');
-            }
-          }
-        }}
-        disabled={false} // Butonu her zaman aktif yap
-        style={{
-          backgroundColor:
-            (selectedSpinType === 'total' && total < 250) ||
-            (selectedSpinType === 'ticket' && tickets === 0)
-              ? 'grey'
-              : 'blue',
-          cursor:
-            (selectedSpinType === 'total' && total < 250) ||
-            (selectedSpinType === 'ticket' && tickets === 0)
-              ? 'pointer'
-              : 'pointer',
-        }}
-      >
-        {selectedSpinType === 'total' && total < 250
-          ? 'Deposit'
-          : selectedSpinType === 'ticket' && tickets === 0
-          ? 'Yetersiz Ticket'
-          : 'Spin!'}
-      </Button>
+      
+      {/* Slot kutularını aktiflik durumuna göre göster */}
+      <SlotDisplay
+  numbers={numbers}
+  counterRefs={counterRefs}
+  selectedSpinType={selectedSpinType} // Burada selectedSpinType'ı geçiyoruz
+/>
 
-      <Drawer anchor="bottom" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
-        <div style={{ padding: '20px' }}>
-          <h2>Deposit Information</h2>
-          <p>
-            Account Number: 123456789{' '}
-            <Button onClick={() => handleCopy('123456789')}>Copy</Button>
-          </p>
-          <p>
-            Deposit Amount: 00.500{' '}
-            <Button onClick={() => handleCopy('00.500')}>Copy</Button>
-          </p>
-        </div>
-      </Drawer>
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={3000}
-        onClose={handleSnackbarClose}
-        message="Copied to clipboard"
-        action={
-          <IconButton size="small" onClick={handleSnackbarClose}>
-            <CloseIcon />
-          </IconButton>
-        }
+      
+      <BalanceSelector selectedBalance={selectedBalance} onChange={handleBalanceChange} />
+      <SpinAndDepositButtons
+        total={total}
+        tickets={tickets}
+        bblip={bblip}
+        selectedSpinType={selectedSpinType}
+        handleSpin={handleSpin}
+        openDepositDrawer={() => setDrawerOpen(true)}
+        handleSpinTypeChange={handleSpinTypeChange}
       />
-      <div style={styles.totalContainer}>
-        <h2>Spin Result:</h2>
-        <p>{numbers}</p> {/* Nokta veya virgül eklenmeden düz gösterim */}
-        <h2>Total:</h2>
-        <p>{total}</p> {/* Nokta veya virgül eklenmeden düz gösterim */}
-        <h2>Tickets:</h2>
-        <p>{tickets}</p>
+      
+      
+      {/* Geçmiş Bölümü */}
+      <div style={styles.historyContainer}>
+        <h2>Previous Spins</h2>
+        {history.length === 0 ? (
+          <p>No spins yet.</p>
+        ) : (
+          <ul style={styles.historyList}>
+            {history.map((entry, index) => (
+              <li key={index} style={styles.historyItem}>
+                <strong>{entry.spinType}</strong> <ArrowForwardIcon /> <strong>{entry.balanceType}</strong> {entry.amount} {entry.balanceType}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
-      <Dialog open={openDialog} onClose={handleDialogClose}>
-        <DialogTitle>Congratulations!</DialogTitle>
-        <DialogContent>
-          <p>You won: {winAmount}!</p>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDialogClose} color="primary">
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
+
+      <DepositDrawer drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} setSnackbarOpen={setSnackbarOpen} />
+      <SnackbarComponent snackbarOpen={snackbarOpen} setSnackbarOpen={setSnackbarOpen} />
     </div>
   );
 };
