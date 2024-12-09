@@ -55,7 +55,6 @@ button {
   font-weight: 500;
   font-family: inherit;
   background-color: #fff9f9;
-  cursor: pointer;
   transition: border-color 0.25s;
 }
 
