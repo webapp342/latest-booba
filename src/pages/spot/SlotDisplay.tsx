@@ -1,5 +1,4 @@
 import React from 'react';
-import { styles } from './styles';
 import SlotCounter from 'react-slot-counter';
 import './SlotDisplay.css'; // CSS dosyasını import ediyoruz
 import { Box } from '@mui/material';

@@ -16,10 +16,10 @@ export const SlotMachine: FC = () => {
   const [bblip, setBblip] = useState<number>(1200);
   const [selectedSpinType, setSelectedSpinType] = useState<string>('total');
   const [selectedBalance, setSelectedBalance] = useState<string>('total');
-  const [openDialog, setOpenDialog] = useState<boolean>(false);
+  const [, setOpenDialog] = useState<boolean>(false);
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
-  const [winAmount, setWinAmount] = useState<string>('');  
+  const [, setWinAmount] = useState<string>('');  
   const [history, setHistory] = useState<{ spinType: string; balanceType: string; amount: string }[]>([]);
 
   const counterRefs = Array(6)
@@ -29,12 +29,12 @@ export const SlotMachine: FC = () => {
   const spinAudio = useRef(new Audio('spin.mp3'));
   const winAudio = useRef(new Audio('win.mp3'));
 
-  const handleSpinTypeChange = (event: React.ChangeEvent<{}>, value: string) => {
+  const handleSpinTypeChange = (_event: React.ChangeEvent<{}>, value: string) => {
     
     setSelectedSpinType(value);
   };
   
-  const handleBalanceChange = (event: React.ChangeEvent<{}>, value: string) => {
+  const handleBalanceChange = (_event: React.ChangeEvent<{}>, value: string) => {
     setSelectedBalance(value); // Yeni seçimi ayarla
   };
   
@@ -218,17 +218,6 @@ export const SlotMachine: FC = () => {
   
 
   // Aktif kutulara göre stil belirleme
-  const getActiveIndexes = () => {
-    const activeIndexes = [];
-    if (selectedSpinType === 'ticket') {
-      activeIndexes.push(...[0, 1, 2, 3, 4, 5]); // Tüm kutular aktif
-    } else if (selectedSpinType === 'total') {
-      activeIndexes.push(...[0, 1, 2, 3, 4]); // İlk 5 kutu aktif
-    } else if (selectedSpinType === 'bblip') {
-      activeIndexes.push(...[0, 1, 2, 3]); // İlk 4 kutu aktif
-    }
-    return activeIndexes;
-  };
 
   return (
     <div style={styles.container}>

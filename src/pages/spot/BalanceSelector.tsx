@@ -1,6 +1,5 @@
 import React from 'react';
-import { Tabs, Tab, Box, Typography } from '@mui/material';
-import { styles } from './styles';
+import { Tabs, Tab} from '@mui/material';
 
 interface BalanceSelectorProps {
   selectedBalance: string;
