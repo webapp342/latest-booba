@@ -2,7 +2,6 @@ import React from 'react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { styles } from './styles';
 import { Box, Typography } from '@mui/material';
-import { white } from 'material-ui/styles/colors';
 
 interface HistoryEntry {
   spinType: string;
