@@ -11,11 +11,11 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 
 const navItems = [
-  { label: 'HOME', icon: <HomeOutlinedIcon />, path: '/latest-booba/' },
-  { label: 'TASKS', icon: <PaymentsRoundedIcon />, path: '/latest-booba/test' },
-  { label: 'CALCULATOR', icon: <CurrencyExchangeOutlinedIcon />, path: "/latest-booba/user-profile-page" },
-  { label: 'PROFILE', icon: <QueryStatsOutlinedIcon />, path: '/latest-booba/news' },
-  { label: 'WALLET', icon: <WalletIcon />, path: '/latest-booba/spin' },
+  { label: 'Game', icon: <HomeOutlinedIcon />, path: '/latest-booba/' },
+  { label: 'Frens', icon: <PaymentsRoundedIcon />, path: '/latest-booba/test' },
+  { label: 'Top', icon: <CurrencyExchangeOutlinedIcon />, path: "/latest-booba/user-profile-page" },
+  { label: 'Tasks', icon: <QueryStatsOutlinedIcon />, path: '/latest-booba/news' },
+  { label: 'Wallet', icon: <WalletIcon />, path: '/latest-booba/spin' },
 ];
 
 export default function SimpleBottomNavigation() {

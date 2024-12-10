@@ -251,7 +251,7 @@ Pick Your Power </Typography>
           onClick={handleSpinClick}
           disabled={loading}
           sx={{
-            backgroundColor: loading ? '#9E9E9E' : '#4CAF50', // Yüklenme sırasında gri renk
+            backgroundColor: loading ? 'green' : 'green', // Yüklenme sırasında gri renk
             color: 'white',
             width: '100%',
             mt: 2,

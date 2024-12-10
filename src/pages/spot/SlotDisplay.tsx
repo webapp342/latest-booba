@@ -28,16 +28,16 @@ const SlotDisplay: React.FC<SlotDisplayProps> = ({ numbers, counterRefs, selecte
         display: 'flex',
         flexDirection: 'row',
         gap: '10px',
-        color: '#000',
+        color: 'white',
         padding: '1rem',
         width: '100%',
         boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)', // Hafif gölge
+        border: '1px solid #e0e0e0',
 
         alignItems: 'center',
-        backgroundColor: 'white',
+        backgroundColor: 'whitesmoke',
         borderRadius: '12px',
         margin: '1rem 0 2rem 0',
-        border: '1px solid #e0e0e0',
         textAlign: 'center',
       }}
     >
@@ -53,7 +53,7 @@ const SlotDisplay: React.FC<SlotDisplayProps> = ({ numbers, counterRefs, selecte
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: '10px',
-        backgroundColor: getColorClass(index) === 'red-slot' ? '#ffcccc' : '#ccffcc',
+        backgroundColor: getColorClass(index) === 'red-slot' ? 'red' : 'green',
       }}
     >
       {getColorClass(index) === 'red-slot' ? (

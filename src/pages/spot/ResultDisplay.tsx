@@ -118,15 +118,12 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ total, bblip, tickets }) 
         margin: '0 ',
         padding: '16px',
         boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)', // Hafif gölge
-
+        backgroundColor: 'whitesmoke',
         border: '1px solid #e0e0e0',
         borderRadius: 3,
         textAlign: 'center',
         cursor: 'pointer',
-        '&:hover': {
-          backgroundColor: '#f5f5f5',
-        },
-        transition: 'background-color 0.3s',
+      
       }}
     >
       <Grid container alignItems="center" justifyContent="space-between">

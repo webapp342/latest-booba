@@ -2,6 +2,7 @@ import React from 'react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { styles } from './styles';
 import { Box, Typography } from '@mui/material';
+import { white } from 'material-ui/styles/colors';
 
 interface HistoryEntry {
   spinType: string;
@@ -43,17 +44,16 @@ const HistoryDisplay: React.FC<HistoryDisplayProps> = ({ history }) => {
         margin: '0 ',
         padding: '16px',
         border: '1px solid #e0e0e0',
-        borderRadius: 2,
-        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)', // Hafif gölge
-
+        borderRadius: 3,
+        backgroundColor: 'whitesmoke',
         textAlign: 'center',
-        backgroundColor : "#e9ebef ",
         color: 'black',
       }}
     >
-     
+
         <Typography >Results</Typography>
- 
+
+     
       {history.length === 0 ? (
         <p>No spins yet.</p>
       ) : (
