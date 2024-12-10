@@ -1,8 +1,4 @@
-.slotsContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+
   
   .slot-item {
     position: relative; /* Nokta için referans pozisyon */
@@ -10,7 +6,7 @@
   }
   
   .slot-row {
-    width: 35px;
+    width: 45px;
     height: 50px;
     display: flex;
     justify-content: center;
@@ -45,6 +41,6 @@
     top: 50%; /* Dikey ortalama */
     transform: translateY(-25%); /* Dikey hizalama */
     font-size: 30px;
-    color: black;
+    color: grey;
   }
   

@@ -1,6 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, Grid, IconButton } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+
+const theme = createTheme({
+  typography: {
+    fontFamily: "Montserrat, sans-serif",
+  },
+
+});
 
 interface ResultDisplayProps {
   total: number;
@@ -9,23 +18,37 @@ interface ResultDisplayProps {
 }
 
 // Sayıyı 6 haneli formatta (000.000) göstermek için fonksiyon
-const formatNumber = (num: number) => {
-  const numString = num.toString().padStart(6, '0');
-  return numString.slice(0, 3) + '.' + numString.slice(3);
+const formatAmount = (amount: number) => {
+  const paddedAmount = amount.toString().padStart(6, '0'); // En az 6 haneli yapmak için başına sıfır ekler
+  const integerPart = paddedAmount.slice(0, 3); // İlk 3 haneli kısmı alır
+  const decimalPart = paddedAmount.slice(3); // Sonraki 3 haneli kısmı alır
+  return `${parseInt(integerPart, 10)}.${decimalPart}`; // Tam sayı kısmındaki sıfırları kaldırır
 };
 
+interface AmountStyle {
+  [key: string]: React.CSSProperties;
+}
+
 const ResultDisplay: React.FC<ResultDisplayProps> = ({ total, bblip, tickets }) => {
-  const [open, setOpen] = useState(false); // Menü için durum
+  const [open, setOpen] = useState(false);
+  const [prevTotal, setPrevTotal] = useState(total);
+  const [prevBblip, setPrevBblip] = useState(bblip);
+  const [prevTickets, setPrevTickets] = useState(tickets);
+  const [amountStyle, setAmountStyle] = useState<AmountStyle>({
+    total: {},
+    bblip: {},
+    tickets: {},
+  });
 
   const data = [
     {
       logo: 'https://cryptologos.cc/logos/toncoin-ton-logo.png?v=040',
-      value: formatNumber(total),
+      value: formatAmount(total),
       label: '$TON',
     },
     {
       logo: 'https://cryptologos.cc/logos/bitcoin-btc-logo.png?v=040',
-      value: formatNumber(bblip),
+      value: formatAmount(bblip),
       label: '$BBLIP',
     },
     {
@@ -35,17 +58,67 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ total, bblip, tickets }) 
     },
   ];
 
-  // Menü açma kapama
+  useEffect(() => {
+    if (total > prevTotal) {
+      setAmountStyle((prevState) => ({
+        ...prevState,
+        total: { color: 'green' },
+      }));
+      setTimeout(() => setAmountStyle((prevState) => ({ ...prevState, total: {} })), 300);
+    } else if (total < prevTotal) {
+      setAmountStyle((prevState) => ({
+        ...prevState,
+        total: { color: 'red' },
+      }));
+      setTimeout(() => setAmountStyle((prevState) => ({ ...prevState, total: {} })), 300);
+    }
+    setPrevTotal(total);
+
+    if (bblip > prevBblip) {
+      setAmountStyle((prevState) => ({
+        ...prevState,
+        bblip: { color: 'green' },
+      }));
+      setTimeout(() => setAmountStyle((prevState) => ({ ...prevState, bblip: {} })), 300);
+    } else if (bblip < prevBblip) {
+      setAmountStyle((prevState) => ({
+        ...prevState,
+        bblip: { color: 'red' },
+      }));
+      setTimeout(() => setAmountStyle((prevState) => ({ ...prevState, bblip: {} })), 300);
+    }
+    setPrevBblip(bblip);
+
+    if (tickets > prevTickets) {
+      setAmountStyle((prevState) => ({
+        ...prevState,
+        tickets: { color: 'green' },
+      }));
+      setTimeout(() => setAmountStyle((prevState) => ({ ...prevState, tickets: {} })), 300);
+    } else if (tickets < prevTickets) {
+      setAmountStyle((prevState) => ({
+        ...prevState,
+        tickets: { color: 'red' },
+      }));
+      setTimeout(() => setAmountStyle((prevState) => ({ ...prevState, tickets: {} })), 300);
+    }
+    setPrevTickets(tickets);
+  }, [total, bblip, tickets, prevTotal, prevBblip, prevTickets]);
+
   const handleToggle = () => {
     setOpen(!open);
   };
 
   return (
+    <ThemeProvider theme={theme}>
+
     <Box
       sx={{
-        width: '100%', // %95 genişlik
+        width: '100%',
         margin: '0 ',
         padding: '16px',
+        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)', // Hafif gölge
+
         border: '1px solid #e0e0e0',
         borderRadius: 3,
         textAlign: 'center',
@@ -57,7 +130,6 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ total, bblip, tickets }) 
       }}
     >
       <Grid container alignItems="center" justifyContent="space-between">
-        {/* Logo ve Metin Sol Tarafta */}
         <Grid item xs={8} sx={{ display: 'flex', alignItems: 'center' }}>
           <Box
             component="img"
@@ -77,18 +149,17 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ total, bblip, tickets }) 
           </Typography>
         </Grid>
 
-        {/* Sayı ve İkon Sağ Tarafta */}
         <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
           <Typography
             variant="body2"
             sx={{
               fontWeight: 'bold',
               color: '#000',
+              ...amountStyle.total,
             }}
           >
             {data[0].value}
           </Typography>
-          {/* Expand İkonu */}
           <IconButton
             onClick={handleToggle}
             sx={{
@@ -101,7 +172,6 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ total, bblip, tickets }) 
         </Grid>
       </Grid>
 
-      {/* Menü */}
       {open && (
         <Box
           sx={{
@@ -109,9 +179,6 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ total, bblip, tickets }) 
             borderRadius: 2,
           }}
         >
-      
-
-          {/* Tüm verileri burada gösteriyoruz */}
           <Grid container spacing={1} sx={{ marginTop: 0 }}>
             {data.map((item, index) => (
               <Grid item xs={12} key={index}>
@@ -119,14 +186,13 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ total, bblip, tickets }) 
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'space-between', // Soldaki öğeler ile sağdaki öğeleri ayırıyoruz
+                    justifyContent: 'space-between',
                     padding: '8px',
                     border: '1px solid #e0e0e0',
                     borderRadius: 2,
                     backgroundColor: '#fff',
                   }}
                 >
-                  {/* Sol taraf: Logo ve Label */}
                   <Box
                     sx={{
                       display: 'flex',
@@ -150,12 +216,12 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ total, bblip, tickets }) 
                     </Typography>
                   </Box>
 
-                  {/* Sağ taraf: Miktar */}
                   <Typography
                     variant="body2"
                     sx={{
                       fontWeight: 'bold',
                       color: '#000',
+                      ...amountStyle[item.label.toLowerCase()],
                     }}
                   >
                     {item.value}
@@ -164,9 +230,14 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ total, bblip, tickets }) 
               </Grid>
             ))}
           </Grid>
+    
         </Box>
+        
       )}
+      
     </Box>
+    </ThemeProvider>
+
   );
 };
 

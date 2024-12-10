@@ -1,6 +1,5 @@
 import React from 'react';
 import SlotCounter from 'react-slot-counter';
-import './SlotDisplay.css'; // CSS dosyasını import ediyoruz
 import { Box } from '@mui/material';
 
 interface SlotDisplayProps {
@@ -25,41 +24,74 @@ const SlotDisplay: React.FC<SlotDisplayProps> = ({ numbers, counterRefs, selecte
 
   return (
     <Box
-    sx={{
-      display: 'flex',
-      flexDirection: 'row', // Kutuları yatay hizalamak için 'row' kullanıyoruz
-      gap: '10px',
-      color: '#000', // Metin rengi siyah
-      padding: '1rem',
-      backgroundColor: '#f8f8f8',
-      borderRadius: '12px',
-      boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.1)', // İçeriğe gölge ekleniyor
-      margin: '1rem 0 2rem 0', // Dış kenarlara margin ekleniyor
-      border: '1px solid #e0e0e0', // Border ekleniyor
-      textAlign: 'center', // Yazıları ortalamak için
-    }}
-  >   {[...numbers].map((char, index) => (
-        <div key={index} className="slot-item">
-          <div className={`slot-row ${getColorClass(index)}`}>
-            {getColorClass(index) === 'red-slot' ? (
-              // Kırmızı kutular için sadece "0" gösteriyoruz
-              <div className="static-number">0</div>
-            ) : (
-              // Yeşil kutularda SlotCounter animasyonu devam ediyor
-              <SlotCounter
-                ref={counterRefs[index]}
-                value={char}
-                useMonospaceWidth
-                charClassName="slot-char"
-                containerClassName="slot-container"
-              />
-            )}
-          </div>
-          {/* Nokta ekleme: 3. kutudan sonra sağ tarafına */}
-          {index === 2 && <span className="dot">•</span>}
-        </div>
-      ))}
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        gap: '10px',
+        color: '#000',
+        padding: '1rem',
+        width: '100%',
+        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)', // Hafif gölge
+
+        alignItems: 'center',
+        backgroundColor: 'white',
+        borderRadius: '12px',
+        margin: '1rem 0 2rem 0',
+        border: '1px solid #e0e0e0',
+        textAlign: 'center',
+      }}
+    >
+   
+    {[...numbers].map((char, index) => (
+  <React.Fragment key={index}>
+    <Box
+      className={`slot-row ${getColorClass(index)}`}
+      sx={{
+        width: { xs: '55px', sm: '65px', md: '65px', lg: '95px' },
+        height: { xs: '35px', sm: '45px', md: '60px', lg: '70px' },
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: '10px',
+        backgroundColor: getColorClass(index) === 'red-slot' ? '#ffcccc' : '#ccffcc',
+      }}
+    >
+      {getColorClass(index) === 'red-slot' ? (
+        <Box className="static-number" sx={{ fontWeight: 'bold' }}>
+          0
+        </Box>
+      ) : (
+        <SlotCounter
+          ref={counterRefs[index]}
+          value={char}
+          useMonospaceWidth
+          charClassName="slot-char"
+          containerClassName="slot-container"
+        />
+      )}
     </Box>
+    {index === 2 && (
+      <Box
+        component="span"
+        sx={{
+          alignSelf: 'center',
+          marginLeft: '5px',
+          marginRight: '5px',
+          fontWeight: 'bold',
+          fontSize: '1.2rem',
+          color: '#333',
+        }}
+      >
+        •
+      </Box>
+    )}
+  </React.Fragment>
+))}
+
+
+ 
+    </Box>
+
   );
 };
 

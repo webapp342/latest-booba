@@ -15,6 +15,49 @@ export const styles = {
     marginBottom: '1rem',
     fontWeight: 'bold',
   },
+  historyContainer: {
+    padding: '20px',
+    backgroundColor: '#f9f9f9',
+    borderRadius: '8px',
+    color: '#333',
+    width: '100%',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+    margin: 'auto',
+  },
+  historyList: {
+    listStyle: 'none',
+    padding: 0,
+    marginTop: '20px',
+  },
+  historyItem: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '10px',
+    borderBottom: '1px solid #ddd',
+    transition: 'background-color 0.3s',
+  },
+  historyItemHovered: {
+    backgroundColor: '#f1f1f1',
+  },
+  spinInfo: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  logo: {
+    width: '20px',
+    height: '20px',
+    marginRight: '10px',
+  },
+  arrowIcon: {
+    color: '#4CAF50',
+  },
+  balanceInfo: {
+    display: 'flex',
+    alignItems: 'center',
+    fontSize: '16px',
+    fontWeight: '500',
+  },
   balanceSelection: {
     marginBottom: '20px',
     padding: '10px',
@@ -51,23 +94,7 @@ export const styles = {
     color: '#333', // Siyah metin
     fontWeight: '400', // Hafif ince font
   },
-  historyContainer: {
-    marginTop: '2rem',
-    padding: '1rem',
-    width: '100%',
-
-    backgroundColor: '#f9f9f9',
-    borderRadius: '8px',
-    color: '#333',
-
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-  },
-  historyList: {
-    listStyleType: 'none',
-    padding: 0,
-    margin: 0,
-
-  },
+ 
   slotBox: (isActive: boolean) => ({
     backgroundColor: isActive ? 'green' : 'red',
     padding: '10px',
@@ -93,11 +120,7 @@ export const styles = {
     fontWeight: 'bold',
     color: 'white', // Diğer animasyonlu sayılar için de beyaz renk
   },
-  historyItem: {
-    padding: '8px',
-    borderBottom: '1px solid #ddd',
-    fontSize: '1rem',
-  },
+
   
   slotsContainer: {
     display: 'flex',
