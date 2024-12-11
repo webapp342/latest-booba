@@ -259,6 +259,8 @@ Pick Your Power </Typography>
             fontWeight: 'bold',
             padding: '10px 20px',
             cursor: loading ? 'not-allowed' : 'pointer',
+            position: 'relative',
+            zIndex: 100,
           }}
         >
           {loading ? 'Spinning...' : spinButtonText}

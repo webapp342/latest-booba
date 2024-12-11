@@ -27,11 +27,11 @@ export const SlotMachine: FC = () => {
   const [bblip, setBblip] = useState<number>(10000);
   const [selectedSpinType, setSelectedSpinType] = useState<string>('total');
   const [selectedBalance, setSelectedBalance] = useState<string>('total');
-  const [, setOpenDialog] = useState<boolean>(false);
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
-  const [, setWinAmount] = useState<string>('');  
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [winAmount, setWinAmount] = useState<string>('');  // To store the win amount
+  const [winModalOpen, setWinModalOpen] = useState(false);
+    const [isModalOpen, setModalOpen] = useState(false);
 
   const handleOpenModal = () => setModalOpen(true);
   const handleCloseModal = () => setModalOpen(false);
@@ -62,7 +62,7 @@ export const SlotMachine: FC = () => {
     if (selectedSpinType === 'bblip' && bblip < 1000) return;
   
     spinAudio.current.play();
-
+  
     if (selectedSpinType === 'ticket') setTickets((prev) => prev - 1);
     if (selectedSpinType === 'total') setTotal((prev) => prev - 200);
     if (selectedSpinType === 'bblip') setBblip((prev) => prev - 1000);
@@ -130,7 +130,7 @@ export const SlotMachine: FC = () => {
         switch (index) {
           case 0:
             return '0'; // Kırmızı kutular
-
+  
           case 1:
             return generateRandomNumber(0, 0).toString();
           case 2:
@@ -168,7 +168,7 @@ export const SlotMachine: FC = () => {
         switch (index) {
           case 0:
             return generateRandomNumber(0, 0).toString();
-
+  
           case 1:
             return generateRandomNumber(0, 0).toString();
           case 2:
@@ -189,50 +189,51 @@ export const SlotMachine: FC = () => {
     });
   
     const newNumberString = newNumbers.join('');
-  setNumbers(newNumberString);
-
-  counterRefs.forEach((ref, index) => {
-    const isRed =
-      (selectedSpinType === 'total' && index === 0) ||
-      (selectedSpinType === 'bblip' && index < 2);
-
-    setTimeout(() => {
-      if (isRed) return; // Kırmızı kutuların animasyonu iptal
-      ref.current?.startAnimation({
-        duration: 2,
-        dummyCharacterCount: 800,
-        direction: 'top-down',
-        value: newNumberString[index],
-      });
-    }, index * 100);
-  });
-
-  // Animasyon bitişi sonrası işlemler
-  setTimeout(() => {
-    const newNumberValue = parseInt(newNumberString, 10);
-
-    // Kazançları hesapla ve bakiyeyi güncelle
-    if (selectedBalance === 'total') setTotal((prev) => prev + newNumberValue);
-    if (selectedBalance === 'bblip') setBblip((prev) => prev + newNumberValue);
-
-    if (newNumberValue > 0) {
-      winAudio.current.play();
-      setWinAmount(newNumberString);
-      setOpenDialog(true);
-
-      // Kazançları geçmişe ekleme
-      setHistory((prevHistory) => [
-        ...prevHistory,
-        {
-          spinType: selectedSpinType.toUpperCase(),
-          balanceType: selectedBalance.toUpperCase(),
-          amount: newNumberString,
-        },
-      ]);
-    }
-  }, 2500); // Animasyon süresi kadar bir gecikme (2.5 saniye)
-};
+    setNumbers(newNumberString);
   
+    counterRefs.forEach((ref, index) => {
+      const isRed =
+        (selectedSpinType === 'total' && index === 0) ||
+        (selectedSpinType === 'bblip' && index < 2);
+  
+      setTimeout(() => {
+        if (isRed) return; // Skip animation for red boxes
+        ref.current?.startAnimation({
+          duration: 2,
+          dummyCharacterCount: 800,
+          direction: 'top-down',
+          value: newNumberString[index],
+        });
+      }, index * 100);
+    });
+  
+    // After animation completes, calculate win and show the modal
+    setTimeout(() => {
+      const newNumberValue = parseInt(newNumberString, 10);
+  
+      // Update the balance
+      if (selectedBalance === 'total') setTotal((prev) => prev + newNumberValue);
+      if (selectedBalance === 'bblip') setBblip((prev) => prev + newNumberValue);
+  
+      if (newNumberValue > 0) {
+        winAudio.current.play();
+        setWinAmount(newNumberString);  // Set win amount for modal
+  
+        // Open the win modal
+        setWinModalOpen(true);
+  
+        // Add history entry
+        setHistory((prevHistory) => [
+          ...prevHistory,
+          {
+            spinType: selectedSpinType.toUpperCase(),
+            balanceType: selectedBalance.toUpperCase(),
+            amount: newNumberString,
+          },
+        ]);
+      }
+    }, 2500); // Wait for animation to finish before showing win modal
+  };
   
 
   // Aktif kutulara göre stil belirleme
@@ -318,6 +319,8 @@ export const SlotMachine: FC = () => {
 
 
       </Box>
+             {/* Win Modal */}
+           
       <ResultDisplay total={total} bblip={bblip} tickets={tickets} />
 
       <SlotDisplay numbers={numbers} counterRefs={counterRefs} selectedSpinType={selectedSpinType} />
@@ -364,6 +367,40 @@ export const SlotMachine: FC = () => {
           </Button>
         </Box>
       </Modal>
+
+     
+      <Modal
+  open={winModalOpen}
+  onClose={() => setWinModalOpen(false)}
+  aria-labelledby="win-modal"
+  aria-describedby="win-description"
+>
+  <Box
+    sx={{
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      color: 'black',
+      transform: 'translate(-50%, -50%)',
+      width: { xs: 300, sm: 400 },
+      bgcolor: 'background.paper',
+      boxShadow: 24,
+      p: 3,
+      borderRadius: '8px',
+    }}
+  >
+    <Typography id="win-modal" variant="h6" component="h2" sx={{ mb: 2 }}>
+      Congratulations! You Won
+    </Typography>
+    <Typography id="win-description" variant="body1" sx={{ mb: 3 }}>
+      You won {winAmount} {selectedBalance.toUpperCase()}!
+    </Typography>
+    <Button variant="contained" onClick={() => setWinModalOpen(false)} fullWidth>
+      Close
+    </Button>
+  </Box>
+</Modal>
+
 
       <DepositDrawer drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} setSnackbarOpen={setSnackbarOpen} />
       <SnackbarComponent snackbarOpen={snackbarOpen} setSnackbarOpen={setSnackbarOpen} />
