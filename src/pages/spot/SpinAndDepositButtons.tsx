@@ -251,8 +251,8 @@ Pick Your Power </Typography>
           onClick={handleSpinClick}
           disabled={loading}
           sx={{
-            backgroundColor: loading ? 'green' : 'green', // Yüklenme sırasında gri renk
-            color: 'white',
+            backgroundColor: loading ? '#008000' : '#008000', // Yüklenme sırasında gri renk
+            color: '#FFFFFF',
             width: '100%',
             mt: 2,
             borderRadius: 2,
@@ -269,8 +269,8 @@ Pick Your Power </Typography>
         <Button
           onClick={openDepositDrawer}
           sx={{
-            backgroundColor: 'red',
-            color: 'white',
+            backgroundColor: '#FF0000',
+            color: '#FFFFFF',
             mt: 2,
             width: '100%',
             padding: '10px 20px',
