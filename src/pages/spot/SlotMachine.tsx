@@ -33,10 +33,8 @@ export const SlotMachine: FC = () => {
   const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
   const [winAmount, setWinAmount] = useState<string>('');  // To store the win amount
   const [winModalOpen, setWinModalOpen] = useState(false);
-    const [isModalOpen, setModalOpen] = useState(false);
 
-  const handleOpenModal = () => setModalOpen(true);
-  const handleCloseModal = () => setModalOpen(false);
+
   const [history, setHistory] = useState<{ spinType: string; balanceType: string; amount: string }[]>([]);
 
   const counterRefs = Array(6)
