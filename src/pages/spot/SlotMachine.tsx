@@ -5,10 +5,12 @@ import BalanceSelector from './BalanceSelector';
 import SpinAndDepositButtons from './SpinAndDepositButtons';
 import ResultDisplay from './ResultDisplay';
 import DepositDrawer from './DepositDrawer';
-import InfoIcon from '@mui/icons-material/Info';
+import { keyframes } from "@emotion/react";
+
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import SnackbarComponent from './SnackbarComponent';
 import HistoryDisplay from './HistoryDisplay'; // Yeni bileşeni import ettik
-import { Box, Button, IconButton, Modal, Typography } from '@mui/material';
+import { Box, Button,  Modal, Typography } from '@mui/material';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 
@@ -234,6 +236,17 @@ export const SlotMachine: FC = () => {
       }
     }, 2500); // Wait for animation to finish before showing win modal
   };
+
+
+  // Animasyon keyframe tanımı
+const bounceAnimation = keyframes`
+0%, 100% {
+  transform: translateY(0);
+}
+50% {
+  transform: translateY(10px);
+}
+`;
   
 
   // Aktif kutulara göre stil belirleme
@@ -243,91 +256,155 @@ export const SlotMachine: FC = () => {
 
     <Box
     sx={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      gap: '10px',
-      backgroundColor: "red",
-      padding: '1.5rem',
-      borderRadius: '16px',
+      backgroundColor: "#7b0105",
+      color: "white",
+      textAlign: "center",
+      padding: 1,
+      
+      position: "relative",
+      overflow: "hidden",
+      minHeight: "100vh",
+
     }}
   >    
- <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          width: "105%",
-          mt: -1,
-  
-        }}
-      >
-        {/* Left: Slot Machine Title with Info Icon */}
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
-          <Typography
-            variant="h6"
-            component="h6"
-            sx={{
-              m: -1,
-              fontSize: { xs: '1.1rem', sm: '2rem', md: '2.5rem' },
-              color: '#333',
 
-              fontWeight: 'bold',
-            }}
-          >
-            Lottery
-          </Typography>
-          <IconButton
-            onClick={handleOpenModal}
-            sx={{
-              ml: 1,
-              color: '#333',
-            }}
-            aria-label="information"
-          >
-            <InfoIcon />
-          </IconButton>
-        </Box>
-
-        {/* Right: Jackpot Info */}
-        <Box
-  sx={{
-    backgroundImage: 'linear-gradient(90deg, #28a745, #dc3545)', // Yeşil ve kırmızı gradient
-    color: '#fff',
-    m : -1,
-    padding: '0.5rem 1rem',
-    borderRadius: '8px',
-    fontSize: { xs: '0.8rem', sm: '1rem' },
-    fontWeight: 'bold',
-    textAlign: 'center',
-    backgroundSize: '200% 100%', // Arka plan geçişi için boyut ayarı
-    backgroundPosition: 'right bottom', // Başlangıçta arka planın pozisyonu
-    animation: 'gradientShift 4s ease-in-out infinite', // Yalnızca arka plan animasyonu
-    '@keyframes gradientShift': {
-      '0%': { backgroundPosition: 'right bottom' },
-      '50%': { backgroundPosition: 'left bottom' },
-      '100%': { backgroundPosition: 'right bottom' },
-    },
-  }}
->
-  Current Jackpot: 999 TON
-</Box>
-
-
-      </Box>
              {/* Win Modal */}
+
            
       <ResultDisplay total={total} bblip={bblip} tickets={tickets} />
 
-      <SlotDisplay numbers={numbers} counterRefs={counterRefs} selectedSpinType={selectedSpinType} />
-      
-      <BalanceSelector selectedBalance={selectedBalance} onChange={handleBalanceChange} />
-      <SpinAndDepositButtons
+       {/* Jackpot Section */}
+    <Box
+          sx={{
+            background: "linear-gradient(to bottom, #ffd700, #ffffff)",
+            padding: 3,
+  
+            borderRadius: 1,
+            marginTop: 1,
+   
+          }}
+        >
+          <Typography
+            variant="h4"
+            sx={{ fontWeight: "bold" }}
+          >
+            Lucky Lotto
+          </Typography>
+
+        </Box>
+            {/* Buttons */}
+            <Button
+          variant="contained"
+          sx={{
+            background: "linear-gradient(to right, #c70039, #ff0000)",
+            borderRadius: 2,
+            px: 3,
+            mt: -2,
+            marginBottom: "10px",
+            textTransform: "none",
+            fontWeight: "bold",
+          }}
+        >
+         TOP PRIZE : 999 TON
+        </Button>
+
+          {/* Jackpot Section */}
+          <Box
+          sx={{
+            background: "linear-gradient(to bottom, #ffd700, #ffffff)",
+            padding: 2,
+            borderRadius: 1,
+          }}
+        >
+          <Typography
+            variant="h4"
+            sx={{ fontWeight: "bold" }}
+          >
+            JACKPOT
+          </Typography>
+          <SlotDisplay numbers={numbers} counterRefs={counterRefs} selectedSpinType={selectedSpinType} />
+
+        </Box>
+
+        {/* Buttons */}
+        <Button
+          variant="contained"
+          sx={{
+            background: "linear-gradient(to right, #c70039, #ff0000)",
+            borderRadius: 2,
+            px: 5,
+            mt: -2,
+
+            textTransform: "none",
+            fontWeight: "bold",
+          }}
+        >
+          Pick Your Winning Token
+        </Button>
+
+        <Box>
+               {/* Aşağı yönlendirme ikonu */}
+      <ArrowDownwardIcon
+        sx={{
+          color: "#ffd700",
+          fontSize: "2rem",
+          animation: `${bounceAnimation} 1.5s infinite`,
+        }}
+      />
+
+        </Box>
+        <Box
+          sx={{
+            background: "linear-gradient(to bottom, #ffd700, #ffffff)",
+            py: 1,
+            mx: 4,
+            borderRadius: 1,
+
+          }}
+        >
+           <BalanceSelector selectedBalance={selectedBalance} onChange={handleBalanceChange} />
+
+        </Box>
+
+          {/* Buttons */}
+          <Button
+          variant="contained"
+          sx={{
+            background: "linear-gradient(to right, #c70039, #ff0000)",
+            borderRadius: 1,
+            px: 5,
+            mt: -2,
+            textTransform: "none",
+            fontWeight: "bold",
+          }}
+        >
+          Pick Your POWER
+        </Button>
+
+        <Box>
+               {/* Aşağı yönlendirme ikonu */}
+      <ArrowDownwardIcon
+        sx={{
+          color: "#ffd700",
+          fontSize: "2rem",
+          animation: `${bounceAnimation} 1.5s infinite`,
+        }}
+      />
+
+        </Box>
+
+
+        <Box
+          sx={{
+            background: "linear-gradient(to bottom, #ffd700, #ffffff)",
+            padding: 0,
+            mx: 4,
+            borderRadius: 1,
+
+
+          }}
+        >
+         <SpinAndDepositButtons
         total={total}
         tickets={tickets}
         bblip={bblip}
@@ -336,38 +413,29 @@ export const SlotMachine: FC = () => {
         openDepositDrawer={() => setDrawerOpen(true)}
         handleSpinTypeChange={handleSpinTypeChange}
       />
-      
+        </Box>
+
+
+        <Box
+          sx={{
+            background: "linear-gradient(to bottom, #ffd700, #ffffff)",
+            padding: 0,
+            mx: 4,
+            borderRadius: 1,
+
+
+          }}
+        >
       {/* HistoryDisplay bileşenini ekledik */}
       <HistoryDisplay history={history} />
 
+      </Box>
+
+     
       
-      {/* Modal */}
-      <Modal open={isModalOpen} onClose={handleCloseModal} aria-labelledby="info-modal" aria-describedby="info-description">
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            color: "black",
-            transform: 'translate(-50%, -50%)',
-            width: { xs: 300, sm: 400 },
-            bgcolor: 'background.paper',
-            boxShadow: 24,
-            p: 3,
-            borderRadius: '8px',
-          }}
-        >
-          <Typography id="info-modal" variant="h6" component="h2" sx={{ mb: 2 }}>
-            How to Play Slot Machine
-          </Typography>
-          <Typography id="info-description" variant="body1" sx={{ mb: 3 }}>
-            Select your preferred spin type, adjust your bet, and press spin to start the reels. Match symbols to win prizes and aim for the jackpot!
-          </Typography>
-          <Button variant="contained" onClick={handleCloseModal} fullWidth>
-            Understand
-          </Button>
-        </Box>
-      </Modal>
+       
+      
+    
 
      
       <Modal

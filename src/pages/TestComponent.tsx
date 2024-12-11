@@ -132,12 +132,7 @@ const LuckyLotto = () => {
 
           }}
         >
-          <Typography
-            variant="h4"
-            sx={{ fontWeight: "bold", marginBottom: "10px" }}
-          >
-           
-          </Typography>
+     
         </Box>
 
         {/* Buttons */}
@@ -177,12 +172,7 @@ const LuckyLotto = () => {
 
           }}
         >
-          <Typography
-            variant="h4"
-            sx={{ fontWeight: "bold", marginBottom: "10px" }}
-          >
-           
-          </Typography>
+        
         </Box>
       
         

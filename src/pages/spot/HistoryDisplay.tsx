@@ -39,7 +39,6 @@ const HistoryDisplay: React.FC<HistoryDisplayProps> = ({ history }) => {
   return (
     <Box
       sx={{
-        width: '100%',
         margin: '0 ',
         padding: '16px',
         border: '1px solid #e0e0e0',

@@ -30,14 +30,14 @@ const SlotDisplay: React.FC<SlotDisplayProps> = ({ numbers, counterRefs, selecte
         gap: '10px',
         color: 'white',
         padding: '1rem',
-        width: '100%',
+  
         boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)', // Hafif gölge
         border: '1px solid #e0e0e0',
 
         alignItems: 'center',
         backgroundColor: 'whitesmoke',
         borderRadius: '12px',
-        margin: '1rem 0 2rem 0',
+  
         textAlign: 'center',
       }}
     >

@@ -114,7 +114,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ total, bblip, tickets }) 
 
     <Box
       sx={{
-        width: '100%',
+    
         margin: '0 ',
         padding: '16px',
         boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)', // Hafif gölge
