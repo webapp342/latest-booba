@@ -120,48 +120,17 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
 
     <Box
     sx={{
-      width: '110%',
       margin: '0 ',
       borderRadius: 3,
       textAlign: 'center',
       color: 'black',
     }}
   >
-      <Typography
-  variant="body2"
-  sx={{
-    fontWeight: 'bold',
-    marginBottom: '1rem',
-    fontSize: '1rem',
-    letterSpacing: '1.5px',
-    backgroundImage: 'linear-gradient(to right, green, red)', // Soldan sağa renk geçişi
-    backgroundSize: '200% 100%', // Renk geçişi boyutu
-    backgroundPosition: 'right bottom',
-    WebkitBackgroundClip: 'text', // Yalnızca metni renklendirir
-    color: 'transparent', // Yazıyı şeffaf yapar, renk arka plandan gelir
-    animation: 'gradientShift 3s ease-in-out infinite', // Animasyonu ekler
-    lineHeight: 2,
-  }}
->
-Pick Your Power </Typography>
+    
 
 
-<style>
-  {`
-    @keyframes gradientShift {
-      0% {
-        background-position: right bottom;
-      }
-      50% {
-        background-position: left bottom;
-      }
-      100% {
-        background-position: right bottom;
-      }
-    }
-  `}
-</style>
-      {/* Tabs Kullanımı */}
+
+
       <AppBar position="static" color="default" sx={{   borderRadius: 14 ,     boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)', // Hafif gölge
 }}>
       <Tabs
@@ -170,11 +139,12 @@ Pick Your Power </Typography>
   indicatorColor="primary"
   textColor="primary"
   variant="fullWidth"
+  
   aria-label="spin type tabs"
   sx={{
     backdropFilter: 'blur(10px)', // Cam efekti
     borderRadius: '16px',
-    
+
     boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)', // Hafif gölge
     '& .MuiTabs-indicator': {
       backgroundColor: 'green',
@@ -253,7 +223,6 @@ Pick Your Power </Typography>
           sx={{
             backgroundColor: loading ? '#008000' : '#008000', // Yüklenme sırasında gri renk
             color: '#FFFFFF',
-            width: '100%',
             mt: 2,
             borderRadius: 2,
             fontWeight: 'bold',

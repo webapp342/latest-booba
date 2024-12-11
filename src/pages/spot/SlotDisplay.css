@@ -1,13 +1,8 @@
 
   
-  .slot-item {
-    position: relative; /* Nokta için referans pozisyon */
-    margin: 0 5px;
-  }
-  
+
   .slot-row {
-    width: 45px;
-    height: 50px;
+  
     display: flex;
     justify-content: center;
     align-items: center;

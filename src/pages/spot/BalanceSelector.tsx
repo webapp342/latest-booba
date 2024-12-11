@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, Tab, Box, Typography } from '@mui/material';
+import { Tabs, Tab, Box} from '@mui/material';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 
@@ -25,47 +25,15 @@ const BalanceSelector: React.FC<BalanceSelectorProps> = ({ selectedBalance, onCh
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        
+
         alignItems: 'center',
         color: 'black',
       }}
     >
-      {/* Başlık */}
-      <Typography
-  variant="body2"
-  sx={{
-    fontWeight: 'bold',
-    marginBottom: '1rem',
-    fontSize: '1rem',
-    letterSpacing: '1.5px',
-    backgroundImage: 'linear-gradient(to right, green, red)', // Soldan sağa renk geçişi
-    backgroundSize: '200% 100%', // Renk geçişi boyutu
-    backgroundPosition: 'right bottom',
-    WebkitBackgroundClip: 'text', // Yalnızca metni renklendirir
-    color: 'transparent', // Yazıyı şeffaf yapar, renk arka plandan gelir
-    animation: 'gradientShift 4s ease-in-out infinite', // Animasyonu ekler
-    lineHeight: 2,
-  }}
->
-  Pick Your Winning Token
-</Typography>
+   
 
 
-<style>
-  {`
-    @keyframes gradientShift {
-      0% {
-        background-position: right bottom;
-      }
-      50% {
-        background-position: left bottom;
-      }
-      100% {
-        background-position: right bottom;
-      }
-    }
-  `}
-</style>
+
 
 
       {/* Sekmeler */}

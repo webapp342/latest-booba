@@ -247,6 +247,7 @@ export const SlotMachine: FC = () => {
       flexDirection: 'column',
       alignItems: 'center',
       gap: '10px',
+      backgroundColor: "red",
       padding: '1.5rem',
       borderRadius: '16px',
     }}

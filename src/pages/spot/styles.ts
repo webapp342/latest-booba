@@ -15,6 +15,8 @@ export const styles = {
     marginBottom: '1rem',
     fontWeight: 'bold',
   },
+
+  
   historyContainer: {
     padding: '20px',
     backgroundColor: '#f9f9f9',
