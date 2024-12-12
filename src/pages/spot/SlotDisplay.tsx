@@ -1,6 +1,6 @@
 import React from 'react';
 import SlotCounter from 'react-slot-counter';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 
 interface SlotDisplayProps {
   numbers: string;
