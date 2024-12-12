@@ -12,7 +12,7 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import SnackbarComponent from './SnackbarComponent';
 import {IconButton, Box, Button,  Modal, Typography, List, ListItem, ListItemText, } from '@mui/material';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import modalImage from '../../assets/modal.jpg'; // Resmi import edin
+import modalImage from '../../assets/modal.png'; // Resmi import edin
 
 const theme = createTheme({
   typography: {
@@ -894,20 +894,20 @@ color:'#FFC107',
 </Typography>
         </Box>
       
-        <Button
-          sx={{
-            mt:-7,
+        <button
+          style={{
+            marginTop:-7,
             width: '100%',
             background: '#f7cf6d',
             color: 'black',
             textTransform: 'none',
             fontWeight: 'bold',
           }}
-          variant="contained"
+        
           onClick={() => setWinModalOpen(false)}
         >
           Play Again
-        </Button>
+        </button>
       </Box>
     </Modal>
 
