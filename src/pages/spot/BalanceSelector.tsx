@@ -25,7 +25,9 @@ const BalanceSelector: React.FC<BalanceSelectorProps> = ({ selectedBalance, onCh
       sx={{
         display: 'flex',
         flexDirection: 'column',
-
+ 
+          
+          mb:2,
         alignItems: 'center',
         color: 'black',
       }}
@@ -47,15 +49,15 @@ const BalanceSelector: React.FC<BalanceSelectorProps> = ({ selectedBalance, onCh
         sx={{
           '& .MuiTab-root': {
             backgroundColor: 'transparent',
-            color: 'black',
+            color: 'white',
             transition: 'all 0.3s',
             padding: '12px 50px',
             fontWeight: 'bold',
-            border: '2px solid green',
+            border: '2px dotted #FFC107 ',
           },
           '& .MuiTab-root.Mui-selected': {
-            backgroundColor: 'green',
-            color: 'white',
+            backgroundColor: '#6f0101',
+            color: '#FFC107',
           },
           '& .MuiTab-root:first-of-type': {
             borderTopLeftRadius: '16px',

@@ -1,6 +1,6 @@
 import React from 'react';
 import SlotCounter from 'react-slot-counter';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 interface SlotDisplayProps {
   numbers: string;
@@ -28,19 +28,21 @@ const SlotDisplay: React.FC<SlotDisplayProps> = ({ numbers, counterRefs, selecte
         display: 'flex',
         flexDirection: 'row',
         gap: '10px',
-        color: 'white',
+        color: 'black',
         padding: '1rem',
   
         boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)', // Hafif gölge
-        border: '1px solid #e0e0e0',
+        border: '2px dotted #FFC107 ',
 
         alignItems: 'center',
-        backgroundColor: 'whitesmoke',
-        borderRadius: '12px',
-  
+        background: "#6f0101",
+
+        borderRadius: 2,
+        mb:2,
         textAlign: 'center',
       }}
     >
+   
    
     {[...numbers].map((char, index) => (
   <React.Fragment key={index}>
@@ -52,8 +54,8 @@ const SlotDisplay: React.FC<SlotDisplayProps> = ({ numbers, counterRefs, selecte
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: '10px',
-        backgroundColor: getColorClass(index) === 'red-slot' ? 'red' : 'green',
+        borderRadius: 1,
+        backgroundImage: getColorClass(index) === 'red-slot' ? 'radial-gradient( circle farthest-corner at 3.1% 6.8%,  rgba(199,0,59,1) 0%, rgba(255,88,53,1) 97.7% )' : 'linear-gradient( 110.3deg,  rgba(255,222,122,1) 5.2%, rgba(255,230,153,1) 51.5%, rgba(255,225,133,1) 95.9% )',
       }}
     >
       {getColorClass(index) === 'red-slot' ? (
@@ -79,7 +81,8 @@ const SlotDisplay: React.FC<SlotDisplayProps> = ({ numbers, counterRefs, selecte
           marginRight: '5px',
           fontWeight: 'bold',
           fontSize: '1.2rem',
-          color: '#333',
+          color: '#FFC107',
+          mt: 1,
         }}
       >
         •

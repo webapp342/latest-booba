@@ -116,11 +116,11 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ total, bblip, tickets }) 
       sx={{
     
         margin: '0 ',
-        padding: '16px',
+        padding: 0.5,
         boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)', // Hafif gölge
         backgroundColor: 'whitesmoke',
         border: '1px solid #e0e0e0',
-        borderRadius: 3,
+        borderRadius: 1,
         textAlign: 'center',
         cursor: 'pointer',
       

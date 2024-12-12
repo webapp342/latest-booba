@@ -3,16 +3,16 @@ import { generateRandomNumber } from './utils/random';
 import SlotDisplay from './SlotDisplay';
 import BalanceSelector from './BalanceSelector';
 import SpinAndDepositButtons from './SpinAndDepositButtons';
-import ResultDisplay from './ResultDisplay';
 import DepositDrawer from './DepositDrawer';
 import { keyframes } from "@emotion/react";
-
+import InfoIcon from "@mui/icons-material/Info";
+import StarIcon from '@mui/icons-material/Star';
+import backgroundImage from '../../assets/bg.png'; // PNG dosyasını import edin
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import SnackbarComponent from './SnackbarComponent';
-import HistoryDisplay from './HistoryDisplay'; // Yeni bileşeni import ettik
-import { Box, Button,  Modal, Typography } from '@mui/material';
+import {IconButton, Box, Button,  Modal, Typography, List, ListItem, ListItemText, } from '@mui/material';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
+import modalImage from '../../assets/modal.jpg'; // Resmi import edin
 
 const theme = createTheme({
   typography: {
@@ -33,9 +33,15 @@ export const SlotMachine: FC = () => {
   const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
   const [winAmount, setWinAmount] = useState<string>('');  // To store the win amount
   const [winModalOpen, setWinModalOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [openWinningToken, setOpenWinningToken] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const handleOpenWinningToken = () => setOpenWinningToken(true);
+  const handleCloseWinningToken = () => setOpenWinningToken(false);
 
 
-  const [history, setHistory] = useState<{ spinType: string; balanceType: string; amount: string }[]>([]);
+  const [, setHistory] = useState<{ spinType: string; balanceType: string; amount: string }[]>([]);
 
   const counterRefs = Array(6)
     .fill(null)
@@ -245,6 +251,8 @@ const bounceAnimation = keyframes`
   transform: translateY(10px);
 }
 `;
+
+
   
 
   // Aktif kutulara göre stil belirleme
@@ -254,91 +262,126 @@ const bounceAnimation = keyframes`
 
     <Box
     sx={{
-      backgroundColor: "#7b0105",
-      color: "white",
+      backgroundColor: "#ce0e0e",
+      backgroundmage: 'radial-gradient( circle 780px at 37.8% 100.3%,  rgba(19,55,115,1) 2.2%, rgba(32,7,80,1) 20.2%, rgba(27,88,111,1) 58.6%, rgba(115,88,44,1) 75%, rgba(99,19,90,1) 89.6%, rgba(12,51,76,1) 96.1% )',      color: "white",
       textAlign: "center",
-      padding: 1,
-      
+      backgroundImage: `url(${backgroundImage})`, // PNG yolu
+        backgroundSize: "cover", // Görüntüyü tam kapla
+        backgroundRepeat: "no-repeat", // Tekrar etmesin
+        backgroundPosition: "center", // Ortala
+        width: "100vw", // Tam genişlik
+       
       position: "relative",
       overflow: "hidden",
       minHeight: "100vh",
 
     }}
   >    
+  <Box sx={{  padding:1,     border: "0px dotted #FFC107",
+}}>
+
+  
 
              {/* Win Modal */}
 
            
-      <ResultDisplay total={total} bblip={bblip} tickets={tickets} />
 
        {/* Jackpot Section */}
     <Box
           sx={{
-            background: "linear-gradient(to bottom, #ffd700, #ffffff)",
-            padding: 3,
+           
+            padding: 2,
   
             borderRadius: 1,
-            marginTop: 1,
+        
    
           }}
         >
           <Typography
-            variant="h4"
-            sx={{ fontWeight: "bold" }}
+            variant="h5"
+            sx={{color:'#FFC107', fontWeight: "bold" }}
           >
-            Lucky Lotto
+            SPIN
+          </Typography>
+          <Typography
+            variant="h3"
+            sx={{color:'#FFC107', fontWeight: "bold" }}
+          >
+            TO WIN !
           </Typography>
 
+         
+
         </Box>
-            {/* Buttons */}
-            <Button
+        <Box>
+       Up To
+                 {/* Buttons */}
+                 <Button
           variant="contained"
           sx={{
-            background: "linear-gradient(to right, #c70039, #ff0000)",
-            borderRadius: 2,
+            background: "#6f0101",
+            borderRadius: 3,
             px: 3,
+            ml:1,
             mt: -2,
+            border: '2px dotted #FFC107 ',
+            fontSize: "1.5rem",
             marginBottom: "10px",
-            textTransform: "none",
+            color:'#FFC107',
             fontWeight: "bold",
           }}
         >
-         TOP PRIZE : 999 TON
+         999.999 TON
         </Button>
+        </Box>
+     
 
           {/* Jackpot Section */}
           <Box
           sx={{
-            background: "linear-gradient(to bottom, #ffd700, #ffffff)",
+            backgroundImage: 'radial-gradient( circle farthest-corner at 10% 20%,  rgba(237,3,32,0.87) 20.8%, rgba(242,121,1,0.84) 74.4% )',
+           
             padding: 2,
             borderRadius: 1,
           }}
         >
-          <Typography
-            variant="h4"
-            sx={{ fontWeight: "bold" }}
-          >
-            JACKPOT
+          <Typography sx={{mb:1,}}>
+            Jackpot
           </Typography>
-          <SlotDisplay numbers={numbers} counterRefs={counterRefs} selectedSpinType={selectedSpinType} />
+        
+          <SlotDisplay  numbers={numbers} counterRefs={counterRefs} selectedSpinType={selectedSpinType} />
 
         </Box>
 
-        {/* Buttons */}
-        <Button
-          variant="contained"
-          sx={{
-            background: "linear-gradient(to right, #c70039, #ff0000)",
-            borderRadius: 2,
-            px: 5,
-            mt: -2,
+     
 
-            textTransform: "none",
-            fontWeight: "bold",
+      <button
+        style={{
+          background: "#f7cf6d",
+          borderRadius: 12,
+          padding:10,
+          marginTop: -13,
+          
+          color: "black",
+          textTransform: "none",
+          fontWeight: "bold",
+          position: "relative",
+        }}
+      >
+        Pick Your Winning Token
+        <IconButton
+          sx={{
+            position: "absolute",
+            right: -40, // Adjust this value for proper positioning
+            top: "50%",
+            transform: "translateY(-50%)",
+            color: "#f7cf6d",
           }}
+          onClick={handleOpenWinningToken}
         >
-          Pick Your Winning Token
-        </Button>
+          <InfoIcon />
+        </IconButton>
+      </button>
 
         <Box>
                {/* Aşağı yönlendirme ikonu */}
@@ -350,10 +393,162 @@ const bounceAnimation = keyframes`
         }}
       />
 
+
+
         </Box>
+
+          {/* Modal for Pick Your Winning Token */}
+          <Modal open={openWinningToken} onClose={handleCloseWinningToken}>
+          <Box
+        sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          bgcolor: 'background.paper',
+          boxShadow: 24,
+          p: { xs: 2, sm: 4 },
+          width: { xs: '80%', sm: '80%', md: '60%' },
+          maxWidth: '600px',
+          borderRadius: 2,
+          maxHeight: '80vh',
+          overflowY: 'auto',
+        }}
+      >
+        <Typography variant="body2" gutterBottom sx={{color:'black', textAlign:'center', fontSize: '1rem'}}>
+          How to pick your winning token
+        </Typography>
+        <List sx={{color: 'black' }}>
+          <ListItem>
+            <ListItemText
+              primary={
+                <Typography variant="body2" sx={{ display: 'inline', fontWeight: 'bold' }}>
+                  Choose Your Preferred Token:
+                </Typography>
+              }
+              secondary={ 
+                <>
+                  <ul>
+                    <li>You have two options to select from: <strong>BBLIP</strong> or <strong>TON</strong>.</li>
+                    <li>This choice determines the type of reward you will receive after each spin.</li>
+                  </ul>
+                </>
+              }
+              sx={{
+                textAlign: 'left', // Sola hizala
+                ml:-2
+              }}
+            />
+          </ListItem>
+
+          <ListItem>
+            <ListItemText
+              primary={
+                <Typography variant="body2" sx={{ display: 'inline', fontWeight: 'bold' }}>
+                  Winning with BBLIP:
+                </Typography>
+              }
+              secondary={
+                <>
+                  <ul>
+                    <li>If you select <strong>BBLIP</strong>, every spin will reward you with BBLIP tokens.</li>
+                    <li>These tokens can be used to enhance your gaming experience or saved for future benefits.</li>
+                  </ul>
+                </>
+              }
+              sx={{
+                textAlign: 'left', // Sola hizala
+                ml:-2
+              }}  
+            />
+          </ListItem>
+
+          <ListItem>
+            <ListItemText
+              primary={
+                <Typography variant="body2" sx={{ display: 'inline', fontWeight: 'bold' }}>
+                  Winning with TON:
+                </Typography>
+              }
+              secondary={
+                <>
+                  <ul>
+                    <li>By selecting <strong>TON</strong>, your spins will yield TON coins as rewards.</li>
+                    <li>TON coins offer unique advantages and can be utilized in various aspects of the ecosystem.</li>
+                  </ul>
+                </>
+              }
+              sx={{
+                textAlign: 'left', // Sola hizala
+                ml:-2
+              }}  
+            />
+          </ListItem>
+
+          <ListItem>
+            <ListItemText
+              primary={
+                <Typography variant="body2" sx={{ display: 'inline', fontWeight: 'bold' }}>
+                  Key Things to Remember:
+                </Typography>
+              }
+              secondary={
+                <>
+                  <ul>
+                    <li>The token you choose directly influences the type of prize you will earn.</li>
+                    <li>This decision is made before each spin, so select wisely based on your current goals.</li>
+                    <li>Switching between tokens is seamless, allowing you to adapt your strategy at any time.</li>
+                  </ul>
+                </>
+              }
+              sx={{
+                textAlign: 'left', // Sola hizala
+                ml:-2
+              }}  
+            />
+          </ListItem>
+
+          <ListItem>
+            <ListItemText
+              primary={
+                <Typography variant="body2" sx={{ display: 'inline', fontWeight: 'bold' }}>
+                  Plan Your Strategy:
+                </Typography>
+              }
+              secondary={
+                <>
+                  <ul>
+                    <li>For those who prefer a steady accumulation of BBLIP, selecting BBLIP ensures consistent token rewards.</li>
+                    <li>If you're looking for potential advantages with TON, choosing TON aligns your rewards with your goals.</li>
+                  </ul>
+                </>
+              }
+              sx={{
+                textAlign: 'left', // Sola hizala
+                ml:-2
+              }}  
+            />
+          </ListItem>
+        </List>
+        
+        <Button
+          variant="contained"
+          sx={{
+            mt: 3,
+            width: '100%',
+            background: '#f7cf6d',
+            color: 'black',
+            textTransform: 'none',
+            fontWeight: 'bold',
+          }}
+          onClick={handleCloseWinningToken}
+        >
+          Understand
+        </Button>
+      </Box>
+    </Modal>
         <Box
           sx={{
-            background: "linear-gradient(to bottom, #ffd700, #ffffff)",
             py: 1,
             mx: 4,
             borderRadius: 1,
@@ -365,19 +560,167 @@ const bounceAnimation = keyframes`
         </Box>
 
           {/* Buttons */}
-          <Button
+           {/* Buttons */}
+           <button
+        style={{
+          background: "#f7cf6d",
+          borderRadius: 12,
+          padding:10,
+          marginTop: -13,
+          
+          color: "black",
+          textTransform: "none",
+          fontWeight: "bold",
+          position: "relative",
+        }}
+      >
+        Pick Your Power
+        <IconButton
+          sx={{
+            position: "absolute",
+            right: -40, // Adjust this value for proper positioning
+            top: "50%",
+            transform: "translateY(-50%)",
+            color: "#f7cf6d",
+          }}
+          onClick={handleOpen}
+        >
+          <InfoIcon />
+        </IconButton>
+      </button>
+
+      {/* Modal */}
+      <Modal open={open} onClose={handleClose}>
+      <Box
+        sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          bgcolor: 'background.paper',
+          boxShadow: 24,
+          p: { xs: 2, sm: 4 },
+          width: { xs: '80%', sm: '80%', md: '60%' },
+          maxWidth: '600px',
+          borderRadius: 2,
+          maxHeight: '80vh',
+          overflowY: 'auto',
+        }}
+      >
+        <Typography variant="body2" gutterBottom sx={{color:'black', textAlign:'center', fontSize: '1rem'}}>
+        Pick Your Power !
+        </Typography>
+
+        <List sx={{color:'black'}}>
+          <ListItem>
+            <ListItemText
+              primary={<strong>Choose Your Spin Type:</strong>}
+              secondary={
+                <>
+                  <ul>
+                    <li>
+                      You can spin with three options: <strong>Ticket</strong>, <strong>TON</strong>, or <strong>BBLIP</strong>.
+                    </li>
+                    <li>Each option provides different rewards and maximum prize values based on your choice.</li>
+                  </ul>
+                </>
+              }
+              sx={{
+                textAlign: 'left', // Sola hizala
+                ml:-2
+              }}            />
+          </ListItem>
+
+          <ListItem>
+            <ListItemText
+              primary={<strong>Ticket Spin:</strong>}
+              secondary={
+                <>
+                  <ul>
+                    <li>If you select <strong>Ticket</strong>, you can spin for the maximum prize of <strong>999.999</strong>.</li>
+                    <li>For this, you must own at least <strong>1 Ticket</strong> to participate.</li>
+                    <li>Your prize depends on your luck and can be any amount up to the max value.</li>
+                  </ul>
+                </>
+              }
+              sx={{
+                textAlign: 'left', // Sola hizala
+                ml:-2
+              }}              />
+          </ListItem>
+
+          <ListItem>
+            <ListItemText
+              primary={<strong>TON Spin:</strong>}
+              secondary={
+                <>
+                  <ul>
+                    <li>If you choose <strong>TON</strong>, your spin will yield a reward of up to <strong>99.999</strong> TON.</li>
+                    <li>You must own at least <strong>0.2 TON</strong> to participate in a TON spin.</li>
+                    <li>This gives you a higher reward potential compared to other spin types.</li>
+                  </ul>
+                </>
+              }
+              sx={{
+                textAlign: 'left', // Sola hizala
+                ml:-2
+              }}              />
+          </ListItem>
+
+          <ListItem>
+            <ListItemText
+              primary={<strong>BBLIP Spin:</strong>}
+              secondary={
+                <>
+                  <ul>
+                    <li>With a <strong>BBLIP</strong> spin, your maximum prize is <strong>9.999</strong> BBLIP.</li>
+                    <li>You must own at least <strong>1 BBLIP</strong> to participate in a BBLIP spin.</li>
+                    <li>This option provides a smaller, more consistent reward compared to others.</li>
+                  </ul>
+                </>
+              }
+              sx={{
+                textAlign: 'left', // Sola hizala
+                ml:-2
+              }}              />
+          </ListItem>
+
+          <ListItem>
+            <ListItemText
+              primary={<strong>Important Things to Remember:</strong>}
+              secondary={
+                <>
+                  <ul>
+                    <li>Your chosen spin type determines the maximum prize value and the reward type.</li>
+                    <li>Each option is based on a random chance, so choose wisely depending on your current goals.</li>
+                    <li>You can easily switch between spin types at any time for a different experience.</li>
+                    <li>Make sure you have the required tokens to participate in your chosen spin.</li>
+                  </ul>
+                </>
+              }
+              sx={{
+                textAlign: 'left', // Sola hizala
+                ml:-2
+              }}              />
+          </ListItem>
+        </List>
+
+        <Button
           variant="contained"
           sx={{
-            background: "linear-gradient(to right, #c70039, #ff0000)",
-            borderRadius: 1,
-            px: 5,
-            mt: -2,
-            textTransform: "none",
-            fontWeight: "bold",
+            mt: 3,
+            width: '100%',
+            background: '#f7cf6d',
+            color: 'black',
+            textTransform: 'none',
+            fontWeight: 'bold',
           }}
+          onClick={handleClose}
         >
-          Pick Your POWER
+          Understand
         </Button>
+      </Box>
+      </Modal>
 
         <Box>
                {/* Aşağı yönlendirme ikonu */}
@@ -394,7 +737,6 @@ const bounceAnimation = keyframes`
 
         <Box
           sx={{
-            background: "linear-gradient(to bottom, #ffd700, #ffffff)",
             padding: 0,
             mx: 4,
             borderRadius: 1,
@@ -415,6 +757,78 @@ const bounceAnimation = keyframes`
 
 
         <Box
+      sx={{
+        width: '90%',
+        margin: '0 auto',
+      
+        textAlign: 'center',
+        padding: '16px',
+        borderRadius: '8px',
+      }}
+    >
+      {/* "WIN UP TO" text */}
+      <Typography
+        variant="h6"
+        sx={{
+          color:'#FFC107',             
+          fontSize: '16px',
+        }}
+      >
+        WIN UP TO
+      </Typography>
+
+      {/* Stars and Text */}
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        {/* Left Stars */}
+        {[20, 25, 30].map((size, index) => (
+          <StarIcon
+            key={`left-star-${index}`}
+            sx={{
+              fontSize: size,
+              color:'#FFC107',             
+              WebkitBackgroundClip: 'text',
+              backgroundClip: 'text',
+              margin: '0 4px',
+            }}
+          />
+        ))}
+
+        {/* Center Text */}
+        <Typography
+          variant="h6"
+          sx={{
+            fontSize: '20px',
+            color: '#fff',
+            margin: '0 12px',
+          }}
+        >
+          999.999 TON
+        </Typography>
+
+        {/* Right Stars */}
+        {[30, 25, 20].map((size, index) => (
+          <StarIcon
+            key={`right-star-${index}`}
+            sx={{
+              fontSize: size,
+color:'#FFC107',             
+ WebkitBackgroundClip: 'text',
+              backgroundClip: 'text',
+              margin: '0 4px',
+            }}
+          />
+        ))}
+      </Box>
+    </Box>
+
+
+        <Box
           sx={{
             background: "linear-gradient(to bottom, #ffd700, #ffffff)",
             padding: 0,
@@ -425,7 +839,6 @@ const bounceAnimation = keyframes`
           }}
         >
       {/* HistoryDisplay bileşenini ekledik */}
-      <HistoryDisplay history={history} />
 
       </Box>
 
@@ -437,40 +850,71 @@ const bounceAnimation = keyframes`
 
      
       <Modal
-  open={winModalOpen}
-  onClose={() => setWinModalOpen(false)}
-  aria-labelledby="win-modal"
-  aria-describedby="win-description"
->
-  <Box
-    sx={{
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      color: 'black',
-      transform: 'translate(-50%, -50%)',
-      width: { xs: 300, sm: 400 },
-      bgcolor: 'background.paper',
-      boxShadow: 24,
-      p: 3,
-      borderRadius: '8px',
-    }}
-  >
-    <Typography id="win-modal" variant="h6" component="h2" sx={{ mb: 2 }}>
-      Congratulations! You Won
-    </Typography>
-    <Typography id="win-description" variant="body1" sx={{ mb: 3 }}>
-      You won {winAmount} {selectedBalance.toUpperCase()}!
-    </Typography>
-    <Button variant="contained" onClick={() => setWinModalOpen(false)} fullWidth>
-      Close
-    </Button>
-  </Box>
-</Modal>
+      open={winModalOpen}
+      onClose={() => setWinModalOpen(false)}
+      aria-labelledby="win-modal"
+      aria-describedby="win-description"
+    >
+      <Box
+        sx={{
+
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: { xs: '90%', sm: '80%', md: '60%' }, // Modal genişliği cihaz boyutuna göre
+          maxWidth: '600px', // Maksimum genişlik
+          maxHeight: '90vh', // Görüntü yüksekliğini viewport'a göre sınırla
+          bgcolor: 'background.paper',
+          boxShadow: 24,
+   
+          borderRadius: '8px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        {/* PNG'yi modal içinde boyutlandırılmış şekilde göster */}
+        <Box
+          component="img"
+          src={modalImage}
+          alt="Background"
+          sx={{
+            maxWidth: '100%', // Modal genişliğine uyum sağlar
+            maxHeight: '100%', // Modal yüksekliğine uyum sağlar
+            objectFit: 'contain', // Görüntüyü sığdır ama kırpma yapma
+            borderRadius: '8px',
+          }}
+        />
+
+        <Box>
+        <Typography id="win-description" variant="body1" sx={{ my: -30 , color:'white' }}>
+  You won {winAmount} {selectedBalance === 'total' ? '$TON' : '$BBLIP'}!
+</Typography>
+        </Box>
+      
+        <Button
+          sx={{
+            mt:-7,
+            width: '100%',
+            background: '#f7cf6d',
+            color: 'black',
+            textTransform: 'none',
+            fontWeight: 'bold',
+          }}
+          variant="contained"
+          onClick={() => setWinModalOpen(false)}
+        >
+          Play Again
+        </Button>
+      </Box>
+    </Modal>
 
 
       <DepositDrawer drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} setSnackbarOpen={setSnackbarOpen} />
       <SnackbarComponent snackbarOpen={snackbarOpen} setSnackbarOpen={setSnackbarOpen} />
+      </Box>
     </Box>
         </ThemeProvider>
 

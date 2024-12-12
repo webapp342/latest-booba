@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Tabs, Tab, AppBar, Typography, Box } from '@mui/material';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
 
 const theme = createTheme({
@@ -108,11 +109,11 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
   // Miktarları formatlayarak göster
   let availableAmount = '';
   if (selectedSpinType === 'total') {
-    availableAmount = `${formatAmount(total)} $TON available`;
+    availableAmount = `Available : ${formatAmount(total)} $TON available`;
   } else if (selectedSpinType === 'ticket') {
-    availableAmount = `${tickets} Tickets available`;
+    availableAmount = `Available : ${tickets} Tickets available`;
   } else if (selectedSpinType === 'bblip') {
-    availableAmount = `${formatAmount(bblip)} $BBLIP available`;
+    availableAmount = `Available : ${formatAmount(bblip)}  $BBLIP `;
   }
 
   return (
@@ -121,7 +122,7 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
     <Box
     sx={{
       margin: '0 ',
-      borderRadius: 3,
+      borderRadius: 1,
       textAlign: 'center',
       color: 'black',
     }}
@@ -131,7 +132,7 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
 
 
 
-      <AppBar position="static" color="default" sx={{   borderRadius: 14 ,     boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)', // Hafif gölge
+      <AppBar position="static" color="default" sx={{backgroundColor: '#6f0101',   borderRadius: 3 ,     boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)', // Hafif gölge
 }}>
       <Tabs
   value={selectedSpinType}
@@ -142,33 +143,31 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
   
   aria-label="spin type tabs"
   sx={{
-    backdropFilter: 'blur(10px)', // Cam efekti
-    borderRadius: '16px',
+    borderRadius: 3,
 
     boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)', // Hafif gölge
     '& .MuiTabs-indicator': {
-      backgroundColor: 'green',
+      backgroundColor: '#f7cf6d',
       height: '4px', // Gösterge çizgisini biraz kalın yapar
-      borderRadius: '14px',
+      borderRadius: 2,
     },
     '& .MuiTab-root': {
       fontSize: '0.8rem',
       fontWeight: 'bold',
       color: '#333',
+       
       transition: 'all 0.3s ease',
-      padding: '10px 20px',
-      borderRadius: '16px',
+      padding: 1,
       '&:hover': {
-        backgroundColor: 'rgba(0, 128, 0, 0.1)', // Hover sırasında hafif yeşil bir arka plan
-        color: 'green',
-        borderRadius: '16px',
+        backgroundColor: '#f7cf6d', // Hover sırasında hafif yeşil bir arka plan
+  
 
       },
     },
     '& .MuiTab-root.Mui-selected': {
-      backgroundColor: 'rgba(0, 128, 0, 0.2)', // Seçili sekme için daha belirgin bir renk
-      color: 'green',
-      borderRadius: '16px',
+      backgroundColor: '#f7cf6d', // Seçili sekme için daha belirgin bir renk
+
+      borderRadius: 1,
 
     },
   }}
@@ -179,7 +178,7 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
       <img
         src="https://cryptologos.cc/logos/bitcoin-btc-logo.png?v=040"
         alt="Bitcoin Logo"
-        style={{ width: '40px', height: '40px' }}
+        style={{ width: '30px', height: '30px' }}
       />
     }
     aria-label="Ticket"
@@ -190,7 +189,7 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
       <img
         src="https://cryptologos.cc/logos/toncoin-ton-logo.png?v=040"
         alt="Autonio Logo"
-        style={{ width: '40px', height: '40px' }}
+        style={{ width: '30px', height: '30px' }}
       />
     }
     aria-label="TON"
@@ -201,7 +200,7 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
       <img
         src="https://cryptologos.cc/logos/autonio-niox-logo.png?v=040"
         alt="TON Logo"
-        style={{ width: '40px', height: '40px' }}
+        style={{ width: '30px', height: '30px' }}
       />
     }
     aria-label="BBlip"
@@ -211,7 +210,7 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
       </AppBar>
 
       {/* Seçilen Spin Türü ve Miktarının Gösterilmesi */}
-      <Typography variant="body2" sx={{ marginTop: '12px', fontWeight: 'bold', ...amountStyle }}>
+      <Typography variant="body2" sx={{color: 'white',fontSize:'0.7rem', marginTop: '12px', fontWeight: 'light', ...amountStyle }}>
         {availableAmount}
       </Typography>
 
@@ -221,15 +220,15 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
           onClick={handleSpinClick}
           disabled={loading}
           sx={{
-            backgroundColor: loading ? '#008000' : '#008000', // Yüklenme sırasında gri renk
-            color: '#FFFFFF',
+            backgroundColor: loading ? '#f7cf6d' : '#f7cf6d', // Yüklenme sırasında gri renk
+            color: 'black',
             mt: 2,
+            
             borderRadius: 2,
             fontWeight: 'bold',
             padding: '10px 20px',
             cursor: loading ? 'not-allowed' : 'pointer',
             position: 'relative',
-            zIndex: 100,
           }}
         >
           {loading ? 'Spinning...' : spinButtonText}
@@ -238,15 +237,17 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
         <Button
           onClick={openDepositDrawer}
           sx={{
-            backgroundColor: '#FF0000',
-            color: '#FFFFFF',
+            background: "#6f0101",
+            color: '#FF6666',
             mt: 2,
+            textTransform: 'none', // Harflerin büyük görünmesini engeller
             width: '100%',
             padding: '10px 20px',
             cursor: 'pointer',
           }}
         >
-          Deposit
+            <WarningAmberIcon sx={{ marginRight: '8px', fontSize: '20px' }} />
+          Top Up & Keep Spinning ! 
         </Button>
       )}
     </Box>
