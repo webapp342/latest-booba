@@ -37,19 +37,38 @@ const Loading: React.FC = () => {
         const userDocSnap = await getDoc(userDocRef);
         console.log('Attempting to fetch user document from Firestore...');
 
-        if (!userDocSnap.exists()) {
-          const userData = {
-            total: '000.000',
-            bblip: '000.000',
-            ticket: 0,
-          };
-          console.log('User document does not exist in Firestore. Creating with default values:', userData);
-          await setDoc(userDocRef, userData);
-          console.log('User document successfully created with default values.');
-        }
+        const defaultUserData = {
+          total: '000.000',
+          bblip: '000.000',
+          ticket: 0,
+        };
 
-        const fetchedUserDoc = await getDoc(userDocRef);
-        const userData = fetchedUserDoc.data();
+        let userData;
+
+        if (!userDocSnap.exists()) {
+          console.log('User document does not exist in Firestore. Creating with default values:', defaultUserData);
+          await setDoc(userDocRef, defaultUserData);
+          userData = defaultUserData;
+        } else {
+          userData = userDocSnap.data();
+
+          // Ensure all required fields are present
+          const updatedUserData = {
+            total: userData.total || defaultUserData.total,
+            bblip: userData.bblip || defaultUserData.bblip,
+            ticket: userData.ticket || defaultUserData.ticket,
+          };
+
+          if (
+            userData.total !== updatedUserData.total ||
+            userData.bblip !== updatedUserData.bblip ||
+            userData.ticket !== updatedUserData.ticket
+          ) {
+            await setDoc(userDocRef, updatedUserData, { merge: true });
+            console.log('Missing fields added to Firestore document:', updatedUserData);
+          }
+          userData = updatedUserData;
+        }
 
         console.log('User document retrieved with data:', userData);
 
