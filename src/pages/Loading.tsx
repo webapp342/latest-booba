@@ -37,28 +37,21 @@ const Loading: React.FC = () => {
         const userDocSnap = await getDoc(userDocRef);
         console.log('Attempting to fetch user document from Firestore...');
 
-        let userData = {
-          total: '000.000',
-          bblip: '000.000',
-          ticket: 0,
-        };
-
-        if (userDocSnap.exists()) {
-          const fetchedData = userDocSnap.data();
-          console.log('User document found in Firestore. Data:', fetchedData);
-
-          userData = {
-            total: fetchedData.total || '000.000',
-            bblip: fetchedData.bblip || '000.000',
-            ticket: fetchedData.ticket || 0,
+        if (!userDocSnap.exists()) {
+          const userData = {
+            total: '000.000',
+            bblip: '000.000',
+            ticket: 0,
           };
-
-          console.log(`Fetched values: total = ${userData.total}, bblip = ${userData.bblip}, ticket = ${userData.ticket}`);
-        } else {
           console.log('User document does not exist in Firestore. Creating with default values:', userData);
-          await setDoc(userDocRef, userData, { merge: true });
+          await setDoc(userDocRef, userData);
           console.log('User document successfully created with default values.');
         }
+
+        const fetchedUserDoc = await getDoc(userDocRef);
+        const userData = fetchedUserDoc.data();
+
+        console.log('User document retrieved with data:', userData);
 
         // Save user data to localStorage
         localStorage.setItem(`user_${telegramUserId}`, JSON.stringify(userData));
