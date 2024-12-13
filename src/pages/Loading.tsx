@@ -12,22 +12,25 @@ const Loading: React.FC = () => {
     const fetchUserData = async () => {
       try {
         console.log('Fetching user data...');
-        
-        // Get Telegram user data using the Telegram Web App SDK
+
+        // Try to get Telegram user data using the WebApp SDK
+        let telegramUserId = '';
+
         const user = WebApp.initDataUnsafe?.user;
-        if (!user) {
-          console.log('Telegram user data is not available');
-          throw new Error('Telegram user data is not available');
+        if (user) {
+          telegramUserId = user.id.toString();
+          console.log(`Telegram user ID from SDK: ${telegramUserId}`);
+        } else {
+          // If WebApp SDK doesn't provide the user, use a fixed Telegram ID
+          telegramUserId = '1421109983'; // Replace with your fixed user ID
+          console.log(`Using fixed Telegram user ID: ${telegramUserId}`);
         }
 
-        const telegramUserId = user.id.toString();
-        console.log(`Telegram user ID: ${telegramUserId}`);
-
-        // Save user ID to localStorage
+        // Save the Telegram user ID to localStorage
         localStorage.setItem('telegramUserId', telegramUserId);
         console.log('Telegram user ID saved to localStorage');
 
-        // Fetch data from Firestore's 'users' collection
+        // Fetch user data from Firestore using the Telegram user ID
         const userDocRef = doc(db, 'users', telegramUserId);
         const userDocSnap = await getDoc(userDocRef);
         console.log('Fetched user document from Firestore');
@@ -58,7 +61,7 @@ const Loading: React.FC = () => {
         localStorage.setItem(`user_${telegramUserId}`, JSON.stringify(userData));
         console.log('User data saved to localStorage:', userData);
 
-        // Fetch data from Firestore's 'countdowns' collection
+        // Fetch countdown data from Firestore
         const countdownDocRef = doc(db, 'countdowns', telegramUserId);
         const countdownDocSnap = await getDoc(countdownDocRef);
         console.log('Fetched countdown document from Firestore');
