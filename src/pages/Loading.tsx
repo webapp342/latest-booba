@@ -56,7 +56,7 @@ const Loading: React.FC = () => {
           console.log(`Fetched values: total = ${userData.total}, bblip = ${userData.bblip}, ticket = ${userData.ticket}`);
         } else {
           console.log('User document does not exist in Firestore. Creating with default values:', userData);
-          await setDoc(userDocRef, userData);
+          await setDoc(userDocRef, userData, { merge: true });
           console.log('User document successfully created with default values.');
         }
 
