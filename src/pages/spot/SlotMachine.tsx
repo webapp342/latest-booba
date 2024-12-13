@@ -1,4 +1,4 @@
-import React, { FC, useState, useRef } from 'react';
+import React, { FC, useState, useRef, useEffect } from 'react';
 import { generateRandomNumber } from './utils/random';
 import SlotDisplay from './SlotDisplay';
 import BalanceSelector from './BalanceSelector';
@@ -13,7 +13,11 @@ import SnackbarComponent from './SnackbarComponent';
 import {IconButton, Box, Button,  Modal, Typography, List, ListItem, ListItemText, } from '@mui/material';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import modalImage from '../../assets/modal.png'; // Resmi import edin
+import Confetti from 'react-confetti';
+import spinSound from '../../assets/spin.mp3';
 
+import winSound from '../../assets/win.mp3';
+import { useWindowSize } from 'react-use';
 const theme = createTheme({
   typography: {
     fontFamily: "Montserrat, sans-serif",
@@ -40,15 +44,23 @@ export const SlotMachine: FC = () => {
   const handleOpenWinningToken = () => setOpenWinningToken(true);
   const handleCloseWinningToken = () => setOpenWinningToken(false);
 
-
   const [, setHistory] = useState<{ spinType: string; balanceType: string; amount: string }[]>([]);
+  
 
   const counterRefs = Array(6)
     .fill(null)
     .map(() => useRef<any>(null));
 
-  const spinAudio = useRef(new Audio('spin.mp3'));
-  const winAudio = useRef(new Audio('win.mp3'));
+    const spinAudio = useRef(new Audio(spinSound));
+    const winAudio = useRef(new Audio(winSound));
+
+    
+  useEffect(() => {
+    spinAudio.current.load();
+    winAudio.current.load();
+  }, []);
+
+
 
   const handleSpinTypeChange = (_event: React.ChangeEvent<{}>, value: string) => {
     
@@ -67,7 +79,15 @@ export const SlotMachine: FC = () => {
     if (selectedSpinType === 'total' && total < 200) return;
     if (selectedSpinType === 'bblip' && bblip < 1000) return;
   
-    spinAudio.current.play();
+    try {
+
+      spinAudio.current.play();
+  
+    } catch (error) {
+  
+      console.error("Ses çalma hatası:", error);
+  
+    }
   
     if (selectedSpinType === 'ticket') setTickets((prev) => prev - 1);
     if (selectedSpinType === 'total') setTotal((prev) => prev - 200);
@@ -251,6 +271,37 @@ const bounceAnimation = keyframes`
   transform: translateY(10px);
 }
 `;
+
+const [animatedValue, setAnimatedValue] = useState(0);
+const [showConfetti, setShowConfetti] = useState(false);
+  useWindowSize(); // Pencere boyutlarını almak için
+
+  useEffect(() => {
+    const targetValue = Number(winAmount);
+    const duration = 2000; // 2 saniye
+    const steps = 100; // Animasyon karesi
+    const increment = targetValue / steps;
+
+    let currentValue = 0;
+    setShowConfetti(true); // Konfeti animasyonu başlasın
+    const interval = setInterval(() => {
+      currentValue += increment;
+      if (currentValue >= targetValue) {
+        currentValue = targetValue; // Hedef değeri aşmamak için sınırla
+        clearInterval(interval);
+        setTimeout(() => setShowConfetti(false), 3000); // Konfetiyi 3 saniye sonra durdur
+      }
+      setAnimatedValue(Math.floor(currentValue));
+    }, duration / steps);
+
+    return () => clearInterval(interval); // Cleanup
+  }, [winAmount]);
+
+  // Formatlama fonksiyonu
+  const formatWinAmount = (amount: number): string => {
+    const numString = String(amount).padStart(4, '0');
+    return numString.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  };
 
 
   
@@ -875,6 +926,8 @@ color:'#FFC107',
           justifyContent: 'center',
         }}
       >
+                {showConfetti && <Confetti  />}
+
         {/* PNG'yi modal içinde boyutlandırılmış şekilde göster */}
         <Box
           component="img"
@@ -889,9 +942,9 @@ color:'#FFC107',
         />
 
         <Box>
-        <Typography id="win-description" variant="body1" sx={{ my: -30 , color:'white' }}>
-  You won {winAmount} {selectedBalance === 'total' ? '$TON' : '$BBLIP'}!
-</Typography>
+      <Typography id="win-description" variant="h5" sx={{ my: -30, color: 'white' }}>
+        {formatWinAmount(animatedValue)} {selectedBalance === 'total' ? '$TON' : '$BBLIP'}!
+      </Typography>
         </Box>
       
         <button

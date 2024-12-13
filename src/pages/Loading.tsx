@@ -26,10 +26,20 @@ const Loading: React.FC = () => {
         const userDocRef = doc(db, 'users', telegramUserId);
         const userDocSnap = await getDoc(userDocRef);
 
-        let userData;
+        let userData = {
+          total: '000.000',
+          bblip: '000.000',
+          ticket: 0,
+        };
+
         if (userDocSnap.exists()) {
-          userData = userDocSnap.data();
-        } 
+          const fetchedData = userDocSnap.data();
+          userData = {
+            total: fetchedData.total || '000.000',
+            bblip: fetchedData.bblip || '000.000',
+            ticket: fetchedData.ticket || 0,
+          };
+        }
 
         // Save user data to localStorage
         localStorage.setItem(`user_${telegramUserId}`, JSON.stringify(userData));
@@ -53,7 +63,6 @@ const Loading: React.FC = () => {
           // If the document does not exist, skip saving countdown data
           localStorage.removeItem(`countdown_${telegramUserId}`);
         }
-
       } catch (error) {
         console.error('Error fetching or updating user data:', error);
         setError('An error occurred while fetching or updating data.');
@@ -66,38 +75,21 @@ const Loading: React.FC = () => {
   }, []);
 
   return (
-
     <Box 
-
       display="flex" 
-
       justifyContent="center" 
-
       alignItems="center" 
-
       height="100vh"
-
     >
-
       {loading ? (
-
         <Skeleton variant="rectangular" width={210} height={118} />
-
       ) : error ? (
-
         <p>{error}</p>
-
       ) : (
-
         <p>Data has been successfully fetched and saved to local storage.</p>
-
       )}
-
     </Box>
-
   );
-
 };
-
 
 export default Loading;
