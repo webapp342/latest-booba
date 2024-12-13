@@ -15,6 +15,9 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import modalImage from '../../assets/modal.png'; // Resmi import edin
 import Confetti from 'react-confetti';
 import spinSound from '../../assets/spin.mp3';
+import { doc, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
+import { db } from '../firebaseConfig';
+import WebApp from '@twa-dev/sdk'; // Telegram WebApp SDK
 
 import winSound from '../../assets/win.mp3';
 import { useWindowSize } from 'react-use';
@@ -28,9 +31,11 @@ const theme = createTheme({
 
 export const SlotMachine: FC = () => {
   const [numbers, setNumbers] = useState<string>('000000');
-  const [total, setTotal] = useState<number>(600);
-  const [tickets, setTickets] = useState<number>(5);
-  const [bblip, setBblip] = useState<number>(10000);
+  const [total, setTotal] = useState<number>(600); // Default value
+  const [tickets, setTickets] = useState<number>(5); // Default value
+  const [bblip, setBblip] = useState<number>(10000); // Default value
+  const [telegramUserId, setTelegramUserId] = useState<string | null>(null);
+
   const [selectedSpinType, setSelectedSpinType] = useState<string>('total');
   const [selectedBalance, setSelectedBalance] = useState<string>('total');
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
@@ -54,6 +59,77 @@ export const SlotMachine: FC = () => {
     const spinAudio = useRef(new Audio(spinSound));
     const winAudio = useRef(new Audio(winSound));
 
+    useEffect(() => {
+      const initTelegramUserId = () => {
+        const user = WebApp.initDataUnsafe?.user;
+        if (user?.id) {
+          setTelegramUserId(user.id.toString());
+          console.log(`Telegram User ID initialized: ${user.id}`);
+        } else {
+          console.error('Telegram User ID not found.');
+        }
+      };
+      initTelegramUserId();
+    }, []);
+  
+    useEffect(() => {
+      if (telegramUserId) {
+        const userRef = doc(db, 'users', telegramUserId);
+  
+        const unsubscribe = onSnapshot(userRef, async (docSnapshot) => {
+          console.log(`Listening to Firestore document: ${telegramUserId}`);
+  
+          if (docSnapshot.exists()) {
+            const data = docSnapshot.data();
+            console.log('Fetched Firestore data:', data);
+  
+            setTotal(data.total || 0);
+            setBblip(data.bblip || 0);
+            setTickets(data.tickets || 0);
+          } else {
+            console.warn(`Document does not exist for ID: ${telegramUserId}`);
+            try {
+              await setDoc(userRef, {
+                total: 600,
+                bblip: 10000,
+                tickets: 5,
+              });
+              console.log('Default Firestore document created:', {
+                total: 600,
+                bblip: 10000,
+                tickets: 5,
+              });
+            } catch (error) {
+              console.error('Error creating Firestore document:', error);
+            }
+          }
+        });
+  
+        return () => {
+          console.log(`Unsubscribed from Firestore listener for ID: ${telegramUserId}`);
+          unsubscribe();
+        };
+      }
+    }, [telegramUserId]);
+  
+    const updateFirestoreBalance = async (field: 'total' | 'bblip' | 'tickets', value: number) => {
+      if (!telegramUserId) {
+        console.error('Telegram User ID is not available for Firestore update.');
+        return;
+      }
+  
+      console.log(`Updating Firestore field: ${field} with value: ${value} for user: ${telegramUserId}`);
+    
+      const userRef = doc(db, 'users', telegramUserId);
+      try {
+        await updateDoc(userRef, { [field]: value });
+        console.log(`Firestore update successful: ${field} = ${value}`);
+      } catch (error) {
+        console.error(`Error updating Firestore field: ${field}`, error);
+      }
+    };
+    
+
     
   useEffect(() => {
     spinAudio.current.load();
@@ -74,24 +150,53 @@ export const SlotMachine: FC = () => {
 
   
 
-  const handleSpin = () => {
-    if (selectedSpinType === 'ticket' && tickets === 0) return;
-    if (selectedSpinType === 'total' && total < 200) return;
-    if (selectedSpinType === 'bblip' && bblip < 1000) return;
-  
-    try {
-
-      spinAudio.current.play();
-  
-    } catch (error) {
-  
-      console.error("Ses çalma hatası:", error);
-  
+  const handleSpin = async () => {
+    if (selectedSpinType === 'ticket' && tickets === 0) {
+      console.warn('Spin failed: Not enough tickets.');
+      return;
     }
-  
-    if (selectedSpinType === 'ticket') setTickets((prev) => prev - 1);
-    if (selectedSpinType === 'total') setTotal((prev) => prev - 200);
-    if (selectedSpinType === 'bblip') setBblip((prev) => prev - 1000);
+    if (selectedSpinType === 'total' && total < 200) {
+      console.warn('Spin failed: Not enough total balance.');
+      return;
+    }
+    if (selectedSpinType === 'bblip' && bblip < 1000) {
+      console.warn('Spin failed: Not enough BBLIP balance.');
+      return;
+    }
+
+    console.log(`Spin initiated with type: ${selectedSpinType}`);
+
+    try {
+      spinAudio.current.play();
+      console.log('Spin sound played.');
+    } catch (error) {
+      console.error('Audio play error:', error);
+    }
+
+    if (selectedSpinType === 'ticket') {
+      setTickets((prev) => {
+        const newTickets = prev - 1;
+        console.log(`Tickets decreased: ${prev} -> ${newTickets}`);
+        updateFirestoreBalance('tickets', newTickets);
+        return newTickets;
+      });
+    } else if (selectedSpinType === 'total') {
+      setTotal((prev) => {
+        const newTotal = prev - 200;
+        console.log(`Total decreased: ${prev} -> ${newTotal}`);
+        updateFirestoreBalance('total', newTotal);
+        return newTotal;
+      });
+    } else if (selectedSpinType === 'bblip') {
+      setBblip((prev) => {
+        const newBblip = prev - 1000;
+        console.log(`BBLIP decreased: ${prev} -> ${newBblip}`);
+        updateFirestoreBalance('bblip', newBblip);
+        return newBblip;
+      });
+    }
+
+    
   
     const newNumbers: string[] = [...Array(6)].map((_, index) => {
       // Kombinasyona göre sayı aralıkları
@@ -216,6 +321,8 @@ export const SlotMachine: FC = () => {
   
     const newNumberString = newNumbers.join('');
     setNumbers(newNumberString);
+
+    console.log(`Generated spin result: ${newNumberString}`);
   
     counterRefs.forEach((ref, index) => {
       const isRed =
@@ -233,21 +340,34 @@ export const SlotMachine: FC = () => {
       }, index * 100);
     });
   
-    // After animation completes, calculate win and show the modal
-    setTimeout(() => {
+     // Spin sonucuna göre kazanç hesapla
+  
+     setTimeout(() => {
       const newNumberValue = parseInt(newNumberString, 10);
-  
-      // Update the balance
-      if (selectedBalance === 'total') setTotal((prev) => prev + newNumberValue);
-      if (selectedBalance === 'bblip') setBblip((prev) => prev + newNumberValue);
-  
+      console.log(`Spin result parsed: ${newNumberValue}`);
+
+      if (selectedBalance === 'total') {
+        setTotal((prev) => {
+          const updatedTotal = prev + newNumberValue;
+          console.log(`Total increased: ${prev} -> ${updatedTotal}`);
+          updateFirestoreBalance('total', updatedTotal);
+          return updatedTotal;
+        });
+      } else if (selectedBalance === 'bblip') {
+        setBblip((prev) => {
+          const updatedBblip = prev + newNumberValue;
+          console.log(`BBLIP increased: ${prev} -> ${updatedBblip}`);
+          updateFirestoreBalance('bblip', updatedBblip);
+          return updatedBblip;
+        });
+      }
+
       if (newNumberValue > 0) {
         winAudio.current.play();
-        setWinAmount(newNumberString);  // Set win amount for modal
-  
-        // Open the win modal
+        console.log('Win sound played.');
+        setWinAmount(newNumberString);
         setWinModalOpen(true);
-  
+        console.log(`Win modal opened with amount: ${newNumberString}`);
         // Add history entry
         setHistory((prevHistory) => [
           ...prevHistory,

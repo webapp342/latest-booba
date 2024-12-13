@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { db } from './firebaseConfig';
 import WebApp from '@twa-dev/sdk';
 import { Skeleton, Box } from '@mui/material';
@@ -28,25 +28,8 @@ const Loading: React.FC = () => {
         localStorage.setItem('telegramUserId', telegramUserId);
   
         // Fetch user data
-        const userDocRef = doc(db, 'users', telegramUserId);
-        const userDocSnap = await getDoc(userDocRef);
   
-        const defaultUserData = {
-          total: '000.000',
-          bblip: '000.000',
-          ticket: 0,
-        };
-  
-        let userData;
-        if (!userDocSnap.exists()) {
-          console.log('User document does not exist. Creating with default values.');
-          await setDoc(userDocRef, defaultUserData);
-          userData = defaultUserData;
-        } else {
-          userData = userDocSnap.data();
-        }
-        localStorage.setItem(`user_${telegramUserId}`, JSON.stringify(userData));
-        console.log('User data saved to localStorage:', userData);
+       
   
         // Fetch countdown data
         const countdownDocRef = doc(db, 'countdowns', telegramUserId);
