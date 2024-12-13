@@ -11,20 +11,26 @@ const Loading: React.FC = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
+        console.log('Fetching user data...');
+        
         // Get Telegram user data using the Telegram Web App SDK
         const user = WebApp.initDataUnsafe?.user;
         if (!user) {
+          console.log('Telegram user data is not available');
           throw new Error('Telegram user data is not available');
         }
 
         const telegramUserId = user.id.toString();
+        console.log(`Telegram user ID: ${telegramUserId}`);
 
         // Save user ID to localStorage
         localStorage.setItem('telegramUserId', telegramUserId);
+        console.log('Telegram user ID saved to localStorage');
 
         // Fetch data from Firestore's 'users' collection
         const userDocRef = doc(db, 'users', telegramUserId);
         const userDocSnap = await getDoc(userDocRef);
+        console.log('Fetched user document from Firestore');
 
         let userData = {
           total: '000.000',
@@ -34,23 +40,33 @@ const Loading: React.FC = () => {
 
         if (userDocSnap.exists()) {
           const fetchedData = userDocSnap.data();
+          console.log('User document exists, fetched data:', fetchedData);
+
           userData = {
             total: fetchedData.total || '000.000',
             bblip: fetchedData.bblip || '000.000',
             ticket: fetchedData.ticket || 0,
           };
+
+          // Log the values of total, bblip, and ticket
+          console.log(`Fetched values: total = ${userData.total}, bblip = ${userData.bblip}, ticket = ${userData.ticket}`);
+        } else {
+          console.log('User document does not exist, using default values');
         }
 
         // Save user data to localStorage
         localStorage.setItem(`user_${telegramUserId}`, JSON.stringify(userData));
+        console.log('User data saved to localStorage:', userData);
 
         // Fetch data from Firestore's 'countdowns' collection
         const countdownDocRef = doc(db, 'countdowns', telegramUserId);
         const countdownDocSnap = await getDoc(countdownDocRef);
+        console.log('Fetched countdown document from Firestore');
 
         let countdownData;
         if (countdownDocSnap.exists()) {
           countdownData = countdownDocSnap.data();
+          console.log('Countdown document exists, fetched data:', countdownData);
 
           // Check if fields exist and save them to localStorage
           const { endTime, isRunning, pointsAdded } = countdownData;
@@ -59,15 +75,18 @@ const Loading: React.FC = () => {
             isRunning: isRunning || false,
             pointsAdded: pointsAdded || 0,
           }));
+          console.log('Countdown data saved to localStorage');
         } else {
           // If the document does not exist, skip saving countdown data
           localStorage.removeItem(`countdown_${telegramUserId}`);
+          console.log('Countdown document does not exist, removed countdown data from localStorage');
         }
       } catch (error) {
         console.error('Error fetching or updating user data:', error);
         setError('An error occurred while fetching or updating data.');
       } finally {
         setLoading(false);
+        console.log('Finished fetching data');
       }
     };
 
