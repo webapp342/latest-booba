@@ -13,6 +13,10 @@ const Loading: React.FC = () => {
       try {
         console.log('Starting data fetch process...');
 
+        // Clear all localStorage data at the start
+        localStorage.clear();
+        console.log('localStorage cleared.');
+
         let telegramUserId = '';
         const defaultTelegramUserId = '1421109983';
 
@@ -35,8 +39,6 @@ const Loading: React.FC = () => {
           const countdownData = countdownDocSnap.data();
           localStorage.setItem(`countdown_${telegramUserId}`, JSON.stringify(countdownData));
           console.log('Countdown data saved to localStorage:', countdownData);
-        } else {
-          localStorage.removeItem(`countdown_${telegramUserId}`);
         }
 
         // Fetch transaction_hashes data
@@ -47,9 +49,6 @@ const Loading: React.FC = () => {
           const transactionHashesData = transactionHashesDocSnap.data();
           localStorage.setItem(`transaction_hashes_${telegramUserId}`, JSON.stringify(transactionHashesData));
           console.log('Transaction hashes data saved to localStorage:', transactionHashesData);
-        } else {
-          console.log('No transaction hashes document found.');
-          localStorage.removeItem(`transaction_hashes_${telegramUserId}`);
         }
 
         // Fetch comment data
@@ -60,9 +59,6 @@ const Loading: React.FC = () => {
           const commentData = commentDocSnap.data();
           localStorage.setItem(`comment_${telegramUserId}`, JSON.stringify(commentData));
           console.log('Comment data saved to localStorage:', commentData);
-        } else {
-          console.log('No comment document found.');
-          localStorage.removeItem(`comment_${telegramUserId}`);
         }
 
         // Fetch invitedUsers data
