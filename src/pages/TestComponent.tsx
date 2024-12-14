@@ -24,9 +24,8 @@ const DealsComponent: React.FC = () => {
         alt="Deal Icon"
         sx={{
           mt: 4,
-          width: '100%',
+          width: '50%',
           maxWidth: '25%', // Ekranın %50'sini aşmayacak şekilde sınırla
-          height: 'auto',
         }}
       />
       {/* Başlık */}

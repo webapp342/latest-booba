@@ -14,7 +14,6 @@ const TopComponent: React.FC = () => {
         textAlign: 'center',
         padding: 2,
         maxWidth: '100%',
-        margin: '0 auto',
       }}
     >
       {/* PNG Görseli */}
@@ -26,7 +25,6 @@ const TopComponent: React.FC = () => {
           mt: 4,
           width: '100%',
           maxWidth: '25%', // Ekranın %50'sini aşmayacak şekilde sınırla
-          height: 'auto',
         }}
       />
       {/* Başlık */}
