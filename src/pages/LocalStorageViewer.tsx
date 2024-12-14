@@ -14,34 +14,22 @@ const LocalStorageViewer: React.FC = () => {
   useEffect(() => {
     const fetchLocalStorageData = () => {
       try {
-        // Local Storage'daki tüm verileri çek
+        // Sadece yeni işaretlenmiş verileri çekmek için filtreleme
         const keys = Object.keys(localStorage);
         const data: LocalStorageData = {};
 
         keys.forEach((key) => {
           try {
-            // JSON.parse ile veri ayrıştırılırken türü string, number veya object olabilir
             const item = localStorage.getItem(key);
             if (item) {
-              try {
-                const parsedItem = JSON.parse(item);
-                if (typeof parsedItem === 'number') {
-                  data[key] = parsedItem;
-                } else if (typeof parsedItem === 'object') {
-                  data[key] = parsedItem;
-                } else {
-                  data[key] = item; // Eğer JSON.parse ile ayrıştırılamazsa, ham metin olarak sakla
-                }
-              } catch (e) {
-                // JSON.parse hata verdiğinde ham metin olarak sakla
-                data[key] = item;
+              const parsedItem = JSON.parse(item);
+              // Verinin "isNew" işaretine göre kontrol yap
+              if (parsedItem && typeof parsedItem === 'object' && parsedItem.isNew) {
+                data[key] = parsedItem;
               }
-            } else {
-              data[key] = null;
             }
           } catch (e) {
             console.error(`Error parsing localStorage key "${key}":`, e);
-            data[key] = 'Error parsing data';
           }
         });
 
@@ -66,15 +54,15 @@ const LocalStorageViewer: React.FC = () => {
   }
 
   return (
-    <Container sx={{textAlign: 'center'}} >
-      <h2>Local Storage Data</h2>
+    <Container sx={{ textAlign: 'center' }}>
+      <h2>New Local Storage Data</h2>
       {Object.keys(localStorageData).length === 0 ? (
-        <p>No data found in localStorage.</p>
+        <p>No new data found in localStorage.</p>
       ) : (
         <ul>
           {Object.entries(localStorageData).map(([key, value]) => (
             <li key={key}>
-              <strong>{key}:</strong> 
+              <strong>{key}:</strong>{' '}
               {typeof value === 'string' || typeof value === 'number'
                 ? value
                 : JSON.stringify(value, null, 2)}
