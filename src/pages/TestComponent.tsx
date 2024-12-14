@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Button, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
-import Deal from '../assets/deal.png'; // PNG dosyasını import edin
+import { Box, Typography, Table, TableBody, TableCell, TableHead, TableRow, CircularProgress } from '@mui/material';
 import { getFirestore, doc, getDoc } from 'firebase/firestore'; // Firestore metodları
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './firebaseConfig'; // Firebase yapılandırma
@@ -10,41 +9,44 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const DealsComponent: React.FC = () => {
-  const [invitedUsers, setInvitedUsers] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [invitedUsers, setInvitedUsers] = useState<string[]>([]); // `invitedUsers` bir array olacak
+  const [loading, setLoading] = useState(true); // Yüklenme durumu
+  const [error, setError] = useState<string | null>(null); // Hata mesajı için state
 
   useEffect(() => {
     const fetchInvitedUsers = async () => {
       setLoading(true);
+      setError(null); // Hata durumunu sıfırla
+
       try {
         // localStorage'den Telegram kullanıcı kimliğini al
         const telegramUserId = localStorage.getItem('telegramUserId');
         if (!telegramUserId) {
-          console.error('No telegramUserId found in localStorage');
+          setError('Kullanıcı ID’si bulunamadı. Lütfen tekrar giriş yapın.');
           setInvitedUsers([]);
           setLoading(false);
           return;
         }
 
         // Firestore'dan kullanıcıya ait belgeyi getir
-        const docRef = doc(db, 'invitedUsers', telegramUserId);
-        const docSnap = await getDoc(docRef);
+        const userDocRef = doc(db, 'users', telegramUserId);
+        const userDocSnap = await getDoc(userDocRef);
 
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          // `invitedUsers` alanını kontrol et
-          if (data.invitedUsers && Array.isArray(data.invitedUsers) && data.invitedUsers.length > 0) {
-            setInvitedUsers(data.invitedUsers); // Davet edilen kullanıcıları ayarla
+        if (userDocSnap.exists()) {
+          const userData = userDocSnap.data();
+          // `invitedUsers` dizisi varsa kontrol et
+          if (userData.invitedUsers && Array.isArray(userData.invitedUsers)) {
+            setInvitedUsers(userData.invitedUsers); // Davet edilen kullanıcıları ayarla
           } else {
-            console.log('No invitedUsers field or field is empty');
-            setInvitedUsers([]);
+            setInvitedUsers([]); // invitedUsers dizisi yoksa boş ayarla
           }
         } else {
-          console.log('Document does not exist');
+          setError('Kullanıcı belgesi bulunamadı.');
           setInvitedUsers([]);
         }
-      } catch (error) {
-        console.error('Error fetching invited users:', error);
+      } catch (err) {
+        setError('Bir hata oluştu. Lütfen tekrar deneyin.');
+        console.error(err);
         setInvitedUsers([]);
       } finally {
         setLoading(false);
@@ -67,81 +69,43 @@ const DealsComponent: React.FC = () => {
         margin: '0 auto',
       }}
     >
-      {/* PNG Görseli */}
-      <Box
-        component="img"
-        src={Deal}
-        alt="Deal Icon"
-        sx={{
-          mt: 4,
-          width: '50%',
-          maxWidth: '25%', // Ekranın %50'sini aşmayacak şekilde sınırla
-        }}
-      />
       {/* Başlık */}
-      <Typography
-        variant="h5"
-        sx={{
-          marginTop: 4,
-          color: 'black',
-          fontWeight: 'bold',
-        }}
-      >
-        Friends
-      </Typography>
-      {/* Açıklama */}
-      <Typography
-        variant="body1"
-        sx={{
-          marginTop: 1,
-          color: 'text.secondary',
-        }}
-      >
-        Invite your friends to earn more BBLIP
+      <Typography variant="h5" sx={{ marginTop: 4, color: 'black', fontWeight: 'bold' }}>
+        Davetlerim
       </Typography>
 
-      {/* Davetli Kullanıcılar */}
+      {/* Açıklama */}
+      <Typography variant="body1" sx={{ marginTop: 1, color: 'text.secondary' }}>
+        Davet ettiğiniz kullanıcıları aşağıda görebilirsiniz.
+      </Typography>
+
+      {/* İçerik */}
       <Box sx={{ mt: 4, width: '100%' }}>
         {loading ? (
-          <Typography>Loading...</Typography>
+          <CircularProgress /> // Yükleniyor animasyonu
+        ) : error ? (
+          <Typography color="error">{error}</Typography> // Hata mesajı
         ) : invitedUsers.length === 0 ? (
-          <Typography>You don't have invites yet</Typography>
+          <Typography>Henüz kimseyi davet etmediniz.</Typography>
         ) : (
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell align="left">User</TableCell>
-                <TableCell align="left">Invite Date</TableCell>
+                <TableCell align="left">#</TableCell>
+                <TableCell align="left">Davet Edilen Kullanıcı</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {invitedUsers.map((user, index) => (
+              {invitedUsers.map((userId, index) => (
                 <TableRow key={index}>
-                  <TableCell align="left">{user.username || 'Unknown'}</TableCell>
-                  <TableCell align="left">{user.inviteDate || 'N/A'}</TableCell>
+                  <TableCell align="left">{index + 1}</TableCell>
+                  <TableCell align="left">{userId}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         )}
       </Box>
-
-      {/* Buton */}
-      <Button
-        variant="contained"
-        color="primary"
-        sx={{
-          mt: 4, // Yukarıdan boşluk bırak
-          width: '95%', // Sayfa genişliğinin %90'ını kapla
-          position: 'fixed', // Sayfanın altına sabitle
-          bottom: 16, // Sayfanın altından 16px yukarıda
-          left: '50%', // Sayfanın ortasına hizala
-          transform: 'translateX(-50%)', // Ortalamayı sağla
-          mb: 9, // Alt boşluk bırak
-        }}
-      >
-        Invite Friends
-      </Button>
     </Box>
   );
 };
