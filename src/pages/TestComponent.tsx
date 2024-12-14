@@ -1,6 +1,6 @@
 // src/components/DealsComponent.tsx
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Button } from '@mui/material';
 import Deal from '../assets/deal.png'; // PNG dosyasını import edin
 
 const DealsComponent: React.FC = () => {
@@ -32,7 +32,6 @@ const DealsComponent: React.FC = () => {
       <Typography
         variant="h5"
         sx={{
-   
           marginTop: 4,
           color: 'black',
           fontWeight: 'bold',
@@ -50,6 +49,22 @@ const DealsComponent: React.FC = () => {
       >
         Invite your friends to earn more BBLIP
       </Typography>
+      {/* Buton */}
+      <Button
+        variant="contained"
+        color="primary"
+        sx={{
+          mt: 4, // Yukarıdan boşluk bırak
+          width: '95%', // Sayfa genişliğinin %90'ını kapla
+          position: 'fixed', // Sayfanın altına sabitle
+          bottom: 16, // Sayfanın altından 16px yukarıda
+          left: '50%', // Sayfanın ortasına hizala
+          transform: 'translateX(-50%)', // Ortalamayı sağla
+          mb: 9, // Alt boşluk bırak
+        }}
+      >
+        Invite Friends
+      </Button>
     </Box>
   );
 };

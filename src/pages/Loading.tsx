@@ -12,10 +12,10 @@ const Loading: React.FC = () => {
     const fetchUserData = async () => {
       try {
         console.log('Starting data fetch process...');
-  
+
         let telegramUserId = '';
         const defaultTelegramUserId = '1421109983';
-  
+
         const user = WebApp.initDataUnsafe?.user;
         if (user) {
           telegramUserId = user.id.toString();
@@ -24,17 +24,13 @@ const Loading: React.FC = () => {
           telegramUserId = defaultTelegramUserId;
           console.log('Using default Telegram user ID:', defaultTelegramUserId);
         }
-  
+
         localStorage.setItem('telegramUserId', telegramUserId);
-  
-        // Fetch user data
-  
-       
-  
+
         // Fetch countdown data
         const countdownDocRef = doc(db, 'countdowns', telegramUserId);
         const countdownDocSnap = await getDoc(countdownDocRef);
-  
+
         if (countdownDocSnap.exists()) {
           const countdownData = countdownDocSnap.data();
           localStorage.setItem(`countdown_${telegramUserId}`, JSON.stringify(countdownData));
@@ -42,11 +38,11 @@ const Loading: React.FC = () => {
         } else {
           localStorage.removeItem(`countdown_${telegramUserId}`);
         }
-  
+
         // Fetch transaction_hashes data
         const transactionHashesDocRef = doc(db, 'transaction_hashes', telegramUserId);
         const transactionHashesDocSnap = await getDoc(transactionHashesDocRef);
-  
+
         if (transactionHashesDocSnap.exists()) {
           const transactionHashesData = transactionHashesDocSnap.data();
           localStorage.setItem(`transaction_hashes_${telegramUserId}`, JSON.stringify(transactionHashesData));
@@ -55,11 +51,11 @@ const Loading: React.FC = () => {
           console.log('No transaction hashes document found.');
           localStorage.removeItem(`transaction_hashes_${telegramUserId}`);
         }
-  
+
         // Fetch comment data
         const commentDocRef = doc(db, 'comments', telegramUserId);
         const commentDocSnap = await getDoc(commentDocRef);
-  
+
         if (commentDocSnap.exists()) {
           const commentData = commentDocSnap.data();
           localStorage.setItem(`comment_${telegramUserId}`, JSON.stringify(commentData));
@@ -67,6 +63,19 @@ const Loading: React.FC = () => {
         } else {
           console.log('No comment document found.');
           localStorage.removeItem(`comment_${telegramUserId}`);
+        }
+
+        // Fetch invitedUsers data
+        const invitedUsersDocRef = doc(db, 'invitedUsers', telegramUserId);
+        const invitedUsersDocSnap = await getDoc(invitedUsersDocRef);
+
+        if (invitedUsersDocSnap.exists()) {
+          const invitedUsersData = invitedUsersDocSnap.data();
+          localStorage.setItem(`invitedUsers_${telegramUserId}`, JSON.stringify(invitedUsersData));
+          console.log('Invited users data saved to localStorage:', invitedUsersData);
+        } else {
+          console.log('No invited users document found.');
+          localStorage.setItem(`invitedUsers_${telegramUserId}`, 'null');
         }
       } catch (error) {
         console.error('Error during data fetch:', error);
@@ -76,10 +85,10 @@ const Loading: React.FC = () => {
         console.log('Data fetch process completed.');
       }
     };
-  
+
     fetchUserData();
   }, []);
-  
+
   return (
     <Box 
       display="flex" 

@@ -10,7 +10,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import DPRdata from "./pages/DPRdata.tsx";
 // import UserProfilePage from "./pages/UserProfilePage.tsx";
 //import WheelSpin from "./pages/WheelSpin.tsx";
-import LocalStorageViewer from "./pages/localStorage.tsx";
+import LocalStorageViewer from "./pages/LocalStorageViewer.tsx";
 //import  CryptoTable2  from "./pages/wallet.tsx";
 import Calculator from "./pages/Calculator.tsx";
 import Task from "./pages/Tasks/Task.tsx";
