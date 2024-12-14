@@ -88,7 +88,7 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
   const isSpinEnabled =
     (selectedSpinType === 'total' && total >= 200) ||
     (selectedSpinType === 'ticket' && tickets > 0) ||
-    (selectedSpinType === 'bblip' && bblip >= 250);
+    (selectedSpinType === 'bblip' && bblip >= 1000);
 
   const handleSpinClick = () => {
     setLoading(true);
