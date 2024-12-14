@@ -1,76 +1,32 @@
-import { Container } from '@mui/material';
-import React, { useState, useEffect } from 'react';
-
-// Local Storage verilerini saklamak için kullanılan arayüz
-interface LocalStorageData {
-  [key: string]: string | number | object | null;
-}
+import React, { useEffect, useState } from 'react';
 
 const LocalStorageViewer: React.FC = () => {
-  const [localStorageData, setLocalStorageData] = useState<LocalStorageData>({});
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [data, setData] = useState<{ key: string; value: string }[]>([]);
 
   useEffect(() => {
-    const fetchLocalStorageData = () => {
-      try {
-        // Sadece yeni işaretlenmiş verileri çekmek için filtreleme
-        const keys = Object.keys(localStorage);
-        const data: LocalStorageData = {};
-
-        keys.forEach((key) => {
-          try {
-            const item = localStorage.getItem(key);
-            if (item) {
-              const parsedItem = JSON.parse(item);
-              // Verinin "isNew" işaretine göre kontrol yap
-              if (parsedItem && typeof parsedItem === 'object' && parsedItem.isNew) {
-                data[key] = parsedItem;
-              }
-            }
-          } catch (e) {
-            console.error(`Error parsing localStorage key "${key}":`, e);
-          }
-        });
-
-        setLocalStorageData(data);
-      } catch (error) {
-        console.error('Error fetching data from localStorage:', error);
-        setError('An error occurred while fetching data from localStorage.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchLocalStorageData();
+    const keys = Object.keys(localStorage);
+    const storageData = keys.map((key) => ({
+      key,
+      value: localStorage.getItem(key) || '',
+    }));
+    setData(storageData);
   }, []);
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>{error}</p>;
-  }
-
   return (
-    <Container sx={{ textAlign: 'center' }}>
-      <h2>New Local Storage Data</h2>
-      {Object.keys(localStorageData).length === 0 ? (
-        <p>No new data found in localStorage.</p>
+    <div>
+      <h2>LocalStorage Data</h2>
+      {data.length === 0 ? (
+        <p>No data found in localStorage.</p>
       ) : (
         <ul>
-          {Object.entries(localStorageData).map(([key, value]) => (
-            <li key={key}>
-              <strong>{key}:</strong>{' '}
-              {typeof value === 'string' || typeof value === 'number'
-                ? value
-                : JSON.stringify(value, null, 2)}
+          {data.map((item) => (
+            <li key={item.key}>
+              <strong>{item.key}:</strong> {item.value}
             </li>
           ))}
         </ul>
       )}
-    </Container>
+    </div>
   );
 };
 
