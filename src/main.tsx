@@ -15,8 +15,8 @@ import LocalStorageViewer from "./pages/localStorage.tsx";
 import Calculator from "./pages/Calculator.tsx";
 import Task from "./pages/Tasks/Task.tsx";
 
-import SwapComponent from "./pages/SwapComponent.tsx";
-import TradingViewWidgetVertical from "./pages/extras/DataComponent.tsx";
+import TopComponent from "./pages/Cup.tsx";
+import DealsComponent from "./pages/Tasks.tsx";
 import TestComponent from "./pages/TestComponent.tsx";
 import { SlotMachine } from './pages/spot/SlotMachine';
 
@@ -48,16 +48,16 @@ const router = createBrowserRouter([
         element: <TestComponent />,
       },
       {
-        path: "/latest-booba/news",
-        element: <TradingViewWidgetVertical />,
+        path: "/latest-booba/tasks",
+        element: <DealsComponent />,
       },
       {
         path: "/latest-booba/user-details",
         element: <DPRdata />,
       },
       {
-        path: "/latest-booba/user-profile-page",
-        element: <SwapComponent />,
+        path: "/latest-booba/top",
+        element: <TopComponent />,
       },
       {
         path: "/latest-booba/",

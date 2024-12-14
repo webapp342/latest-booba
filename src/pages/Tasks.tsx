@@ -1,7 +1,7 @@
 // src/components/DealsComponent.tsx
 import React from 'react';
 import { Box, Typography } from '@mui/material';
-import Deal from '../assets/deal.png'; // PNG dosyasını import edin
+import Tasks from '../assets/tasks.png'; // PNG dosyasını import edin
 
 const DealsComponent: React.FC = () => {
   return (
@@ -20,7 +20,7 @@ const DealsComponent: React.FC = () => {
       {/* PNG Görseli */}
       <Box
         component="img"
-        src={Deal}
+        src={Tasks}
         alt="Deal Icon"
         sx={{
           mt: 4,
@@ -39,7 +39,7 @@ const DealsComponent: React.FC = () => {
           fontWeight: 'bold',
         }}
       >
-        Friends
+        Tasks
       </Typography>
       {/* Açıklama */}
       <Typography
@@ -49,7 +49,7 @@ const DealsComponent: React.FC = () => {
           color: 'text.secondary',
         }}
       >
-        Invite your friends to earn more BBLIP
+       Get rewards for completing tasks.
       </Typography>
     </Box>
   );

@@ -2,20 +2,19 @@ import * as React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import QueryStatsOutlinedIcon from '@mui/icons-material/QueryStatsOutlined';
-import WalletIcon from '@mui/icons-material/Wallet';
-import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOutlined';
-import PaymentsRoundedIcon from '@mui/icons-material/PaymentsRounded';
+import SportsEsportsTwoToneIcon from '@mui/icons-material/SportsEsportsTwoTone';import AccountBalanceWalletTwoToneIcon from '@mui/icons-material/AccountBalanceWalletTwoTone';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import EmojiEventsTwoToneIcon from '@mui/icons-material/EmojiEventsTwoTone';
+
+import InventoryTwoToneIcon from '@mui/icons-material/InventoryTwoTone';import PeopleOutlineTwoToneIcon from '@mui/icons-material/PeopleOutlineTwoTone';
 
 
 const navItems = [
-  { label: 'Game', icon: <HomeOutlinedIcon />, path: '/latest-booba/' },
-  { label: 'Frens', icon: <PaymentsRoundedIcon />, path: '/latest-booba/test' },
-  { label: 'Top', icon: <CurrencyExchangeOutlinedIcon />, path: "/latest-booba/user-profile-page" },
-  { label: 'Tasks', icon: <QueryStatsOutlinedIcon />, path: '/latest-booba/news' },
-  { label: 'Wallet', icon: <WalletIcon />, path: '/latest-booba/spin' },
+  { label: 'Game', icon: <SportsEsportsTwoToneIcon />, path: '/latest-booba/' },
+  { label: 'Frens', icon: <PeopleOutlineTwoToneIcon />, path: '/latest-booba/test' },
+  { label: 'Top', icon: <EmojiEventsTwoToneIcon />, path: "/latest-booba/top" },
+  { label: 'Tasks', icon: <InventoryTwoToneIcon  />, path: '/latest-booba/tasks' },
+  { label: 'Wallet', icon: <AccountBalanceWalletTwoToneIcon />, path: '/latest-booba/spin' },
 ];
 
 export default function SimpleBottomNavigation() {
