@@ -3,6 +3,8 @@ import { Box, Typography, Table, TableBody, TableCell, TableHead, TableRow, Circ
 import { getFirestore, doc, getDoc } from 'firebase/firestore'; // Firestore metodları
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './firebaseConfig'; // Firebase yapılandırma
+import Tasks from '../assets/tasks.png'; // PNG dosyasını import edin
+
 
 // Firebase App başlat
 const app = initializeApp(firebaseConfig);
@@ -69,6 +71,17 @@ const DealsComponent: React.FC = () => {
         margin: '0 auto',
       }}
     >
+         {/* PNG Görseli */}
+         <Box
+        component="img"
+        src={Tasks}
+        alt="Deal Icon"
+        sx={{
+          mt: 4,
+          width: '80px',
+          maxWidth: '50%', // Ekranın %50'sini aşmayacak şekilde sınırla
+        }}
+      />
       {/* Başlık */}
       <Typography variant="h5" sx={{ marginTop: 4, color: 'black', fontWeight: 'bold' }}>
         Davetlerim

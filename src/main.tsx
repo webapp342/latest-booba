@@ -14,6 +14,7 @@ import LocalStorageViewer from "./pages/LocalStorageViewer.tsx";
 //import  CryptoTable2  from "./pages/wallet.tsx";
 import Calculator from "./pages/Calculator.tsx";
 import Task from "./pages/Tasks/Task.tsx";
+import TokenSwap from "./pages/SwapComponent.tsx";
 
 import TopComponent from "./pages/Cup.tsx";
 import DealsComponent from "./pages/Tasks.tsx";
@@ -37,7 +38,11 @@ const router = createBrowserRouter([
      
       {
         path: "/latest-booba/spin",
-        element:     <SlotMachine />,
+        element:     <LocalStorageViewer />,
+      },
+      {
+        path: "/latest-booba/swap",
+        element:     <TokenSwap />,
       },
       {
         path: "/latest-booba/task",
@@ -60,8 +65,8 @@ const router = createBrowserRouter([
         element: <TopComponent />,
       },
       {
-        path: "/latest-booba/",
-        element: <LocalStorageViewer />,
+        path: "/latest-booba/", 
+        element: <SlotMachine />,
       },
     ],
   },

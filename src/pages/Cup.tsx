@@ -23,7 +23,7 @@ const TopComponent: React.FC = () => {
         alt="Deal Icon"
         sx={{
           mt: 4,
-          width: '100%',
+          width: '80px',
           maxWidth: '25%', // Ekranın %50'sini aşmayacak şekilde sınırla
         }}
       />
