@@ -11,19 +11,16 @@ import {
   Avatar,
   Grid,
 } from "@mui/material";
-import { useTranslation } from "react-i18next";
 import SwapVertRoundedIcon from '@mui/icons-material/SwapVertRounded';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import axios from "axios";
 import UnfoldMoreRoundedIcon from '@mui/icons-material/UnfoldMoreRounded';
-import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
-import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
+
 
 
 const TokenSwap: React.FC = () => {
-  const { t } = useTranslation(); // t fonksiyonu çeviri için kullanılır
     const [fromToken, setFromToken] = useState("ETH");
   const [toToken, setToToken] = useState("USDT");
   const [fromAmount, setFromAmount] = useState("");
@@ -59,7 +56,7 @@ const TokenSwap: React.FC = () => {
     if (token === "USDT" ) {
       return 1; // USDT fiyatı sabit
     }
-    if (token === "BBLIP") return 0.07; // Sabit fiyat BBLIP için
+     if (token === "BBLIP") return 0.07; // Sabit fiyat BBLIP için
 
     try {
       const response = await axios.get(`https://api.binance.com/api/v3/ticker/price`, {
