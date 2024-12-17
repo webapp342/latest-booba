@@ -8,6 +8,8 @@ import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
 import LoupeIcon from '@mui/icons-material/Loupe';
 import TokenSwap from "./SwapComponent"; // TokenSwap bileşenini eklediğiniz yer
+import "../App.css";
+
 
 
 // Tema oluşturma
@@ -237,16 +239,24 @@ const AccountEquityCard: React.FC = () => {
   Exchange
 </Button>
 
-{/* TokenSwap Bileşeni */}
+{/* Tam Ekran TokenSwap Modal */}
 {showTokenSwap && (
-  <Box className="slide-up">
-    <TokenSwap />
-    <Button
-      onClick={() => setShowTokenSwap(false)} // Kapat butonu
-      sx={{ textTransform: "none", marginTop: 2, color: "red" }}
-    >
-      Close
-    </Button>
+  <Box className="fullscreen-modal">
+    {/* Üst Bar */}
+    <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <Typography variant="h6">Token Swap</Typography>
+      <Button
+        onClick={() => setShowTokenSwap(false)} // Modalı kapat
+        sx={{ textTransform: "none", color: "red" }}
+      >
+        Close
+      </Button>
+    </Box>
+
+    {/* TokenSwap Bileşeni */}
+    <Box sx={{ flex: 1, overflowY: "auto" }}>
+      <TokenSwap />
+    </Box>
   </Box>
 )}
             </Box>

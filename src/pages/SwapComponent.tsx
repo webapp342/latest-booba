@@ -43,24 +43,23 @@ const TokenSwap: React.FC = () => {
     { name: "BTC", icon: "https://s3-symbol-logo.tradingview.com/crypto/XTVCBTC--big.svg" },
     { name: "SUI", icon: "https://s3-symbol-logo.tradingview.com/crypto/XTVCSUI--big.svg" },
     { name: "SOL", icon: "https://s3-symbol-logo.tradingview.com/crypto/XTVCSOL--big.svg" },
+    { name: "TON", icon: "https://s3-symbol-logo.tradingview.com/crypto/XTVCTON--big.svg" },
+    { name: "BBLIP", icon: "https://via.placeholder.com/32?text=BBLIP" }, // Sabit fiyat
   ];
 
   const theme = createTheme({
     typography: {
       fontFamily: "Montserrat, sans-serif",
     },
-    palette: {
-      primary: { main: "#4caf50" },
-      secondary: { main: "#ff9800" },
-      background: { default: "#f5f5f5" },
-    },
+   
   });
 
   // Binance API'den fiyatları al
   const fetchTokenPrice = async (token: string) => {
-    if (token === "USDT") {
+    if (token === "USDT" ) {
       return 1; // USDT fiyatı sabit
     }
+    if (token === "BBLIP") return 0.07; // Sabit fiyat BBLIP için
 
     try {
       const response = await axios.get(`https://api.binance.com/api/v3/ticker/price`, {
@@ -153,35 +152,6 @@ const TokenSwap: React.FC = () => {
         >
        
 
-            <Box   justifyContent= "space-between"
-          alignItems= "center"
-          display="flex">
-
-<PersonOutlinedIcon  sx={{ fontSize: '1.6rem', color: 'black'  }} />
-
-
-            <Typography   
-            sx={{
-              fontSize: '1.3rem',
-              fontWeight: 'bold',
-              
-              background: 'linear-gradient(90deg, #031340, #08AEEA)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}>
-            {t('exchange')}
-           </Typography>
-
-  
-
-           <AdminPanelSettingsOutlinedIcon    sx={{ fontSize: '1.6rem', color: 'black' }} />
-
-      
-
-      
-       
-              </Box>
-
            
         </Box>
       <Box
@@ -197,8 +167,7 @@ const TokenSwap: React.FC = () => {
           sx={{
             boxShadow: 0,
             borderRadius: 0,
-            backgroundColor: "#e9ebef" ,
-            width: "90%",
+            width: "100%",
           }}
         >
           <Box
