@@ -61,12 +61,19 @@ const router = createBrowserRouter([
         element: <DPRdata />,
       },
       {
-        path: "/latest-booba/top",
-        element: <TopComponent />,
+        path: "/latest-booba/slot",
+                element: <SlotMachine />,
+
+      },
+        {
+        path: "/latest-booba/top", 
+                element: <TopComponent />,
+
       },
       {
         path: "/latest-booba/", 
-        element: <SlotMachine />,
+                element: <TopComponent />,
+
       },
     ],
   },

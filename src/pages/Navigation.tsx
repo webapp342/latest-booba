@@ -10,9 +10,10 @@ import InventoryTwoToneIcon from '@mui/icons-material/InventoryTwoTone';import P
 
 
 const navItems = [
-  { label: 'Game', icon: <SportsEsportsTwoToneIcon />, path: '/latest-booba/' },
+  { label: 'Game', icon: <SportsEsportsTwoToneIcon />, path: '/latest-booba/slot' },
   { label: 'Frens', icon: <PeopleOutlineTwoToneIcon />, path: '/latest-booba/test' },
-  { label: 'Top', icon: <EmojiEventsTwoToneIcon />, path: "/latest-booba/top" },
+    { label: 'Top', icon: <EmojiEventsTwoToneIcon />, path: "/latest-booba/" },
+
   { label: 'Tasks', icon: <InventoryTwoToneIcon  />, path: '/latest-booba/tasks' },
   { label: 'Wallet', icon: <AccountBalanceWalletTwoToneIcon />, path: '/latest-booba/spin' },
 ];
