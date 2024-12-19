@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
+import React, { useState, useEffect } from "react";import { ThemeProvider, createTheme, CssBaseline ,Tooltip} from "@mui/material";
 import { Box, Card, CardContent, Typography, Grid, Button, Avatar, TextField, InputAdornment ,Drawer, Snackbar, SnackbarContent } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
@@ -26,6 +26,7 @@ const initialData = [  {
     name: "Ton",
     amount: 10000,
     usdValue: 0,
+    active: true
   },
   {
     logo: "https://s3-symbol-logo.tradingview.com/crypto/XTVCADA--big.svg",
@@ -33,27 +34,7 @@ const initialData = [  {
     name: "Booba",
     amount: 1000000,
     usdValue: 0,
-  },
-  {
-    logo: "https://s3-symbol-logo.tradingview.com/crypto/XTVCBTC--big.svg",
-    symbol: "BTC",
-    name: "Bitcoin",
-    amount: 0,
-    usdValue: 0,
-  },
-  {
-    logo: "https://s3-symbol-logo.tradingview.com/crypto/XTVCETH--big.svg",
-    symbol: "ETH",
-    name: "Ethereum", 
-    amount: 0,
-    usdValue: 0,
-  },
-  {
-    logo: "https://s3-symbol-logo.tradingview.com/crypto/XTVCBNB--big.svg",
-    symbol: "BNB",
-    name: "Binance Coin",
-    amount: 0,
-    usdValue: 0,
+    active: true 
   },
   {
     logo: "https://s3-symbol-logo.tradingview.com/crypto/XTVCUSDT--big.svg",
@@ -61,13 +42,40 @@ const initialData = [  {
     name: "Tether",
     amount: 20000,
     usdValue: 0,
+    active: true 
   },
+  {
+    logo: "https://s3-symbol-logo.tradingview.com/crypto/XTVCBTC--big.svg",
+    symbol: "TICKET",
+    name: "Lucky Ticket",
+    amount: 20,
+    usdValue: 0,
+    active: true 
+  },
+  {
+    logo: "https://s3-symbol-logo.tradingview.com/crypto/XTVCETH--big.svg",
+    symbol: "ETH",
+    name: "Ethereum", 
+    amount: 0,
+    usdValue: 0,
+    active: false
+  },
+  {
+    logo: "https://s3-symbol-logo.tradingview.com/crypto/XTVCBNB--big.svg",
+    symbol: "BNB",
+    name: "Binance Coin",
+    amount: 0,
+    usdValue: 0,
+    active: false
+  },
+
   {
     logo: "https://s3-symbol-logo.tradingview.com/crypto/XTVCADA--big.svg",
     symbol: "ADA",
     name: "Cardano",
     amount: 0,
     usdValue: 0,
+    active: false
   },
 
 ];
@@ -337,99 +345,124 @@ const AccountEquityCard: React.FC = () => {
           </CardContent>
         </Card>
 
-        {/* İkinci Kart - Asset List */}
-        <Card sx={{ borderRadius: 3, mx: "auto", p: 1, m: 2 }}>
-          <CardContent>
-            {/* Başlık ve Arama Kutusu */}
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                mb: 2,
-              }}
-            >
-              {/* Arama Kutusunun Görünümü */}
-              {!isSearching && (
-                <Typography variant="subtitle1">
-                  Assets List
-                </Typography>
-              )}
-              <TextField
-                size="small"
-                variant="outlined"
-                placeholder="Search"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onFocus={handleSearchFocus} // Arama kutusuna tıklanınca genişler
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon sx={{ color: "grey.600" }} />
-                    </InputAdornment>
-                  ),
-                }}
-                sx={{
-                  width: isSearching ? "100%" : 150, // Arama kutusu genişlemesi
-                  transition: "width 0.3s ease",
-                }}
-              />
-              {isSearching && (
-                <Button
-                  onClick={handleCancelSearch}
-                  sx={{
-                    textTransform: "none",
-                    fontSize: "0.875rem",
-                    color: "primary.main",
-                    marginLeft: 2,
-                  }}
-                >
-                  Cancel
-                </Button>
-              )}
+      {/* İkinci Kart - Asset List */}
+<Card sx={{ borderRadius: 3, mx: "auto", p: 1, m: 2 }}>
+  <CardContent>
+    {/* Başlık ve Arama Kutusu */}
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        mb: 2,
+      }}
+    >
+      {/* Arama Kutusunun Görünümü */}
+      {!isSearching && (
+        <Typography variant="subtitle1">Assets List</Typography>
+      )}
+      <TextField
+        size="small"
+        variant="outlined"
+        placeholder="Search"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        onFocus={handleSearchFocus} // Arama kutusuna tıklanınca genişler
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon sx={{ color: "grey.600" }} />
+            </InputAdornment>
+          ),
+        }}
+        sx={{
+          width: isSearching ? "100%" : 150, // Arama kutusu genişlemesi
+          transition: "width 0.3s ease",
+        }}
+      />
+      {isSearching && (
+        <Button
+          onClick={handleCancelSearch}
+          sx={{
+            textTransform: "none",
+            fontSize: "0.875rem",
+            color: "primary.main",
+            marginLeft: 2,
+          }}
+        >
+          Cancel
+        </Button>
+      )}
+    </Box>
+
+    {/* Dinamik Item Listesi */}
+    {filteredData.map((item, index) => (
+      <Tooltip
+        key={index}
+        title={
+          !item.active
+            ? `${item.symbol} şu anda aktif değil. Yakında kullanıma sunulacak!`
+            : ""
+        }
+        arrow
+      >
+        <Box
+          key={index}
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            mb:1,
+            borderBottom:
+              index < filteredData.length  -1 ? "" : "none",
+            p: 1,
+            // Devre dışı öğeler için gri tonlama veya desen
+            backgroundColor: !item.active ? "grey.100" : "transparent",
+            backgroundImage: !item.active
+              ? "linear-gradient(45deg, #f3f3f3 25%, #eaeaea 25%, #eaeaea 50%, #f3f3f3 50%, #f3f3f3 75%, #eaeaea 75%, #eaeaea)"
+              : "none",
+            borderRadius: 1,
+            pointerEvents: !item.active ? "none" : "auto", // Tıklamayı devre dışı bırak
+            opacity: item.active ? 1 : 0.6, // Görsel farklılık
+          }}
+        >
+          {/* Sol Kısım: Logo ve Yazılar */}
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Avatar
+              src={item.logo}
+              alt={item.symbol}
+              sx={{ width: 40, height: 40, mr: 2 }}
+            />
+            <Box>
+              <Typography variant="body1">
+                {item.symbol}
+                {!item.active && (
+                  <span style={{ marginLeft: "10px", color: "gray" }}>
+                    🔒 Coming Soon
+                  </span>
+                )}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {item.name}
+              </Typography>
             </Box>
+          </Box>
 
-            {/* Dinamik Item Listesi */}
-            {filteredData.map((item, index) => (
-              <Box
-                key={index}
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  borderBottom:
-                    index < filteredData.length - 1 ? "1px solid #ddd" : "none",
-                  py: 1,
-                }}
-              >
-                {/* Sol Kısım: Logo ve Yazılar */}
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Avatar
-                    src={item.logo}
-                    alt={item.symbol}
-                    sx={{ width: 40, height: 40, mr: 2 }}
-                  />
-                  <Box>
-                    <Typography variant="subtitle1">{item.symbol}</Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {item.name}
-                    </Typography>
-                  </Box>
-                </Box>
+          {/* Sağ Kısım: Rakamlar */}
+          <Box sx={{ textAlign: "right" }}>
+            <Typography variant="subtitle1">{item.amount}</Typography>
+            <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" sx={{ fontWeight: "bold" }}>
+                ${item.usdValue.toFixed(2)}
+              </Typography>
+            </Typography>
+          </Box>
+        </Box>
+      </Tooltip>
+    ))}
+  </CardContent>
+</Card>
 
-                {/* Sağ Kısım: Rakamlar */}
-                <Box sx={{ textAlign: "right" }}>
-                  <Typography variant="subtitle1">{item.amount}</Typography>
-                  <Typography variant="body2" color="text.secondary">
-                          <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-                  ${item.usdValue.toFixed(2)}
-                </Typography> 
-                  </Typography>
-                </Box>
-              </Box>
-            ))}
-          </CardContent>
-        </Card>
 
 
              {/* Bottom Drawer for Deposit Information */}
