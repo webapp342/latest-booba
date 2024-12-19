@@ -318,7 +318,7 @@ const AccountEquityCard: React.FC = () => {
     borderRadius: 2,
   }}
 >
-  Exchange
+  Convert
 </Button>
 
 {/* Tam Ekran TokenSwap Modal */}
@@ -431,10 +431,10 @@ const AccountEquityCard: React.FC = () => {
             <Avatar
               src={item.logo}
               alt={item.symbol}
-              sx={{ width: 40, height: 40, mr: 2 }}
+              sx={{ width: 35, height: 35, mr: 2 }}
             />
             <Box>
-              <Typography variant="body1">
+              <Typography variant="body2">
                 {item.symbol}
                 {!item.active && (
                   <span style={{ marginLeft: "10px", color: "gray" }}>
@@ -450,8 +450,8 @@ const AccountEquityCard: React.FC = () => {
 
           {/* Sağ Kısım: Rakamlar */}
           <Box sx={{ textAlign: "right" }}>
-            <Typography variant="subtitle1">{item.amount}</Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="subtitle2">{item.amount}</Typography>
+            <Typography variant="subtitle2" color="text.secondary">
               <Typography variant="body2" sx={{ fontWeight: "bold" }}>
                 ${item.usdValue.toFixed(2)}
               </Typography>
