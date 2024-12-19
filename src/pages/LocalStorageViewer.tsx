@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";import { ThemeProvider, createTheme, CssBaseline ,Tooltip} from "@mui/material";
+import QRCode from 'qrcode';
 import { Box, Card, CardContent, Typography,  Button, Avatar, TextField, InputAdornment ,Drawer, Snackbar, SnackbarContent } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
@@ -93,6 +94,7 @@ const AccountEquityCard: React.FC = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [tonPrice, setTonPrice] = useState<number | null>(null); // TON price state
   const [data, setData] = useState(initialData);
+  const [qrCodeUrl, setQrCodeUrl] = useState<string>('');
 
 
   useEffect(() => {
@@ -165,6 +167,24 @@ const AccountEquityCard: React.FC = () => {
    const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
+
+  useEffect(() => {
+    const generateQRCode = async () => {
+      const address = 'UQDppAsjyioMu23LIEaFBm5g5o5oNjRft99oe4gfv-c9BNn2';
+      const comment = '12345';
+      const encodedComment = encodeURIComponent(comment);
+      const uri = `https://app.tonkeeper.com/transfer/${address}?text=${encodedComment}`;
+      
+      try {
+        const qrCode = await QRCode.toDataURL(uri);  // QR kodu için data URL oluştur
+        setQrCodeUrl(qrCode);  // QR kodu URL'yi state'e kaydet
+      } catch (error) {
+        console.error('QR code generation failed:', error);
+      }
+    };
+
+    generateQRCode();
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -423,40 +443,138 @@ const AccountEquityCard: React.FC = () => {
 </Card>
 
 
+{/* Bottom Drawer for Deposit Information */}
+<Drawer
+  anchor="bottom"
+  open={openDepositDrawer}
+  onClose={handleCloseDrawer}
+>
+  <Box sx={{ padding: 2, position: 'relative' }}>
+    {/* Close Icon */}
+    
+    {/* Header Section */}
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        position: 'relative',
+      }}
+    >
+      {/* Typography Header */}
+      <Typography  sx={{ textAlign: 'center', flexGrow: 1 , fontSize: '1.5rem', }}>
+        Deposit 
+      </Typography>
 
-             {/* Bottom Drawer for Deposit Information */}
-             <Drawer
-          anchor="bottom"
-          open={openDepositDrawer}
-          onClose={handleCloseDrawer}
-        >
-          <Box sx={{ padding: 2 }}>
-            <h2>Deposit Information</h2>
-            <p>
-              Account Number: 123456789{" "}
-              <Button
-                onClick={() => {
-                  navigator.clipboard.writeText("123456789");
-                  setSnackbarOpen(true);
-                }}
-              >
-                Copy
-              </Button>
-            </p>
-            <p>
-              Deposit Amount: 00.500{" "}
-              <Button
-                onClick={() => {
-                  navigator.clipboard.writeText("00.500");
-                  setSnackbarOpen(true);
-                }}
-              >
-                Copy
-              </Button>
-            </p>
-          </Box>
-        </Drawer>
-            {/* Snackbar for Copy Confirmation */}
+      {/* Close Icon Button */}
+      <Button
+        onClick={handleCloseDrawer}
+        sx={{
+          fontSize: '1.5rem',
+          position: 'absolute',
+          right: -12,
+        }}
+      >
+        ✖
+      </Button>
+    </Box>
+
+
+        {/* Image Box */}
+        <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 4,
+      }}
+    >
+     <Box
+        sx={{
+          width: '80%',
+          height: '200px',
+       
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        {qrCodeUrl ? (
+          <img src={qrCodeUrl} alt="QR Code" style={{ maxWidth: '100%', maxHeight: '100%' }} />
+        ) : (
+          <span>Loading QR Code...</span>
+        )}
+      </Box>
+    </Box>
+
+    
+
+    {/* Account Number */}
+    <Box
+      sx={{
+        mt:4,
+        display: 'flex',
+        mx:1,
+        textAlign: 'center',
+        alignItems: "center",
+        justifyContent: 'space-between',
+      }}
+    >
+<span style={{ color: "grey", fontSize: "0.9rem"  }}>
+    Address: <span style={{ color: "black" , marginLeft: 12 , fontSize: "1rem"  }}>123456789</span>
+  </span>       <Button
+        onClick={() => {
+          navigator.clipboard.writeText("123456789");
+          setSnackbarOpen(true);
+        }}
+      >
+        Copy
+      </Button>
+    </Box>
+
+    {/* Deposit Amount */}
+    <Box
+      sx={{
+        mt:1,
+        display: 'flex',
+        mx:1,
+        alignItems: "center",
+        justifyContent: 'space-between',
+        marginBottom: 4,
+      }}
+    >
+<span style={{ color: "grey", fontSize: "0.9rem"  }}>
+    Memo: <span style={{ color: "black" , marginLeft: 12 , fontSize: "1rem"  }}>123456789</span>
+  </span> 
+      <Button
+        onClick={() => {
+          navigator.clipboard.writeText("00.500");
+          setSnackbarOpen(true);
+        }}
+      >
+        Copy
+      </Button>
+    </Box>
+
+    <Box
+      sx={{
+        mt:1,
+        display: 'relative',
+        mx:1,
+        textAlign: "center",
+        alignItems: "center",
+        color: 'grey',
+        marginBottom: 4,
+      }}
+    >
+      <h6>Please carefully send your $TON to these exact addresses</h6>
+     
+    </Box>
+
+
+  </Box>
+</Drawer>
+
             <Snackbar
         open={snackbarOpen}
         autoHideDuration={2000}
