@@ -17,6 +17,8 @@ import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import axios from "axios";
 import UnfoldMoreRoundedIcon from '@mui/icons-material/UnfoldMoreRounded';
+import logo5 from '../assets/logo5.jpg';
+
 
 
 
@@ -35,13 +37,16 @@ const TokenSwap: React.FC = () => {
   const [allTokenPrices, setAllTokenPrices] = useState<any>({});
 
   const tokens = [
+    { name: "BBLIP", icon:      logo5,
+    }, // Sabit fiyat
+    { name: "TON", icon: "https://s3-symbol-logo.tradingview.com/crypto/XTVCTON--big.svg" },
+
     { name: "ETH", icon: "https://s3-symbol-logo.tradingview.com/crypto/XTVCETH--big.svg" },
     { name: "USDT", icon: "https://s3-symbol-logo.tradingview.com/crypto/XTVCUSDT--big.svg" },
     { name: "BTC", icon: "https://s3-symbol-logo.tradingview.com/crypto/XTVCBTC--big.svg" },
     { name: "SUI", icon: "https://s3-symbol-logo.tradingview.com/crypto/XTVCSUI--big.svg" },
     { name: "SOL", icon: "https://s3-symbol-logo.tradingview.com/crypto/XTVCSOL--big.svg" },
-    { name: "TON", icon: "https://s3-symbol-logo.tradingview.com/crypto/XTVCTON--big.svg" },
-    { name: "BBLIP", icon: "https://via.placeholder.com/32?text=BBLIP" }, // Sabit fiyat
+    
   ];
 
   const theme = createTheme({
@@ -448,6 +453,9 @@ const TokenSwap: React.FC = () => {
             onOpen={() => setOpenDrawer(true)}
           >
             <Box sx={{ width: "100%", maxWidth: 400 }}>
+              <Typography sx={{textAlign: "center" , p:2}}>
+                Choose Asset
+              </Typography>
               <List>
                 {tokens.map((token) => (
                   <ListItem

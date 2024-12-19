@@ -8,6 +8,7 @@ import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
 import { CheckCircleOutline } from '@mui/icons-material';
 import LoupeIcon from '@mui/icons-material/Loupe';
 import TokenSwap from "./SwapComponent"; // TokenSwap bileşenini eklediğiniz yer
+import logo5 from '../assets/logo5.jpg';
 import "../App.css";
 
 
@@ -20,22 +21,26 @@ const theme = createTheme({
 });
 
 // Örnek veri
-const initialData = [  {
-    logo: "https://s3-symbol-logo.tradingview.com/crypto/XTVCADA--big.svg",
+const initialData = [  
+  {
+    
+    logo: logo5,
+   
+    symbol: "BBLIP",
+    name: "Booba",
+    amount: 1000000,
+    usdValue: 0,
+    active: true 
+  },{
+
+  logo: "https://s3-symbol-logo.tradingview.com/crypto/XTVCADA--big.svg",
     symbol: "TON",
     name: "Ton",
     amount: 10000,
     usdValue: 0,
     active: true
   },
-  {
-    logo: "https://s3-symbol-logo.tradingview.com/crypto/XTVCADA--big.svg",
-    symbol: "BBLIP",
-    name: "Booba",
-    amount: 1000000,
-    usdValue: 0,
-    active: true 
-  },
+
   {
     logo: "https://s3-symbol-logo.tradingview.com/crypto/XTVCUSDT--big.svg",
     symbol: "USDT",
@@ -218,55 +223,9 @@ const AccountEquityCard: React.FC = () => {
               = $0
             </Typography>
 
-            {/* PNL Details */}
-            <Grid container spacing={1} sx={{ mt: 2 }}>
-              {/* Left Box - Today's PNL */}
-              <Grid item xs={6}>
-                <Box
-                  sx={{
-                    textAlign: "center",
-                    borderRight: "1px solid",
-                    borderColor: "divider",
-                  }}
-                >
-                  <Typography
-                    variant="subtitle2"
-                    sx={{ color: "grey.600" }}
-                  >
-                    Today's PNL
-                  </Typography>
-                  <Typography                     variant="subtitle1"
-                  >0 USDT</Typography>
-                  <Typography
-                    variant="subtitle2"
-                    sx={{ color: "green" }}
-                  >
-                    0%
-                  </Typography>
-                </Box>
-              </Grid>
+        
 
-              {/* Right Box - 7-Day PNL */}
-              <Grid item xs={6}>
-                <Box sx={{ textAlign: "center" }}>
-                  <Typography
-                    variant="subtitle2"
-                    sx={{ color: "grey.600" }}
-                  >
-                    7-Day PNL
-                  </Typography>
-                  <Typography                     variant="subtitle1"
-                  >0 USDT</Typography>
-                  <Typography
-                    variant="subtitle2"
-                    sx={{ color: "green" }}
-                  >
-                    0%
-                  </Typography>
-                </Box>
-              </Grid>
-            </Grid>
-
+           
             {/* Buttons */}
             <Box
               sx={{
@@ -326,7 +285,7 @@ const AccountEquityCard: React.FC = () => {
   <Box className="fullscreen-modal">
     {/* Üst Bar */}
     <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-      <Typography variant="h6">Token Swap</Typography>
+      <Typography variant="h6">Convert Assets</Typography>
       <Button
         onClick={() => setShowTokenSwap(false)} // Modalı kapat
         sx={{ textTransform: "none", color: "red" }}
@@ -431,7 +390,7 @@ const AccountEquityCard: React.FC = () => {
             <Avatar
               src={item.logo}
               alt={item.symbol}
-              sx={{ width: 35, height: 35, mr: 2 }}
+              sx={{ width: 40, height: 40, mr: 2 }}
             />
             <Box>
               <Typography variant="body2">
