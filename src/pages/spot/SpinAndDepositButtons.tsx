@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Tabs, Tab, AppBar, Typography, Box } from '@mui/material';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import logo5 from '../../assets/logo5.png'
 
 
 const theme = createTheme({
@@ -132,7 +133,7 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
 
 
 
-      <AppBar position="static" color="default" sx={{backgroundColor: '#6f0101',   borderRadius: 3 ,     boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)', // Hafif gölge
+      <AppBar position="static" color="default" sx={{backgroundColor: 'white',   borderRadius: 3 ,     boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)', // Hafif gölge
 }}>
       <Tabs
   value={selectedSpinType}
@@ -198,7 +199,7 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
     value="bblip"
     icon={
       <img
-        src="https://cryptologos.cc/logos/autonio-niox-logo.png?v=040"
+        src={logo5}
         alt="TON Logo"
         style={{ width: '30px', height: '30px' }}
       />

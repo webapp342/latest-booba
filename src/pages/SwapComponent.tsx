@@ -17,7 +17,7 @@ import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import axios from "axios";
 import UnfoldMoreRoundedIcon from '@mui/icons-material/UnfoldMoreRounded';
-import logo5 from '../assets/logo5.jpg';
+import logo5 from '../assets/logo5.png';
 
 
 

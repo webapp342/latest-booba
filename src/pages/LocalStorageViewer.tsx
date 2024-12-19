@@ -9,7 +9,7 @@ import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
 import { CheckCircleOutline } from '@mui/icons-material';
 import LoupeIcon from '@mui/icons-material/Loupe';
 import TokenSwap from "./SwapComponent"; // TokenSwap bileşenini eklediğiniz yer
-import logo5 from '../assets/logo5.jpg';
+import logo5 from '../assets/logo5.png';
 import "../App.css";
 
 
