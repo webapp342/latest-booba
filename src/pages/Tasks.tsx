@@ -28,8 +28,7 @@ const DealsComponent: React.FC = () => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 2,
-        maxWidth: '100%',
+        p: 2,
         margin: '0 auto',
       }}
     >
@@ -101,8 +100,9 @@ const DealsComponent: React.FC = () => {
       {/* Görevler */}
       <Box
         sx={{
-          width: '100%',
-          marginTop: 4,
+          width: '102%',
+ 
+          m:2,
         }}
       >
         {categories
@@ -110,7 +110,7 @@ const DealsComponent: React.FC = () => {
             <Box
               key={taskIndex}
               sx={{
-                width: '95%',
+                
                 backgroundColor: 'white',
                 boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
                 borderRadius: 2,
