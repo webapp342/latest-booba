@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import Tasks from '../assets/tasks.png'; // PNG dosyasını import edin
 
 const DealsComponent: React.FC = () => {
@@ -10,6 +10,10 @@ const DealsComponent: React.FC = () => {
     { id: 2, name: 'Category 2', tasks: [2, 3] },
     { id: 3, name: 'Category 3', tasks: [4] },
     { id: 4, name: 'Category 4', tasks: [5] },
+        { id: 5, name: 'Category 5', tasks: [5] },
+            { id: 6, name: 'Category 6', tasks: [5] },
+
+
   ];
 
   const boxes = [
@@ -82,18 +86,19 @@ const DealsComponent: React.FC = () => {
         }}
       >
         {categories.map((category) => (
-          <Button
+          <Typography
             key={category.id}
-            variant={selectedCategory === category.id ? 'contained' : 'outlined'}
             onClick={() => setSelectedCategory(category.id)}
             sx={{
               margin: '0 8px',
-              whiteSpace: 'nowrap',
-              flexShrink: 0, // Butonların sıkışmasını engeller
+              cursor: 'pointer',
+              color: selectedCategory === category.id ? 'black' : 'gray',
+              fontWeight: selectedCategory === category.id ? 'bold' : 'normal',
+              textDecoration: 'none',
             }}
           >
             {category.name}
-          </Button>
+          </Typography>
         ))}
       </Box>
 
@@ -101,8 +106,7 @@ const DealsComponent: React.FC = () => {
       <Box
         sx={{
           width: '102%',
- 
-          m:2,
+          m: 2,
         }}
       >
         {categories
@@ -110,7 +114,6 @@ const DealsComponent: React.FC = () => {
             <Box
               key={taskIndex}
               sx={{
-                
                 backgroundColor: 'white',
                 boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
                 borderRadius: 2,
