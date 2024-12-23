@@ -1,128 +1,119 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Typography, Button, CircularProgress, Badge } from '@mui/material';
-import { getFirestore, doc, getDoc, updateDoc } from 'firebase/firestore'; // Firestore metodları
-import { initializeApp } from 'firebase/app';
-import { firebaseConfig } from './firebaseConfig'; // Firebase yapılandırma
-import Tasks from '../assets/tasks.png'; // PNG dosyasını import edin
+import  { useState } from 'react';
+import { Box, Typography, CircularProgress } from '@mui/material';
+import { doc, getFirestore, updateDoc } from 'firebase/firestore';
+import { tasks } from './Tasks/tasks';
+import { categories } from '../pages/Tasks/categories';
+import { useTaskStatus } from '../pages/Tasks/useTaskStatus';
+import { useButtonStates } from '../pages/Tasks/useButtonStates';
+import { TaskButton } from '../pages/Tasks/TaskButton';
+import { CategoryTabs } from '../pages/Tasks/CategoryTabs';
 
-// Firebase App başlat
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const db = getFirestore();
 
-// Her görev için logo ve link
-const boxes = [
-  { title: 'Follow Booba on X', description: '+100 BBLIP', logo: '', link: 'https://telegram.com' },
-  { title: 'Task 2', description: '+100 BBLIP', logo: '', link: 'https://facebook.com' },
-  { title: 'Task 3', description: '+100 BBLIP', logo: '', link: 'https://x.com' },
-  { title: 'Task 4', description: '+100 BBLIP', logo: '', link: 'https://example.com/task-4' },
-  { title: 'Task 5', description: '+100 BBLIP', logo: '', link: 'https://example.com/task-5' },
-  { title: 'Task 6', description: '+100 BBLIP', logo: '', link: 'https://example.com/task-6' },
-  { title: '', description: 'Coming Soon ...', logo: '', link: '' },
-];
+export function TasksComponent() {
+  const [selectedCategory, setSelectedCategory] = useState<number>(1);
+  const { taskStatus, setTaskStatus, loading, error } = useTaskStatus();
+  const { buttonStates, setButtonStates } = useButtonStates();
 
-// Kategoriler
-const categories = [
-  { id: 1, name: 'New', tasks: [0, 1] },
-  { id: 2, name: 'Socials', tasks: [2, 3] },
-  { id: 3, name: 'Frens', tasks: [4] },
-  { id: 4, name: 'Academy', tasks: [5] },
-  { id: 5, name: 'On Chain', tasks: [6] },
-  { id: 6, name: 'Farming', tasks: [6] },
-];
+  const handleTaskStart = async (taskIndex: number) => {
+    const telegramUserId = localStorage.getItem('telegramUserId');
+    if (!telegramUserId) return;
 
-const DealsComponent: React.FC = () => {
-  const [taskStatus, setTaskStatus] = useState<any>([]); // Kullanıcı görev durumu
-  const [loading, setLoading] = useState(true); // Yükleniyor durumu
-  const [error, setError] = useState<string | null>(null); // Hata mesajı için state
-  const [selectedCategory, setSelectedCategory] = useState<number>(1); // Seçili kategori
-
-  useEffect(() => {
-    const fetchUserTasks = async () => {
-      console.log('Fetching user tasks...');
-      setLoading(true);
-      setError(null); // Hata durumunu sıfırla
-
-      try {
-        const telegramUserId = localStorage.getItem('telegramUserId');
-        console.log('Telegram User ID:', telegramUserId);
-
-        if (!telegramUserId) {
-          setError('Kullanıcı ID’si bulunamadı. Lütfen tekrar giriş yapın.');
-          console.log('Kullanıcı ID bulunamadı.');
-          setTaskStatus([]);
-          setLoading(false);
-          return;
-        }
-
-        const userDocRef = doc(db, 'users', telegramUserId);
-        console.log('Fetching user data from Firestore:', userDocRef.path);
-        const userDocSnap = await getDoc(userDocRef);
-
-        if (userDocSnap.exists()) {
-          const userData = userDocSnap.data();
-          console.log('User data retrieved:', userData);
-
-          if (userData.tasks) {
-            setTaskStatus(userData.tasks);
-            console.log('User tasks:', userData.tasks);
-          } else {
-            setTaskStatus([]);
-            console.log('No tasks found for user.');
-          }
-        } else {
-          setError('Kullanıcı belgesi bulunamadı.');
-          console.log('User document not found.');
-          setTaskStatus([]);
-        }
-      } catch (err) {
-        setError('Bir hata oluştu. Lütfen tekrar deneyin.');
-        console.error('Error fetching user tasks:', err);
-        setTaskStatus([]);
-      } finally {
-        setLoading(false);
-        console.log('Loading complete, UI updated.');
-      }
+    const newState = {
+      loading: true,
+      claimLoading: false,
+      startTime: Date.now()
     };
 
-    fetchUserTasks();
-  }, []);
+    setButtonStates(prev => ({
+      ...prev,
+      [taskIndex]: newState
+    }));
 
-  const handleTaskCompletion = async (taskIndex: number) => {
-    console.log(`Task ${taskIndex} clicked for completion.`);
+    localStorage.setItem('buttonStates', JSON.stringify({
+      ...buttonStates,
+      [taskIndex]: newState
+    }));
 
-    const telegramUserId = localStorage.getItem('telegramUserId');
-    console.log('Telegram User ID for task completion:', telegramUserId);
-
-    if (!telegramUserId) {
-      console.log('No user ID found, aborting task completion.');
-      return;
-    }
-
-    console.log(`Updating task ${taskIndex} to completed...`);
-
-    setTaskStatus((prevStatus: any) => {
-      const updatedTasks = [...prevStatus];
-      updatedTasks[taskIndex].completed = true;
-      updatedTasks[taskIndex].disabled = true;
-      return updatedTasks;
-    });
-
-    const userDocRef = doc(db, 'users', telegramUserId);
-    console.log('Updating task status in Firestore...');
-    await updateDoc(userDocRef, {
-      [`tasks.${taskIndex}.completed`]: true,
-      [`tasks.${taskIndex}.disabled`]: true,
-    });
-
-    setTimeout(() => {
-      setTaskStatus((prevStatus: any) => {
-        const updatedTasks = [...prevStatus];
-        updatedTasks[taskIndex].disabled = true;
-        return updatedTasks;
+    try {
+      const userDocRef = doc(db, 'users', telegramUserId);
+      await updateDoc(userDocRef, {
+        [`tasks.${taskIndex}.completed`]: true
       });
-    }, 15000);
 
-    window.location.href = boxes[taskIndex].link!;
+      const newTaskStatus = [...taskStatus];
+      if (newTaskStatus[taskIndex]) {
+        newTaskStatus[taskIndex] = { ...newTaskStatus[taskIndex], completed: true };
+        setTaskStatus(newTaskStatus);
+      }
+
+console.log("Navigating to:", tasks[taskIndex].link);
+window.location.href = tasks[taskIndex].link;
+
+      setTimeout(() => {
+        setButtonStates(prev => {
+          const newStates = { ...prev };
+          delete newStates[taskIndex];
+          return newStates;
+        });
+        
+        const currentStates = JSON.parse(localStorage.getItem('buttonStates') || '{}');
+        delete currentStates[taskIndex];
+        localStorage.setItem('buttonStates', JSON.stringify(currentStates));
+      }, 15000);
+    } catch (error) {
+      console.error('Error handling task start:', error);
+      setButtonStates(prev => {
+        const newStates = { ...prev };
+        delete newStates[taskIndex];
+        return newStates;
+      });
+    }
+  };
+
+  const handleClaim = async (taskIndex: number) => {
+    const telegramUserId = localStorage.getItem('telegramUserId');
+    if (!telegramUserId) return;
+
+    setButtonStates(prev => ({
+      ...prev,
+      [taskIndex]: { 
+        ...(prev[taskIndex] || {}), 
+        claimLoading: true 
+      }
+    }));
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 5000));
+      
+      const userDocRef = doc(db, 'users', telegramUserId);
+      await updateDoc(userDocRef, {
+        [`tasks.${taskIndex}.disabled`]: true
+      });
+
+      const newTaskStatus = [...taskStatus];
+      if (newTaskStatus[taskIndex]) {
+        newTaskStatus[taskIndex] = { ...newTaskStatus[taskIndex], disabled: true };
+        setTaskStatus(newTaskStatus);
+      }
+
+      setButtonStates(prev => {
+        const newStates = { ...prev };
+        delete newStates[taskIndex];
+        return newStates;
+      });
+
+      const currentStates = JSON.parse(localStorage.getItem('buttonStates') || '{}');
+      delete currentStates[taskIndex];
+      localStorage.setItem('buttonStates', JSON.stringify(currentStates));
+    } catch (error) {
+      console.error('Error handling claim:', error);
+      setButtonStates(prev => {
+        const newStates = { ...prev };
+        delete newStates[taskIndex];
+        return newStates;
+      });
+    }
   };
 
   return (
@@ -136,10 +127,9 @@ const DealsComponent: React.FC = () => {
         margin: '0 auto',
       }}
     >
-      {/* PNG Görseli */}
       <Box
         component="img"
-        src={Tasks}
+        src="/tasks.png"
         alt="Deal Icon"
         sx={{
           mt: 4,
@@ -147,69 +137,18 @@ const DealsComponent: React.FC = () => {
           maxWidth: '50%',
         }}
       />
-      {/* Başlık */}
       <Typography variant="h5" sx={{ marginTop: 4, color: 'black', fontWeight: 'bold' }}>
         Tasks
       </Typography>
-
-      {/* Açıklama */}
       <Typography variant="body1" sx={{ marginTop: 1, color: 'text.secondary' }}>
         Get rewards for completing tasks.
       </Typography>
 
-      {/* Kategori Seçici */}
-      <Box
-        sx={{
-          display: 'flex',
-          overflowX: 'auto',
-          marginTop: 4,
-          padding: 2,
-          ml: -3,
-          width: '100%',
-          whiteSpace: 'nowrap',
-          scrollbarWidth: 'none',
-          '-ms-overflow-style': 'none',
-          '&::-webkit-scrollbar': {
-            display: 'none',
-          },
-        }}
-      >
-        {categories.map((category) => (
-          <Badge
-            key={category.id}
-            color="success"
-            badgeContent=" "
-            invisible={![1, 2, 3].includes(category.id)}
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            sx={{
-              margin: '0 15px',
-              '& .MuiBadge-badge': {
-                height: '12px',
-                minWidth: '12px',
-                borderRadius: '6px',
-              },
-            }}
-          >
-            <Typography
-              onClick={() => setSelectedCategory(category.id)}
-              sx={{
-                fontSize: '1.1rem',
-                cursor: 'pointer',
-                color: selectedCategory === category.id ? 'black' : 'gray',
-                fontWeight: selectedCategory === category.id ? 'bold' : 'normal',
-                textDecoration: 'none',
-              }}
-            >
-              {category.name}
-            </Typography>
-          </Badge>
-        ))}
-      </Box>
+      <CategoryTabs
+        selectedCategory={selectedCategory}
+        onSelectCategory={setSelectedCategory}
+      />
 
-      {/* Görevler */}
       <Box sx={{ width: '100%', mt: 4 }}>
         {loading ? (
           <CircularProgress />
@@ -218,7 +157,7 @@ const DealsComponent: React.FC = () => {
         ) : (
           categories
             .find((category) => category.id === selectedCategory)
-            ?.tasks.map((taskIndex: number) => (
+            ?.tasks.map((taskIndex) => (
               <Box
                 key={taskIndex}
                 sx={{
@@ -235,32 +174,25 @@ const DealsComponent: React.FC = () => {
               >
                 <Box sx={{ flexGrow: 1 }}>
                   <Typography variant="body1" sx={{ fontWeight: 'bold', color: 'black' }}>
-                    {boxes[taskIndex].title}
+                    {tasks[taskIndex].title}
                   </Typography>
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                    {boxes[taskIndex].description}
+                    {tasks[taskIndex].description}
                   </Typography>
                 </Box>
-                <Button
-                  variant="outlined"
-                  size="small"
-                  onClick={() => handleTaskCompletion(taskIndex)}
-                  disabled={taskStatus[taskIndex]?.disabled || taskStatus[taskIndex]?.completed}
-                  sx={{
-                    textTransform: 'none',
-                    backgroundColor: 'transparent',
-                    boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.2)',
-                    borderRadius: 2,
-                  }}
-                >
-                  {taskStatus[taskIndex]?.completed ? 'Done' : 'Start'}
-                </Button>
+                {taskStatus[taskIndex] && (
+                  <TaskButton
+                    task={taskStatus[taskIndex]}
+                    buttonState={buttonStates[taskIndex]}
+                    onStart={() => handleTaskStart(taskIndex)}
+                    onClaim={() => handleClaim(taskIndex)}
+                    
+                  />
+                )}
               </Box>
             ))
         )}
       </Box>
     </Box>
   );
-};
-
-export default DealsComponent;
+}

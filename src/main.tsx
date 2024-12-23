@@ -13,11 +13,10 @@ import DPRdata from "./pages/DPRdata.tsx";
 import LocalStorageViewer from "./pages/LocalStorageViewer.tsx";
 //import  CryptoTable2  from "./pages/wallet.tsx";
 import Calculator from "./pages/Calculator.tsx";
-import Task from "./pages/Tasks/Task.tsx";
 import TokenSwap from "./pages/SwapComponent.tsx";
 
 import TopComponent from "./pages/Cup.tsx";
-import DealsComponent from "./pages/Tasks.tsx";
+import {TasksComponent} from "./pages/Tasks.tsx";
 import TestComponent from "./pages/TestComponent.tsx";
 import { SlotMachine } from './pages/spot/SlotMachine';
 
@@ -44,17 +43,14 @@ const router = createBrowserRouter([
         path: "/latest-booba/swap",
         element:     <TokenSwap />,
       },
-      {
-        path: "/latest-booba/task",
-        element: <Task />,
-      },
+     
       {
         path: "/latest-booba/test",
         element: <TestComponent />,
       },
       {
         path: "/latest-booba/tasks",
-        element: <DealsComponent />,
+        element: <TasksComponent />,
       },
       {
         path: "/latest-booba/user-details",
