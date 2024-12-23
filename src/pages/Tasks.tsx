@@ -47,8 +47,7 @@ export function TasksComponent() {
         setTaskStatus(newTaskStatus);
       }
 
-console.log("Navigating to:", tasks[taskIndex].link);
-window.location.href = tasks[taskIndex].link;
+      window.location.href = tasks[taskIndex].link;
 
       setTimeout(() => {
         setButtonStates(prev => {
