@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
-import { Task } from './task';
+import { Task } from './Task';
 
 export function useTaskStatus() {
   const [taskStatus, setTaskStatus] = useState<Task[]>([]);

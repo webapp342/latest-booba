@@ -1,7 +1,7 @@
 import  { useState } from 'react';
 import { Box, Typography, CircularProgress } from '@mui/material';
 import { doc, getFirestore, updateDoc } from 'firebase/firestore';
-import { tasks } from './Tasks/tasks';
+import { tasks } from '../pages/Tasks/tasks';
 import { categories } from '../pages/Tasks/categories';
 import { useTaskStatus } from '../pages/Tasks/useTaskStatus';
 import { useButtonStates } from '../pages/Tasks/useButtonStates';
