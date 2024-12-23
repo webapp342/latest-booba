@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ButtonStates } from './Task';
+import { ButtonStates } from './task';
 
 export function useButtonStates() {
   const [buttonStates, setButtonStates] = useState<ButtonStates>({});

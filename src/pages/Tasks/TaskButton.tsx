@@ -1,5 +1,5 @@
 import { Box, Button, CircularProgress, Snackbar } from '@mui/material';
-import { Task, ButtonState } from './Task';
+import { Task, ButtonState } from './task';
 import { useState } from 'react';
 
 interface TaskButtonProps {
