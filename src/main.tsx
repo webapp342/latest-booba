@@ -16,7 +16,7 @@ import Calculator from "./pages/Calculator.tsx";
 import TokenSwap from "./pages/SwapComponent.tsx";
 
 import TopComponent from "./pages/Cup.tsx";
-import {TasksComponent} from "./pages/Tasks.tsx";
+import DealsComponent from "./pages/Tasks.tsx";
 import TestComponent from "./pages/TestComponent.tsx";
 import { SlotMachine } from './pages/spot/SlotMachine';
 
@@ -50,7 +50,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/latest-booba/tasks",
-        element: <TasksComponent />,
+        element: <DealsComponent />,
       },
       {
         path: "/latest-booba/user-details",
