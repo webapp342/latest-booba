@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";import { ThemeProvider, creat
 import QRCode from 'qrcode';
 import { Box, Card, CardContent, Typography,  Button, Avatar, TextField, InputAdornment ,Drawer, Snackbar, SnackbarContent } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
-import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
 import { CheckCircleOutline } from '@mui/icons-material';
@@ -14,6 +12,7 @@ import logo5 from '../assets/logo5.png';
 import { doc, onSnapshot , getFirestore, getDoc} from "firebase/firestore";
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './firebaseConfig';
+import UserAvatar from "./UserAvatar";
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -288,11 +287,16 @@ useEffect(() => {
       <Box  m={2} justifyContent= "space-between"
           alignItems= "center"
           display="flex">
+       
+           
+    <span       onClick={handleClick}
+>
+      Back
+    </span>
+    
+          
 
-<PersonOutlinedIcon
-      sx={{ fontSize: '1.6rem', color: 'black', cursor: 'pointer' }}
-      onClick={handleClick}
-    />
+
 
             <Typography   
             sx={{
@@ -309,9 +313,7 @@ useEffect(() => {
 
   
 
-           <AdminPanelSettingsOutlinedIcon    sx={{ fontSize: '1.6rem', color: 'black' }} />
-
-      
+  <UserAvatar telegramUserId="user_telegram_id" displayName="Booba Blip" />      
 
       
        
