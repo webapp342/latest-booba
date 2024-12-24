@@ -5,7 +5,6 @@ import SimpleBottomNavigation from "./pages/Navigation";
 import WebApp from "@twa-dev/sdk";
 import Loading from "./pages/Loading"; // Loading bileşenini import edin
 import "./index.css"; // Global stil dosyasını import edin
-import "./i18n/i18n"; // i18n yapılandırmasını import edin
 
 function App() {
     const [loading, setLoading] = useState(true);

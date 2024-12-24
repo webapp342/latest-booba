@@ -8,9 +8,17 @@ import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
 import { CheckCircleOutline } from '@mui/icons-material';
 import LoupeIcon from '@mui/icons-material/Loupe';
+import { useNavigate } from 'react-router-dom';
 import TokenSwap from "./SwapComponent"; // TokenSwap bileşenini eklediğiniz yer
 import logo5 from '../assets/logo5.png';
-import "../App.css";
+import { doc, onSnapshot , getFirestore, getDoc} from "firebase/firestore";
+import { initializeApp } from 'firebase/app';
+import { firebaseConfig } from './firebaseConfig';
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+
 
 
 
@@ -21,47 +29,54 @@ const theme = createTheme({
   },
 });
 
-// Örnek veri
-const initialData = [  
+
+interface Asset {
+  logo: string;
+  symbol: string;
+  name: string;
+  amount: number;
+  usdValue: number;
+  active: boolean;
+}
+
+// Centralized initial data definition
+const initialData: Asset[] = [
   {
-    
     logo: logo5,
-   
     symbol: "BBLIP",
     name: "Booba",
-    amount: 1000000,
+    amount: 0, // Placeholder, updated dynamically
     usdValue: 0,
-    active: true 
-  },{
-
-  logo: "https://s3-symbol-logo.tradingview.com/crypto/XTVCADA--big.svg",
+    active: true
+  },
+  {
+    logo: "https://s3-symbol-logo.tradingview.com/crypto/XTVCADA--big.svg",
     symbol: "TON",
     name: "Ton",
     amount: 10000,
     usdValue: 0,
     active: true
   },
-
   {
     logo: "https://s3-symbol-logo.tradingview.com/crypto/XTVCUSDT--big.svg",
     symbol: "USDT",
     name: "Tether",
-    amount: 20000,
+    amount: 0,
     usdValue: 0,
-    active: true 
+    active: true
   },
   {
     logo: "https://s3-symbol-logo.tradingview.com/crypto/XTVCBTC--big.svg",
     symbol: "TICKET",
     name: "Lucky Ticket",
-    amount: 20,
+    amount: 0,
     usdValue: 0,
-    active: true 
+    active: true
   },
   {
     logo: "https://s3-symbol-logo.tradingview.com/crypto/XTVCETH--big.svg",
     symbol: "ETH",
-    name: "Ethereum", 
+    name: "Ethereum",
     amount: 0,
     usdValue: 0,
     active: false
@@ -74,7 +89,6 @@ const initialData = [
     usdValue: 0,
     active: false
   },
-
   {
     logo: "https://s3-symbol-logo.tradingview.com/crypto/XTVCADA--big.svg",
     symbol: "ADA",
@@ -82,8 +96,7 @@ const initialData = [
     amount: 0,
     usdValue: 0,
     active: false
-  },
-
+  }
 ];
 
 const AccountEquityCard: React.FC = () => {
@@ -92,10 +105,70 @@ const AccountEquityCard: React.FC = () => {
   const [showTokenSwap, setShowTokenSwap] = useState(false);
   const [openDepositDrawer, setOpenDepositDrawer] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [tonPrice, setTonPrice] = useState<number | null>(null); // TON price state
-  const [data, setData] = useState(initialData);
-  const [qrCodeUrl, setQrCodeUrl] = useState<string>('');
+  const [comment, setComment] = useState("Loading..."); // Default value for comment
 
+  const [tonPrice, setTonPrice] = useState<number | null>(null); // TON price state
+  const [qrCodeUrl, setQrCodeUrl] = useState<string>('');
+  const [data, setData] = useState<Asset[]>([]); // Initialize as an empty array
+  const [totalEquity, setTotalEquity] = useState<string>("0.00");
+   const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate('/latest-booba/');
+  };
+
+// Calculate the total USD value
+useEffect(() => {
+  const totalUsdValue = data.reduce((sum, item) => sum + item.usdValue, 0);
+  setTotalEquity(totalUsdValue.toFixed(2)); // Set the total value in state
+}, [data]);
+
+  useEffect(() => {
+    const telegramUserId = localStorage.getItem("telegramUserId");
+    if (!telegramUserId) {
+      console.error("Telegram User ID not found!");
+      return;
+    }
+
+    // Firestore real-time listener
+    const docRef = doc(db, "users", telegramUserId);
+    const unsubscribe = onSnapshot(docRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        const bblipAmount = data.bblip || 0;
+        const totalUSD = data.usdt || 0;
+        const ticket = data.tickets || 0;
+        const ton = data.total || 0;
+
+
+        // Update initialData dynamically
+        const updatedData = initialData.map((item) => {
+          switch (item.symbol) {
+            case "BBLIP":
+              return { ...item, amount: bblipAmount };
+            case "USDT":
+              return { ...item, amount: totalUSD };
+            case "TICKET":
+              return { ...item, amount: ticket };
+               case "TON":
+              return { ...item, amount: ton };
+            default:
+              return item;
+          }
+        });
+
+        setData(updatedData);
+
+        // Store values in localStorage
+        localStorage.setItem("bblipAmount", JSON.stringify(bblipAmount));
+        localStorage.setItem("totalUSD", JSON.stringify(totalUSD));
+        localStorage.setItem("ticket", JSON.stringify(ticket));
+      } else {
+        console.error("Document not found!");
+      }
+    });
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     // Fetch the TON/USDT price from Binance API
@@ -130,13 +203,13 @@ const AccountEquityCard: React.FC = () => {
 
   useEffect(() => {
     // Update the usdValue for each asset whenever TON price is fetched or changed
-    const updatedData = initialData.map(item => ({
+    const updatedData = data.map((item) => ({
       ...item,
       usdValue: calculateUsdValue(item.amount, item.symbol),
     }));
+
     setData(updatedData);
   }, [tonPrice]);
-  
 
   // Arama filtreleme fonksiyonu
   const filteredData = data.filter(
@@ -169,33 +242,57 @@ const AccountEquityCard: React.FC = () => {
   };
 
   useEffect(() => {
-    const generateQRCode = async () => {
-      const address = 'UQDppAsjyioMu23LIEaFBm5g5o5oNjRft99oe4gfv-c9BNn2';
-      const comment = '12345';
-      const encodedComment = encodeURIComponent(comment);
-      const uri = `https://app.tonkeeper.com/transfer/${address}?text=${encodedComment}`;
-      
-      try {
-        const qrCode = await QRCode.toDataURL(uri);  // QR kodu için data URL oluştur
-        setQrCodeUrl(qrCode);  // QR kodu URL'yi state'e kaydet
-      } catch (error) {
-        console.error('QR code generation failed:', error);
+  const generateQRCode = async () => {
+    try {
+      const telegramUserId = localStorage.getItem("telegramUserId");
+      if (!telegramUserId) {
+        console.error("Telegram User ID not found!");
+        setComment("Error: User ID not found"); // Set error message
+        return;
       }
-    };
 
-    generateQRCode();
-  }, []);
+      // Firestore query to fetch the comment
+      const docRef = doc(db, "users", telegramUserId);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const fetchedComment = docSnap.data().comment || "No comment available";
+        setComment(fetchedComment); // Set the fetched comment
+        const address = 'UQDppAsjyioMu23LIEaFBm5g5o5oNjRft99oe4gfv-c9BNn2';
+        const encodedComment = encodeURIComponent(fetchedComment);
+        const uri = `https://app.tonkeeper.com/transfer/${address}?text=${encodedComment}`;
+
+        // Generate QR Code
+        const qrCode = await QRCode.toDataURL(uri);
+        setQrCodeUrl(qrCode); // Save QR Code URL to state
+      } else {
+        console.error("User document not found in Firestore!");
+        setComment("Error: Document not found"); // Set error message
+      }
+    } catch (error) {
+      console.error("Error generating QR code:", error);
+      setComment("Error fetching comment"); // Set error message
+    }
+  };
+
+  generateQRCode();
+}, []);
+
+
+
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box  sx={{  }}>
+  
       <Box  m={2} justifyContent= "space-between"
           alignItems= "center"
           display="flex">
 
-<PersonOutlinedIcon  sx={{ fontSize: '1.6rem', color: 'black'  }} />
-
+<PersonOutlinedIcon
+      sx={{ fontSize: '1.6rem', color: 'black', cursor: 'pointer' }}
+      onClick={handleClick}
+    />
 
             <Typography   
             sx={{
@@ -231,16 +328,15 @@ const AccountEquityCard: React.FC = () => {
             >
               Total Account Equity
             </Typography>
-            <Typography mt={-1}               variant="subtitle1"
- align="center" gutterBottom>
-              0 USDT
-            </Typography>
+            <Typography mt={-1} variant="subtitle1" align="center" gutterBottom>
+        {totalEquity} USDT
+      </Typography>
             <Typography mt={-1}
               variant="subtitle2"
               align="center"
               color="text.secondary"
             >
-              = $0
+              = ${totalEquity}
             </Typography>
 
         
@@ -543,9 +639,10 @@ const AccountEquityCard: React.FC = () => {
         marginBottom: 4,
       }}
     >
-<span style={{ color: "grey", fontSize: "0.9rem"  }}>
-    Memo: <span style={{ color: "black" , marginLeft: 12 , fontSize: "1rem"  }}>123456789</span>
-  </span> 
+<span style={{ color: "grey", fontSize: "0.9rem" }}>
+  Comment: <span style={{ color: "black", marginLeft: 12, fontSize: "1rem" }}>{comment}</span>
+</span>
+
       <Button
         onClick={() => {
           navigator.clipboard.writeText("00.500");
@@ -598,7 +695,7 @@ const AccountEquityCard: React.FC = () => {
           }
         />
       </Snackbar>
-      </Box>
+
     </ThemeProvider>
   );
 };

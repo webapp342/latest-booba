@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
-import "./i18n/i18n";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import LocalStorageViewer from "./pages/LocalStorageViewer.tsx";
 import TokenSwap from "./pages/SwapComponent.tsx";
@@ -23,13 +22,14 @@ const router = createBrowserRouter([
     children: [
   
      
-      {
-        path: "/latest-booba/spin",
-        element:     <LocalStorageViewer />,
-      },
+   
       {
         path: "/latest-booba/swap",
         element:     <TokenSwap />,
+      },
+         {
+        path: "/latest-booba/spin",
+        element:     <LocalStorageViewer />,
       },
      
       {

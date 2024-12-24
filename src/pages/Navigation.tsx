@@ -2,20 +2,23 @@ import * as React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import SportsEsportsTwoToneIcon from '@mui/icons-material/SportsEsportsTwoTone';import AccountBalanceWalletTwoToneIcon from '@mui/icons-material/AccountBalanceWalletTwoTone';
+import SportsEsportsTwoToneIcon from '@mui/icons-material/SportsEsportsTwoTone';
+import AccountBalanceWalletTwoToneIcon from '@mui/icons-material/AccountBalanceWalletTwoTone';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import EmojiEventsTwoToneIcon from '@mui/icons-material/EmojiEventsTwoTone';
 
-import InventoryTwoToneIcon from '@mui/icons-material/InventoryTwoTone';import PeopleOutlineTwoToneIcon from '@mui/icons-material/PeopleOutlineTwoTone';
+import InventoryTwoToneIcon from '@mui/icons-material/InventoryTwoTone';
+import PeopleOutlineTwoToneIcon from '@mui/icons-material/PeopleOutlineTwoTone';
 
 
 const navItems = [
   { label: 'Game', icon: <SportsEsportsTwoToneIcon />, path: '/latest-booba/slot' },
   { label: 'Frens', icon: <PeopleOutlineTwoToneIcon />, path: '/latest-booba/test' },
-    { label: 'Top', icon: <EmojiEventsTwoToneIcon />, path: "/latest-booba/" },
+  { label: 'Top', icon: <EmojiEventsTwoToneIcon />, path: '/latest-booba/' },
 
   { label: 'Tasks', icon: <InventoryTwoToneIcon  />, path: '/latest-booba/tasks' },
-  { label: 'Wallet', icon: <AccountBalanceWalletTwoToneIcon />, path: '/latest-booba/spin' },
+      { label: 'Wallet', icon: <AccountBalanceWalletTwoToneIcon />, path: '/latest-booba/spin' },
+
 ];
 
 export default function SimpleBottomNavigation() {
@@ -43,7 +46,7 @@ export default function SimpleBottomNavigation() {
   });
 
 
-  const shouldHideBottomNav = location.pathname === '/latest-booba/calculator';
+  const shouldHideBottomNav = location.pathname === '/latest-booba/spin';
   if (shouldHideBottomNav) {
     return null;
   }
@@ -78,7 +81,7 @@ export default function SimpleBottomNavigation() {
         pb: 1,
         color: value === index ? 'black' : '#616161',
         '& .MuiSvgIcon-root': {
-          fontSize: '1.4rem', // Sabit ikon boyutu
+          fontSize: '1.2rem', // Sabit ikon boyutu
           color: value === index ? 'black' : '#9E9E9E', // Renk değişimi
         },
         '& .MuiBottomNavigationAction-label': {

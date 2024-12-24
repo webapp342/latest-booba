@@ -162,7 +162,7 @@ const DealsComponent: React.FC = () => {
 
     // Add 1000 to the BBLIP balance field
     await updateDoc(userDocRef, {
-      BBLIP: increment(1000), // This uses Firestore's `increment` function to add 1000 to the BBLIP field
+      bblip: increment(1000), // This uses Firestore's `increment` function to add 1000 to the BBLIP field
     });
 
     // Wait for 5 seconds for circular progress before showing Snackbar
