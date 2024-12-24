@@ -13,9 +13,7 @@ const Loading: React.FC = () => {
       try {
         console.log('Starting data fetch process...');
 
-        // Clear all localStorage data at the start
-        localStorage.clear();
-        console.log('localStorage cleared.');
+       
 
         let telegramUserId = '';
         const defaultTelegramUserId = '1421109983';
@@ -32,14 +30,7 @@ const Loading: React.FC = () => {
         localStorage.setItem('telegramUserId', telegramUserId);
 
         // Fetch countdown data
-        const countdownDocRef = doc(db, 'countdowns', telegramUserId);
-        const countdownDocSnap = await getDoc(countdownDocRef);
-
-        if (countdownDocSnap.exists()) {
-          const countdownData = countdownDocSnap.data();
-          localStorage.setItem(`countdown_${telegramUserId}`, JSON.stringify(countdownData));
-          console.log('Countdown data saved to localStorage:', countdownData);
-        }
+        
 
         // Fetch transaction_hashes data
         const transactionHashesDocRef = doc(db, 'transaction_hashes', telegramUserId);
@@ -97,7 +88,7 @@ const Loading: React.FC = () => {
       ) : error ? (
         <p>{error}</p>
       ) : (
-        <p>Data has been successfully fetched and saved to local storage.</p>
+        <p></p>
       )}
     </Box>
   );

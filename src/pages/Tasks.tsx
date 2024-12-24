@@ -11,8 +11,9 @@ import {
 import {
   getFirestore,
   doc,
-  getDoc,
+  onSnapshot,
   updateDoc,
+  increment,
 } from 'firebase/firestore';
 import AlertTitle from '@mui/material/AlertTitle';
 import { initializeApp } from 'firebase/app';
@@ -25,7 +26,6 @@ import task4Logo from '../assets/task1logo.png';
 import task5Logo from '../assets/task1logo.png';
 import task6Logo from '../assets/task1logo.png';
 import comingSoonLogo from '../assets/task1logo.png';
-
 
 // Firebase App initialization
 const app = initializeApp(firebaseConfig);
@@ -51,8 +51,6 @@ const taskLogos = [
   task6Logo,
   comingSoonLogo,
 ];
-
-
 
 const categories = [
   { id: 1, name: 'New', tasks: [0, 1] },
@@ -82,14 +80,20 @@ const DealsComponent: React.FC = () => {
         }
 
         const userDocRef = doc(db, 'users', telegramUserId);
-        const userDocSnap = await getDoc(userDocRef);
+        
+        // Using onSnapshot for real-time updates
+        const unsubscribe = onSnapshot(userDocRef, (docSnapshot) => {
+          if (docSnapshot.exists()) {
+            const userData = docSnapshot.data();
+            setTaskStatus(userData.tasks || {});
+          } else {
+            setError('User document not found.');
+          }
+        });
 
-        if (userDocSnap.exists()) {
-          const userData = userDocSnap.data();
-          setTaskStatus(userData.tasks || {});
-        } else {
-          throw new Error('User document not found.');
-        }
+        // Cleanup function to stop the real-time listener when the component unmounts
+        return () => unsubscribe();
+
       } catch (err) {
         setError((err as Error).message);
       } finally {
@@ -136,37 +140,43 @@ const DealsComponent: React.FC = () => {
   };
 
   const handleClaimTask = async (taskIndex: number) => {
-    try {
-      const telegramUserId = localStorage.getItem('telegramUserId');
-      if (!telegramUserId) throw new Error('User ID not found.');
+  try {
+    const telegramUserId = localStorage.getItem('telegramUserId');
+    if (!telegramUserId) throw new Error('User ID not found.');
 
-      setLoadingTaskIndex(taskIndex); // Show loading spinner for the claim action
+    setLoadingTaskIndex(taskIndex); // Show loading spinner for the claim action
 
-      // Immediately update task as claimed (set completed and disabled fields)
-      const updatedTasks = {
-        ...taskStatus,
-        [taskIndex]: { ...taskStatus[taskIndex], disabled: true },
-      };
+    // Immediately update task as claimed (set completed and disabled fields)
+    const updatedTasks = {
+      ...taskStatus,
+      [taskIndex]: { ...taskStatus[taskIndex], disabled: true },
+    };
 
-      setTaskStatus(updatedTasks);
+    setTaskStatus(updatedTasks);
 
-      // Update Firestore with the claim action (set disabled to true)
-      const userDocRef = doc(db, 'users', telegramUserId);
-      await updateDoc(userDocRef, {
-        [`tasks.${taskIndex}.disabled`]: true,
-      });
+    // Update Firestore with the claim action (set disabled to true)
+    const userDocRef = doc(db, 'users', telegramUserId);
+    await updateDoc(userDocRef, {
+      [`tasks.${taskIndex}.disabled`]: true,
+    });
 
-      // Wait for 5 seconds for circular progress before showing Snackbar
-      setTimeout(() => {
-        setOpenSnackbar(true); // Show Snackbar after 5 seconds
-        setLoadingTaskIndex(null); // Hide the spinner after 5 seconds
-      }, 5000);
-    } catch (err) {
-      console.error('Error claiming task:', err);
-      setError('An error occurred while claiming the task. Please try again.');
-      setLoadingTaskIndex(null); // Hide the spinner in case of error
-    }
-  };
+    // Add 1000 to the BBLIP balance field
+    await updateDoc(userDocRef, {
+      BBLIP: increment(1000), // This uses Firestore's `increment` function to add 1000 to the BBLIP field
+    });
+
+    // Wait for 5 seconds for circular progress before showing Snackbar
+    setTimeout(() => {
+      setOpenSnackbar(true); // Show Snackbar after 5 seconds
+      setLoadingTaskIndex(null); // Hide the spinner after 5 seconds
+    }, 5000);
+  } catch (err) {
+    console.error('Error claiming task:', err);
+    setError('An error occurred while claiming the task. Please try again.');
+    setLoadingTaskIndex(null); // Hide the spinner in case of error
+  }
+};
+
 
   return (
     <Box
@@ -263,12 +273,13 @@ const DealsComponent: React.FC = () => {
                 }}
               >
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-<Box
-      component="img"
-      src={taskLogos[taskIndex]} // Use the logo for the current task
-      alt={`Task ${taskIndex + 1} logo`}
-      sx={{ width: '40px', height: '40px', marginRight: 2 }} // Adjust size and margin
-    />                  <Box>
+                  <Box
+                    component="img"
+                    src={taskLogos[taskIndex]} // Use the logo for the current task
+                    alt={`Task ${taskIndex + 1} logo`}
+                    sx={{ width: '40px', height: '40px', marginRight: 2 }} // Adjust size and margin
+                  />
+                  <Box>
                     <Typography variant="body1" sx={{ fontWeight: 'bold', color: 'black' }}>
                       {tasksMetadata[taskIndex].title}
                     </Typography>
