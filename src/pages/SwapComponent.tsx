@@ -189,16 +189,15 @@ const TokenSwap: React.FC = () => {
     }
   };
 
-   const handleMaxClick = (type: "from" | "to") => {
-    const token = type === "from" ? fromToken : toToken;
-    const maxBalance = getBalanceForToken(token);
-    
-    // Create a synthetic event to reuse existing handler
-    const event = {
-      target: { value: maxBalance.toString() }
-    } as React.ChangeEvent<HTMLInputElement>;
-    
-    handleAmountChange(event, type);
+  
+
+   // Helper function to format display amount
+  const formatDisplayAmount = (amount: number, symbol: string) => {
+    if (symbol === "BBLIP" || symbol === "TON" ) {
+      return (amount / 1000).toFixed(2);
+    }
+  
+    return amount;
   };
 
   return (
@@ -229,18 +228,7 @@ const TokenSwap: React.FC = () => {
                     <Typography variant="caption" sx={{ color: 'gray' }}>
                       Balance: {getBalanceForToken(fromToken).toFixed(2)}
                     </Typography>
-                    <Typography 
-                      variant="caption" 
-                      sx={{ 
-                        color: 'primary.main', 
-                        cursor: 'pointer', 
-                        ml: 1,
-                        '&:hover': { textDecoration: 'underline' }
-                      }}
-                      onClick={() => handleMaxClick("from")}
-                    >
-                      Max
-                    </Typography>
+                  
                   </Box>
                 </Box>
                 <TextField 
@@ -281,18 +269,7 @@ const TokenSwap: React.FC = () => {
                     <Typography variant="caption" sx={{ color: 'gray' }}>
                       Balance: {getBalanceForToken(toToken).toFixed(2)}
                     </Typography>
-                    <Typography 
-                      variant="caption" 
-                      sx={{ 
-                        color: 'primary.main', 
-                        cursor: 'pointer', 
-                        ml: 1,
-                        '&:hover': { textDecoration: 'underline' }
-                      }}
-                      onClick={() => handleMaxClick("to")}
-                    >
-                      Max
-                    </Typography>
+                 
                   </Box>
                 </Box>
                 <TextField 
@@ -317,7 +294,7 @@ const TokenSwap: React.FC = () => {
               <Grid item xs={6}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <Avatar src={logo5} sx={{ width: 24, height: 24 }} />
-                  <Typography>BBLIP: {balances.bblip.toFixed(2)}</Typography>
+<Typography>BBLIP: {formatDisplayAmount(balances.bblip, "BBLIP")}</Typography>
                 </Box>
               </Grid>
               <Grid item xs={6}>
