@@ -9,10 +9,11 @@ import LoupeIcon from '@mui/icons-material/Loupe';
 import { useNavigate } from 'react-router-dom';
 import TokenSwap from "./SwapComponent"; // TokenSwap bileşenini eklediğiniz yer
 import logo5 from '../assets/logo5.png';
+import UserAvatar from "./UserAvatar";
+
 import { doc, onSnapshot , getFirestore, getDoc} from "firebase/firestore";
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './firebaseConfig';
-import UserAvatar from "./UserAvatar";
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);

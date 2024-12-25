@@ -18,51 +18,80 @@ import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import axios from "axios";
 import UnfoldMoreRoundedIcon from '@mui/icons-material/UnfoldMoreRounded';
 import logo5 from '../assets/logo5.png';
+import { doc, onSnapshot, getFirestore} from "firebase/firestore";
+import { initializeApp } from 'firebase/app';
+import { firebaseConfig } from './firebaseConfig';
 
-
-
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 const TokenSwap: React.FC = () => {
-    const [fromToken, setFromToken] = useState("ETH");
+  const [fromToken, setFromToken] = useState("TON");
   const [toToken, setToToken] = useState("USDT");
   const [fromAmount, setFromAmount] = useState("");
   const [toAmount, setToAmount] = useState("");
   const [fromTokenPrice, setFromTokenPrice] = useState<number>(0);
-  const [toTokenPrice, setToTokenPrice] = useState<number>(1); // USDT price is always 1
+  const [toTokenPrice, setToTokenPrice] = useState<number>(1);
   const [openDrawer, setOpenDrawer] = useState(false);
-  const [selectedTokenType, setSelectedTokenType] = useState<"from" | "to">(
-    "from"
-  );
+  const [selectedTokenType, setSelectedTokenType] = useState<"from" | "to">("from");
+  const [ setAllTokenPrices] = useState<any>({});
+  
+  // Add new state for balances
+  const [balances, setBalances] = useState({
+    bblip: 0,
+    usdt: 0,
+    ticket: 0,
+    ton: 0
+  });
 
-  const [allTokenPrices, setAllTokenPrices] = useState<any>({});
-
+  // Existing tokens array and other code remains the same...
   const tokens = [
-    { name: "BBLIP", icon:      logo5,
-    }, // Sabit fiyat
+    { name: "BBLIP", icon: logo5 },
     { name: "TON", icon: "https://s3-symbol-logo.tradingview.com/crypto/XTVCTON--big.svg" },
-
-    { name: "ETH", icon: "https://s3-symbol-logo.tradingview.com/crypto/XTVCETH--big.svg" },
     { name: "USDT", icon: "https://s3-symbol-logo.tradingview.com/crypto/XTVCUSDT--big.svg" },
-    { name: "BTC", icon: "https://s3-symbol-logo.tradingview.com/crypto/XTVCBTC--big.svg" },
-    { name: "SUI", icon: "https://s3-symbol-logo.tradingview.com/crypto/XTVCSUI--big.svg" },
-    { name: "SOL", icon: "https://s3-symbol-logo.tradingview.com/crypto/XTVCSOL--big.svg" },
-    
+    { name: "TICKET", icon: "https://example.com/ticket-icon.png" },
   ];
 
   const theme = createTheme({
     typography: {
       fontFamily: "Montserrat, sans-serif",
     },
-   
   });
+
+  // Add new useEffect for fetching balances
+  useEffect(() => {
+    const telegramUserId = localStorage.getItem("telegramUserId");
+    if (!telegramUserId) {
+      console.error("Telegram User ID not found!");
+      return;
+    }
+
+    // Firestore real-time listener
+    const docRef = doc(db, "users", telegramUserId);
+    const unsubscribe = onSnapshot(docRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        setBalances({
+          bblip: data.bblip || 0,
+          usdt: data.usdt || 0,
+          ticket: data.tickets || 0,
+          ton: data.total || 0
+        });
+      }
+    });
+
+    // Cleanup subscription
+    return () => unsubscribe();
+  }, []);
 
   // Binance API'den fiyatları al
   const fetchTokenPrice = async (token: string) => {
-    if (token === "USDT" ) {
+    if (token === "USDT") {
       return 1; // USDT fiyatı sabit
     }
-     if (token === "BBLIP") return 0.07; // Sabit fiyat BBLIP için
-
+    if (token === "BBLIP") return 0.07; // Sabit fiyat BBLIP için
+    if (token === "TICKET") return 2.5; // TICKET fiyatını sabitle
     try {
       const response = await axios.get(`https://api.binance.com/api/v3/ticker/price`, {
         params: { symbol: `${token}USDT` },
@@ -92,7 +121,7 @@ const TokenSwap: React.FC = () => {
     type: "from" | "to"
   ) => {
     const inputValue = e.target.value;
-  
+
     // Eğer giriş boşsa, diğer alanı da boş yap
     if (inputValue === "") {
       if (type === "from") {
@@ -104,9 +133,9 @@ const TokenSwap: React.FC = () => {
       }
       return; // Hesaplama yapılmasını engellemek için buradan çık
     }
-  
+
     const amount = parseFloat(inputValue) || 0;
-  
+
     if (type === "from") {
       setFromAmount(inputValue);
       const amountInUSD = amount * fromTokenPrice;
@@ -119,7 +148,7 @@ const TokenSwap: React.FC = () => {
       setFromAmount(fromCalculatedAmount.toFixed(4));
     }
   };
-  
+
   const handleTokenSelect = (token: { name: string; icon: string }) => {
     if (selectedTokenType === "from") {
       setFromToken(token.name);
@@ -145,349 +174,187 @@ const TokenSwap: React.FC = () => {
     setToAmount("");
   };
 
+    const getBalanceForToken = (tokenName: string) => {
+    switch (tokenName) {
+      case 'TON':
+        return balances.ton;
+      case 'USDT':
+        return balances.usdt;
+      case 'BBLIP':
+        return balances.bblip;
+      case 'TICKET':
+        return balances.ticket;
+      default:
+        return 0;
+    }
+  };
+
+   const handleMaxClick = (type: "from" | "to") => {
+    const token = type === "from" ? fromToken : toToken;
+    const maxBalance = getBalanceForToken(token);
+    
+    // Create a synthetic event to reuse existing handler
+    const event = {
+      target: { value: maxBalance.toString() }
+    } as React.ChangeEvent<HTMLInputElement>;
+    
+    handleAmountChange(event, type);
+  };
+
   return (
     <ThemeProvider theme={theme}>
-        <Box
-          justifyContent="space-between"
-          alignItems="center"
-          m={2}
-        >
-       
-
-           
-        </Box>
-      <Box
-        sx={{
-          display: "flex",
-          mt:8,
-          justifyContent: "center",
-          alignItems: "center",
-
-        }}
-      >
-        <Card
-          sx={{
-            boxShadow: 0,
-            borderRadius: 0,
-            width: "100%",
-          }}
-        >
-          <Box
-          display={"flex"}
-          m={1}
-          alignItems={"center"
-          }
-          justifyContent={"space-between"}
-          sx={{mb: 2,}}>
-
-<TuneRoundedIcon 
- fontSize="medium"  />
-
-<Typography variant="h6"     fontWeight={"bold"}    >
-            Swap 
-          </Typography>
-<RefreshRoundedIcon  fontSize="medium" />
-
-
-      
-
+      <Box justifyContent="space-between" alignItems="center" m={2}>
+      </Box>
+      <Box sx={{ display: "flex", mt: 8, justifyContent: "center", alignItems: "center" }}>
+        <Card sx={{ boxShadow: 0, borderRadius: 0, width: "100%" }}>
+          <Box display={"flex"} m={1} alignItems={"center"} justifyContent={"space-between"} sx={{ mb: 2 }}>
+            <TuneRoundedIcon fontSize="medium" />
+            <Typography variant="h6" fontWeight={"bold"}>Swap</Typography>
+            <RefreshRoundedIcon fontSize="medium" />
           </Box>
 
-          <Grid container spacing={3} alignItems="center">
-            {/* From Token Section */}
-            <Grid item xs={12}>
-  <Card
-    sx={{
-      padding: 2,
-      display: "flex",
-      flexDirection: "column", // Yatay içeriğin alt alta yerleşmesini sağlar
-      gap: 2,
-      boxShadow: 3,
-      border: "1px solid #ddd",
-      borderRadius: 4,
-      mb:3,
+         
+            <Grid container spacing={3} alignItems="center">
+        <Grid item xs={12}>
+          <Card sx={{ padding: 2, display: "flex", flexDirection: "column", gap: 2, boxShadow: 3, border: "1px solid #ddd", borderRadius: 4, mb: 3, backgroundColor: theme.palette.background.default }}>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 2, justifyContent: "space-between" }}>
+                <Box sx={{ display: "flex", flexDirection: "column" }}>
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1, boxShadow: 2, padding: 1, cursor: "pointer", borderRadius: 2, backgroundColor: theme.palette.background.default }} onClick={() => { setSelectedTokenType("from"); setOpenDrawer(true); }}>
+                    <Avatar src={tokens.find((t) => t.name === fromToken)?.icon} sx={{ width: 30, height: 30 }} />
+                    <Typography variant="body1">{fromToken}</Typography>
+                    <UnfoldMoreRoundedIcon fontSize="medium" />
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 1, ml: 1 }}>
+                    <Typography variant="caption" sx={{ color: 'gray' }}>
+                      Balance: {getBalanceForToken(fromToken).toFixed(2)}
+                    </Typography>
+                    <Typography 
+                      variant="caption" 
+                      sx={{ 
+                        color: 'primary.main', 
+                        cursor: 'pointer', 
+                        ml: 1,
+                        '&:hover': { textDecoration: 'underline' }
+                      }}
+                      onClick={() => handleMaxClick("from")}
+                    >
+                      Max
+                    </Typography>
+                  </Box>
+                </Box>
+                <TextField 
+                  value={fromAmount} 
+                  onChange={(e) => handleAmountChange(e, "from")} 
+                  fullWidth 
+                  placeholder="0.0" 
+                  variant="standard" 
+                  InputProps={{ disableUnderline: true }} 
+                  inputProps={{ type: "text", inputMode: "decimal", pattern: "[0-9]*" }} 
+                  sx={{ "& .MuiInputBase-input": { padding: 0, textAlign: "right", fontSize: "1.3rem" } }} 
+                />
+              </Box>
+            </Box>
+          </Card>
+        </Grid>
 
-      backgroundColor: theme.palette.background.default,
-    }}
-  >
-    {/* Üstteki Box */}
-    <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            mb: -1,
-            ml: 0.5,
-            justifyContent: "space-between",
-
-          }}
-    >
-      <Typography  variant="caption"
-                  color="text.secondary"
-                  sx={{
-                    fontWeight: 'light',
-                    fontFamily: 'Montserrat, sans-serif',
-                  }} >
-        Sell
-      </Typography>
-      <Typography
-        variant="body2"
-        sx={{
-          color: "primary.main",
-          cursor: "pointer", // Tıklanabilir olduğunu belirtmek için
-          "&:hover": { textDecoration: "underline" }, // Hover efekti
-        }}
-        onClick={() => {
-          console.log("Max clicked");
-          // Max işlemleri buraya
-        }}
-      >
-        Use max
-      </Typography>
-    </Box>
-
-    {/* To Token Section */}
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        gap: 2,
-        justifyContent: "space-between",
-      }}
-    >
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          gap: 1,
-          boxShadow: 2,
-          padding: 1,
-
-          cursor: "pointer",
-          borderRadius: 2,
-          backgroundColor: theme.palette.background.default,
-        }}
-        onClick={() => {
-          setSelectedTokenType("from");
-          setOpenDrawer(true);
-        }}
-      >
-        <Avatar
-          src={tokens.find((t) => t.name === fromToken)?.icon}
-          sx={{
-            width: 30,
-            height: 30,
-          }}
-        />
-        <Typography variant="body1">{fromToken}</Typography>
-        <UnfoldMoreRoundedIcon  fontSize="medium" />
-
-      </Box>
-
-      <TextField
-  value={fromAmount}
-  onChange={(e) => handleAmountChange(e, "from")}
-  fullWidth
-  placeholder="0.0" // Boşken gösterilecek metin
-  variant="standard"
-  InputProps={{
-    disableUnderline: true,
-  }}
-  inputProps={{
-    type: "text", // 'text' kullanarak geniş tarayıcı desteği sağlanır
-    inputMode: "decimal", // Mobil cihazlarda ondalık sayı klavyesini açar
-    pattern: "[0-9]*", // Sadece sayısal girişlere izin verir
-  }}
-  sx={{
-    "& .MuiInputBase-input": {
-      padding: 0,
-      textAlign: "right",
-      fontSize: "1.3rem",
-    },
-  }}
-/>
-
-
-    </Box>
-  </Card>
-</Grid>
 
             {/* Swap Icon Between */}
-            <Grid   item xs={12} mt={-8} textAlign="center">
-              <IconButton 
-                color="primary"
-                onClick={handleTokenSwapInline2}
-                sx={{
-                  backgroundColor: "#f5f5f5",
-                  border: "2px solid #ddd",
-                  borderRadius: "30%",
-                  "&:hover": { backgroundColor: "#e0e0e0" },
-                }}
-              >
+            <Grid item xs={12} mt={-8} textAlign="center">
+              <IconButton color="primary" onClick={handleTokenSwapInline2} sx={{ backgroundColor: "#f5f5f5", border: "2px solid #ddd", borderRadius: "30%", "&:hover": { backgroundColor: "#e0e0e0" } }}>
                 <SwapVertRoundedIcon fontSize="small" />
               </IconButton>
             </Grid>
 
             {/* To Token Section */}
             <Grid item xs={12}>
-  <Card
-     sx={{
-      padding: 2,
-      display: "flex",
-      flexDirection: "column", // Yatay içeriğin alt alta yerleşmesini sağlar
-      gap: 2, 
-      boxShadow: 4,
-      border: "1px solid #ddd",
-      borderRadius: 4,
-      mb:3,
-      mt: -5,
-      backgroundColor: theme.palette.background.default,
-    }}
-  >
-    {/* Üstteki Box */}
-    <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            mb: -1,
-            ml: 0.5,
-            justifyContent: "space-between",
+          <Card sx={{ padding: 2, display: "flex", flexDirection: "column", gap: 2, boxShadow: 4, border: "1px solid #ddd", borderRadius: 4, mb: 3, mt: -5, backgroundColor: theme.palette.background.default }}>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 2, justifyContent: "space-between" }}>
+                <Box sx={{ display: "flex", flexDirection: "column" }}>
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1, cursor: "pointer", padding: 1, boxShadow: 2, borderRadius: 2, backgroundColor: theme.palette.background.default }} onClick={() => { setSelectedTokenType("to"); setOpenDrawer(true); }}>
+                    <Avatar src={tokens.find((t) => t.name === toToken)?.icon} sx={{ width: 30, height: 30 }} />
+                    <Typography variant="body1">{toToken}</Typography>
+                    <UnfoldMoreRoundedIcon fontSize="medium" />
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 1, ml: 1 }}>
+                    <Typography variant="caption" sx={{ color: 'gray' }}>
+                      Balance: {getBalanceForToken(toToken).toFixed(2)}
+                    </Typography>
+                    <Typography 
+                      variant="caption" 
+                      sx={{ 
+                        color: 'primary.main', 
+                        cursor: 'pointer', 
+                        ml: 1,
+                        '&:hover': { textDecoration: 'underline' }
+                      }}
+                      onClick={() => handleMaxClick("to")}
+                    >
+                      Max
+                    </Typography>
+                  </Box>
+                </Box>
+                <TextField 
+                  value={toAmount} 
+                  onChange={(e) => handleAmountChange(e, "to")} 
+                  fullWidth 
+                  placeholder="0.0" 
+                  variant="standard" 
+                  InputProps={{ disableUnderline: true }} 
+                  inputProps={{ type: "text", inputMode: "numeric", pattern: "[0-9]*" }} 
+                  sx={{ "& .MuiInputBase-input": { padding: 0, textAlign: "right", fontSize: "1.3rem" } }} 
+                />
+              </Box>
+            </Box>
+          </Card>
+        </Grid>
+      </Grid>
 
-          }}
-    >
-      <Typography  variant="caption"
-                  color="text.secondary"
-                  sx={{
-                    fontWeight: 'light',
-                    fontFamily: 'Montserrat, sans-serif',
-                  }}>
-        Buy
-      </Typography>
-      <Typography
-        variant="body2"
-        sx={{
-          color: "primary.main",
-          cursor: "pointer", // Tıklanabilir olduğunu belirtmek için
-          "&:hover": { textDecoration: "underline" }, // Hover efekti
-        }}
-        onClick={() => {
-          console.log("Max clicked");
-          // Max işlemleri buraya
-        }}
-      >
-       Use max
-      </Typography>
-    </Box>
+             <Box sx={{ mt: 3, p: 2, backgroundColor: '#f5f5f5', borderRadius: 2 }}>
+            <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>Your Balances</Typography>
+            <Grid container spacing={2}>
+              <Grid item xs={6}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Avatar src={logo5} sx={{ width: 24, height: 24 }} />
+                  <Typography>BBLIP: {balances.bblip.toFixed(2)}</Typography>
+                </Box>
+              </Grid>
+              <Grid item xs={6}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Avatar src="https://s3-symbol-logo.tradingview.com/crypto/XTVCUSDT--big.svg" sx={{ width: 24, height: 24 }} />
+                  <Typography>USDT: {balances.usdt.toFixed(2)}</Typography>
+                </Box>
+              </Grid>
+              <Grid item xs={6}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Avatar src="https://s3-symbol-logo.tradingview.com/crypto/XTVCTON--big.svg" sx={{ width: 24, height: 24 }} />
+                  <Typography>TON: {balances.ton.toFixed(2)}</Typography>
+                </Box>
+              </Grid>
+              <Grid item xs={6}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Avatar src="https://example.com/ticket-icon.png" sx={{ width: 24, height: 24 }} />
+                  <Typography>TICKET: {balances.ticket.toFixed(2)}</Typography>
+                </Box>
+              </Grid>
+            </Grid>
+          </Box>
 
-    {/* To Token Section */}
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        gap: 2,
-        justifyContent: "space-between",
-      }}
-    >
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          gap: 1,
-          cursor: "pointer",
-          padding: 1,
-          boxShadow: 2,
-          borderRadius: 2,
-          backgroundColor: theme.palette.background.default,
-        }}
-        onClick={() => {
-          setSelectedTokenType("to");
-          setOpenDrawer(true);
-        }}
-      >
-        <Avatar
-          src={tokens.find((t) => t.name === toToken)?.icon}
-          sx={{
-            width: 30,
-            height: 30,
-          }}
-        />
-        <Typography variant="body1">{toToken}</Typography>
-        <UnfoldMoreRoundedIcon  fontSize="medium" />
-
-
-      </Box>
-      <TextField
-  value={toAmount}
-  placeholder="0.0" // Boşken gösterilecek metin
-  onChange={(e) => handleAmountChange(e, "to")}
-  fullWidth
-  variant="standard"
-  InputProps={{
-    disableUnderline: true,
-  }}
-  inputProps={{
-    type: "text", // 'text' tipi, özelleştirilebilir
-    inputMode: "numeric", // Sayısal klavye açılması için
-    pattern: "[0-9]*", // Sadece sayısal giriş için
-  }}
-  sx={{
-    "& .MuiInputBase-input": {
-      padding: 0,
-      textAlign: "right",
-      fontSize: "1.3rem",
-    },
-  }}
-/>
-
-
-    </Box>
-  </Card>
-</Grid>
-
-          </Grid>
-
-          {/* Swipeable Drawer with Token List */}
-          <SwipeableDrawer
+          {/* Token Selection Drawer */}
+ <SwipeableDrawer
             anchor="bottom"
             open={openDrawer}
             onClose={() => setOpenDrawer(false)}
             onOpen={() => setOpenDrawer(true)}
-          >
-            <Box sx={{ width: "100%", maxWidth: 400 }}>
-              <Typography sx={{textAlign: "center" , p:2}}>
-                Choose Asset
-              </Typography>
-              <List>
-                {tokens.map((token) => (
-                  <ListItem
-                    button
-                    key={token.name}
-                    onClick={() => handleTokenSelect(token)}
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      paddingY: 1.5,
-                      paddingX: 2,
-                      backgroundColor: "#f9f9f9",
-                      "&:hover": {
-                        backgroundColor: "#f0f0f0",
-                      },
-                    }}
-                  >
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                      <Avatar
-                        src={token.icon}
-                        sx={{ width: 32, height: 32 }}
-                      />
-                      <Typography variant="body1">{token.name}</Typography>
-                    </Box>
-                    <Typography variant="body2" color="textSecondary">
-                      ${allTokenPrices[token.name]?.toFixed(2)}
-                    </Typography>
-                  </ListItem>
-                ))}
-              </List>
-            </Box>
+          >            <List>
+              {tokens.map((token) => (
+                <ListItem button key={token.name} onClick={() => handleTokenSelect(token)}>
+                  <Avatar src={token.icon} sx={{ marginRight: 2 }} />
+                  <Typography variant="body1">{token.name}</Typography>
+                </ListItem>
+              ))}
+            </List>
           </SwipeableDrawer>
         </Card>
       </Box>
