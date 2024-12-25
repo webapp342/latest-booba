@@ -20,11 +20,16 @@ import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './firebaseConfig';
 import Tasks from '../assets/tasks.png';
 import task1Logo from '../assets/task1logo.png';
-import task2Logo from '../assets/nickel.png';
-import task3Logo from '../assets/task1logo.png';
-import task4Logo from '../assets/task1logo.png';
-import task5Logo from '../assets/task1logo.png';
-import task6Logo from '../assets/task1logo.png';
+import task2Logo from '../assets/instagram.png';
+import task3Logo from '../assets/facebook.png';
+import task4Logo from '../assets/tik-tok.png';
+import task5Logo from '../assets/telegram.png';
+import task6Logo from '../assets/logo5.png';
+import task7Logo from '../assets/logo5.png';
+import task8Logo from '../assets/logo5.png';
+import task9Logo from '../assets/logo5.png';
+import task10Logo from '../assets/logo5.png';
+import task11Logo from '../assets/task1logo.png';
 import comingSoonLogo from '../assets/task1logo.png';
 
 // Firebase App initialization
@@ -34,10 +39,20 @@ const db = getFirestore(app);
 // Tasks metadata
 const tasksMetadata = [
   { title: 'Follow Booba on X', description: '+100 BBLIP', link: 'https://telegram.com' },
-  { title: 'Task 2', description: '+100 BBLIP', link: 'https://facebook.com' },
-  { title: 'Task 3', description: '+100 BBLIP', link: 'https://x.com' },
-  { title: 'Task 4', description: '+100 BBLIP', link: 'https://example.com/task-4' },
-  { title: 'Task 5', description: '+100 BBLIP', link: 'https://example.com/task-5' },
+  { title: 'Follow Booba on Instagram', description: '+100 BBLIP', link: 'https://facebook.com' },
+  { title: 'Join Booba Facebook', description: '+100 BBLIP', link: 'https://x.com' },
+  { title: 'Follow Booba on Tiktok', description: '+100 BBLIP', link: 'https://example.com/task-4' },
+  { title: 'Join Booba Telegram ', description: '+100 BBLIP', link: 'https://example.com/task-5' },
+    { title: 'Invite 1 fren', description: '+10 BBLIP', link: 'https://example.com/task-5' },
+        { title: 'Invite 10 fren', description: '+200 BBLIP', link: 'https://example.com/task-5' },
+                { title: 'Invite 25 fren', description: '+1,000 BBLIP', link: 'https://example.com/task-5' },
+                        { title: 'Invite 50 fren', description: '+3,000 BBLIP', link: 'https://example.com/task-5' },
+                                { title: 'Invite 100 fren', description: '+10,000 BBLIP', link: 'https://example.com/task-5' },
+
+
+
+
+
   { title: 'Task 6', description: '+100 BBLIP', link: 'https://example.com/task-6' },
   { title: '', description: 'Coming Soon...', link: '' },
 ];
@@ -49,16 +64,21 @@ const taskLogos = [
   task4Logo,
   task5Logo,
   task6Logo,
+  task7Logo,
+  task8Logo,
+  task9Logo,
+  task10Logo,
+  task11Logo,
   comingSoonLogo,
 ];
 
 const categories = [
-  { id: 1, name: 'New', tasks: [0, 1] },
-  { id: 2, name: 'Socials', tasks: [2, 3] },
-  { id: 3, name: 'Frens', tasks: [4] },
-  { id: 4, name: 'Academy', tasks: [5] },
-  { id: 5, name: 'On Chain', tasks: [6] },
-  { id: 6, name: 'Farming', tasks: [6] },
+  { id: 1, name: 'New', tasks: [0, 1,2,3,4] },
+  { id: 2, name: 'Socials', tasks: [0,1,2, 3,4] },
+  { id: 3, name: 'Frens', tasks: [5,6,7,8,9] },
+  { id: 4, name: 'Academy', tasks: [11] },
+  { id: 5, name: 'On Chain', tasks: [11] },
+  { id: 6, name: 'Farming', tasks: [11] },
 ];
 
 const DealsComponent: React.FC = () => {
@@ -68,6 +88,7 @@ const DealsComponent: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<number>(1);
   const [loadingTaskIndex, setLoadingTaskIndex] = useState<number | null>(null); // Track the task being processed
   const [openSnackbar, setOpenSnackbar] = useState(false); // Snackbar state
+  const [invitedUsersCount, setInvitedUsersCount] = useState(0); // Davet edilen kullanıcı sayısı
 
   useEffect(() => {
     const fetchUserTasks = async () => {
@@ -86,6 +107,8 @@ const DealsComponent: React.FC = () => {
           if (docSnapshot.exists()) {
             const userData = docSnapshot.data();
             setTaskStatus(userData.tasks || {});
+             const invitedUsers = userData.invitedUsers || [];
+          setInvitedUsersCount(invitedUsers.length);
           } else {
             setError('User document not found.');
           }
@@ -256,71 +279,100 @@ const DealsComponent: React.FC = () => {
         <Typography color="error">{error}</Typography>
       ) : (
         <Box sx={{ width: '100%', mt: 4 }}>
-          {categories
-            .find((category) => category.id === selectedCategory)
-            ?.tasks.map((taskIndex) => (
-              <Box
-                key={taskIndex}
-                sx={{
-                  backgroundColor: 'white',
-                  boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-                  borderRadius: 2,
-                  p: 2,
-                  mb: 2,
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-              >
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Box
-                    component="img"
-                    src={taskLogos[taskIndex]} // Use the logo for the current task
-                    alt={`Task ${taskIndex + 1} logo`}
-                    sx={{ width: '40px', height: '40px', marginRight: 2 }} // Adjust size and margin
-                  />
-                  <Box>
-                    <Typography variant="body1" sx={{ fontWeight: 'bold', color: 'black' }}>
-                      {tasksMetadata[taskIndex].title}
-                    </Typography>
-                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                      {tasksMetadata[taskIndex].description}
-                    </Typography>
-                  </Box>
-                </Box>
+         {categories
+  .find((category) => category.id === selectedCategory)
+  ?.tasks.map((taskIndex) => {
+    // Task 11 için "Coming Soon" mesajını göster
+    if (taskIndex === 11) {
+      return (
+        <Box
+          key={taskIndex}
+          sx={{
+            backgroundColor: 'white',
+            boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+            borderRadius: 2,
+            p: 2,
+            mb: 2,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+     
+          }}
+        >
+          <Typography variant="body2" sx={{ fontWeight: 'bold', color: 'gray' }}>
+            Coming Soon ...
+          </Typography>
+        </Box>
+      );
+    }
 
-                {taskStatus[taskIndex]?.completed && !taskStatus[taskIndex]?.disabled ? (
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    onClick={() => handleClaimTask(taskIndex)}
-                    sx={{ textTransform: 'none', borderRadius: 2 }}
-                  >
-                    {loadingTaskIndex === taskIndex ? (
-                      <CircularProgress size={24} sx={{ color: 'gray' }} />
-                    ) : (
-                      'Claim'
-                    )}
-                  </Button>
-                ) : (
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    onClick={() => handleTaskCompletion(taskIndex)}
-                    disabled={taskStatus[taskIndex]?.disabled || taskStatus[taskIndex]?.completed || loadingTaskIndex === taskIndex}
-                    sx={{ textTransform: 'none', borderRadius: 2 }}
-                  >
-                    {loadingTaskIndex === taskIndex ? (
-                      <CircularProgress size={24} sx={{ color: 'gray' }} />
-                    ) : taskStatus[taskIndex]?.completed ? (
-                      'Done'
-                    ) : (
-                      'Start'
-                    )}
-                  </Button>
-                )}
-              </Box>
-            ))}
+    return (
+      <Box
+        key={taskIndex}
+        sx={{
+          backgroundColor: 'white',
+          boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+          borderRadius: 2,
+          p: 2,
+          mb: 2,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box
+            component="img"
+            src={taskLogos[taskIndex]} // Task logosunu kullan
+            alt={`Task ${taskIndex + 1} logo`}
+            sx={{ maxWidth: '30px', maxHeight: '30px', marginRight: 2 }}
+          />
+          <Box>
+            <Typography variant="body2" sx={{ fontWeight: 'bold', color: 'black' }}>
+              {tasksMetadata[taskIndex].title}
+            </Typography>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+  {tasksMetadata[taskIndex].description}
+  {taskIndex >= 5 && taskIndex <= 9 && ` (${invitedUsersCount} invited)`}
+</Typography>
+
+          </Box>
+        </Box>
+
+        {taskStatus[taskIndex]?.completed && !taskStatus[taskIndex]?.disabled ? (
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={() => handleClaimTask(taskIndex)}
+            sx={{ textTransform: 'none', borderRadius: 2 }}
+          >
+            {loadingTaskIndex === taskIndex ? (
+              <CircularProgress size={24} sx={{ color: 'gray' }} />
+            ) : (
+              'Claim'
+            )}
+          </Button>
+        ) : (
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={() => handleTaskCompletion(taskIndex)}
+            disabled={taskStatus[taskIndex]?.disabled || taskStatus[taskIndex]?.completed || loadingTaskIndex === taskIndex}
+            sx={{ textTransform: 'none', borderRadius: 2 }}
+          >
+            {loadingTaskIndex === taskIndex ? (
+              <CircularProgress size={24} sx={{ color: 'gray' }} />
+            ) : taskStatus[taskIndex]?.completed ? (
+              'Done'
+            ) : (
+              'Start'
+            )}
+          </Button>
+        )}
+      </Box>
+    );
+  })}
+
         </Box>
       )}
 
