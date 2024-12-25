@@ -40,14 +40,6 @@ interface Asset {
 
 // Centralized initial data definition
 const initialData: Asset[] = [
-   {
-    logo: "https://s3-symbol-logo.tradingview.com/crypto/XTVCBTC--big.svg",
-    symbol: "TICKET",
-    name: "Lucky Ticket",
-    amount: 0,
-    usdValue: 0,
-    active: true
-  },
   {
     logo: logo5,
     symbol: "BBLIP",
@@ -72,7 +64,14 @@ const initialData: Asset[] = [
     usdValue: 0,
     active: true
   },
- 
+  {
+    logo: "https://s3-symbol-logo.tradingview.com/crypto/XTVCBTC--big.svg",
+    symbol: "TICKET",
+    name: "Lucky Ticket",
+    amount: 0,
+    usdValue: 0,
+    active: true
+  },
   {
     logo: "https://s3-symbol-logo.tradingview.com/crypto/XTVCETH--big.svg",
     symbol: "ETH",
@@ -190,19 +189,18 @@ const AccountEquityCard: React.FC = () => {
     fetchTonPrice();
   }, []);
 
-  // Calculate USD value for each asset
+   // Updated USD value calculation
   const calculateUsdValue = (amount: number, symbol: string) => {
+    const actualAmount = symbol === "BBLIP" || symbol === "TON" ? amount / 1000 : amount;
+    
     if (symbol === "USDT") {
-      return amount; // USDT is always 1 USD
+      return actualAmount;
     }
     if (symbol === "BBLIP") {
-      return amount * 0.07; // BBLIP price is fixed at 0.07 USD
+      return actualAmount * 0.07; // BBLIP price using actual amount
     }
     if (symbol === "TON" && tonPrice !== null) {
-      return amount * tonPrice; // Calculate TON USD value
-    }
-    if (symbol === "TICKET" && tonPrice !== null) {
-      return amount * (2.5 * tonPrice); // Each ticket costs 2.5 TON
+      return actualAmount * tonPrice; // TON price using actual amount
     }
     return 0;
   };
@@ -287,8 +285,8 @@ const AccountEquityCard: React.FC = () => {
 
   // Helper function to format display amount
   const formatDisplayAmount = (amount: number, symbol: string) => {
-    if (symbol === "BBLIP" || symbol === "TON") {
-      return (amount / 1000).toFixed(3);
+    if (symbol === "BBLIP" || symbol === "TON" ) {
+      return (amount / 1000).toFixed(2);
     }
     if (symbol === "USDT") {
       return amount.toLocaleString(); // Adds commas for thousands
