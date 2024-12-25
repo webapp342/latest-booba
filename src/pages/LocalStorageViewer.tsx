@@ -40,6 +40,14 @@ interface Asset {
 
 // Centralized initial data definition
 const initialData: Asset[] = [
+   {
+    logo: "https://s3-symbol-logo.tradingview.com/crypto/XTVCBTC--big.svg",
+    symbol: "TICKET",
+    name: "Lucky Ticket",
+    amount: 0,
+    usdValue: 0,
+    active: true
+  },
   {
     logo: logo5,
     symbol: "BBLIP",
@@ -64,14 +72,7 @@ const initialData: Asset[] = [
     usdValue: 0,
     active: true
   },
-  {
-    logo: "https://s3-symbol-logo.tradingview.com/crypto/XTVCBTC--big.svg",
-    symbol: "TICKET",
-    name: "Lucky Ticket",
-    amount: 0,
-    usdValue: 0,
-    active: true
-  },
+ 
   {
     logo: "https://s3-symbol-logo.tradingview.com/crypto/XTVCETH--big.svg",
     symbol: "ETH",
