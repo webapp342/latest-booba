@@ -31,11 +31,10 @@ const TokenSwap: React.FC = () => {
   const [toToken, setToToken] = useState("USDT");
   const [fromAmount, setFromAmount] = useState("");
   const [toAmount, setToAmount] = useState("");
-  const [fromTokenPrice, setFromTokenPrice] = useState<number>(0);
-  const [toTokenPrice, setToTokenPrice] = useState<number>(1);
+  const [fromTokenPrice] = useState<number>(0);
+  const [toTokenPrice] = useState<number>(1);
   const [openDrawer, setOpenDrawer] = useState(false);
   const [selectedTokenType, setSelectedTokenType] = useState<"from" | "to">("from");
-  const [ setAllTokenPrices] = useState<any>({});
   
   // Add new state for balances
   const [balances, setBalances] = useState({
@@ -86,12 +85,13 @@ const TokenSwap: React.FC = () => {
   }, []);
 
   // Binance API'den fiyatları al
- const fetchTokenPrice = async (token: string) => {
+ // Binance API'den fiyatları al
+const fetchTokenPrice = async (token: string): Promise<number> => {
   if (token === "USDT") {
     return 1; // USDT'nin fiyatı sabit
   }
   if (token === "BBLIP") return 0.07; // Sabit fiyat BBLIP için
-  if (token === "TICKET") return 2.5; // TICKET fiyatını sabitle
+  if (token === "TICKET") return 2.5 * (await fetchTokenPrice("TON")); // TICKET fiyatını TON cinsinden hesapla
   try {
     const response = await axios.get(`https://api.binance.com/api/v3/ticker/price`, {
       params: { symbol: `${token}USDT` },
@@ -99,26 +99,12 @@ const TokenSwap: React.FC = () => {
     return parseFloat(response.data.price); // Fiyatı döndürüyoruz
   } catch (error) {
     console.error("Error fetching price:", error);
-    return 0;
+    return 0; // Hata durumunda 0 döndür
   }
 };
 
-
-  useEffect(() => {
-  const getPrices = async () => {
-    const prices: any = {};
-    for (const token of tokens) {
-      prices[token.name] = await fetchTokenPrice(token.name);
-    }
-    setAllTokenPrices(prices);
-    setFromTokenPrice(prices[fromToken] || 0);
-    setToTokenPrice(prices[toToken] || 0);
-  };
-  getPrices();
-}, [fromToken, toToken]);
-
-
- const handleAmountChange = (
+// Amount hesaplamalarını güncelle
+const handleAmountChange = (
   e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, 
   type: "from" | "to"
 ) => {
@@ -135,16 +121,36 @@ const TokenSwap: React.FC = () => {
 
   if (type === "from") {
     setFromAmount(inputValue);
-    const amountInUSD = amount * fromTokenPrice; // TON miktarını USD'ye çeviriyoruz
-    const toCalculatedAmount = amountInUSD / toTokenPrice; // USDT cinsinden değeri hesaplıyoruz
+    const amountInUSD = amount * fromTokenPrice; // Giriş miktarını USD'ye çeviriyoruz
+    const toCalculatedAmount = amountInUSD / toTokenPrice; // Hedef token cinsinden değeri hesaplıyoruz
     setToAmount(toCalculatedAmount.toFixed(4));
   } else {
     setToAmount(inputValue);
-    const amountInUSD = amount * toTokenPrice; // USDT miktarını USD'ye çeviriyoruz
-    const fromCalculatedAmount = amountInUSD / fromTokenPrice; // TON cinsinden değeri hesaplıyoruz
+    const amountInUSD = amount * toTokenPrice; // Hedef token miktarını USD'ye çeviriyoruz
+    const fromCalculatedAmount = amountInUSD / fromTokenPrice; // Giriş token cinsinden değeri hesaplıyoruz
     setFromAmount(fromCalculatedAmount.toFixed(4));
   }
 };
+
+// TICKET fiyatını BBLIP ve USDT cinsinden hesapla
+const calculateTicketPriceInOtherTokens = async () => {
+  const tonPrice = await fetchTokenPrice("TON");
+  const ticketPriceInUSDT = 2.5 * tonPrice; // TICKET fiyatını USDT cinsinden hesapla
+  return {
+    ticketPriceInUSDT,
+    ticketPriceInBBLIP: ticketPriceInUSDT / 0.07 // BBLIP cinsinden hesapla
+  };
+};
+
+// Kullanıcı arayüzünde TICKET fiyatını göster
+useEffect(() => {
+  const updateTicketPrices = async () => {
+    const { ticketPriceInUSDT, ticketPriceInBBLIP } = await calculateTicketPriceInOtherTokens();
+    console.log(`TICKET Price in USDT: ${ticketPriceInUSDT}`);
+    console.log(`TICKET Price in BBLIP: ${ticketPriceInBBLIP}`);
+  };
+  updateTicketPrices();
+}, []);
 
 
   const handleTokenSelect = (token: { name: string; icon: string }) => {
