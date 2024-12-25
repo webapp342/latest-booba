@@ -86,68 +86,66 @@ const TokenSwap: React.FC = () => {
   }, []);
 
   // Binance API'den fiyatları al
-  const fetchTokenPrice = async (token: string) => {
-    if (token === "USDT") {
-      return 1; // USDT fiyatı sabit
-    }
-    if (token === "BBLIP") return 0.07; // Sabit fiyat BBLIP için
-    if (token === "TICKET") return 2.5; // TICKET fiyatını sabitle
-    try {
-      const response = await axios.get(`https://api.binance.com/api/v3/ticker/price`, {
-        params: { symbol: `${token}USDT` },
-      });
-      return parseFloat(response.data.price);
-    } catch (error) {
-      console.error("Error fetching price:", error);
-      return 0;
-    }
-  };
+ const fetchTokenPrice = async (token: string) => {
+  if (token === "USDT") {
+    return 1; // USDT'nin fiyatı sabit
+  }
+  if (token === "BBLIP") return 0.07; // Sabit fiyat BBLIP için
+  if (token === "TICKET") return 2.5; // TICKET fiyatını sabitle
+  try {
+    const response = await axios.get(`https://api.binance.com/api/v3/ticker/price`, {
+      params: { symbol: `${token}USDT` },
+    });
+    return parseFloat(response.data.price); // Fiyatı döndürüyoruz
+  } catch (error) {
+    console.error("Error fetching price:", error);
+    return 0;
+  }
+};
+
 
   useEffect(() => {
-    const getPrices = async () => {
-      const prices: any = {};
-      for (const token of tokens) {
-        prices[token.name] = await fetchTokenPrice(token.name);
-      }
-      setAllTokenPrices(prices);
-      setFromTokenPrice(prices[fromToken] || 0);
-      setToTokenPrice(prices[toToken] || 0);
-    };
-    getPrices();
-  }, [fromToken, toToken]);
-
-  const handleAmountChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, // Burada tip genişletildi
-    type: "from" | "to"
-  ) => {
-    const inputValue = e.target.value;
-
-    // Eğer giriş boşsa, diğer alanı da boş yap
-    if (inputValue === "") {
-      if (type === "from") {
-        setFromAmount("");
-        setToAmount("");
-      } else {
-        setToAmount("");
-        setFromAmount("");
-      }
-      return; // Hesaplama yapılmasını engellemek için buradan çık
+  const getPrices = async () => {
+    const prices: any = {};
+    for (const token of tokens) {
+      prices[token.name] = await fetchTokenPrice(token.name);
     }
-
-    const amount = parseFloat(inputValue) || 0;
-
-    if (type === "from") {
-      setFromAmount(inputValue);
-      const amountInUSD = amount * fromTokenPrice;
-      const toCalculatedAmount = amountInUSD / toTokenPrice;
-      setToAmount(toCalculatedAmount.toFixed(4));
-    } else {
-      setToAmount(inputValue);
-      const amountInUSD = amount * toTokenPrice;
-      const fromCalculatedAmount = amountInUSD / fromTokenPrice;
-      setFromAmount(fromCalculatedAmount.toFixed(4));
-    }
+    setAllTokenPrices(prices);
+    setFromTokenPrice(prices[fromToken] || 0);
+    setToTokenPrice(prices[toToken] || 0);
   };
+  getPrices();
+}, [fromToken, toToken]);
+
+
+ const handleAmountChange = (
+  e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, 
+  type: "from" | "to"
+) => {
+  const inputValue = e.target.value;
+
+  // Eğer giriş boşsa, diğer alanı da boş yap
+  if (inputValue === "") {
+    setFromAmount("");
+    setToAmount("");
+    return;
+  }
+
+  const amount = parseFloat(inputValue) || 0;
+
+  if (type === "from") {
+    setFromAmount(inputValue);
+    const amountInUSD = amount * fromTokenPrice; // TON miktarını USD'ye çeviriyoruz
+    const toCalculatedAmount = amountInUSD / toTokenPrice; // USDT cinsinden değeri hesaplıyoruz
+    setToAmount(toCalculatedAmount.toFixed(4));
+  } else {
+    setToAmount(inputValue);
+    const amountInUSD = amount * toTokenPrice; // USDT miktarını USD'ye çeviriyoruz
+    const fromCalculatedAmount = amountInUSD / fromTokenPrice; // TON cinsinden değeri hesaplıyoruz
+    setFromAmount(fromCalculatedAmount.toFixed(4));
+  }
+};
+
 
   const handleTokenSelect = (token: { name: string; icon: string }) => {
     if (selectedTokenType === "from") {
@@ -173,6 +171,8 @@ const TokenSwap: React.FC = () => {
     setFromAmount("");
     setToAmount("");
   };
+
+  
 
     const getBalanceForToken = (tokenName: string) => {
     switch (tokenName) {
@@ -225,10 +225,10 @@ const TokenSwap: React.FC = () => {
                     <UnfoldMoreRoundedIcon fontSize="medium" />
                   </Box>
                   <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 1, ml: 1 }}>
-                    <Typography variant="caption" sx={{ color: 'gray' }}>
-                      Balance: {getBalanceForToken(fromToken).toFixed(2)}
-                    </Typography>
-                  
+                  <Typography variant="caption" sx={{ color: 'gray' }}>
+  Balance: {formatDisplayAmount(getBalanceForToken(fromToken), fromToken)}
+</Typography>
+
                   </Box>
                 </Box>
                 <TextField 
@@ -267,7 +267,7 @@ const TokenSwap: React.FC = () => {
                   </Box>
                   <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 1, ml: 1 }}>
                     <Typography variant="caption" sx={{ color: 'gray' }}>
-                      Balance: {getBalanceForToken(toToken).toFixed(2)}
+  Balance: {formatDisplayAmount(getBalanceForToken(toToken), toToken)}
                     </Typography>
                  
                   </Box>
