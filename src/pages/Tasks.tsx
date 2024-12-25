@@ -43,11 +43,11 @@ const tasksMetadata = [
   { title: 'Join Booba Facebook', description: '+100 BBLIP', link: 'https://x.com' },
   { title: 'Follow Booba on Tiktok', description: '+100 BBLIP', link: 'https://example.com/task-4' },
   { title: 'Join Booba Telegram ', description: '+100 BBLIP', link: 'https://example.com/task-5' },
-    { title: 'Invite 1 fren', description: '+10 BBLIP', link: 'https://example.com/task-5' },
-        { title: 'Invite 10 fren', description: '+200 BBLIP', link: 'https://example.com/task-5' },
-                { title: 'Invite 25 fren', description: '+1,000 BBLIP', link: 'https://example.com/task-5' },
-                        { title: 'Invite 50 fren', description: '+3,000 BBLIP', link: 'https://example.com/task-5' },
-                                { title: 'Invite 100 fren', description: '+10,000 BBLIP', link: 'https://example.com/task-5' },
+    { title: 'Invite 1 fren', description: '+10 BBLIP', link: '' },
+        { title: 'Invite 10 fren', description: '+200 BBLIP', link: '' },
+                { title: 'Invite 25 fren', description: '+1,000 BBLIP', link: '' },
+                        { title: 'Invite 50 fren', description: '+3,000 BBLIP', link: '' },
+                                { title: 'Invite 100 fren', description: '+10,000 BBLIP', link: '' },
 
 
 
