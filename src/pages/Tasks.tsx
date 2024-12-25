@@ -331,10 +331,16 @@ const DealsComponent: React.FC = () => {
             <Typography variant="body2" sx={{ fontWeight: 'bold', color: 'black' }}>
               {tasksMetadata[taskIndex].title}
             </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-  {tasksMetadata[taskIndex].description}
-  {taskIndex >= 5 && taskIndex <= 9 && ` (${invitedUsersCount} invited)`}
+        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+  {
+    taskIndex >= 5 && taskIndex <= 9 &&
+      ` ${invitedUsersCount}/${taskIndex === 5 ? 1 : taskIndex === 6 ? 10 : taskIndex === 7 ? 25 : taskIndex === 8 ? 50 : 100} ,   `
+  }
+
+    {tasksMetadata[taskIndex].description}
+
 </Typography>
+
 
           </Box>
         </Box>
@@ -357,7 +363,12 @@ const DealsComponent: React.FC = () => {
             variant="outlined"
             size="small"
             onClick={() => handleTaskCompletion(taskIndex)}
-            disabled={taskStatus[taskIndex]?.disabled || taskStatus[taskIndex]?.completed || loadingTaskIndex === taskIndex}
+              disabled={
+          taskStatus[taskIndex]?.disabled ||
+          taskStatus[taskIndex]?.completed ||
+          loadingTaskIndex === taskIndex ||
+          invitedUsersCount < (taskIndex === 5 ? 1 : taskIndex === 6 ? 10 : taskIndex === 7 ? 25 : taskIndex === 8 ? 50 : 100)
+        }
             sx={{ textTransform: 'none', borderRadius: 2 }}
           >
             {loadingTaskIndex === taskIndex ? (
