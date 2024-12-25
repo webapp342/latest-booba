@@ -38,23 +38,21 @@ const db = getFirestore(app);
 
 // Tasks metadata
 const tasksMetadata = [
-  { title: 'Follow Booba on X', description: '+100 BBLIP', link: 'https://telegram.com' },
-  { title: 'Follow Booba on Instagram', description: '+100 BBLIP', link: 'https://facebook.com' },
-  { title: 'Join Booba Facebook', description: '+100 BBLIP', link: 'https://x.com' },
-  { title: 'Follow Booba on Tiktok', description: '+100 BBLIP', link: 'https://example.com/task-4' },
-  { title: 'Join Booba Telegram ', description: '+100 BBLIP', link: 'https://example.com/task-5' },
-    { title: 'Invite 1 fren', description: '+10 BBLIP', link: '' },
-        { title: 'Invite 10 fren', description: '+200 BBLIP', link: '' },
-                { title: 'Invite 25 fren', description: '+1,000 BBLIP', link: '' },
-                        { title: 'Invite 50 fren', description: '+3,000 BBLIP', link: '' },
-                                { title: 'Invite 100 fren', description: '+10,000 BBLIP', link: '' },
+
+  { title: 'Follow Booba on X', description: '+100 BBLIP', link: 'https://telegram.com', reward: 100 },
+  { title: 'Follow Booba on Instagram', description: '+100 BBLIP', link: 'https://facebook.com', reward: 1000 },
+  { title: 'Join Booba Facebook', description: '+100 BBLIP', link: 'https://x.com', reward: 100 },
+  { title: 'Follow Booba on Tiktok', description: '+100 BBLIP', link: 'https://example.com/task-4', reward: 100 },
+  { title: 'Join Booba Telegram', description: '+100 BBLIP', link: 'https://example.com/task-5', reward: 100 },
+  { title: 'Invite 1 fren', description: '+10 BBLIP', link: '', reward: 10 },
+  { title: 'Invite 10 fren', description: '+200 BBLIP', link: '', reward: 200 },
+  { title: 'Invite 25 fren', description: '+1,000 BBLIP', link: '', reward: 1000 },
+  { title: 'Invite 50 fren', description: '+3,000 BBLIP', link: '', reward: 3000 },
+  { title: 'Invite 100 fren', description: '+10,000 BBLIP', link: '', reward: 10000 },
+  { title: 'Task 6', description: '+100 BBLIP', link: 'https://example.com/task-6', reward: 100 },
 
 
-
-
-
-  { title: 'Task 6', description: '+100 BBLIP', link: 'https://example.com/task-6' },
-  { title: '', description: 'Coming Soon...', link: '' },
+  { title: '', description: 'Coming Soon...', link: '' , reward: 100},
 ];
 
 const taskLogos = [
@@ -88,6 +86,8 @@ const DealsComponent: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<number>(1);
   const [loadingTaskIndex, setLoadingTaskIndex] = useState<number | null>(null); // Track the task being processed
   const [openSnackbar, setOpenSnackbar] = useState(false); // Snackbar state
+  const [rewardMessage, setRewardMessage] = useState<string>(''); // Reward message for snackbar
+
   const [invitedUsersCount, setInvitedUsersCount] = useState(0); // Davet edilen kullanıcı sayısı
 
   useEffect(() => {
@@ -183,10 +183,16 @@ const DealsComponent: React.FC = () => {
       [`tasks.${taskIndex}.disabled`]: true,
     });
 
-    // Add 1000 to the BBLIP balance field
+    // Get the reward for the selected task
+    const reward = tasksMetadata[taskIndex].reward;
+
+    // Add the specific reward amount for the claimed task
     await updateDoc(userDocRef, {
-      bblip: increment(1000), // This uses Firestore's `increment` function to add 1000 to the BBLIP field
+      bblip: increment(reward), // Add the reward amount to the bblip field
     });
+
+    // Set the reward message for the snackbar
+    setRewardMessage(`You have claimed ${reward} BBLIP for completing the task: "${tasksMetadata[taskIndex].title}"`);
 
     // Wait for 5 seconds for circular progress before showing Snackbar
     setTimeout(() => {
@@ -199,6 +205,8 @@ const DealsComponent: React.FC = () => {
     setLoadingTaskIndex(null); // Hide the spinner in case of error
   }
 };
+
+
 
 
   return (
@@ -350,7 +358,7 @@ const DealsComponent: React.FC = () => {
             variant="outlined"
             size="small"
             onClick={() => handleClaimTask(taskIndex)}
-            sx={{ textTransform: 'none', borderRadius: 2 }}
+            sx={{ textTransform: 'none', borderRadius: 2 , borderColor: 'green',color: 'green' }}
           >
             {loadingTaskIndex === taskIndex ? (
               <CircularProgress size={24} sx={{ color: 'gray' }} />
@@ -359,20 +367,35 @@ const DealsComponent: React.FC = () => {
             )}
           </Button>
         ) : (
-          <Button
-            variant="outlined"
-            size="small"
-            onClick={() => handleTaskCompletion(taskIndex)}
-              disabled={
-          taskStatus[taskIndex]?.disabled ||
-          taskStatus[taskIndex]?.completed ||
-          loadingTaskIndex === taskIndex ||
-          invitedUsersCount < (taskIndex === 5 ? 1 : taskIndex === 6 ? 10 : taskIndex === 7 ? 25 : taskIndex === 8 ? 50 : 100)
-        }
-            sx={{ textTransform: 'none', borderRadius: 2 }}
+         <Button
+  variant="outlined"
+  size="small"
+  onClick={() => handleTaskCompletion(taskIndex)}
+  disabled={
+    taskStatus[taskIndex]?.disabled ||
+    taskStatus[taskIndex]?.completed ||
+    loadingTaskIndex === taskIndex ||
+    (taskIndex >= 5 && taskIndex <= 9 && invitedUsersCount < (taskIndex === 5 ? 1 : taskIndex === 6 ? 10 : taskIndex === 7 ? 25 : taskIndex === 8 ? 50 : 100))
+  }
+          sx={{
+    textTransform: 'none',
+    borderRadius: 2,
+    borderColor: taskStatus[taskIndex]?.completed ? 'green' : 'default',
+    color: taskStatus[taskIndex]?.completed ? 'white' : 'default',
+    backgroundColor: taskStatus[taskIndex]?.completed ? 'green' : 'transparent',
+    '&:hover': {
+      borderColor: taskStatus[taskIndex]?.completed ? 'green' : 'default',
+      backgroundColor: taskStatus[taskIndex]?.completed ? 'green' : 'transparent',
+    },
+    '&.Mui-disabled': {
+      color: taskStatus[taskIndex]?.completed ? 'white' : 'default',
+      borderColor: taskStatus[taskIndex]?.completed ? 'green' : 'default',
+      backgroundColor: taskStatus[taskIndex]?.completed ? 'green' : 'transparent',
+    },
+  }}
           >
             {loadingTaskIndex === taskIndex ? (
-              <CircularProgress size={24} sx={{ color: 'gray' }} />
+              <CircularProgress size={24} sx={{ color: 'white' }} />
             ) : taskStatus[taskIndex]?.completed ? (
               'Done'
             ) : (
@@ -387,18 +410,19 @@ const DealsComponent: React.FC = () => {
         </Box>
       )}
 
-      {/* Snackbar to show after claiming */}
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={3000}
-        onClose={() => setOpenSnackbar(false)}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert severity="success">
-          <AlertTitle>Success</AlertTitle>
-          This is a success Alert with an encouraging title.
-        </Alert>
-      </Snackbar>
+   {/* Snackbar to show after claiming */}
+<Snackbar
+  open={openSnackbar}
+  autoHideDuration={3000}
+  onClose={() => setOpenSnackbar(false)}
+  anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+>
+  <Alert severity="success">
+    <AlertTitle>Success</AlertTitle>
+    {rewardMessage} {/* Dynamic reward message */}
+  </Alert>
+</Snackbar>
+
     </Box>
   );
 };

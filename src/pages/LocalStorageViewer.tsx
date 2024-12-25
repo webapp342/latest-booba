@@ -116,11 +116,14 @@ const AccountEquityCard: React.FC = () => {
     navigate('/latest-booba/');
   };
 
-// Calculate the total USD value
-useEffect(() => {
-  const totalUsdValue = data.reduce((sum, item) => sum + item.usdValue, 0);
-  setTotalEquity(totalUsdValue.toFixed(2)); // Set the total value in state
-}, [data]);
+  // Calculate the total USD value
+  useEffect(() => {
+    const totalUsdValue = data.reduce((sum, item) => sum + item.usdValue, 0);
+    setTotalEquity(totalUsdValue.toLocaleString(undefined, { 
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2 
+    })); // Format with commas and 2 decimal places
+  }, [data]);
 
   useEffect(() => {
     const telegramUserId = localStorage.getItem("telegramUserId");
@@ -196,6 +199,9 @@ useEffect(() => {
     }
     if (symbol === "TON" && tonPrice !== null) {
       return amount * tonPrice; // Calculate TON USD value
+    }
+    if (symbol === "TICKET" && tonPrice !== null) {
+      return amount * (2.5 * tonPrice); // Each ticket costs 2.5 TON
     }
     return 0;
   };
@@ -276,6 +282,18 @@ useEffect(() => {
 
   generateQRCode();
 }, []);
+
+
+  // Helper function to format display amount
+  const formatDisplayAmount = (amount: number, symbol: string) => {
+    if (symbol === "BBLIP" || symbol === "TON") {
+      return (amount / 1000).toFixed(3);
+    }
+    if (symbol === "USDT") {
+      return amount.toLocaleString(); // Adds commas for thousands
+    }
+    return amount;
+  };
 
 
 
@@ -527,7 +545,9 @@ useEffect(() => {
 
           {/* Sağ Kısım: Rakamlar */}
           <Box sx={{ textAlign: "right" }}>
-            <Typography variant="subtitle2">{item.amount}</Typography>
+            <Typography variant="subtitle2">
+                {formatDisplayAmount(item.amount, item.symbol)}
+              </Typography>
             <Typography variant="subtitle2" color="text.secondary">
               <Typography variant="body2" sx={{ fontWeight: "bold" }}>
                 ${item.usdValue.toFixed(2)}
