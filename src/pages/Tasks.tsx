@@ -24,12 +24,11 @@ import task2Logo from '../assets/instagram.png';
 import task3Logo from '../assets/facebook.png';
 import task4Logo from '../assets/tik-tok.png';
 import task5Logo from '../assets/telegram.png';
-import task6Logo from '../assets/logo5.png';
 import task7Logo from '../assets/logo5.png';
 import task8Logo from '../assets/logo5.png';
-import task9Logo from '../assets/logo5.png';
-import task10Logo from '../assets/logo5.png';
-import task11Logo from '../assets/task1logo.png';
+import task9Logo from '../assets/ton_logo_dark_background.svg';
+import task10Logo from '../assets/ton_logo_dark_background.svg';
+import task11Logo from '../assets/ton_logo_dark_background.svg';
 import comingSoonLogo from '../assets/task1logo.png';
 
 // Firebase App initialization
@@ -39,17 +38,16 @@ const db = getFirestore(app);
 // Tasks metadata
 const tasksMetadata = [
 
-  { title: 'Follow Booba on X', description: '+100 BBLIP', link: 'https://telegram.com', reward: 100 },
-  { title: 'Follow Booba on Instagram', description: '+100 BBLIP', link: 'https://facebook.com', reward: 1000 },
-  { title: 'Join Booba Facebook', description: '+100 BBLIP', link: 'https://x.com', reward: 100 },
-  { title: 'Follow Booba on Tiktok', description: '+100 BBLIP', link: 'https://example.com/task-4', reward: 100 },
-  { title: 'Join Booba Telegram', description: '+100 BBLIP', link: 'https://example.com/task-5', reward: 100 },
-  { title: 'Invite 1 fren', description: '+10 BBLIP', link: '', reward: 10 },
-  { title: 'Invite 10 fren', description: '+200 BBLIP', link: '', reward: 200 },
-  { title: 'Invite 25 fren', description: '+1,000 BBLIP', link: '', reward: 1000 },
-  { title: 'Invite 50 fren', description: '+3,000 BBLIP', link: '', reward: 3000 },
-  { title: 'Invite 100 fren', description: '+10,000 BBLIP', link: '', reward: 10000 },
-  { title: 'Task 6', description: '+100 BBLIP', link: 'https://example.com/task-6', reward: 100 },
+  { title: 'Follow Booba on X', description: '+5 BBLIP', link: 'https://telegram.com', reward: 5000 },
+  { title: 'Follow Booba on Instagram', description: '+5 BBLIP', link: 'https://facebook.com', reward: 5000 },
+  { title: 'Join Booba Facebook', description: '+5 BBLIP', link: 'https://x.com', reward: 5000 },
+  { title: 'Follow Booba on Tiktok', description: '+5 BBLIP', link: 'https://example.com/task-4', reward: 5000 },
+  { title: 'Join Booba Telegram', description: '+5 BBLIP', link: 'https://example.com/task-5', reward: 5000 },
+  { title: 'Invite 1 fren', description: '+5 BBLIP', link: '', reward: 5000 },
+  { title: 'Invite 10 fren', description: '+25 BBLIP', link: '', reward: 25000 },
+  { title: 'Invite 25 fren', description: '+2.5 TON', link: '', reward: 2500 },
+  { title: 'Invite 50 fren', description: '+5 TON', link: '', reward: 5000 },
+  { title: 'Invite 100 fren', description: '+10 TON', link: '', reward: 10000 },
 
 
   { title: '', description: 'Coming Soon...', link: '' , reward: 100},
@@ -61,7 +59,6 @@ const taskLogos = [
   task3Logo,
   task4Logo,
   task5Logo,
-  task6Logo,
   task7Logo,
   task8Logo,
   task9Logo,
@@ -183,16 +180,27 @@ const DealsComponent: React.FC = () => {
       [`tasks.${taskIndex}.disabled`]: true,
     });
 
-    // Get the reward for the selected task
+    // Get the reward and description for the selected task
     const reward = tasksMetadata[taskIndex].reward;
+    const description = tasksMetadata[taskIndex].description;
 
-    // Add the specific reward amount for the claimed task
-    await updateDoc(userDocRef, {
-      bblip: increment(reward), // Add the reward amount to the bblip field
-    });
+    // Check if the description includes 'BBLIP' or 'TON' to determine the reward type
+    const isBblipReward = description.includes('BBLIP'); // If description contains 'BBLIP', it's BBLIP
+    const isTonReward = description.includes('TON'); // If description contains 'TON', it's TON
+
+    // Add the reward amount to the appropriate field (bblip or total)
+    if (isBblipReward) {
+      await updateDoc(userDocRef, {
+        bblip: increment(reward), // Add the reward amount to the bblip field
+      });
+    } else if (isTonReward) {
+      await updateDoc(userDocRef, {
+        total: increment(reward), // Add the reward amount to the total field
+      });
+    }
 
     // Set the reward message for the snackbar
-    setRewardMessage(`You have claimed ${reward} BBLIP for completing the task: "${tasksMetadata[taskIndex].title}"`);
+    setRewardMessage(`You have claimed ${description} for completing the task: "${tasksMetadata[taskIndex].title}"`);
 
     // Wait for 5 seconds for circular progress before showing Snackbar
     setTimeout(() => {
@@ -205,6 +213,7 @@ const DealsComponent: React.FC = () => {
     setLoadingTaskIndex(null); // Hide the spinner in case of error
   }
 };
+
 
 
 
@@ -375,7 +384,7 @@ const DealsComponent: React.FC = () => {
     taskStatus[taskIndex]?.disabled ||
     taskStatus[taskIndex]?.completed ||
     loadingTaskIndex === taskIndex ||
-    (taskIndex >= 5 && taskIndex <= 9 && invitedUsersCount < (taskIndex === 5 ? 1 : taskIndex === 6 ? 10 : taskIndex === 7 ? 25 : taskIndex === 8 ? 50 : 100))
+    (taskIndex >= 5 && taskIndex <= 9 && invitedUsersCount < (taskIndex === 5 ? 1 : taskIndex === 6 ? 10 : taskIndex === 7 ? 1 : taskIndex === 8 ? 50 : 100))
   }
           sx={{
     textTransform: 'none',
