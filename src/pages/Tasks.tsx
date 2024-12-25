@@ -384,7 +384,7 @@ const DealsComponent: React.FC = () => {
     taskStatus[taskIndex]?.disabled ||
     taskStatus[taskIndex]?.completed ||
     loadingTaskIndex === taskIndex ||
-    (taskIndex >= 5 && taskIndex <= 9 && invitedUsersCount < (taskIndex === 5 ? 1 : taskIndex === 6 ? 10 : taskIndex === 7 ? 1 : taskIndex === 8 ? 50 : 100))
+    (taskIndex >= 5 && taskIndex <= 9 && invitedUsersCount < (taskIndex === 5 ? 1 : taskIndex === 6 ? 1 : taskIndex === 7 ? 1 : taskIndex === 8 ? 1 : 1))
   }
           sx={{
     textTransform: 'none',
