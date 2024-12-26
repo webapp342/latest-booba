@@ -10,6 +10,8 @@ import {
   Box,
   Avatar,
   Grid,
+  Button,
+  Alert,
 } from "@mui/material";
 import SwapVertRoundedIcon from '@mui/icons-material/SwapVertRounded';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -18,25 +20,30 @@ import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import axios from "axios";
 import UnfoldMoreRoundedIcon from '@mui/icons-material/UnfoldMoreRounded';
 import logo5 from '../assets/logo5.png';
-import { doc, onSnapshot, getFirestore} from "firebase/firestore";
+import { doc, onSnapshot, getFirestore, updateDoc } from "firebase/firestore";
 import { initializeApp } from 'firebase/app';
+
 import { firebaseConfig } from './firebaseConfig';
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+
+const TICKET_TON_RATE = 2.5;
+
 const TokenSwap: React.FC = () => {
   const [fromToken, setFromToken] = useState("TON");
-  const [toToken, setToToken] = useState("USDT");
+  const [toToken, setToToken] = useState("TICKET");
   const [fromAmount, setFromAmount] = useState("");
   const [toAmount, setToAmount] = useState("");
-  const [fromTokenPrice] = useState<number>(0);
-  const [toTokenPrice] = useState<number>(1);
+  const [tonPrice, setTonPrice] = useState<number>(0);
   const [openDrawer, setOpenDrawer] = useState(false);
   const [selectedTokenType, setSelectedTokenType] = useState<"from" | "to">("from");
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [isSwapping, setIsSwapping] = useState(false);
   
-  // Add new state for balances
   const [balances, setBalances] = useState({
     bblip: 0,
     usdt: 0,
@@ -44,12 +51,13 @@ const TokenSwap: React.FC = () => {
     ton: 0
   });
 
-  // Existing tokens array and other code remains the same...
   const tokens = [
-    { name: "BBLIP", icon: logo5 },
+        { name: "TICKET", icon: "https://example.com/ticket-icon.png" },
+
     { name: "TON", icon: "https://s3-symbol-logo.tradingview.com/crypto/XTVCTON--big.svg" },
     { name: "USDT", icon: "https://s3-symbol-logo.tradingview.com/crypto/XTVCUSDT--big.svg" },
-    { name: "TICKET", icon: "https://example.com/ticket-icon.png" },
+        { name: "BBLIP", icon: logo5 },
+
   ];
 
   const theme = createTheme({
@@ -58,7 +66,24 @@ const TokenSwap: React.FC = () => {
     },
   });
 
-  // Add new useEffect for fetching balances
+  // Fetch TON price from Binance API
+  const fetchTonPrice = async () => {
+    try {
+      const response = await axios.get(`https://api.binance.com/api/v3/ticker/price`, {
+        params: { symbol: 'TONUSDT' },
+      });
+      setTonPrice(parseFloat(response.data.price));
+    } catch (error) {
+      console.error("Error fetching TON price:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTonPrice();
+    const interval = setInterval(fetchTonPrice, 30000); // Update every 30 seconds
+    return () => clearInterval(interval);
+  }, []);
+
   useEffect(() => {
     const telegramUserId = localStorage.getItem("telegramUserId");
     if (!telegramUserId) {
@@ -66,7 +91,6 @@ const TokenSwap: React.FC = () => {
       return;
     }
 
-    // Firestore real-time listener
     const docRef = doc(db, "users", telegramUserId);
     const unsubscribe = onSnapshot(docRef, (docSnap) => {
       if (docSnap.exists()) {
@@ -80,107 +104,180 @@ const TokenSwap: React.FC = () => {
       }
     });
 
-    // Cleanup subscription
     return () => unsubscribe();
   }, []);
 
-  // Binance API'den fiyatları al
- // Binance API'den fiyatları al
-const fetchTokenPrice = async (token: string): Promise<number> => {
-  if (token === "USDT") {
-    return 1; // USDT'nin fiyatı sabit
-  }
-  if (token === "BBLIP") return 0.07; // Sabit fiyat BBLIP için
-  if (token === "TICKET") return 2.5 * (await fetchTokenPrice("TON")); // TICKET fiyatını TON cinsinden hesapla
-  try {
-    const response = await axios.get(`https://api.binance.com/api/v3/ticker/price`, {
-      params: { symbol: `${token}USDT` },
-    });
-    return parseFloat(response.data.price); // Fiyatı döndürüyoruz
-  } catch (error) {
-    console.error("Error fetching price:", error);
-    return 0; // Hata durumunda 0 döndür
-  }
-};
+  
 
-// Amount hesaplamalarını güncelle
-const handleAmountChange = (
-  e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, 
+ const handleAmountChange = (
+  e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   type: "from" | "to"
 ) => {
   const inputValue = e.target.value;
 
-  // Eğer giriş boşsa, diğer alanı da boş yap
   if (inputValue === "") {
     setFromAmount("");
     setToAmount("");
     return;
   }
 
-  const amount = parseFloat(inputValue) || 0;
+  const amount = parseFloat(inputValue);
+  if (isNaN(amount)) return;
 
   if (type === "from") {
     setFromAmount(inputValue);
-    const amountInUSD = amount * fromTokenPrice; // Giriş miktarını USD'ye çeviriyoruz
-    const toCalculatedAmount = amountInUSD / toTokenPrice; // Hedef token cinsinden değeri hesaplıyoruz
-    setToAmount(toCalculatedAmount.toFixed(4));
+
+    // TON -> USDT dönüşümü
+    if (fromToken === "TON" && toToken === "USDT") {
+      setToAmount((amount * tonPrice).toFixed(6)); // TON miktarını USDT'ye çevir
+    }
+    // USDT -> TON dönüşümü
+    else if (fromToken === "USDT" && toToken === "TON") {
+      setToAmount((amount / tonPrice).toFixed(6)); // USDT miktarını TON'a çevir
+    }
+    // TICKET dönüşümleri
+    else if (fromToken === "TON" && toToken === "TICKET") {
+      setToAmount((amount / 2.5).toFixed(6)); // 2.5 TON = 1 TICKET
+    } else if (fromToken === "TICKET" && toToken === "TON") {
+      setToAmount((amount * 2.5).toFixed(6)); // 1 TICKET = 2.5 TON
+    }
   } else {
     setToAmount(inputValue);
-    const amountInUSD = amount * toTokenPrice; // Hedef token miktarını USD'ye çeviriyoruz
-    const fromCalculatedAmount = amountInUSD / fromTokenPrice; // Giriş token cinsinden değeri hesaplıyoruz
-    setFromAmount(fromCalculatedAmount.toFixed(4));
+
+    if (fromToken === "TON" && toToken === "USDT") {
+      setFromAmount((amount / tonPrice).toFixed(6));
+    } else if (fromToken === "USDT" && toToken === "TON") {
+      setFromAmount((amount * tonPrice).toFixed(6));
+    } else if (fromToken === "TON" && toToken === "TICKET") {
+      setFromAmount((amount * 2.5).toFixed(6));
+    } else if (fromToken === "TICKET" && toToken === "TON") {
+      setFromAmount((amount / 2.5).toFixed(6));
+    }
   }
 };
 
-// TICKET fiyatını BBLIP ve USDT cinsinden hesapla
-const calculateTicketPriceInOtherTokens = async () => {
-  const tonPrice = await fetchTokenPrice("TON");
-  const ticketPriceInUSDT = 2.5 * tonPrice; // TICKET fiyatını USDT cinsinden hesapla
-  return {
-    ticketPriceInUSDT,
-    ticketPriceInBBLIP: ticketPriceInUSDT / 0.07 // BBLIP cinsinden hesapla
-  };
-};
-
-// Kullanıcı arayüzünde TICKET fiyatını göster
-useEffect(() => {
-  const updateTicketPrices = async () => {
-    const { ticketPriceInUSDT, ticketPriceInBBLIP } = await calculateTicketPriceInOtherTokens();
-    console.log(`TICKET Price in USDT: ${ticketPriceInUSDT}`);
-    console.log(`TICKET Price in BBLIP: ${ticketPriceInBBLIP}`);
-  };
-  updateTicketPrices();
-}, []);
 
 
   const handleTokenSelect = (token: { name: string; icon: string }) => {
     if (selectedTokenType === "from") {
+      if (token.name === toToken) {
+        setToToken(fromToken);
+      }
       setFromToken(token.name);
     } else {
+      if (token.name === fromToken) {
+        setFromToken(toToken);
+      }
       setToToken(token.name);
     }
 
-    // Tüm girişleri sıfırla
     setFromAmount("");
     setToAmount("");
-
     setOpenDrawer(false);
   };
 
-  const handleTokenSwapInline2 = () => {
-    // Token'lerin yerlerini değiştir
-    const tempToken = fromToken;
-    setFromToken(toToken);
-    setToToken(tempToken);
+const handleSwap = async () => {
+  setError(null);
+  setSuccess(null);
+  setIsSwapping(true);
 
-    // Miktarları sıfırla
+  try {
+    const telegramUserId = localStorage.getItem("telegramUserId");
+    if (!telegramUserId) {
+      throw new Error("Telegram User ID not found!");
+    }
+
+    const fromAmountNum = parseFloat(fromAmount);
+    const toAmountNum = parseFloat(toAmount);
+
+    if (isNaN(fromAmountNum) || isNaN(toAmountNum)) {
+      throw new Error("Invalid amount entered");
+    }
+
+    const docRef = doc(db, "users", telegramUserId);
+
+    // TON -> USDT işlemi
+    if (fromToken === "TON" && toToken === "USDT") {
+      const requiredTon = fromAmountNum * 1000; // TON miktarını 1000 ile çarp
+
+      if (balances.ton < requiredTon) {
+        throw new Error(`Insufficient TON. Need ${requiredTon / 1000} TON`);
+      }
+
+      await updateDoc(docRef, {
+        total: balances.ton - requiredTon, // TON miktarını düşür
+        usdt: (balances.usdt || 0) + toAmountNum, // USDT miktarını artır
+      });
+
+      setSuccess(`Successfully swapped ${fromAmountNum} TON to ${toAmountNum} USDT`);
+    }
+    // USDT -> TON işlemi
+    else if (fromToken === "USDT" && toToken === "TON") {
+      const requiredUsdt = fromAmountNum; // USDT doğrudan işlem görecek
+      const addedTon = toAmountNum * 1000; // TON miktarını 1000 ile çarp
+
+      if (balances.usdt < requiredUsdt) {
+        throw new Error("Insufficient USDT");
+      }
+
+      await updateDoc(docRef, {
+        usdt: balances.usdt - requiredUsdt, // USDT miktarını düşür
+        total: balances.ton + addedTon, // TON miktarını artır
+      });
+
+      setSuccess(`Successfully swapped ${fromAmountNum} USDT to ${toAmountNum} TON`);
+    }
+    // TICKET işlemleri
+    else if (fromToken === "TON" && toToken === "TICKET") {
+      const requiredTon = toAmountNum * 2500;
+
+      if (balances.ton < requiredTon) {
+        throw new Error(`Insufficient TON. Need ${requiredTon / 1000} TON`);
+      }
+
+      await updateDoc(docRef, {
+        total: balances.ton - requiredTon,
+        tickets: (balances.ticket || 0) + toAmountNum,
+      });
+
+      setSuccess(`Successfully swapped ${fromAmountNum} TON to ${toAmountNum} TICKET`);
+    } else if (fromToken === "TICKET" && toToken === "TON") {
+      const addedTon = fromAmountNum * 2500;
+
+      if (balances.ticket < fromAmountNum) {
+        throw new Error("Insufficient TICKET balance");
+      }
+
+      await updateDoc(docRef, {
+        tickets: balances.ticket - fromAmountNum,
+        total: balances.ton + addedTon,
+      });
+
+      setSuccess(`Successfully swapped ${fromAmountNum} TICKET to ${toAmountNum} TON`);
+    } else {
+      throw new Error("Unsupported token swap");
+    }
+
     setFromAmount("");
     setToAmount("");
+  } catch (error) {
+    setError(error instanceof Error ? error.message : "An error occurred during the swap");
+  } finally {
+    setIsSwapping(false);
+  }
+};
+
+
+
+
+  const handleTokenSwapInline2 = () => {
+    setFromToken(toToken);
+    setToToken(fromToken);
+    setFromAmount(toAmount);
+    setToAmount(fromAmount);
   };
 
-  
-
-    const getBalanceForToken = (tokenName: string) => {
+  const getBalanceForToken = (tokenName: string) => {
     switch (tokenName) {
       case 'TON':
         return balances.ton;
@@ -195,21 +292,47 @@ useEffect(() => {
     }
   };
 
-  
-
-   // Helper function to format display amount
   const formatDisplayAmount = (amount: number, symbol: string) => {
-    if (symbol === "BBLIP" || symbol === "TON" ) {
+    if (symbol === "BBLIP" || symbol === "TON") {
       return (amount / 1000).toFixed(2);
     }
+    return amount.toFixed(2);
+  };
+
+  // Calculate and display equivalent prices
+  const getEquivalentPrice = (token: string): string => {
+    switch (token) {
   
-    return amount;
+      case "TON":
+        return `  ${tonPrice.toFixed(4)} USDT`;
+      case "TICKET":
+        return `  ${TICKET_TON_RATE} TON (${(TICKET_TON_RATE * tonPrice).toFixed(4)} USDT)`;
+      default:
+        return "";
+    }
   };
 
   return (
     <ThemeProvider theme={theme}>
       <Box justifyContent="space-between" alignItems="center" m={2}>
+        
       </Box>
+      
+            {/* Add error and success alerts */}
+      {error && (
+        <Box sx={{ mt: 2 }}>
+          <Alert severity="error" onClose={() => setError(null)}>
+            {error}
+          </Alert>
+        </Box>
+      )}
+      {success && (
+        <Box sx={{ mt: 2 }}>
+          <Alert severity="success" onClose={() => setSuccess(null)}>
+            {success}
+          </Alert>
+        </Box>
+      )}
       <Box sx={{ display: "flex", mt: 8, justifyContent: "center", alignItems: "center" }}>
         <Card sx={{ boxShadow: 0, borderRadius: 0, width: "100%" }}>
           <Box display={"flex"} m={1} alignItems={"center"} justifyContent={"space-between"} sx={{ mb: 2 }}>
@@ -293,52 +416,99 @@ useEffect(() => {
           </Card>
         </Grid>
       </Grid>
+         {/* Add swap button */}
+      <Box sx={{ mt: 0, mb: 2 }}>
+        <Button
+          variant="contained"
+          fullWidth
+          size="large"
+          onClick={handleSwap}
+          disabled={!fromAmount || !toAmount || isSwapping}
+          sx={{
+            borderRadius: 2,
+            py: 1.5,
+            backgroundColor: '#1976d2',
+            '&:hover': {
+              backgroundColor: '#1565c0',
+            },
+          }}
+        >
+          {isSwapping ? "Swapping..." : "Swap"}
+        </Button>
+      </Box>
 
-             <Box sx={{ mt: 3, p: 2, backgroundColor: '#f5f5f5', borderRadius: 2 }}>
-            <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>Your Balances</Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <Avatar src={logo5} sx={{ width: 24, height: 24 }} />
-<Typography>BBLIP: {formatDisplayAmount(balances.bblip, "BBLIP")}</Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={6}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <Avatar src="https://s3-symbol-logo.tradingview.com/crypto/XTVCUSDT--big.svg" sx={{ width: 24, height: 24 }} />
-                  <Typography>USDT: {balances.usdt.toFixed(2)}</Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={6}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <Avatar src="https://s3-symbol-logo.tradingview.com/crypto/XTVCTON--big.svg" sx={{ width: 24, height: 24 }} />
-                  <Typography>TON: {balances.ton.toFixed(2)}</Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={6}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <Avatar src="https://example.com/ticket-icon.png" sx={{ width: 24, height: 24 }} />
-                  <Typography>TICKET: {balances.ticket.toFixed(2)}</Typography>
-                </Box>
-              </Grid>
-            </Grid>
-          </Box>
+      
+
+
+         {/* Add price information */}
+   <Box sx={{ mt: 2, p: 2, backgroundColor: '#f5f5f5', borderRadius: 2 }}>
+  {tokens.filter(t => t.name !== "USDT").map(token => (
+    <Typography key={token.name} variant="caption" display="flex" justifyContent="space-between" sx={{ mb: 0.5 }}>
+      <span>{token.name}</span>
+      <span style={{ marginLeft: 'auto' }}>
+        {token.name === "BBLIP" ? "Coming Soon ..." : getEquivalentPrice(token.name)}
+      </span>
+    </Typography>
+  ))}
+</Box>
+
+
+      
+
+
+   
 
           {/* Token Selection Drawer */}
- <SwipeableDrawer
-            anchor="bottom"
-            open={openDrawer}
-            onClose={() => setOpenDrawer(false)}
-            onOpen={() => setOpenDrawer(true)}
-          >            <List>
-              {tokens.map((token) => (
-                <ListItem button key={token.name} onClick={() => handleTokenSelect(token)}>
-                  <Avatar src={token.icon} sx={{ marginRight: 2 }} />
-                  <Typography variant="body1">{token.name}</Typography>
-                </ListItem>
-              ))}
-            </List>
-          </SwipeableDrawer>
+ {/* Token Selection Drawer */}
+<SwipeableDrawer
+  anchor="bottom"
+  open={openDrawer}
+  onClose={() => setOpenDrawer(false)}
+  onOpen={() => setOpenDrawer(true)}
+>
+  <List sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    {/* Başlık ekleniyor */}
+    <ListItem sx={{ justifyContent: 'center', padding: 2 }}>
+      <Typography variant="h6">Select Asset</Typography>
+    </ListItem>
+
+    {/* Tokenlar listesi */}
+    {tokens.map((token) => (
+      <ListItem
+        button
+        key={token.name}
+        onClick={() => handleTokenSelect(token)}
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          padding: 2,
+          opacity: token.name === 'BBLIP' ? 0.5 : 1, // BBLIP devre dışı bırakıldığında yarı şeffaf yapılır
+          pointerEvents: token.name === 'BBLIP' ? 'none' : 'auto', // BBLIP tıklanamaz hale getirilir
+        }}
+      >
+        <Avatar
+          src={token.icon}
+          sx={{ marginRight: 2 }}
+        />
+        <Typography variant="body1" sx={{ flexGrow: 1 }}>
+          {token.name}
+        </Typography>
+        <Typography variant="body2">
+          {token.name === 'BBLIP' ? (
+            'Coming Soon' // BBLIP için Coming Soon mesajı
+          ) : (
+            token.name === 'TON' || token.name === 'BBLIP'
+              ? formatDisplayAmount(getBalanceForToken(token.name), token.name)
+              : getBalanceForToken(token.name).toFixed(2)
+          )}
+        </Typography>
+      </ListItem>
+    ))}
+  </List>
+</SwipeableDrawer>
+
+
         </Card>
       </Box>
     </ThemeProvider>

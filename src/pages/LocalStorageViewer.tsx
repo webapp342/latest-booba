@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";import { ThemeProvider, createTheme, CssBaseline ,Tooltip} from "@mui/material";
+import React, { useState, useEffect } from "react";import { ThemeProvider, createTheme, CssBaseline ,Tooltip, Alert} from "@mui/material";
 import QRCode from 'qrcode';
 import { Box, Card, CardContent, Typography,  Button, Avatar, TextField, InputAdornment ,Drawer, Snackbar, SnackbarContent } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
@@ -106,16 +106,27 @@ const AccountEquityCard: React.FC = () => {
   const [openDepositDrawer, setOpenDepositDrawer] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [comment, setComment] = useState("Loading..."); // Default value for comment
-
   const [tonPrice, setTonPrice] = useState<number | null>(null); // TON price state
   const [qrCodeUrl, setQrCodeUrl] = useState<string>('');
   const [data, setData] = useState<Asset[]>([]); // Initialize as an empty array
   const [totalEquity, setTotalEquity] = useState<string>("0.00");
    const navigate = useNavigate();
 
+     const [open, setOpen] = useState(false);
+
+  const handleClick1 = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const handleClick = () => {
     navigate('/latest-booba/');
   };
+
+  
 
   // Calculate the total USD value
   useEffect(() => {
@@ -295,6 +306,8 @@ const AccountEquityCard: React.FC = () => {
     return amount;
   };
 
+  
+
 
 
 
@@ -386,21 +399,32 @@ const AccountEquityCard: React.FC = () => {
               >
                 Deposit
               </Button>
-              <Button
-                              startIcon={<ArrowCircleUpIcon />}
+       <Button
+        startIcon={<ArrowCircleUpIcon />}
+        variant="outlined"
+        size="small"
+        sx={{
+          textTransform: "none",
+          backgroundColor: "transparent",
+          boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
+          borderRadius: 2,
+        }}
+        onClick={handleClick1}
+      >
+        Withdraw
+      </Button>
 
-                variant="outlined"
-                size="small"
-                sx={{
-                  textTransform: "none",
-                  backgroundColor: "transparent",
-                  boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
-                  borderRadius: 2,
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}  // 6 saniye sonra kapanacak
+        onClose={handleClose}
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }} // Display on top
 
-                }}
-              >
-                Withdraw
-              </Button>
+      >
+        <Alert onClose={handleClose} severity="info" sx={{ width: '100%' }}>
+          Withdrawals will be active soon.
+        </Alert>
+      </Snackbar>
               <Button
   startIcon={<PublishedWithChangesIcon />}
   variant="outlined"

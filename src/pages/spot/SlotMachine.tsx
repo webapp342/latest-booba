@@ -31,8 +31,8 @@ const theme = createTheme({
 
 export const SlotMachine: FC = () => {
   const [numbers, setNumbers] = useState<string>('000000');
-  const [total, setTotal] = useState<number>(600); // Default value
-  const [tickets, setTickets] = useState<number>(5); // Default value
+  const [total, setTotal] = useState<number>(0); // Default value
+  const [tickets, setTickets] = useState<number>(0); // Default value
   const [bblip, setBblip] = useState<number>(10000); // Default value
   const [telegramUserId, setTelegramUserId] = useState<string | null>(null);
 
