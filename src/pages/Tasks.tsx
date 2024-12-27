@@ -8,6 +8,8 @@ import {
   Alert,
   Badge,
 } from '@mui/material';
+import RandomWinner from './RandomWinner'; // RandomWinner bileşenini içeri aktarıyoruz
+
 import {
   getFirestore,
   doc,
@@ -228,6 +230,13 @@ const DealsComponent: React.FC = () => {
         p: 2,
       }}
     >
+      
+      <Box>
+ 
+              
+        <RandomWinner />
+        
+      </Box>
       <Box component="img" src={Tasks} alt="Tasks" sx={{ mt: 4, width: '80px' }} />
 
       <Typography variant="h5" sx={{ mt: 4, fontWeight: 'bold', color: 'black' }}>

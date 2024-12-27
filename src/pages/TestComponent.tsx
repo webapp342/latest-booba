@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Table, TableBody, TableCell, TableHead, TableRow, CircularProgress } from '@mui/material';
+import { Box, Typography, Table, TableBody, TableCell, TableHead, TableRow, CircularProgress, Button, Snackbar, Alert } from '@mui/material';
 import { getFirestore, doc, getDoc } from 'firebase/firestore'; // Firestore metodları
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './firebaseConfig'; // Firebase yapılandırma
 import Tasks from '../assets/tasks.png'; // PNG dosyasını import edin
-
+import RandomWinner from './RandomWinner'; // RandomWinner bileşenini içeri aktarıyoruz
 
 // Firebase App başlat
 const app = initializeApp(firebaseConfig);
@@ -12,8 +12,11 @@ const db = getFirestore(app);
 
 const DealsComponent: React.FC = () => {
   const [invitedUsers, setInvitedUsers] = useState<string[]>([]); // `invitedUsers` bir array olacak
+  const [inviteLink, setInviteLink] = useState<string>(''); // inviteLink state'i
   const [loading, setLoading] = useState(true); // Yüklenme durumu
   const [error, setError] = useState<string | null>(null); // Hata mesajı için state
+  const [snackbarOpen, setSnackbarOpen] = useState(false); // Snackbar açık/kapalı durumu
+  const [snackbarMessage, setSnackbarMessage] = useState(''); // Snackbar mesajı
 
   useEffect(() => {
     const fetchInvitedUsers = async () => {
@@ -21,8 +24,8 @@ const DealsComponent: React.FC = () => {
       setError(null); // Hata durumunu sıfırla
 
       try {
-        // localStorage'den Telegram kullanıcı kimliğini al
-        const telegramUserId = localStorage.getItem('telegramUserId');
+        // localStorage'den Telegram kullanıcı kimliğini al, bulamazsa varsayılan ID'yi kullan
+        const telegramUserId = localStorage.getItem('telegramUserId') || '1421109983'; // Varsayılan ID
         if (!telegramUserId) {
           setError('Kullanıcı ID’si bulunamadı. Lütfen tekrar giriş yapın.');
           setInvitedUsers([]);
@@ -36,13 +39,24 @@ const DealsComponent: React.FC = () => {
 
         if (userDocSnap.exists()) {
           const userData = userDocSnap.data();
-          // `invitedUsers` dizisi varsa kontrol et
-          if (userData.invitedUsers && Array.isArray(userData.invitedUsers)) {
-            setInvitedUsers(userData.invitedUsers); // Davet edilen kullanıcıları ayarla
+          console.log('Firestore kullanıcı verisi:', userData); // Kullanıcı verisini logla
+          
+          // 'invitedUsers' dizisini doğru şekilde almak için boşlukları kaldırın
+          const invitedUsersArray = userData[' invitedUsers '] || []; // Anahtarın etrafındaki boşlukları kaldırarak erişim sağla
+          console.log('Davet edilen kullanıcılar:', invitedUsersArray); // Davet edilen kullanıcıları logla
+          
+          if (Array.isArray(invitedUsersArray)) {
+            setInvitedUsers(invitedUsersArray); // Davet edilen kullanıcıları ayarla
           } else {
-            setInvitedUsers([]); // invitedUsers dizisi yoksa boş ayarla
+            console.log('invitedUsers dizisi geçerli değil.'); // invitedUsers dizisinin geçerli olmadığı durumu logla
+            setInvitedUsers([]); // invitedUsers dizisi geçerli değilse boş ayarla
           }
+
+          // inviteLink değerini al
+          const link = userData?.inviteLink || '';
+          setInviteLink(link); // inviteLink'i state'e kaydet
         } else {
+          console.log('Kullanıcı belgesi bulunamadı.'); // Kullanıcı belgesinin bulunamadığı durumu logla
           setError('Kullanıcı belgesi bulunamadı.');
           setInvitedUsers([]);
         }
@@ -58,6 +72,33 @@ const DealsComponent: React.FC = () => {
     fetchInvitedUsers();
   }, []);
 
+  // Copy Link işlemi
+  const handleCopyLink = () => {
+    if (inviteLink) {
+      navigator.clipboard.writeText(inviteLink).then(() => {
+        setSnackbarMessage('Link kopyalandı!');
+        setSnackbarOpen(true);
+      }).catch((err) => {
+        setSnackbarMessage('Link kopyalanırken bir hata oluştu.');
+        setSnackbarOpen(true);
+        console.error(err);
+      });
+    }
+  };
+
+  // Share Link işlemi (Telegram API ile paylaşım)
+  const handleShareLink = () => {
+    if (inviteLink) {
+      const url = `https://t.me/share/url?url=${encodeURIComponent(inviteLink)}`;
+      window.open(url, '_blank');
+    }
+  };
+
+  // Snackbar kapama
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+  };
+
   return (
     <Box
       sx={{
@@ -71,8 +112,13 @@ const DealsComponent: React.FC = () => {
         margin: '0 auto',
       }}
     >
-         {/* PNG Görseli */}
-         <Box
+
+      <Box>
+        <RandomWinner />
+      </Box>
+
+      {/* PNG Görseli */}
+      <Box
         component="img"
         src={Tasks}
         alt="Deal Icon"
@@ -84,13 +130,34 @@ const DealsComponent: React.FC = () => {
       />
       {/* Başlık */}
       <Typography variant="h5" sx={{ marginTop: 4, color: 'black', fontWeight: 'bold' }}>
-        Davetlerim
+        Invite and Earn!
       </Typography>
 
       {/* Açıklama */}
       <Typography variant="body1" sx={{ marginTop: 1, color: 'text.secondary' }}>
-        Davet ettiğiniz kullanıcıları aşağıda görebilirsiniz.
+        Invite friends, get up to 10 TON in rewards!
       </Typography>
+
+      {/* Link Kopyalama ve Paylaşma Butonları */}
+      <Box sx={{ display: 'flex', gap: 2, marginTop: 4 }}>
+        {/* Copy Link Butonu */}
+        <Button 
+          variant="contained" 
+          onClick={handleCopyLink}
+          disabled={loading}
+        >
+          {loading ? <CircularProgress size={24} /> : 'Copy Link'}
+        </Button>
+
+        {/* Share Link Butonu */}
+        <Button 
+          variant="contained" 
+          onClick={handleShareLink}
+          disabled={loading}
+        >
+          {loading ? <CircularProgress size={24} /> : 'Share Link'}
+        </Button>
+      </Box>
 
       {/* İçerik */}
       <Box sx={{ mt: 4, width: '100%' }}>
@@ -105,7 +172,7 @@ const DealsComponent: React.FC = () => {
             <TableHead>
               <TableRow>
                 <TableCell align="left">#</TableCell>
-                <TableCell align="left">Davet Edilen Kullanıcı</TableCell>
+                <TableCell align="left">Invited Users</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -119,6 +186,17 @@ const DealsComponent: React.FC = () => {
           </Table>
         )}
       </Box>
+
+      {/* Snackbar bildirimi */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

@@ -29,6 +29,7 @@
     "framer-motion": "^11.3.19",
     "gsap": "^3.12.5",
     "i18next": "^24.0.5",
+    "lucide-react": "^0.469.0",
     "metalpriceapi-ts": "^1.0.1",
     "pixi.js": "^8.5.0",
     "qrcode": "^1.5.4",
