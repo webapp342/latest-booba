@@ -2,6 +2,7 @@ import "./App.css";
 import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import SimpleBottomNavigation from "./pages/Navigation";
+import WebApp from "@twa-dev/sdk";
 import Loading from "./pages/Loading"; // Loading bileşenini import edin
 import "./index.css"; // Global stil dosyasını import edin
 
@@ -10,6 +11,7 @@ function App() {
 
     useEffect(() => {
         // Telegram WebApp'i tam ekran moduna genişlet
+        WebApp.expand();
 
         // İlk yüklemede loading göstermek için zamanlayıcı
         const timer = setTimeout(() => {
