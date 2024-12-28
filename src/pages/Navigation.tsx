@@ -6,7 +6,7 @@ import SportsEsportsTwoToneIcon from '@mui/icons-material/SportsEsportsTwoTone';
 import AccountBalanceWalletTwoToneIcon from '@mui/icons-material/AccountBalanceWalletTwoTone';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import EmojiEventsTwoToneIcon from '@mui/icons-material/EmojiEventsTwoTone';
-import "../index.css"; // Global stil dosyasını import edin
+import "../App.css"; // Global stil dosyasını import edin
 
 import InventoryTwoToneIcon from '@mui/icons-material/InventoryTwoTone';
 import PeopleOutlineTwoToneIcon from '@mui/icons-material/PeopleOutlineTwoTone';
