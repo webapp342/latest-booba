@@ -192,6 +192,8 @@ const DealsComponent: React.FC = () => {
         open={snackbarOpen}
         autoHideDuration={3000}
         onClose={handleCloseSnackbar}
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }} // Display on top
+
       >
         <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
           {snackbarMessage}
