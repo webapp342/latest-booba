@@ -17,7 +17,7 @@ const theme = createTheme({
 });
 
 const DealsComponent: React.FC = () => {
-  const [invitedUsers, setInvitedUsers] = useState<string[]>([]); // `invitedUsers` bir array olacak
+const [invitedUsers, setInvitedUsers] = useState<number[]>([]);
   const [inviteLink, setInviteLink] = useState<string>(''); // inviteLink state'i
   const [loading, setLoading] = useState(true); // Yüklenme durumu
   const [error, setError] = useState<string | null>(null); // Hata mesajı için state
@@ -48,8 +48,7 @@ const DealsComponent: React.FC = () => {
           console.log('Firestore kullanıcı verisi:', userData); // Kullanıcı verisini logla
           
           // 'invitedUsers' dizisini doğru şekilde almak için boşlukları kaldırın
-          const invitedUsersArray = userData[' invitedUsers '] || []; // Anahtarın etrafındaki boşlukları kaldırarak erişim sağla
-          console.log('Davet edilen kullanıcılar:', invitedUsersArray); // Davet edilen kullanıcıları logla
+const invitedUsersArray = userData.invitedUsers || [];          console.log('Davet edilen kullanıcılar:', invitedUsersArray); // Davet edilen kullanıcıları logla
           
           if (Array.isArray(invitedUsersArray)) {
             setInvitedUsers(invitedUsersArray); // Davet edilen kullanıcıları ayarla
