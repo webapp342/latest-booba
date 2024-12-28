@@ -6,7 +6,7 @@ import { Skeleton, Box } from '@mui/material';
 
 const Loading: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null); 
 
   useEffect(() => {
     const fetchUserData = async () => {
