@@ -221,6 +221,9 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
         {availableAmount}
       </Typography>
 
+        {/* Minimum Required Subtitle */}
+       
+
       {/* Spin ve Deposit Butonları */}
       {isSpinEnabled || loading ? (
         <Button
@@ -257,6 +260,28 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
           Top Up & Keep Spinning ! 
         </Button>
       )}
+
+      {!isSpinEnabled && !loading && (
+  <Typography
+    variant="body2"
+    sx={{
+      color: '#FF6666',
+      fontSize: '0.8rem',
+      marginTop: '10px',
+      fontWeight: 'light',
+    }}
+  >
+    You need at least{' '}
+    {selectedSpinType === 'total'
+      ? '0.2 TON'
+      : selectedSpinType === 'ticket'
+      ? '1 Ticket'
+      : '5 BBLIP'}{' '}
+    to spin with this choice.
+  </Typography>
+)}
+
+      
     </Box>
     </ThemeProvider>
 
