@@ -1,6 +1,6 @@
 html, body {
  
- 
+
   overflow: hidden; /* Disables global scrolling */
 }
 
@@ -8,6 +8,8 @@ html, body {
   display: flex;
   flex-direction: column;
   height: 100vh;
+    z-index: 1000;
+
 }
 
 .main-content {

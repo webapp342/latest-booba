@@ -64,7 +64,7 @@ const RandomWinner: React.FC = () => {
               background: 'linear-gradient(to right,rgb(21, 109, 192),rgb(15, 13, 13))',
               borderRadius: 2,
               boxShadow: 3,
-              width: '98vw',
+              width: '92vw',
               py: 0.5,
               textAlign: 'center',
               transform: 'scale(1)',

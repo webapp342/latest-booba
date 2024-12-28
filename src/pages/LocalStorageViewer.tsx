@@ -319,9 +319,9 @@ const AccountEquityCard: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
   
-      <Box  m={2} justifyContent= "space-between"
+      <Box width={'92vw'}  justifyContent= "space-between"
           alignItems= "center"
-          
+          m={1}
           display="flex">
        
            
@@ -356,6 +356,7 @@ const AccountEquityCard: React.FC = () => {
       
        
               </Box>
+              <Box>
         {/* İlk Kart */}
         <Card sx={{ borderRadius: 3, mt: 4 }}>
           <CardContent>
@@ -591,6 +592,7 @@ const AccountEquityCard: React.FC = () => {
     ))}
   </CardContent>
 </Card>
+</Box>
 
 
 {/* Bottom Drawer for Deposit Information */}
@@ -754,7 +756,6 @@ const AccountEquityCard: React.FC = () => {
           }
         />
       </Snackbar>
-
     </ThemeProvider>
   );
 };
