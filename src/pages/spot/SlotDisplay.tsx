@@ -1,12 +1,19 @@
 import React from 'react';
 import SlotCounter from 'react-slot-counter';
-import { Box } from '@mui/material';
+import { Box,createTheme, ThemeProvider } from '@mui/material';
 
 interface SlotDisplayProps {
   numbers: string;
   counterRefs: React.Ref<any>[];
   selectedSpinType: string;
 }
+
+const theme = createTheme({
+  typography: {
+    fontFamily: "monospace",
+  },
+
+});
 
 const SlotDisplay: React.FC<SlotDisplayProps> = ({ numbers, counterRefs, selectedSpinType }) => {
   const getColorClass = (index: number) => {
@@ -23,6 +30,8 @@ const SlotDisplay: React.FC<SlotDisplayProps> = ({ numbers, counterRefs, selecte
   };
 
   return (
+        <ThemeProvider theme={theme}>
+    
     <Box
       sx={{
         display: 'flex',
@@ -94,6 +103,8 @@ const SlotDisplay: React.FC<SlotDisplayProps> = ({ numbers, counterRefs, selecte
 
  
     </Box>
+            </ThemeProvider>
+    
 
   );
 };

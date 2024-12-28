@@ -1,6 +1,6 @@
 import React, { useState,  } from 'react';
 
-import { Box, Typography, Button, Avatar } from '@mui/material';
+import { Box, Typography, Button, Avatar ,ThemeProvider, createTheme} from '@mui/material';
 
 import { userData } from './UserData'; // Kullanıcı verileri
 
@@ -29,11 +29,20 @@ const TopComponent: React.FC = () => {
 
   };
 
+  // Tema oluşturma
+  const theme = createTheme({
+    typography: {
+      fontFamily: "monospace",
+    },
+  });
+
 
 
  
 
   return (
+            <ThemeProvider theme={theme}>
+    
 
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', p: 2 }}>
 
@@ -391,6 +400,8 @@ const TopComponent: React.FC = () => {
       )}
 
     </Box>
+        </ThemeProvider>
+    
 
   );
 

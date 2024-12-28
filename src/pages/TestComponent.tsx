@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Table, TableBody, TableCell, TableHead, TableRow, CircularProgress, Button, Snackbar, Alert } from '@mui/material';
+import { Box, Typography, Table, TableBody, TableCell, TableHead, TableRow, CircularProgress, Button, Snackbar, Alert ,ThemeProvider, createTheme } from '@mui/material';
 import { getFirestore, doc, getDoc } from 'firebase/firestore'; // Firestore metodları
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './firebaseConfig'; // Firebase yapılandırma
@@ -9,6 +9,12 @@ import RandomWinner from './RandomWinner'; // RandomWinner bileşenini içeri ak
 // Firebase App başlat
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
+const theme = createTheme({
+  typography: {
+    fontFamily: "monospace",
+  },
+});
 
 const DealsComponent: React.FC = () => {
   const [invitedUsers, setInvitedUsers] = useState<string[]>([]); // `invitedUsers` bir array olacak
@@ -100,6 +106,8 @@ const DealsComponent: React.FC = () => {
   };
 
   return (
+            <ThemeProvider theme={theme}>
+    
     <Box
       sx={{
         display: 'flex',
@@ -200,6 +208,8 @@ const DealsComponent: React.FC = () => {
         </Alert>
       </Snackbar>
     </Box>
+            </ThemeProvider>
+    
   );
 };
 

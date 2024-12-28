@@ -1,8 +1,15 @@
 import Avatar3 from '../assets/toncoin-ton-logo.png';
 import avatar2 from '../assets/logo5.jpg';
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Avatar } from '@mui/material';
+import { Box, Typography, Avatar,ThemeProvider, createTheme  } from '@mui/material';
 import { Link } from 'react-router-dom';
+
+
+const theme = createTheme({
+  typography: {
+    fontFamily: "monospace",
+  },
+});
 
 const RandomWinner: React.FC = () => {
   const [message, setMessage] = useState<{
@@ -39,6 +46,8 @@ const RandomWinner: React.FC = () => {
   }, []);
 
   return (
+        <ThemeProvider theme={theme}>
+    
     <Link to="/latest-booba/slot" style={{ textDecoration: 'none' }}>
       <Box display="flex" justifyContent="center" mt={0} mb={4}>
         <Box
@@ -95,6 +104,8 @@ const RandomWinner: React.FC = () => {
         </Box>
       </Box>
     </Link>
+        </ThemeProvider>
+    
   );
 };
 

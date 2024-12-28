@@ -21,9 +21,12 @@ import WebApp from '@twa-dev/sdk'; // Telegram WebApp SDK
 
 import winSound from '../../assets/win.mp3';
 import { useWindowSize } from 'react-use';
+
+
+
 const theme = createTheme({
   typography: {
-    fontFamily: "Montserrat, sans-serif",
+    fontFamily: "monospace",
   },
 
 });
@@ -485,7 +488,10 @@ const [showConfetti, setShowConfetti] = useState(false);
 
         </Box>
         <Box>
-       Up To
+      
+  Up To
+   
+     
                  {/* Buttons */}
                  <Button
           variant="contained"
@@ -526,7 +532,7 @@ const [showConfetti, setShowConfetti] = useState(false);
 
      
 
-      <button
+      <Button
         style={{
           background: "#f7cf6d",
           borderRadius: 12,
@@ -552,7 +558,7 @@ const [showConfetti, setShowConfetti] = useState(false);
         >
           <InfoIcon />
         </IconButton>
-      </button>
+      </Button>
 
         <Box>
                {/* Aşağı yönlendirme ikonu */}
@@ -732,7 +738,7 @@ const [showConfetti, setShowConfetti] = useState(false);
 
           {/* Buttons */}
            {/* Buttons */}
-           <button
+           <Button
         style={{
           background: "#f7cf6d",
           borderRadius: 12,
@@ -758,7 +764,7 @@ const [showConfetti, setShowConfetti] = useState(false);
         >
           <InfoIcon />
         </IconButton>
-      </button>
+      </Button>
 
       {/* Modal */}
       <Modal open={open} onClose={handleClose}>

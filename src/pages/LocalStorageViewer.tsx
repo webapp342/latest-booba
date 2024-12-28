@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";import { ThemeProvider, createTheme, CssBaseline ,Tooltip, Alert} from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { ThemeProvider, createTheme ,Tooltip, Alert} from "@mui/material";
 import QRCode from 'qrcode';
 import { Box, Card, CardContent, Typography,  Button, Avatar, TextField, InputAdornment ,Drawer, Snackbar, SnackbarContent } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
@@ -14,18 +15,21 @@ import UserAvatar from "./UserAvatar";
 import { doc, onSnapshot , getFirestore, getDoc} from "firebase/firestore";
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './firebaseConfig';
+import WebApp from "@twa-dev/sdk";
+
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 
+    const telegramUser = WebApp.initDataUnsafe.user;
 
 
 
 // Tema oluşturma
 const theme = createTheme({
   typography: {
-    fontFamily: "Montserrat, sans-serif",
+    fontFamily: "monospace",
   },
 });
 
@@ -100,6 +104,7 @@ const initialData: Asset[] = [
 ];
 
 const AccountEquityCard: React.FC = () => {
+
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false); // Arama moduna girildi mi?
   const [showTokenSwap, setShowTokenSwap] = useState(false);
@@ -313,10 +318,10 @@ const AccountEquityCard: React.FC = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <CssBaseline />
   
       <Box  m={2} justifyContent= "space-between"
           alignItems= "center"
+          
           display="flex">
        
            
@@ -344,13 +349,15 @@ const AccountEquityCard: React.FC = () => {
 
   
 
-  <UserAvatar telegramUserId="user_telegram_id" displayName="Booba Blip" />      
-
+   <UserAvatar 
+      telegramUserId={telegramUser?.id?.toString() ?? ''} 
+      displayName={telegramUser?.first_name ?? 'User'} 
+    />
       
        
               </Box>
         {/* İlk Kart */}
-        <Card sx={{ borderRadius: 3, mx: "auto", mt: 4,  m: 2 }}>
+        <Card sx={{ borderRadius: 3, mt: 4 }}>
           <CardContent>
             {/* Total Account Equity */}
             <Typography
@@ -465,7 +472,7 @@ const AccountEquityCard: React.FC = () => {
         </Card>
 
       {/* İkinci Kart - Asset List */}
-<Card sx={{ borderRadius: 3, mx: "auto", p: 1, m: 2 }}>
+<Card sx={{ borderRadius: 3, mt: 1 }}>
   <CardContent>
     {/* Başlık ve Arama Kutusu */}
     <Box
@@ -474,6 +481,7 @@ const AccountEquityCard: React.FC = () => {
         justifyContent: "space-between",
         alignItems: "center",
         mb: 2,
+        
       }}
     >
       {/* Arama Kutusunun Görünümü */}
