@@ -6,7 +6,6 @@ import SportsEsportsTwoToneIcon from '@mui/icons-material/SportsEsportsTwoTone';
 import AccountBalanceWalletTwoToneIcon from '@mui/icons-material/AccountBalanceWalletTwoTone';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import EmojiEventsTwoToneIcon from '@mui/icons-material/EmojiEventsTwoTone';
-import "../App.css"; // Global stil dosyasını import edin
 
 import InventoryTwoToneIcon from '@mui/icons-material/InventoryTwoTone';
 import PeopleOutlineTwoToneIcon from '@mui/icons-material/PeopleOutlineTwoTone';
@@ -59,7 +58,6 @@ export default function SimpleBottomNavigation() {
   value={value}
   onChange={(_, newValue) => handleNavigationChange(newValue)}
   showLabels
-  className="bottom-navigation"
   sx={{
     bgcolor: '#ffffff',
     px: 4,
@@ -67,7 +65,7 @@ export default function SimpleBottomNavigation() {
     pb: 2,
     maxWidth: '100%',
     boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.2)", // Hafif gölge
-
+    zIndex: 1000,
     borderTop: '1px solid #E0E0E0', // Gri ince top border
   }}
 >
