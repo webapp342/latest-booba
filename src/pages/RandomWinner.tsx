@@ -18,14 +18,15 @@ const RandomWinner: React.FC = () => {
   }>({ username: '', amount: '', option: 'TON' });
   const [animKey, setAnimKey] = useState<number>(0);
 
-  const usernames = ['marrow1911', 'b19hgaaq_ks11', 'HayesAmiir', 'BREAKFAST98', 'kamikaze2Emre', 'Rojjan', 'Lumanporsu42',
-     'abidiyeceksin', 'rrkrsnrz', 'opsiaman', 'rmuhammad1911', 'SwitzerH', '@Au613', 'ج.تابش', 'nadeeem', 'Mitu Mituu', 'pleplee'
-    , 'Justiene', 'udbsshsj', 'mr_saxo', 'ChroGNer', 'TiONchin', 'lainDlEY', 'actotioN', 'JudisHog', 'mpLiSAtE', 'pstEdogR', 'iBAblecT'
-  , 'omAISEme', 'MPROusTr', 'HElICiaT', 'poTeRAgO', 'goTHmeTA', 'tImesTop', 'rcHiMArO', 'TeNtayal', 'pUTIcTiv', 'ighTSYnI', 'MenTAMet'];
+  const usernames = ['marrow1911', 'TᕼEGOᗪᖴᗩTᕼEᖇ', 'HayesAmiir', 'BREAKFAST98', 'kamikaze2Emre', 'Rojjan', 'Lumanporsu42',
+     'abidiyeceksin', 'rrkrsnrz', 'opsiaman', 'rmuhammad1911', 'SwitzerH', '@Au613', 'ج.تابش', 'м!яя0sëməløn', 'Mitu Mituu', 'pleplee'
+    , 'Justiene', 'playweb3gamee', 'mr_saxo', 'ChroGNer', 'TiONchin', 'lainDlEY', 'actotioN', 'JudisHog', 'mpLiSAtE', 'pstEdogR', 'ShadowByte'
+  , 'omAISEme', 'MPROusTr', 'HElICiaT', 'poTeRAgO', 'goTHmeTA', 'tImesTop', 'rcHiMArO', 'TeNtayal', 'pUTIcTiv', 'ighTSYnI', 'MenTAMet'
+, 'makasinToo', 'iazArashh', 'TemfestH', 'VKovalesvkis', 'TopSaveer', 'pomegranate', 'hatart91', 'ryerice', 'mpLiSAtE', 'foxokra', 'nixlyrics'];
 
   const getRandomNumber = (option: 'TON' | 'BBLIP'): string => {
     if (option === 'TON') {
-      return (Math.random() * (182.999 - 8.25) + 8.25).toFixed(2);
+      return (Math.random() * (102.999 - 8.25) + 8.25).toFixed(2);
     } else {
       return (Math.random() * (999.999 - 8.25) + 8.25).toFixed(2);
     }
@@ -35,7 +36,7 @@ const RandomWinner: React.FC = () => {
     usernames[Math.floor(Math.random() * usernames.length)];
 
   const getRandomOption = (): 'TON' | 'BBLIP' =>
-    Math.random() < 0.55 ? 'TON' : 'BBLIP';
+    Math.random() < 0.46 ? 'TON' : 'BBLIP';
 
   useEffect(() => {
     const updateMessage = () => {

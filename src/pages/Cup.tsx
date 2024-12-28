@@ -8,10 +8,12 @@ import { winnersData } from './WinnersData'; // Kazanan verileri
 
 import Avatar1 from '../assets/logo5.png';
 
-import Avatar2 from '../assets/silver.png';
+import Avatar2 from '../assets/photo_2022-08-17_14-02-04.jpg';
 import RandomWinner from './RandomWinner'; // RandomWinner bileşenini içeri aktarıyoruz
-import Avatar3 from '../assets/silver.png';
+import Avatar3 from '../assets/photo_2021-09-17_13-13-13.jpg';
 import avatar2 from '../assets/logo5.jpg';
+import Avatar4 from '../assets/photo_2023-05-11_07-26-40.jpg';
+
 
 
 
@@ -87,15 +89,15 @@ const TopComponent: React.FC = () => {
   2
 </Box>
 
-          <img src={Avatar2} alt="Avatar 2" style={{   position: 'relative', width: '100%', height: '100%', objectFit: 'cover' }} />
+          <img src={Avatar3} alt="Avatar 2" style={{   position: 'relative',borderRadius:"50%", width: '100%', height: '100%', objectFit: 'cover' }} />
 
-          <Typography sx={{ textAlign: 'center', fontSize: '0.8rem', mt: 1, color: 'black' }}>username1</Typography>
+          <Typography sx={{ textAlign: 'center', fontSize: '0.8rem', mt: 1, color: 'black' }}>arcticNova</Typography>
 
           <Typography sx={{ display: 'flex', alignItems: 'center', textAlign: 'center', fontSize: '0.8rem', color: 'black' }}>
 
             <img src={Avatar1} alt="Avatar 1" style={{ width: '20px', height: '20px', objectFit: 'cover', marginRight: '2px' }} />
 
-            206.1K
+            198.1K
 
           </Typography>
 
@@ -133,16 +135,16 @@ const TopComponent: React.FC = () => {
   >
     1
   </Box>
-          <img src={Avatar1} alt="Avatar 1" style={{      position: 'relative', // Z-index uyumu için
+          <img src={Avatar2} alt="Avatar 1" style={{ borderRadius:"50%",     position: 'relative', // Z-index uyumu için
  width: '100%', height: '100%', objectFit: 'cover' }} />
 
-          <Typography sx={{ textAlign: 'center', fontSize: '1rem', mt: 1, color: 'black' }}>username1</Typography>
+          <Typography sx={{ textAlign: 'center', fontSize: '1rem', mt: 1, color: 'black' }}>Zambak21</Typography>
 
           <Typography sx={{ display: 'flex', alignItems: 'center', textAlign: 'center', fontSize: '1rem', color: 'black' }}>
 
             <img src={Avatar1} alt="Avatar 1" style={{ width: '20px', height: '20px', objectFit: 'cover', marginRight: '2px' }} />
 
-            206.1K
+            206.8K
 
           </Typography>
 
@@ -194,12 +196,13 @@ const TopComponent: React.FC = () => {
   </Box>
 
   <img
-    src={Avatar3}
+    src={Avatar4}
     alt="Avatar 3"
     style={{
       width: '100%',
       height: '100%',
       objectFit: 'cover',
+      borderRadius:"50%",
       position: 'relative', // Z-index uyumu için
     }}
   />
@@ -207,7 +210,7 @@ const TopComponent: React.FC = () => {
   <Typography
     sx={{ textAlign: 'center', fontSize: '0.8rem', mt: 1, color: 'black' }}
   >
-    username1
+    Silent_Panther
   </Typography>
 
   <Typography
@@ -229,7 +232,7 @@ const TopComponent: React.FC = () => {
         marginRight: '2px',
       }}
     />
-    206.1K
+    194.3K
   </Typography>
 </Box>
 
