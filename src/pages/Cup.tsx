@@ -272,8 +272,8 @@ const TopComponent: React.FC = () => {
     src={avatar2}
     alt="Avatar"
     sx={{
-      width: 24,
-      height: 24,
+      width: 20,
+      height: 20,
       marginX: 1, // Yazı ile avatar arasında boşluk
     }}
   /> Holders
@@ -291,7 +291,7 @@ const TopComponent: React.FC = () => {
     borderColor: '#1976d2',
     textTransform: 'none',
     borderRadius: 2,
-    padding: '12px',
+    px:3,
     boxShadow: activeTab === 'winners' ? '0px 4px 10px rgba(0, 0, 0, 0.2)' : 'none',
     transition: 'all 0.3s ease',
     display: 'flex', // İç öğelerin yatay hizalanması için
@@ -307,12 +307,13 @@ const TopComponent: React.FC = () => {
         src="https://cryptologos.cc/logos/toncoin-ton-logo.png?v=040"
     alt="Avatar"
     sx={{
-      width: 24,
-      height: 24,
+      width: 20,
+      height: 20,
+    
       marginX: 1, // Yazı ile avatar arasında boşluk
     }}
   />
-  Winners
+  Winners  <span> (Jackpot)</span>
 </Button>
 
 
@@ -327,35 +328,48 @@ const TopComponent: React.FC = () => {
 
        
 
-          <Box sx={{ marginTop: 0 }}>
+         <Box sx={{ marginTop: 0 }}>
+  {winnersData.map((item, index) => (
+    <Box
+      key={item.id}
+      sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '10px 0',
+        borderBottom: '1px solid #ddd',
+      }}
+    >
+      {/* Left Section: Username and Avatar+Balance */}
+      <Box>
+        <Typography sx={{ fontSize: '1rem', color: 'black' }}>
+          {item.username}
+        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '5px' }}>
+          <img
+            src={item.avatar2}
+            alt="Avatar2"
+            style={{
+              width: '22px',
+              height: '22px',
+              objectFit: 'cover',
+              marginRight: '5px',
+            }}
+          />
+          <Typography sx={{ fontSize: '0.8rem', color: 'black' }}>
+            {item.balance}
+          </Typography>
+        </Box>
+      </Box>
 
-            {winnersData.map((item, index) => (
+      {/* Rank Value */}
+      <Typography sx={{ fontSize: '1.5rem', color: 'black' }}>
+        #{index + 1}
+      </Typography>
+    </Box>
+  ))}
+</Box>
 
-              <Box key={item.id} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid #ddd' }}>
-
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-
-                  <img src={item.avatar1} alt="Avatar1" style={{ width: '30px', height: '30px', objectFit: 'cover', marginRight: '10px' }} />
-
-                  <Typography sx={{ fontSize: '1rem', color: 'black' }}>{item.username}</Typography>
-
-                </Box>
-
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-
-                  <img src={item.avatar2} alt="Avatar2" style={{ width: '15px', height: '15px', objectFit: 'cover', marginRight: '5px' }} />
-
-                  <Typography sx={{ fontSize: '0.8rem', color: 'black' }}>{item.balance}</Typography>
-
-                </Box>
-
-<Typography sx={{ fontSize: '1rem', color: 'black' }}>#{index + 1}</Typography> {/* Rank value */}
-
-              </Box>
-
-            ))}
-
-          </Box>
 
         </Box>
 
@@ -369,28 +383,43 @@ const TopComponent: React.FC = () => {
 
             {userData.map((item, index) => (
 
-              <Box key={item.id} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid #ddd' }}>
+                <Box
+      key={item.id}
+      sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '10px 0',
+        borderBottom: '1px solid #ddd',
+      }}
+    >
+      {/* Left Section: Username and Avatar+Balance */}
+      <Box>
+        <Typography sx={{ fontSize: '1rem', color: 'black' }}>
+          {item.username}
+        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '5px' }}>
+          <img
+            src={item.avatar2}
+            alt="Avatar2"
+            style={{
+              width: '22px',
+              height: '22px',
+              objectFit: 'cover',
+              marginRight: '5px',
+            }}
+          />
+          <Typography sx={{ fontSize: '0.8rem', color: 'black' }}>
+            {item.balance}
+          </Typography>
+        </Box>
+      </Box>
 
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-
-                  <img src={item.avatar1} alt="Avatar1" style={{ width: '30px', height: '30px', objectFit: 'cover', marginRight: '10px' }} />
-
-                  <Typography sx={{ fontSize: '1rem', color: 'black' }}>{item.username}</Typography>
-
-                </Box>
-
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-
-                  <img src={item.avatar2} alt="Avatar2" style={{ width: '15px', height: '15px', objectFit: 'cover', marginRight: '5px' }} />
-
-                  <Typography sx={{ fontSize: '0.8rem', color: 'black' }}>{item.balance}</Typography>
-
-                </Box>
-
-<Typography sx={{ fontSize: '1rem', color: 'black' }}>#{index + 4}</Typography> {/* Rank value */}
-
-              </Box>
-
+      {/* Rank Value */}
+      <Typography sx={{ fontSize: '1.5rem', color: 'black' }}>
+        {index + 4}
+      </Typography>
+    </Box>
             ))}
 
           </Box>

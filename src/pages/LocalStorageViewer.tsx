@@ -54,7 +54,7 @@ const initialData: Asset[] = [
     active: true
   },
   {
-    logo: "https://s3-symbol-logo.tradingview.com/crypto/XTVCADA--big.svg",
+    logo: "https://cryptologos.cc/logos/toncoin-ton-logo.png?v=040",
     symbol: "TON",
     name: "Ton",
     amount: 10000,
@@ -70,7 +70,7 @@ const initialData: Asset[] = [
     active: true
   },
   {
-    logo: "https://s3-symbol-logo.tradingview.com/crypto/XTVCBTC--big.svg",
+    logo: "https://cryptologos.cc/logos/telcoin-tel-logo.png?v=040",
     symbol: "TICKET",
     name: "Lucky Ticket",
     amount: 0,
@@ -665,13 +665,14 @@ const AccountEquityCard: React.FC = () => {
         mt:4,
         display: 'flex',
         mx:1,
+        fontFamily: 'monospace',
         textAlign: 'center',
         alignItems: "center",
         justifyContent: 'space-between',
       }}
     >
 <span style={{ color: "grey", fontSize: "0.9rem"  }}>
-    Address: <span style={{ color: "black" , marginLeft: 12 , fontSize: "1rem"  }}>123456789</span>
+    Address: <span style={{ color: "black" , marginLeft: 12 , fontSize: "1rem"  , fontWeight: 'bolder'}}>UQDp...fv-c9BNn2</span>
   </span>       <Button
         onClick={() => {
           navigator.clipboard.writeText("123456789");
@@ -688,13 +689,15 @@ const AccountEquityCard: React.FC = () => {
         mt:1,
         display: 'flex',
         mx:1,
+                fontFamily: 'monospace',
+
         alignItems: "center",
         justifyContent: 'space-between',
         marginBottom: 4,
       }}
     >
 <span style={{ color: "grey", fontSize: "0.9rem" }}>
-  Comment: <span style={{ color: "black", marginLeft: 12, fontSize: "1rem" }}>{comment}</span>
+  Comment: <span style={{ color: "black", marginLeft: 12, fontSize: "1rem", fontWeight: 'bolder' }}>{comment}</span>
 </span>
 
       <Button
@@ -715,10 +718,12 @@ const AccountEquityCard: React.FC = () => {
         textAlign: "center",
         alignItems: "center",
         color: 'grey',
+                fontFamily: 'monospace',
+
         marginBottom: 4,
       }}
     >
-      <h6>Please carefully send your $TON to these exact addresses</h6>
+      <h3>Please carefully send your $TON to these exact addresses</h3>
      
     </Box>
 

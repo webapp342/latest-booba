@@ -52,7 +52,7 @@ const TokenSwap: React.FC = () => {
   });
 
   const tokens = [
-        { name: "TICKET", icon: "https://example.com/ticket-icon.png" },
+        { name: "TICKET", icon: "https://cryptologos.cc/logos/telcoin-tel-logo.png?v=040" },
 
     { name: "TON", icon: "https://s3-symbol-logo.tradingview.com/crypto/XTVCTON--big.svg" },
     { name: "USDT", icon: "https://s3-symbol-logo.tradingview.com/crypto/XTVCUSDT--big.svg" },
@@ -62,7 +62,7 @@ const TokenSwap: React.FC = () => {
 
   const theme = createTheme({
     typography: {
-      fontFamily: "Montserrat, sans-serif",
+      fontFamily: "monospace",
     },
   });
 
