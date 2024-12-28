@@ -91,7 +91,7 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
   const isSpinEnabled =
     (selectedSpinType === 'total' && total >= 200) ||
     (selectedSpinType === 'ticket' && tickets >= 1) ||
-    (selectedSpinType === 'bblip' && bblip >= 1000);
+    (selectedSpinType === 'bblip' && bblip >= 5000);
 
   const handleSpinClick = () => {
     setLoading(true);
@@ -110,7 +110,7 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
   } else if (selectedSpinType === 'ticket') {
     spinButtonText = `Spin with 1 Ticket`;
   } else if (selectedSpinType === 'bblip') {
-    spinButtonText = `Spin with 1 BBLIP`;
+    spinButtonText = `Spin with 5 BBLIP`;
   }
 
   // Miktarları formatlayarak göster
@@ -183,7 +183,7 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
     value="ticket"
     icon={
       <img
-        src="https://cryptologos.cc/logos/bitcoin-btc-logo.png?v=040"
+        src="https://cryptologos.cc/logos/telcoin-tel-logo.png?v=040"
         alt="Bitcoin Logo"
         style={{ width: '30px', height: '30px' }}
       />

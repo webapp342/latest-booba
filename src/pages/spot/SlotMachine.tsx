@@ -192,7 +192,7 @@ export const SlotMachine: FC = () => {
       });
     } else if (selectedSpinType === 'bblip') {
       setBblip((prev) => {
-        const newBblip = prev - 1000;
+        const newBblip = prev - 5000;
         console.log(`BBLIP decreased: ${prev} -> ${newBblip}`);
         updateFirestoreBalance('bblip', newBblip);
         return newBblip;
