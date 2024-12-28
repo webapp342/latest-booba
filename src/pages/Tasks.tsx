@@ -9,6 +9,8 @@ import {
   Badge,
 } from '@mui/material';
 import RandomWinner from './RandomWinner'; // RandomWinner bileşenini içeri aktarıyoruz
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
 
 import {
   getFirestore,
@@ -36,6 +38,12 @@ import comingSoonLogo from '../assets/task1logo.png';
 // Firebase App initialization
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
+const theme = createTheme({
+  typography: {
+    fontFamily: "monospace",
+  },
+});
 
 // Tasks metadata
 const tasksMetadata = [
@@ -221,6 +229,8 @@ const DealsComponent: React.FC = () => {
 
 
   return (
+        <ThemeProvider theme={theme}>
+    
     <Box
       sx={{
         display: 'flex',
@@ -442,6 +452,8 @@ const DealsComponent: React.FC = () => {
 </Snackbar>
 
     </Box>
+        </ThemeProvider>
+    
   );
 };
 
