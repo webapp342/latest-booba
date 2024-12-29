@@ -25,7 +25,6 @@ import { firebaseConfig } from './firebaseConfig';
 import Tasks from '../assets/tasks.png';
 import task1Logo from '../assets/task1logo.png';
 import task2Logo from '../assets/instagram.png';
-import task3Logo from '../assets/facebook.png';
 import task4Logo from '../assets/tik-tok.png';
 import task5Logo from '../assets/telegram.png';
 import task7Logo from '../assets/logo5.png';
@@ -48,11 +47,10 @@ const theme = createTheme({
 // Tasks metadata
 const tasksMetadata = [
 
-  { title: 'Follow Booba on X', description: '+5 BBLIP', link: 'https://telegram.com', reward: 5000 },
-  { title: 'Follow Booba on Instagram', description: '+5 BBLIP', link: 'https://facebook.com', reward: 5000 },
-  { title: 'Join Booba Facebook', description: '+5 BBLIP', link: 'https://x.com', reward: 5000 },
-  { title: 'Follow Booba on Tiktok', description: '+5 BBLIP', link: 'https://example.com/task-4', reward: 5000 },
-  { title: 'Join Booba Telegram', description: '+5 BBLIP', link: 'https://example.com/task-5', reward: 5000 },
+  { title: 'Follow Booba on X', description: '+5 BBLIP', link: 'https://x.com/BoobaBlip', reward: 5000 },
+  { title: 'Follow Booba on Instagram', description: '+5 BBLIP', link: 'https://www.instagram.com/boobablip/profilecard/?igsh=MXUwMWQxNmJ1bzZhYg==', reward: 5000 },
+  { title: 'Follow Booba on Tiktok', description: '+5 BBLIP', link: 'https://www.tiktok.com/@boobablip?_t=8scYCPf4zaQ&_r=1', reward: 5000 },
+  { title: 'Join Booba Community', description: '+5 BBLIP', link: 'https://t.me/BoobaBlipCommunity', reward: 5000 },
   { title: 'Invite 1 fren', description: '+5 BBLIP', link: '', reward: 5000 },
   { title: 'Invite 10 fren', description: '+25 BBLIP', link: '', reward: 25000 },
   { title: 'Invite 25 fren', description: '+2.5 TON', link: '', reward: 2500 },
@@ -66,7 +64,6 @@ const tasksMetadata = [
 const taskLogos = [
   task1Logo,
   task2Logo,
-  task3Logo,
   task4Logo,
   task5Logo,
   task7Logo,
