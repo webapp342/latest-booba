@@ -4,7 +4,9 @@ import QRCode from 'qrcode';
 import { Box, Card, CardContent, Typography,  Button, Avatar, TextField, InputAdornment ,Drawer, Snackbar, SnackbarContent } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
+import TransactionHashes from "./TransactionHashes"; // Bileşeninizin yolu
 import { CheckCircleOutline } from '@mui/icons-material';
 import LoupeIcon from '@mui/icons-material/Loupe';
 import { useNavigate } from 'react-router-dom';
@@ -118,6 +120,7 @@ const AccountEquityCard: React.FC = () => {
    const navigate = useNavigate();
 
      const [open, setOpen] = useState(false);
+       const [open1, setOpen1] = useState(false);
 
   const handleClick1 = () => {
     setOpen(true);
@@ -311,6 +314,10 @@ const AccountEquityCard: React.FC = () => {
     return amount;
   };
 
+    const toggleDrawer = (state: boolean) => () => {
+    setOpen1(state);
+  };
+
   
 
 
@@ -319,7 +326,7 @@ const AccountEquityCard: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
   
-      <Box width={'89vw'}  justifyContent= "space-between"
+      <Box width={'92vw'}  justifyContent= "space-between"
           alignItems= "center"
           m={1}
           display="flex">
@@ -358,7 +365,7 @@ const AccountEquityCard: React.FC = () => {
               </Box>
               <Box>
         {/* İlk Kart */}
-        <Card sx={{ borderRadius: 3, mt: 4 }}>
+        <Card sx={{ borderRadius: 3, mt: 5 , mx:1}}>
           <CardContent>
             {/* Total Account Equity */}
             <Typography
@@ -448,6 +455,42 @@ const AccountEquityCard: React.FC = () => {
   Convert
 </Button>
 
+  <>
+      <Button
+        onClick={toggleDrawer(true)}
+        sx={{
+          backgroundColor: "transparent",
+          boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
+          borderRadius: 2,
+          minWidth: 40,
+          minHeight: 40,
+          padding: 0,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <ReceiptLongIcon sx={{ fontSize: 24 }} />
+      </Button>
+      <Drawer
+        anchor="bottom"
+        open={open1}
+        onClose={toggleDrawer(false)}
+        PaperProps={{
+          sx: { borderRadius: "16px 16px 0 0", padding: 2, maxHeight: "50%" },
+        }}
+      >
+        <Box>
+          <TransactionHashes />
+        </Box>
+      </Drawer>
+    </>
+<Box>
+
+</Box>
+
+  
+
 {/* Tam Ekran TokenSwap Modal */}
 {showTokenSwap && (
   <Box className="fullscreen-modal">
@@ -473,7 +516,7 @@ const AccountEquityCard: React.FC = () => {
         </Card>
 
       {/* İkinci Kart - Asset List */}
-<Card sx={{ borderRadius: 3, mt: 1 }}>
+<Card sx={{ borderRadius: 3, mt: 1, m:1 }}>
   <CardContent>
     {/* Başlık ve Arama Kutusu */}
     <Box
