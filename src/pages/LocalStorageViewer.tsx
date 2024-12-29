@@ -319,7 +319,7 @@ const AccountEquityCard: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
   
-      <Box width={'92vw'}  justifyContent= "space-between"
+      <Box width={'89vw'}  justifyContent= "space-between"
           alignItems= "center"
           m={1}
           display="flex">
