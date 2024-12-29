@@ -1,19 +1,85 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import Box from '@mui/material/Box';
+import LinearProgress from '@mui/material/LinearProgress';
+import CircularProgress, { CircularProgressProps } from '@mui/material/CircularProgress';
+import Typography from '@mui/material/Typography';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from './firebaseConfig';
 import WebApp from '@twa-dev/sdk';
-import { Skeleton, Box } from '@mui/material';
+
+function CircularProgressWithLabel(
+  props: CircularProgressProps & { value: number },
+) {
+  return (
+    <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+      <CircularProgress variant="determinate" {...props} />
+      <Box
+        sx={{
+          top: 0,
+          left: 0,
+          bottom: 0,
+          right: 0,
+          position: 'absolute',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Typography
+          variant="caption"
+          component="div"
+          sx={{ color: 'text.secondary' }}
+        >{`${Math.round(props.value)}%`}</Typography>
+      </Box>
+    </Box>
+  );
+}
 
 const Loading: React.FC = () => {
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null); 
+  const [progress, setProgress] = useState(0);
+  const [buffer, setBuffer] = useState(10);
+  const [circularProgress, setCircularProgress] = useState(0);
+  const [error, setError] = useState<string | null>(null);
+
+  const progressRef = useRef(() => {});
+
+  useEffect(() => {
+    progressRef.current = () => {
+      if (progress >= 100) {
+        setProgress(100);
+        setBuffer(100);
+      } else {
+        const increment = 100 / 30; // Progress completes in 3 seconds
+        setProgress(prev => Math.min(prev + increment, 100));
+        setBuffer(prev => Math.min(prev + increment + Math.random() * 5, 100));
+      }
+    };
+  });
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      progressRef.current();
+    }, 100);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCircularProgress(prev => (prev >= 100 ? 0 : prev + 10));
+    }, 300);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         console.log('Starting data fetch process...');
-
-       
 
         let telegramUserId = '';
         const defaultTelegramUserId = '1421109983';
@@ -28,9 +94,6 @@ const Loading: React.FC = () => {
         }
 
         localStorage.setItem('telegramUserId', telegramUserId);
-
-        // Fetch countdown data
-        
 
         // Fetch transaction_hashes data
         const transactionHashesDocRef = doc(db, 'transaction_hashes', telegramUserId);
@@ -67,9 +130,6 @@ const Loading: React.FC = () => {
       } catch (error) {
         console.error('Error during data fetch:', error);
         setError('An error occurred while fetching or updating data.');
-      } finally {
-        setLoading(false);
-        console.log('Data fetch process completed.');
       }
     };
 
@@ -82,13 +142,17 @@ const Loading: React.FC = () => {
       justifyContent="center" 
       alignItems="center" 
       height="100vh"
+      flexDirection="column"
     >
-      {loading ? (
-        <Skeleton variant="rectangular" width={210} height={118} />
-      ) : error ? (
+      {error ? (
         <p>{error}</p>
       ) : (
-        <p></p>
+        <>
+          <Box sx={{ width: '80%', marginBottom: 4 }}>
+            <LinearProgress variant="buffer" value={progress} valueBuffer={buffer} />
+          </Box>
+          <CircularProgressWithLabel value={circularProgress} />
+        </>
       )}
     </Box>
   );
