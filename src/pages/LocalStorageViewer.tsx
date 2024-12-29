@@ -465,12 +465,13 @@ const AccountEquityCard: React.FC = () => {
           minWidth: 40,
           minHeight: 40,
           padding: 0,
+          border:'0.5px solid grey',
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
         }}
       >
-        <ReceiptLongIcon sx={{ fontSize: 24 }} />
+        <ReceiptLongIcon sx={{color:'grey', fontSize: 20 }} />
       </Button>
       <Drawer
         anchor="bottom"
@@ -717,10 +718,10 @@ const AccountEquityCard: React.FC = () => {
       }}
     >
 <span style={{ color: "grey", fontSize: "0.9rem"  }}>
-    Address: <span style={{ color: "black" , marginLeft: 12 , fontSize: "1rem"  , fontWeight: 'bolder'}}>UQDp...fv-c9BNn2</span>
+    Address: <span style={{ color: "black" , marginLeft: 12 , fontSize: "1rem"  , fontWeight: 'bolder'}}>UQDppA...fv-c9BNn2</span>
   </span>       <Button
         onClick={() => {
-          navigator.clipboard.writeText("123456789");
+          navigator.clipboard.writeText("UQDppAsjyioMu23LIEaFBm5g5o5oNjRft99oe4gfv-c9BNn2");
           setSnackbarOpen(true);
         }}
       >
@@ -747,8 +748,8 @@ const AccountEquityCard: React.FC = () => {
 
       <Button
         onClick={() => {
-          navigator.clipboard.writeText("00.500");
-          setSnackbarOpen(true);
+      navigator.clipboard.writeText(comment);          
+      setSnackbarOpen(true);
         }}
       >
         Copy
