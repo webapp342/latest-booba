@@ -5,6 +5,8 @@ import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import LocalStorageViewer from "./pages/LocalStorageViewer.tsx";
 import TokenSwap from "./pages/SwapComponent.tsx";
+import WebApp from "@twa-dev/sdk";
+
 import TopComponent from "./pages/Cup.tsx";
 import DealsComponent from "./pages/Tasks.tsx";
 import TestComponent from "./pages/TestComponent.tsx";
@@ -12,6 +14,7 @@ import { SlotMachine } from './pages/spot/SlotMachine';
 
 
 
+WebApp.ready();
 
 
 
