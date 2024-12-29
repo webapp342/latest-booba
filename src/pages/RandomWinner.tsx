@@ -18,11 +18,11 @@ const RandomWinner: React.FC = () => {
   }>({ username: '', amount: '', option: 'TON' });
   const [animKey, setAnimKey] = useState<number>(0);
 
-  const usernames = ['marrow1911', 'TᕼEGOᗪᖴᗩTᕼEᖇ', 'HayesAmiir', 'BREAKFAST98', 'kamikaze2Emre', 'Rojjan', 'Lumanporsu42',
-     'abidiyeceksin', 'rrkrsnrz', 'opsiaman', 'rmuhammad1911', 'SwitzerH', '@Au613', 'ج.تابش', 'м!яя0sëməløn', 'Mitu Mituu', 'pleplee'
-    , 'Justiene', 'playweb3gamee', 'mr_saxo', 'ChroGNer', 'TiONchin', 'lainDlEY', 'actotioN', 'JudisHog', 'mpLiSAtE', 'pstEdogR', 'ShadowByte'
-  , 'omAISEme', 'MPROusTr', 'HElICiaT', 'poTeRAgO', 'goTHmeTA', 'tImesTop', 'rcHiMArO', 'TeNtayal', 'pUTIcTiv', 'ighTSYnI', 'MenTAMet'
-, 'makasinToo', 'iazArashh', 'TemfestH', 'VKovalesvkis', 'TopSaveer', 'pomegranate', 'hatart91', 'ryerice', 'mpLiSAtE', 'foxokra', 'nixlyrics'];
+  const usernames = ['arrow1911', 'GOᗪᖴᗩTᕼEᖇ', 'HayesAmiir', 'AKFAST98', 'kamikaze2Emre', 'Rojjan', 'anporsu42',
+     'abide', 'rrkrsnrz', 'opsiaman', 'rmuhammad1911', 'SwitzerH', '@Au613', 'м!яя0sëm', 'tuMituu', 'pleplee'
+    , 'Justiene', 'playweb3gamee', 'mr_saxo', 'ChroGNer', 'TiONchin', 'lainDlEY', 'actotioN', 'JudisHog', 'mpLiSAtE', 'pstEdogR', 'ShawByte'
+  , 'omAISEme', 'MPROusTr', 'HlICiaT', 'poTeRAgO', 'goTHmeTA', 'tImesTop', 'rcHiMArO', 'TeNtayal', 'pUTIcTiv', 'ighTSYnI', 'MenTAMet'
+, 'makasinToo', 'iazArashh', 'TemfestH', 'VKovesvkis', 'TopSaveer', 'pogranate', 'hatart91', 'ryerice', 'mpLiSAtE', 'foxokra', 'nlyrics'];
 
   const getRandomNumber = (option: 'TON' | 'BBLIP'): string => {
     if (option === 'TON') {
@@ -76,15 +76,15 @@ const RandomWinner: React.FC = () => {
             }}
           >
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 1 }}>
-              <Typography variant="body1" sx={{ color: 'white', fontWeight: 'bolder' }}>
+              <Typography variant="body2" sx={{ color: 'white', fontWeight: 'bolder' }}>
                 {message.username} 
               </Typography>
-              <Typography variant="body1" sx={{ color: 'white' }}>
+              <Typography variant="body2" sx={{ color: 'white' }}>
                 earn
               </Typography>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Typography
-                  variant="body1"
+                  variant="body2"
                   sx={{
                     fontFamily: 'monospace',
                     fontWeight: 'bold',
@@ -100,7 +100,7 @@ const RandomWinner: React.FC = () => {
                   sx={{ width: 20, height: 20 }}
                 />
                 <Typography
-                  variant="body1"
+                  variant="body2"
                   sx={{
                     fontFamily: 'monospace',
                     color: 'white',
@@ -111,7 +111,7 @@ const RandomWinner: React.FC = () => {
                   in
                 </Typography>
                 <Typography
-                  variant="body1"
+                  variant="body2"
                   sx={{
                     fontFamily: 'monospace',
                     fontWeight: 'bold',
