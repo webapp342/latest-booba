@@ -12,12 +12,18 @@ const CardContainer = styled(Card)(({ theme }) => ({
   overflow: "hidden",
 }));
 
+interface TransactionDetails {
+  hash: string;
+  status: string;
+  value: string;
+  timestamp: string;
+}
+
 const TransactionHashes: React.FC = () => {
   const [transactionHashes, setTransactionHashes] = useState<string[]>([]);
-  const [transactionDetails, setTransactionDetails] = useState<any[]>([]);
+  const [transactionDetails, setTransactionDetails] = useState<TransactionDetails[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch transaction hashes and details from Firebase and TON API
   useEffect(() => {
     const fetchTransactionHashes = async () => {
       try {
@@ -29,11 +35,14 @@ const TransactionHashes: React.FC = () => {
 
         if (docSnap.exists()) {
           const data = docSnap.data();
-          const hashes = Array.isArray(data?.transaction_hashes)
-            ? data.transaction_hashes
-            : [];
+          const hashes = Array.isArray(data?.transaction_hashes) ? data.transaction_hashes : [];
           setTransactionHashes(hashes);
-          fetchTransactionDetails(hashes); // Fetch details for each hash
+          
+          // Fetch transaction details for each hash from TON blockchain API
+          const details = await Promise.all(hashes.map(async (hash) => {
+            return fetchTransactionDetails(hash); // Fetch details from TON blockchain API
+          }));
+          setTransactionDetails(details);
         } else {
           console.log("No such document!");
           setTransactionHashes([]);
@@ -46,23 +55,44 @@ const TransactionHashes: React.FC = () => {
       }
     };
 
-    const fetchTransactionDetails = async (hashes: string[]) => {
-      try {
-        const details = await Promise.all(
-          hashes.map(async (hash) => {
-            const response = await fetch(`https://tonapi.io/api/v1/transactions/${hash}`);
-            const data = await response.json();
-            return data;
-          })
-        );
-        setTransactionDetails(details);
-      } catch (error) {
-        console.error("Error fetching transaction details:", error);
-      }
-    };
-
     fetchTransactionHashes();
   }, []);
+
+  const fetchTransactionDetails = async (hash: string): Promise<TransactionDetails> => {
+    // Replace with actual request to TON blockchain or TON API
+    try {
+      const response = await fetch(`https://toncenter.com/api/v2/getTransaction?tx=${hash}`);
+      const data = await response.json();
+
+      if (data.error) {
+        return {
+          hash,
+          status: "Failed to fetch",
+          value: "0",
+          timestamp: "N/A",
+        };
+      }
+
+      const value = data.result?.value ? data.result.value : "0";
+      const status = data.result?.status || "Unknown";
+      const timestamp = data.result?.timestamp || "Unknown";
+
+      return {
+        hash,
+        status,
+        value,
+        timestamp,
+      };
+    } catch (error) {
+      console.error("Error fetching transaction details:", error);
+      return {
+        hash,
+        status: "Failed to fetch",
+        value: "0",
+        timestamp: "N/A",
+      };
+    }
+  };
 
   if (loading) {
     return (
@@ -78,35 +108,29 @@ const TransactionHashes: React.FC = () => {
         Transaction Hashes
       </Typography>
       {transactionHashes.length > 0 ? (
-        transactionHashes.map((hash, index) => (
-          <CardContainer key={index}>
-            <CardContent>
-              <Typography variant="body1" sx={{ wordBreak: "break-word" }}>
-                {hash}
-              </Typography>
-              {transactionDetails[index] && (
-                <Box sx={{ marginTop: 2 }}>
-                  <Typography variant="body2">
-                    <strong>Details:</strong>
-                  </Typography>
-                  <Typography variant="body2">
-                    Status: {transactionDetails[index].status}
-                  </Typography>
-                  <Typography variant="body2">
-                    Value: {transactionDetails[index].value}
-                  </Typography>
-                  <Typography variant="body2">
-                    Sender: {transactionDetails[index].sender}
-                  </Typography>
-                  <Typography variant="body2">
-                    Receiver: {transactionDetails[index].receiver}
-                  </Typography>
-                  {/* Add more details as necessary */}
-                </Box>
-              )}
-            </CardContent>
-          </CardContainer>
-        ))
+  transactionHashes.map((hash, index) => {
+  const details = transactionDetails[index];
+  return (
+    <CardContainer key={index}>
+      <CardContent>
+        <Typography variant="body1" sx={{ wordBreak: "break-word" }}>
+          <strong>Hash:</strong> {hash} {/* Use the hash here */}
+        </Typography>
+        <Typography variant="body2" sx={{ wordBreak: "break-word" }}>
+          <strong>Status:</strong> {details.status}
+        </Typography>
+        <Typography variant="body2" sx={{ wordBreak: "break-word" }}>
+          <strong>Value:</strong> {details.value} TON
+        </Typography>
+        <Typography variant="body2" sx={{ wordBreak: "break-word" }}>
+          <strong>Timestamp:</strong> {details.timestamp}
+        </Typography>
+      </CardContent>
+    </CardContainer>
+  );
+})
+
+
       ) : (
         <Typography variant="body1">No transaction hashes found.</Typography>
       )}
