@@ -15,6 +15,8 @@ import { SlotMachine } from './pages/spot/SlotMachine';
 
 
 WebApp.ready();
+        WebApp.expand();
+
 
 
 
