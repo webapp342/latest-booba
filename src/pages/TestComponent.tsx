@@ -115,6 +115,8 @@ const invitedUsersArray = userData.invitedUsers || [];          console.log('Dav
         justifyContent: 'center',
         textAlign: 'center',
         padding: 2,
+              overflow: "hidden",
+
         maxWidth: '100%',
         margin: '0 auto',
       }}
