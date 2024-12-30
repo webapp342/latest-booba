@@ -11,6 +11,9 @@ import TopComponent from "./pages/Cup.tsx";
 import DealsComponent from "./pages/Tasks.tsx";
 import TestComponent from "./pages/TestComponent.tsx";
 import { SlotMachine } from './pages/spot/SlotMachine';
+import { TonConnectUIProvider } from '@tonconnect/ui-react';
+
+const manifestUrl = 'https://raw.githubusercontent.com/ton-community/tutorials/main/03-client/test/public/tonconnect-manifest.json';
 
 
 
@@ -65,8 +68,11 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+    <TonConnectUIProvider manifestUrl={manifestUrl} actionsConfiguration={{
+              twaReturnUrl: 'https://t.me/BoobaBlipBot'
+          }}>
   <React.StrictMode>
   <RouterProvider
       router={router}
-    />  </React.StrictMode>
+    />  </React.StrictMode> </TonConnectUIProvider>
 );

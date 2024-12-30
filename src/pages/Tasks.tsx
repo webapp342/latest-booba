@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import RandomWinner from './RandomWinner'; // RandomWinner bileşenini içeri aktarıyoruz
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { TonConnectButton } from '@tonconnect/ui-react';
 
 
 import {
@@ -75,9 +76,9 @@ const taskLogos = [
 ];
 
 const categories = [
-  { id: 1, name: 'New', tasks: [0, 1,2,3,4] },
-  { id: 2, name: 'Socials', tasks: [0,1,2, 3,4] },
-  { id: 3, name: 'Frens', tasks: [5,6,7,8,9] },
+  { id: 1, name: 'New', tasks: [0, 1,2,3] },
+  { id: 2, name: 'Socials', tasks: [0,1,2, 3] },
+  { id: 3, name: 'Frens', tasks: [4,5,6,7,8] },
   { id: 4, name: 'Academy', tasks: [11] },
   { id: 5, name: 'On Chain', tasks: [11] },
   { id: 6, name: 'Farming', tasks: [11] },
@@ -249,10 +250,12 @@ const DealsComponent: React.FC = () => {
       <Typography variant="h5" sx={{ mt: 4, fontWeight: 'bold', color: 'black' }}>
         Tasks
       </Typography>
+      
 
       <Typography variant="body1" sx={{ mt: 1, color: 'text.secondary' }}>
         Get rewards for completing tasks.
       </Typography>
+            <TonConnectButton />
 
       {/* Kategori Seçici */}
       <Box
