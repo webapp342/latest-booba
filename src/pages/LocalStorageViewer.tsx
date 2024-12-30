@@ -406,6 +406,7 @@ const AccountEquityCard: React.FC = () => {
                 color="primary"
                 size="small"
                 sx={{
+                  fontSize: '0.6rem',
                   textTransform: "none",
                   boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
                   borderRadius: 2,
@@ -420,6 +421,8 @@ const AccountEquityCard: React.FC = () => {
         size="small"
         sx={{
           textTransform: "none",
+                            fontSize: '0.6rem',
+
           backgroundColor: "transparent",
           boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
           borderRadius: 2,
@@ -448,6 +451,8 @@ const AccountEquityCard: React.FC = () => {
   sx={{
     textTransform: "none",
     backgroundColor: "transparent",
+                      fontSize: '0.6rem',
+
     boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
     borderRadius: 2,
   }}
@@ -718,7 +723,7 @@ const AccountEquityCard: React.FC = () => {
       }}
     >
 <span style={{ color: "grey", fontSize: "0.9rem"  }}>
-    Address: <span style={{ color: "black" , marginLeft: 12 , fontSize: "1rem"  , fontWeight: 'bolder'}}>UQDppA...fv-c9BNn2</span>
+    Address: <span style={{ color: "black" , marginLeft: 12 , fontSize: "1rem"  , fontWeight: 'bolder'}}>UQDp...BNn2</span>
   </span>       <Button
         onClick={() => {
           navigator.clipboard.writeText("UQDppAsjyioMu23LIEaFBm5g5o5oNjRft99oe4gfv-c9BNn2");
