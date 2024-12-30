@@ -248,7 +248,7 @@ const DealsComponent: React.FC = () => {
       <Box component="img" src={Tasks} alt="Tasks" sx={{ mt: 4, width: '80px' }} />
 
       <Typography variant="h5" sx={{ mt: 4, fontWeight: 'bold', color: 'black' }}>
-        Tasks
+        Taskssss
       </Typography>
       
 
