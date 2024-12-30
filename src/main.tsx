@@ -67,11 +67,12 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+   <React.StrictMode>
     <TonConnectUIProvider manifestUrl={manifestUrl} actionsConfiguration={{
               twaReturnUrl: 'https://t.me/BoobaBlipBot'
           }}>
-  <React.StrictMode>
+ 
   <RouterProvider
       router={router}
-    />  </React.StrictMode> </TonConnectUIProvider>
+    />   </TonConnectUIProvider> </React.StrictMode>
 );
