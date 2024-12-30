@@ -8,17 +8,10 @@ import TokenSwap from "./pages/SwapComponent.tsx";
 import WebApp from "@twa-dev/sdk";
 
 import TopComponent from "./pages/Cup.tsx";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import DealsComponent from "./pages/Tasks.tsx";
 import TestComponent from "./pages/TestComponent.tsx";
 import { SlotMachine } from './pages/spot/SlotMachine';
-import { TonConnectUIProvider } from '@tonconnect/ui-react';
 
-const manifestUrl = 'https://raw.githubusercontent.com/ton-community/tutorials/main/03-client/test/public/tonconnect-manifest.json';
-
-const queryClient = new QueryClient({
-  defaultOptions: { queries: { refetchOnWindowFocus: false } },
-});
 
 
     
@@ -74,12 +67,9 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
    <React.StrictMode>
-    <TonConnectUIProvider  manifestUrl={manifestUrl} actionsConfiguration={{
-              twaReturnUrl: 'https://t.me/BoobaBlipBot'
-          }} >
-                <QueryClientProvider client={queryClient}>
+  
  
   <RouterProvider
       router={router}
-    />  </QueryClientProvider>  </TonConnectUIProvider> </React.StrictMode>
+    />    </React.StrictMode>
 );

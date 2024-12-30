@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import RandomWinner from './RandomWinner'; // RandomWinner bileşenini içeri aktarıyoruz
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { TonConnectButton } from '@tonconnect/ui-react';
+import { Header } from './ConnectButton';
 
 
 import {
@@ -38,7 +38,6 @@ import comingSoonLogo from '../assets/task1logo.png';
 // Firebase App initialization
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-
 const theme = createTheme({
   typography: {
     fontFamily: "monospace",
@@ -84,6 +83,7 @@ const categories = [
   { id: 6, name: 'Farming', tasks: [11] },
 ];
 
+
 const DealsComponent: React.FC = () => {
   const [taskStatus, setTaskStatus] = useState<Record<number, { completed: boolean; disabled: boolean }>>({});
   const [loading, setLoading] = useState(true);
@@ -92,6 +92,7 @@ const DealsComponent: React.FC = () => {
   const [loadingTaskIndex, setLoadingTaskIndex] = useState<number | null>(null); // Track the task being processed
   const [openSnackbar, setOpenSnackbar] = useState(false); // Snackbar state
   const [rewardMessage, setRewardMessage] = useState<string>(''); // Reward message for snackbar
+  
 
   const [invitedUsersCount, setInvitedUsersCount] = useState(0); // Davet edilen kullanıcı sayısı
 
@@ -255,7 +256,14 @@ const DealsComponent: React.FC = () => {
       <Typography variant="body1" sx={{ mt: 1, color: 'text.secondary' }}>
         Get rewards for completing tasks.
       </Typography>
-            <TonConnectButton />
+      <Box>
+
+        
+            <Header />
+
+  
+
+      </Box>
 
       {/* Kategori Seçici */}
       <Box

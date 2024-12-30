@@ -19,6 +19,9 @@
     "@mui/x-data-grid": "^7.22.2",
     "@orbs-network/ton-access": "^2.3.3",
     "@react-spring/web": "^9.7.5",
+    "@ton/core": "^0.59.1",
+    "@ton/crypto": "^3.3.0",
+    "@ton/ton": "^15.1.0",
     "@tonconnect/sdk": "^3.0.5",
     "@tonconnect/ui-react": "^2.0.9",
     "@twa-dev/sdk": "^7.10.1",
@@ -54,7 +57,8 @@
     "styled-components": "^6.1.12",
     "ton": "^13.9.0",
     "ton-core": "^0.53.0",
-    "use-sound": "^4.0.3"
+    "use-sound": "^4.0.3",
+    "vite-plugin-node-polyfills": "^0.22.0"
   },
   "devDependencies": {
     "@types/axios": "^0.14.4",
