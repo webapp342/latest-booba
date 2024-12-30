@@ -3,8 +3,13 @@ html, body, #root {
   line-height: 1.5;
   font-weight: 400;
   margin: 0;
+    width: 100vw;
   padding: 0;
   overflow-x: hidden; /* Yatay kaydırmayı engeller */
+  --tg-safe-area-inset-top: 0px;
+  --tg-safe-area-inset-bottom: 0px;
+  --tg-safe-area-inset-left: 0px;
+  --tg-safe-area-inset-right: 0px;
 
     overflow-y: hidden; /* Yatay kaydırmayı engeller */
 

@@ -4,10 +4,13 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-   max-width: 1280px;
-  margin: 0 auto;
+  width: 100vw;  margin: 0 auto;
   padding: 2rem;
     z-index: 1000;
+    --tg-safe-area-inset-top: 0px;
+  --tg-safe-area-inset-bottom: 0px;
+  --tg-safe-area-inset-left: 0px;
+  --tg-safe-area-inset-right: 0px;
 
 }
 
