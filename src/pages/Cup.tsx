@@ -91,7 +91,7 @@ const TopComponent: React.FC = () => {
 
           <img src={Avatar3} alt="Avatar 2" style={{   position: 'relative',borderRadius:"50%", width: '100%', height: '100%', objectFit: 'cover' }} />
 
-          <Typography sx={{ textAlign: 'center', fontSize: '0.8rem', mt: 1, color: 'black' }}>arcticNova</Typography>
+          <Typography sx={{ textAlign: 'center', fontSize: '0.6rem', mt: 2, color: 'black',fontWeight:'bold' }}>arcticNova</Typography>
 
           <Typography sx={{ display: 'flex', alignItems: 'center', textAlign: 'center', fontSize: '0.8rem', color: 'black' }}>
 
@@ -138,7 +138,7 @@ const TopComponent: React.FC = () => {
           <img src={Avatar2} alt="Avatar 1" style={{ borderRadius:"50%",     position: 'relative', // Z-index uyumu için
  width: '100%', height: '100%', objectFit: 'cover' }} />
 
-          <Typography sx={{ textAlign: 'center', fontSize: '1rem', mt: 1, color: 'black' }}>Zambak21</Typography>
+          <Typography sx={{ textAlign: 'center', fontSize: '0.8rem', mt: 2, color: 'black',fontWeight:'bold' }}>Zambak21</Typography>
 
           <Typography sx={{ display: 'flex', alignItems: 'center', textAlign: 'center', fontSize: '1rem', color: 'black' }}>
 
@@ -208,7 +208,7 @@ const TopComponent: React.FC = () => {
   />
 
   <Typography
-    sx={{ textAlign: 'center', fontSize: '0.8rem', mt: 1, color: 'black' }}
+    sx={{ textAlign: 'center', fontSize: '0.6rem', mt: 2, color: 'black' ,fontWeight:'bold' }}
   >
     Silent_Panther
   </Typography>
@@ -262,9 +262,10 @@ const TopComponent: React.FC = () => {
       color: activeTab === 'holders' ? 'white' : '#1976d2',
       borderColor: '#1976d2',
       borderRadius: 2,
-    
+       px:2,
+       fontSize:'0.8rem',
       boxShadow: activeTab === 'holders' ? '0px 4px 10px rgba(0, 0, 0, 0.2)' : 'none',
-      transition: 'all 0.3s ease',
+      transition: 'all 0.9s ease',
       '&:hover': {
         backgroundColor: activeTab === 'holders' ? '#1565c0' : '#e3f2fd',
         borderColor: '#1565c0',
@@ -294,9 +295,11 @@ const TopComponent: React.FC = () => {
     borderColor: '#1976d2',
     textTransform: 'none',
     borderRadius: 2,
-    px:3,
+    px:2,
+           fontSize:'0.8rem',
+
     boxShadow: activeTab === 'winners' ? '0px 4px 10px rgba(0, 0, 0, 0.2)' : 'none',
-    transition: 'all 0.3s ease',
+    transition: 'all 0.9s ease',
     display: 'flex', // İç öğelerin yatay hizalanması için
     alignItems: 'center',
     '&:hover': {
@@ -310,8 +313,8 @@ const TopComponent: React.FC = () => {
         src="https://cryptologos.cc/logos/toncoin-ton-logo.png?v=040"
     alt="Avatar"
     sx={{
-      width: 20,
-      height: 20,
+      width: 15,
+      height: 15,
     
       marginX: 1, // Yazı ile avatar arasında boşluk
     }}

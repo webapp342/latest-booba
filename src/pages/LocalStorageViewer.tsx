@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ThemeProvider, createTheme ,Tooltip, Alert} from "@mui/material";
+import { ThemeProvider, createTheme ,Tooltip} from "@mui/material";
 import QRCode from 'qrcode';
 import { Box, Card, CardContent, Typography,  Button, Avatar, TextField, InputAdornment ,Drawer, Snackbar, SnackbarContent } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
@@ -18,6 +18,7 @@ import { doc, onSnapshot , getFirestore, getDoc} from "firebase/firestore";
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './firebaseConfig';
 import WebApp from "@twa-dev/sdk";
+import TwoFieldsComponent from "./TwoFieldsComponent";
 
 
 const app = initializeApp(firebaseConfig);
@@ -119,16 +120,20 @@ const AccountEquityCard: React.FC = () => {
   const [totalEquity, setTotalEquity] = useState<string>("0.00");
    const navigate = useNavigate();
 
-     const [open, setOpen] = useState(false);
        const [open1, setOpen1] = useState(false);
 
+  const [openDrawer, setOpenDrawer] = useState(false);
+
+  // Drawer'ı açma/kapama işlevi
   const handleClick1 = () => {
-    setOpen(true);
+    setOpenDrawer(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleCloseDrawer1 = () => {
+    setOpenDrawer(false);
   };
+
+ 
 
   const handleClick = () => {
     navigate('/latest-booba/');
@@ -415,14 +420,13 @@ const AccountEquityCard: React.FC = () => {
               >
                 Deposit
               </Button>
-       <Button
+      <Button
         startIcon={<ArrowCircleUpIcon />}
         variant="outlined"
         size="small"
         sx={{
           textTransform: "none",
-                            fontSize: '0.6rem',
-
+          fontSize: "0.6rem",
           backgroundColor: "transparent",
           boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
           borderRadius: 2,
@@ -432,17 +436,25 @@ const AccountEquityCard: React.FC = () => {
         Withdraw
       </Button>
 
-      <Snackbar
-        open={open}
-        autoHideDuration={6000}  // 6 saniye sonra kapanacak
-        onClose={handleClose}
-                anchorOrigin={{ vertical: 'top', horizontal: 'center' }} // Display on top
-
+      {/* Drawer */}
+      <Drawer
+        anchor="bottom"
+        open={openDrawer}
+        onClose={handleCloseDrawer1}
+        sx={{
+          "& .MuiDrawer-paper": {
+            height: "auto", // İstenilen yükseklik
+            maxHeight: "90%", // Drawer'ın maksimum yüksekliği
+            overflow: "auto",
+            borderRadius: "10px 10px 0 0", // Üst köşeleri yuvarlak yapabiliriz
+          },
+        }}
       >
-        <Alert onClose={handleClose} severity="info" sx={{ width: '100%' }}>
-          Withdrawals will be active soon.
-        </Alert>
-      </Snackbar>
+        {/* Alttan kayan drawer içerisinde TwoFieldsComponent */}
+        <TwoFieldsComponent />
+      </Drawer>
+
+    
               <Button
   startIcon={<PublishedWithChangesIcon />}
   variant="outlined"

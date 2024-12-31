@@ -1,24 +1,84 @@
 import { useTonAddress, useTonConnectUI } from '@tonconnect/ui-react';
 import { useState, useRef, useEffect } from 'react';
-import './connectbutton.css'
+import { initializeApp } from 'firebase/app';
+import { getFirestore, doc, getDoc, setDoc,  increment } from 'firebase/firestore';
+import { firebaseConfig } from './firebaseConfig';
+import './connectbutton.css';
 
 export const Header = () => {
   const userFriendlyAddress = useTonAddress();
   const [tonConnectUI] = useTonConnectUI();
   const [showMenu, setShowMenu] = useState(false);
+  const [isConnected, setIsConnected] = useState(false); // State to track connection status
+  const [loading, setLoading] = useState(false);
+
+  // Firebase initialization
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Retrieve telegramUserId from localStorage
+  const telegramUserId = localStorage.getItem('telegramUserId');
   
+  if (!telegramUserId) {
+    console.error('telegramUserId not found in localStorage');
+    return null; // Or you can handle this in another way, such as redirecting to login
+  }
+
   // Refs for the address box and menu to detect clicks outside
   const addressRef = useRef<HTMLDivElement | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   const handleDisconnect = async () => {
+    setLoading(true);
     await tonConnectUI.disconnect();
+    setIsConnected(false); // Set connection status to false on disconnect
     setShowMenu(false); // Hide the menu after disconnecting
+    setLoading(false);
   };
 
   const handleAddressClick = () => {
     setShowMenu(!showMenu); // Toggle the menu visibility
   };
+
+  // Track connection status based on the user address
+  useEffect(() => {
+    if (userFriendlyAddress) {
+      setIsConnected(true); // Set to true when the user address is available
+
+      const updateConnectionStatus = async () => {
+        setLoading(true);
+        try {
+          const userDocRef = doc(db, 'users', telegramUserId); // Reference to the user's document
+          const userDocSnap = await getDoc(userDocRef); // Fetch the user's document
+
+          // Check if the user document exists and if the address has already been set
+          if (userDocSnap.exists() && userDocSnap.data().isAddressSet) {
+            console.log('Address already set. No further update.');
+            setLoading(false);
+            return; // Do nothing if the address is already set
+          }
+
+          // Update Firestore with connected status for the user based on telegramUserId
+          await setDoc(userDocRef, {
+            isConnected: true,
+            address: userFriendlyAddress, // Optionally store the wallet address
+            isAddressSet: true, // Flag to indicate the address has been set
+            bblip: increment(5000), // Increment the bblip field by 5000
+          }, { merge: true }); // Use merge to avoid overwriting other fields in the user's document
+
+          console.log('Address, connection status, and bblip updated.');
+        } catch (error) {
+          console.error('Error updating Firestore: ', error);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      updateConnectionStatus();
+    } else {
+      setIsConnected(false); // Set to false if no address is available
+    }
+  }, [userFriendlyAddress, db, telegramUserId]);
 
   // Close the dropdown if the user clicks outside the address box or menu
   useEffect(() => {
@@ -43,12 +103,12 @@ export const Header = () => {
   return (
     <header style={styles.header}>
       {/* If user is not connected, show the TonConnectButton */}
-      {!userFriendlyAddress ? (
-<div style={{ fontSize: '12px' }}>
- <button className="connect-wallet-button" onClick={() => tonConnectUI.openModal()}>
-  Connect Wallet
-</button>
-</div>
+      {!isConnected ? (
+        <div style={{ fontSize: '12px' }}>
+          <button className="connect-wallet-button" onClick={() => tonConnectUI.openModal()}>
+            Connect Wallet
+          </button>
+        </div>
       ) : (
         <div style={styles.addressContainer}>
           {/* User-friendly address inside a box with ellipsis if it overflows */}
@@ -65,8 +125,8 @@ export const Header = () => {
           {/* Dropdown menu with Disconnect button */}
           {showMenu && (
             <div ref={menuRef} style={styles.menu}>
-              <button style={styles.disconnectButton} onClick={handleDisconnect}>
-                Disconnect
+              <button style={styles.disconnectButton} onClick={handleDisconnect} disabled={loading}>
+                {loading ? 'Disconnecting...' : 'Disconnect'}
               </button>
             </div>
           )}
@@ -92,7 +152,6 @@ const styles = {
     position: 'relative' as 'relative', // Explicitly type position as 'relative'
   },
   
-  
   addressBox: {
     padding: '5px 10px',
     marginRight: '10px',
@@ -105,6 +164,7 @@ const styles = {
     fontFamily: 'monospace',
     cursor: 'pointer',
   },
+  
   menu: {
     position: 'absolute' as 'absolute', // Explicitly type position as 'absolute'
     top: '40px',
@@ -115,6 +175,7 @@ const styles = {
     padding: '10px',
     zIndex: 10,
   },
+  
   disconnectButton: {
     padding: '8px 12px',
     backgroundColor: '#ff4d4d',
@@ -125,5 +186,4 @@ const styles = {
     width: '100%',
     transition: 'background-color 0.3s ease',
   },
-  
 };

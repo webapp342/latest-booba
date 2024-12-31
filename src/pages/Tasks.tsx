@@ -34,6 +34,7 @@ import task9Logo from '../assets/ton_logo_dark_background.svg';
 import task10Logo from '../assets/ton_logo_dark_background.svg';
 import task11Logo from '../assets/ton_logo_dark_background.svg';
 import comingSoonLogo from '../assets/task1logo.png';
+import UserDataTable from './UserDataTable';
 
 // Firebase App initialization
 const app = initializeApp(firebaseConfig);
@@ -244,6 +245,8 @@ const DealsComponent: React.FC = () => {
  
               
         <RandomWinner />
+                      <UserDataTable />
+
         
       </Box>
       <Box component="img" src={Tasks} alt="Tasks" sx={{ mt: 4, width: '80px' }} />
@@ -259,7 +262,7 @@ const DealsComponent: React.FC = () => {
       <Box>
 
         
-            <Header />
+            <Header  />
 
   
 
@@ -377,8 +380,8 @@ const DealsComponent: React.FC = () => {
             </Typography>
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
   {
-    taskIndex >= 5 && taskIndex <= 9 &&
-      ` ${invitedUsersCount}/${taskIndex === 5 ? 1 : taskIndex === 6 ? 10 : taskIndex === 7 ? 25 : taskIndex === 8 ? 50 : 100} ,   `
+    taskIndex >= 4 && taskIndex <= 9 &&
+      ` ${invitedUsersCount}/${taskIndex === 4 ? 1 : taskIndex === 5 ? 10 : taskIndex === 6 ? 25 : taskIndex === 7 ? 50 : 100} ,   `
   }
 
     {tasksMetadata[taskIndex].description}

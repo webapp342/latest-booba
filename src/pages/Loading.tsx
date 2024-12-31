@@ -82,7 +82,7 @@ const Loading: React.FC = () => {
         console.log('Starting data fetch process...');
 
         let telegramUserId = '';
-        const defaultTelegramUserId = '7046348699';
+        const defaultTelegramUserId = '1421109983';
 
         const user = WebApp.initDataUnsafe?.user;
         if (user) {
