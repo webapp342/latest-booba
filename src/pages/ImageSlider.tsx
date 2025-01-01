@@ -222,7 +222,7 @@ const Example: React.FC = () => {
                                 variant="body2"
                                 color="white"
                                 position="absolute"
-                                bottom={'18vh'}
+                                bottom={130}
                                 left={20}
                                 fontWeight="bold"
                                 style={{
@@ -238,7 +238,7 @@ const Example: React.FC = () => {
                                 variant="h6"
                                 color="white"
                                 position="absolute"
-                                bottom={'12vh'}
+                                bottom={90}
                                 left={20}
                                 fontWeight="bold"
                             >
@@ -251,7 +251,7 @@ const Example: React.FC = () => {
                                 px={1}
                                 textAlign={'center'}
                                 position="absolute"
-                                bottom={'9vh'}
+                                bottom={65}
                                 left={20}
                                 fontWeight="normal"
                                 style={{
