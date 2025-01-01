@@ -213,7 +213,8 @@ const Example: React.FC = () => {
                     {images.map((image, index) => (
                         <Box key={index} className="each-slide-effect" position="relative">
                             <Box
-                                height={'20vh'}
+                                height={'25vh'}
+                                width={'100vh'}
                                 style={{ backgroundImage: `url(${image.src})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
                             />
                             {/* Text on top of the image */}
@@ -221,7 +222,7 @@ const Example: React.FC = () => {
                                 variant="body2"
                                 color="white"
                                 position="absolute"
-                                bottom={120}
+                                bottom={'20vh'}
                                 left={20}
                                 fontWeight="bold"
                                 style={{
@@ -237,7 +238,7 @@ const Example: React.FC = () => {
                                 variant="h6"
                                 color="white"
                                 position="absolute"
-                                bottom={80}
+                                bottom={'13vh'}
                                 left={20}
                                 fontWeight="bold"
                             >
@@ -250,7 +251,7 @@ const Example: React.FC = () => {
                                 px={1}
                                 textAlign={'center'}
                                 position="absolute"
-                                bottom={55}
+                                bottom={'10vh'}
                                 left={20}
                                 fontWeight="normal"
                                 style={{
