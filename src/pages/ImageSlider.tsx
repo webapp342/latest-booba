@@ -56,6 +56,7 @@ import image42 from '../assets/jackpots/softswiss.quickfire-MGS_HTML5_FortuniumG
 import image43 from '../assets/jackpots/softswiss.quickfire-MGS_queenOfAlexandriaWowpot.jpg';
 import image44 from '../assets/jackpots/softswiss.yggdrasil-Holmes.jpg';
 import image45 from  '../assets/jackpots/softswiss.yggdrasil-OzwinsJackpots.jpg';
+import ImageRow from './ImageRow';
 
 
 const theme = createTheme({
@@ -266,6 +267,7 @@ const Example: React.FC = () => {
                 </Slide>
                 </Box>
 
+              
 
 
             <Box mt={4}>
@@ -583,6 +585,9 @@ const Example: React.FC = () => {
 
 
 
+  <Box>
+                    <ImageRow />
+                </Box>
 
 
               
