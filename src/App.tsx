@@ -12,7 +12,7 @@ import { TonConnectUIProvider} from "@tonconnect/ui-react";
 
 function App() {
     const [loading, setLoading] = useState(true);
-    const manifestUrl = 'https://github.com/webapp342/latest-booba/tonconnect-manifest.json';
+    const manifestUrl = 'https://webapp342.github.io/latest-booba/tonconnect-manifest.json';
 
 
     useEffect(() => {
