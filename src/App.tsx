@@ -4,6 +4,8 @@ import { Outlet } from "react-router-dom";
 import SimpleBottomNavigation from "./pages/Navigation";
 import Loading from "./pages/Loading"; // Loading bileşenini import edin
 import "./index.css"; // Global stil dosyasını import edin
+import "slick-carousel/slick/slick.css"; // Basic styles for the slider
+import "slick-carousel/slick/slick-theme.css"; // Theme styles for the slider
 import { TonConnectUIProvider} from "@tonconnect/ui-react";
 
 

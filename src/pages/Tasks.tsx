@@ -8,6 +8,8 @@ import {
   Alert,
   Badge,
 } from '@mui/material';
+import './slide.css'
+
 import RandomWinner from './RandomWinner'; // RandomWinner bileşenini içeri aktarıyoruz
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Header } from './ConnectButton';
@@ -261,12 +263,16 @@ const DealsComponent: React.FC = () => {
       </Typography>
       <Box>
 
-        
             <Header  />
 
   
 
       </Box>
+      <Box>
+      </Box>
+
+            
+
 
       {/* Kategori Seçici */}
       <Box

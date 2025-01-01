@@ -1,0 +1,62 @@
+.each-slide-effect > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border-radius: inherit; /* Dış kutudan border-radius alacak */  background-size: cover; /* Resmin kutuya göre boyutlandırılması */
+  background-position: center; /* Resmin ortalanması */
+  background-repeat: no-repeat; /* Resmin tekrar etmesini engeller */
+}
+
+.each-slide-effect {
+  width: 100%; /* Slide genişliği %90 olacak */
+  height: auto;
+  margin: 0 auto; /* Ortalamak için */
+
+
+}
+
+.indicator {
+  cursor: pointer;
+  padding: 10px;
+  text-align: center;
+  border: 1px #666 solid;
+  margin: 0;
+}
+
+.indicator.active {
+  color: #fff;
+  background: #666;
+}
+
+
+/* slide.css */
+
+.react-slideshow-container {
+    position: relative;
+}
+
+.react-slideshow-container .dots {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    z-index: 10;
+}
+
+.react-slideshow-container .dot {
+    background-color: rgba(255, 255, 255, 0.6);  /* Hafif opak beyaz */
+    width: 12px;
+    height: 12px;
+    margin: 0 5px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.react-slideshow-container .active-dot {
+    background-color: #ff6347;  /* Aktif dot için renk */
+}
+
