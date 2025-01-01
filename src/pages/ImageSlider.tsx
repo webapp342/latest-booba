@@ -83,66 +83,66 @@ const NavigateButton = () => {
 //lucky games 
 const images1 = [
   {src: image9,description: <NavigateButton /> , description2: ""},  
-  { src: image5, description: "Coming Soon", description2: "Coming Soon" },
-  { src: image6, description: "Coming Soon" , description2: "Coming Soon"},
-  { src: image7, description: "Coming Soon" , description2: "Coming Soon"},
-  { src: image8, description: "Coming Soon" , description2: "Coming Soon"},
-  { src: image10, description: "Coming Soon" , description2: "Coming Soon"},
-  { src: image11, description: "Coming Soon" , description2: "Coming Soon"},
-  { src: image12, description: "Coming Soon" , description2: "Coming Soon"},
-  { src: image13, description: "Coming Soon" , description2: "Coming Soon"}
+  { src: image5, description: "Plinko ", description2: "Coming Soon" },
+  { src: image6, description: "Double" , description2: "Coming Soon"},
+  { src: image7, description: "Sweet Keno" , description2: "Coming Soon"},
+  { src: image8, description: "Hot Mines" , description2: "Coming Soon"},
+  { src: image10, description: "Battle Trades" , description2: "Coming Soon"},
+  { src: image11, description: "Stairs" , description2: "Coming Soon"},
+  { src: image12, description: "Joker Poker" , description2: "Coming Soon"},
+  { src: image13, description: "Tower" , description2: "Coming Soon"}
 ];
 //live games
 
 const images2 = [
-      { src: image22, description: "Coming Soon" , description2: "Coming Soon"},
+      { src: image22, description: "Monopoly Live" , description2: "Coming Soon"},
 
-  {src: image14,  description: "Coming Soon", description2: "Coming Soon"},  
-  { src: image15, description: "Coming Soon", description2: "Coming Soon" },
-  { src: image16, description: "Coming Soon" , description2: "Coming Soon"},
-  { src: image17, description: "Coming Soon" , description2: "Coming Soon"},
-  { src: image18, description: "Coming Soon" , description2: "Coming Soon"},
-  { src: image19, description: "Coming Soon" , description2: "Coming Soon"},
-   { src: image20, description: "Coming Soon" , description2: "Coming Soon"},
-  { src: image21, description: "Coming Soon" , description2: "Coming Soon"},
+  {src: image14,  description: "Casino Lobby", description2: "Coming Soon"},  
+  { src: image15, description: "Roulette", description2: "Coming Soon" },
+  { src: image16, description: "BlackJack" , description2: "Coming Soon"},
+  { src: image17, description: "Mega Wheel" , description2: "Coming Soon"},
+  { src: image18, description: "Vip Diamond" , description2: "Coming Soon"},
+  { src: image19, description: "Cash or Crash" , description2: "Coming Soon"},
+   { src: image20, description: "Crazy Time" , description2: "Coming Soon"},
+  { src: image21, description: "Mega Ball" , description2: "Coming Soon"},
  
 ];
 //bonus buy
 const images3 = [
-      { src: image23 ,description: "Coming Soon" , description2: "Coming Soon"},
+      { src: image23 ,description: "Empty the Bank" , description2: "Coming Soon"},
 
-  {src: image24,  description: "Coming Soon", description2: "Coming Soon"},  
-  { src: image25, description: "Coming Soon", description2: "Coming Soon" },
-  { src: image26, description: "Coming Soon" , description2: "Coming Soon"},
-  { src: image27, description: "Coming Soon" , description2: "Coming Soon"},
-  { src: image28, description: "Coming Soon" , description2: "Coming Soon"},
-  { src: image29, description: "Coming Soon" , description2: "Coming Soon"},
-   { src: image30, description: "Coming Soon" , description2: "Coming Soon"},
-  { src: image31, description: "Coming Soon" , description2: "Coming Soon"},
+  {src: image24,  description: "Hot Fiesta", description2: "Coming Soon"},  
+  { src: image25, description: "10 Lucky Spins", description2: "Coming Soon" },
+  { src: image26, description: "Golden Joker 27" , description2: "Coming Soon"},
+  { src: image27, description: "Wild Wild" , description2: "Coming Soon"},
+  { src: image28, description: "Money Mayham" , description2: "Coming Soon"},
+  { src: image29, description: "Dead Wood" , description2: "Coming Soon"},
+   { src: image30, description: "Mental" , description2: "Coming Soon"},
+  { src: image31, description: "Gold Rush" , description2: "Coming Soon"},
  
 ];
 //instant win
 const images4 = [
-  { src: image32 ,description: "Coming Soon" , description2: "Coming Soon"},
-  {src: image33,  description: "Coming Soon", description2: "Coming Soon"},  
-  { src: image34, description: "Coming Soon", description2: "Coming Soon" },
-  { src: image35, description: "Coming Soon" , description2: "Coming Soon"},
-  { src: image36, description: "Coming Soon" , description2: "Coming Soon"},
-  { src: image37, description: "Coming Soon" , description2: "Coming Soon"},
-  { src: image38, description: "Coming Soon" , description2: "Coming Soon"},
+  { src: image32 ,description: "Spaceman" , description2: "Coming Soon"},
+  {src: image33,  description: "Limbo Cat", description2: "Coming Soon"},  
+  { src: image34, description: "Need for X", description2: "Coming Soon" },
+  { src: image35, description: "2500x Rush" , description2: "Coming Soon"},
+  { src: image36, description: "Balloon" , description2: "Coming Soon"},
+  { src: image37, description: "Football X" , description2: "Coming Soon"},
+  { src: image38, description: "Space XY" , description2: "Coming Soon"},
 
  
 ];
 
 //jackpots
 const images5 = [
-  { src: image39 ,description: "Coming Soon" , description2: "Coming Soon"},
-  {src: image40,  description: "Coming Soon", description2: "Coming Soon"},  
-  { src: image41, description: "Coming Soon", description2: "Coming Soon" },
-  { src: image42, description: "Coming Soon" , description2: "Coming Soon"},
-  { src: image43, description: "Coming Soon" , description2: "Coming Soon"},
-  { src: image44, description: "Coming Soon" , description2: "Coming Soon"},
-  { src: image45, description: "Coming Soon" , description2: "Coming Soon"},
+  { src: image39 ,description: "Money Mania" , description2: "Coming Soon"},
+  {src: image40,  description: "Jackpot LAB", description2: "Coming Soon"},  
+  { src: image41, description: "Cash Splash", description2: "Coming Soon" },
+  { src: image42, description: "Fortunium" , description2: "Coming Soon"},
+  { src: image43, description: "Queen of Alexandria" , description2: "Coming Soon"},
+  { src: image44, description: "Holmes" , description2: "Coming Soon"},
+  { src: image45, description: "Ozwins JACKPOT" , description2: "Coming Soon"},
 
  
 ];
@@ -284,68 +284,93 @@ const Example: React.FC = () => {
               
 
 
-            <Box mt={4}>
-          <Typography p={1} fontSize={'1.5rem'}>
-            Lucky Games
-          </Typography>
+       <Box mt={4}>
+  <Typography p={1} fontSize={'1.5rem'}>
+    Lucky Games
+  </Typography>
 
-          {/* Top Games Section */}
-          <Box
-            mt={3}
-            display="flex"
-            sx={{
-              overflowX: 'auto', // Use sx prop for overflow
-              width: '100%', // Takes up 90% width of the container
-              margin: '0 auto',
-              padding: 1,
-              borderRadius: 2,
-            }}
-            component="div" // Added component prop to specify the HTML element type
-          >
-            {images1.map((image, idx) => (
-              <Box
-                key={idx}
-                borderRadius={2}
-                marginRight={1}
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                flexDirection="column" // Arrange image and description vertically
-                style={{
-                  textAlign: 'left',
-                  cursor: 'pointer',
-                }}
-              >
-                {/* Image */}
-                <Box
-                  p={10}
-                  borderRadius={2}
-                  sx={{
-                    backgroundSize: 'cover',
-                    backgroundImage: `url(${image.src})`, // Assign different image to each box
-                    backgroundPosition: 'center',
-                  }}
-                />
-             
+  {/* Top Games Section */}
+  <Box
+    mt={3}
+    display="flex"
+    sx={{
+      overflowX: 'auto', // Use sx prop for overflow
+      width: '100%', // Takes up 90% width of the container
+      margin: '0 auto',
+      padding: 1,
+      borderRadius: 2,
+    }}
+    component="div" // Added component prop to specify the HTML element type
+  >
+    {images1.map((image, idx) => (
+      <Box
+        key={idx}
+        borderRadius={2}
+        marginRight={1}
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        flexDirection="column" // Arrange image and description vertically
+        style={{
+          textAlign: 'center', // Center align text
+          cursor: 'pointer',
+        }}
+      >
+        {/* Image */}
+        <Box
+          p={10}
+          borderRadius={2}
+          sx={{
+            backgroundSize: 'cover',
+            backgroundImage: `url(${image.src})`, // Assign different image to each box
+            backgroundPosition: 'center',
+          }}
+        />
 
-
-      
-        
         {/* Description under the image */}
-        <Typography ml={-8} variant="body2"   pt={1} color="black">
-          {image.description}
-        </Typography>
+        {typeof image.description === 'string' ? (
+          <Typography
+            variant="body2"
+            pt={1}
+            color="black"
+            sx={{
+              textAlign: 'left',
+              fontWeight:'bold',
+              alignSelf: 'flex-start', // Align text to the start of the container
+            }}
+          >
+            {image.description}
+          </Typography>
+        ) : (
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center', // Center the button horizontally
+              alignItems: 'center', // Center the button vertically
+              width: '100%',
+              ml: -8,
+              marginTop: '8px',
+            }}
+          >
+            {image.description}
+          </Box>
+        )}
 
-        <Typography ml={-8} variant="body2"    color="grey">
+        <Typography
+          variant="body2"
+          color="grey"
+          sx={{
+            textAlign: 'left',
+            alignSelf: 'flex-start', // Align text to the start of the container
+          }}
+        >
           {image.description2}
         </Typography>
-
-        
       </Box>
- 
     ))}
   </Box>
 </Box>
+
  <Box>
     
               <Box mt={4}>
@@ -395,11 +420,19 @@ const Example: React.FC = () => {
         
         {/* Description under the image */}
         {/* Description under the image */}
-        <Typography ml={-8} variant="body2"   pt={1} color="black">
+        <Typography   sx={{
+              textAlign: 'left',
+              fontWeight:'bold',
+              alignSelf: 'flex-start', // Align text to the start of the container
+            }}  variant="body2" fontWeight={'bold'}  pt={1} color="black">
           {image.description}
         </Typography>
 
-        <Typography ml={-8} variant="body2"    color="grey">
+        <Typography   sx={{
+              textAlign: 'left',
+              fontWeight:'bold',
+              alignSelf: 'flex-start', // Align text to the start of the container
+            }} variant="body2"    color="grey">
           {image.description2}
         </Typography>
       </Box>
@@ -458,11 +491,19 @@ const Example: React.FC = () => {
         
         {/* Description under the image */}
          {/* Description under the image */}
-        <Typography ml={-8} variant="body2"   pt={1} color="black">
+        <Typography   sx={{
+              textAlign: 'left',
+              fontWeight:'bold',
+              alignSelf: 'flex-start', // Align text to the start of the container
+            }}  variant="body2" fontWeight={'bold'}  pt={1} color="black">
           {image.description}
         </Typography>
 
-        <Typography ml={-8} variant="body2"    color="grey">
+        <Typography sx={{
+              textAlign: 'left',
+              fontWeight:'bold',
+              alignSelf: 'flex-start', // Align text to the start of the container
+            }}  variant="body2"    color="grey">
           {image.description2}
         </Typography>
         
@@ -520,11 +561,19 @@ const Example: React.FC = () => {
         
         {/* Description under the image */}
          {/* Description under the image */}
-        <Typography ml={-8} variant="body2"   pt={1} color="black">
+        <Typography   sx={{
+              textAlign: 'left',
+              fontWeight:'bold',
+              alignSelf: 'flex-start', // Align text to the start of the container
+            }} variant="body2" fontWeight={'bold'}  pt={1} color="black">
           {image.description}
         </Typography>
 
-        <Typography ml={-8} variant="body2"    color="grey">
+        <Typography   sx={{
+              textAlign: 'left',
+              fontWeight:'bold',
+              alignSelf: 'flex-start', // Align text to the start of the container
+            }} variant="body2"    color="grey">
           {image.description2}
         </Typography>
         
@@ -583,11 +632,19 @@ const Example: React.FC = () => {
         
         {/* Description under the image */}
          {/* Description under the image */}
-        <Typography ml={-8} variant="body2"   pt={1} color="black">
+        <Typography   sx={{
+              textAlign: 'left',
+              fontWeight:'bold',
+              alignSelf: 'flex-start', // Align text to the start of the container
+            }} variant="body2" fontWeight={'bold'}  pt={1} color="black">
           {image.description}
         </Typography>
 
-        <Typography ml={-8} variant="body2"    color="grey">
+        <Typography   sx={{
+              textAlign: 'left',
+              fontWeight:'bold',
+              alignSelf: 'flex-start', // Align text to the start of the container
+            }} variant="body2"    color="grey">
           {image.description2}
         </Typography>
         

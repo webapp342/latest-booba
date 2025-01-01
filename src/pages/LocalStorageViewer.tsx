@@ -333,7 +333,8 @@ const AccountEquityCard: React.FC = () => {
   
       <Box width={'92vw'}  justifyContent= "space-between"
           alignItems= "center"
-          m={1}
+          m={2}
+          mt={3}
           display="flex">
        
            
@@ -370,7 +371,7 @@ const AccountEquityCard: React.FC = () => {
               </Box>
               <Box>
         {/* İlk Kart */}
-        <Card sx={{ borderRadius: 3, mt: 5 , mx:1}}>
+        <Card sx={{ borderRadius: 3, mt: 1 , mx:1}}>
           <CardContent>
             {/* Total Account Equity */}
             <Typography

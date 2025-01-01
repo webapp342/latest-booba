@@ -4,6 +4,7 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, getDoc, setDoc,  increment } from 'firebase/firestore';
 import { firebaseConfig } from './firebaseConfig';
 import './connectbutton.css';
+import { Button } from '@mui/material';
 
 export const Header = () => {
   const userFriendlyAddress = useTonAddress();
@@ -104,10 +105,12 @@ export const Header = () => {
     <header style={styles.header}>
       {/* If user is not connected, show the TonConnectButton */}
       {!isConnected ? (
-        <div style={{ fontSize: '12px' }}>
-          <button className="connect-wallet-button" onClick={() => tonConnectUI.openModal()}>
+        <div >
+          <Button size='small' sx={{    borderRadius: 2,
+    textTransform: 'none',
+}}  variant='outlined'  onClick={() => tonConnectUI.openModal()}>
             Connect Wallet
-          </button>
+          </Button>
         </div>
       ) : (
         <div style={styles.addressContainer}>

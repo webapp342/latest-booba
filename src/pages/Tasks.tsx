@@ -8,6 +8,7 @@ import {
   Alert,
   Badge,
 } from '@mui/material';
+import WalletIcon from '@mui/icons-material/Wallet';
 import './slide.css'
 
 import RandomWinner from './RandomWinner'; // RandomWinner bileşenini içeri aktarıyoruz
@@ -263,7 +264,6 @@ const DealsComponent: React.FC = () => {
       </Typography>
       <Box>
 
-            <Header  />
 
   
 
@@ -454,7 +454,36 @@ const DealsComponent: React.FC = () => {
 
         </Box>
       )}
+    {selectedCategory === 1 || selectedCategory === 2 ? (
+       <Box
+      sx={{
+        backgroundColor: 'white',
+        boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+        borderRadius: 2,
+        p: 2,
+        mb: 2,
+                width: '90%',
 
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }}
+    >
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <WalletIcon sx={{fontSize:'2rem', mr:1.5}}/>
+        <Box>
+          <Typography variant="body2" sx={{ fontWeight: 'bold', color: 'black' }}>
+            Connect Wallet
+          </Typography>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+          +5 BBLIP
+          </Typography>
+        </Box>
+      </Box>
+                 <Header  />
+
+    </Box>
+    ) : null}
    {/* Snackbar to show after claiming */}
 <Snackbar
   open={openSnackbar}

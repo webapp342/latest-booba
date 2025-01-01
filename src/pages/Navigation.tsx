@@ -12,7 +12,7 @@ import PeopleOutlineTwoToneIcon from '@mui/icons-material/PeopleOutlineTwoTone';
 
 
 const navItems = [
-  { label: 'Game', icon: <SportsEsportsTwoToneIcon />, path: '/latest-booba/slot' },
+  { label: 'Game', icon: <SportsEsportsTwoToneIcon />, path: '/latest-booba/games' },
   { label: 'Frens', icon: <PeopleOutlineTwoToneIcon />, path: '/latest-booba/test' },
   { label: 'Top', icon: <EmojiEventsTwoToneIcon />, path: '/latest-booba/' },
 
