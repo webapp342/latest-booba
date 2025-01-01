@@ -10,7 +10,7 @@ import TokenSwap from "./pages/SwapComponent.tsx";
 import WebApp from "@twa-dev/sdk";
 
 import TopComponent from "./pages/Cup.tsx";
-import DealsComponent from "./pages/Tasks.tsx";
+// import DealsComponent from "./pages/Tasks.tsx";
 import TestComponent from "./pages/TestComponent.tsx";
 import { SlotMachine } from './pages/spot/SlotMachine';
 import ImageSlider from "./pages/ImageSlider.tsx";
