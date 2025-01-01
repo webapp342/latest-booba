@@ -11,6 +11,7 @@
 .each-slide-effect {
   width: 100%; /* Slide genişliği %90 olacak */
   height: auto;
+  background-color:rgb(27, 29, 45);
   margin: 0 auto; /* Ortalamak için */
 
 

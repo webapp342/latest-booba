@@ -522,8 +522,8 @@ const [showConfetti, setShowConfetti] = useState(false);
             borderRadius: 1,
           }}
         >
-          <Typography sx={{mb:1,}}>
-            Jackpot
+          <Typography fontWeight={'bold'} fontSize={'1.5rem'} sx={{mb:1,}}>
+            999x CRASH
           </Typography>
         
           <SlotDisplay  numbers={numbers} counterRefs={counterRefs} selectedSpinType={selectedSpinType} />

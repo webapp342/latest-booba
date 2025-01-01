@@ -11,6 +11,10 @@ import image1 from '../assets/206379314452739466.webp';
 import image2 from '../assets/244073626002791007.webp';
 import image3 from '../assets/39139874052580260.webp';
 import image4 from '../assets/869723626719832237.webp';
+import image46 from '../assets/a3270184c0bef5474fa983-Darkcard288144.webp';
+import image47 from  '../assets/55625b662b95f9508840f7-allbrandscard288144-6.webp';
+
+
 import image5 from '../assets/inout.plinko.png';
 import image6 from '../assets/inout.new-double.png';
 import image7 from '../assets/inout.keno.jpg';
@@ -148,10 +152,15 @@ const images5 = [
 
 // Define the images array
 const images: { src: string, text: string, additionalText1: string, additionalText2: string }[] = [
-    { src: image1, text: "Clucking Spins", additionalText1: "35,000 Free Spins", additionalText2: "Weekly" },
-    { src: image2, text: "Weekly Cashback", additionalText1: "Up To 25%", additionalText2: "Weekly" },
+
+    { src: image1, text: "Clucking Spins", additionalText1: "Weekly 35,000 ", additionalText2: "Free Spins" },
+    { src: image2, text: "Weekly Cashback", additionalText1: "Up To", additionalText2: "25% Cashback" },
+            { src: image47, text: "50% Highroller Bonus", additionalText1: "Daily Bronze Tournament", additionalText2: "$2,500" },
+
     { src: image3, text: "Winterfest VIP Tournament", additionalText1: "$150,000", additionalText2: "Special Event" },
-    { src: image4, text: "50% Highroller Bonus", additionalText1: "Up To $1,250 USDT", additionalText2: "Deposit Now" }
+    { src: image4, text: "50% Highroller Bonus", additionalText1: "up to $750", additionalText2: "Deposit Now" },
+    { src: image46, text: "50% Highroller Bonus", additionalText1: "Daily VIP Tournament", additionalText2: "$10,000" },
+
 ];
 
 const Example: React.FC = () => {
@@ -212,23 +221,23 @@ const Example: React.FC = () => {
                     } 
                 >
                     {images.map((image, index) => (
-                        <Box key={index} className="each-slide-effect" position="relative">
+                        <Box key={index} className="each-slide-effect"  position="relative">
                             <Box
                                 minHeight={'200px'}
+                                
                                 width={'100vh'}
-                                style={{ backgroundImage: `url(${image.src})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+                                style={{ backgroundImage: `url(${image.src})`, backgroundSize: 'cover', backgroundPosition: 'center',  }}
                             />
                             {/* Text on top of the image */}
                             <Typography
-                                variant="body2"
+                                variant="subtitle2"
                                 color="white"
                                 position="absolute"
                                 bottom={140}
                                 left={20}
-                                fontWeight="bold"
                                 style={{
                                     backgroundColor: 'rgba(71, 70, 70, 0.5)',  // Semi-transparent black background
-                                    padding: '5px 10px',
+                                    padding: '0px 10px',
                                     borderRadius: '5px'
                                 }}
                             >
@@ -239,9 +248,14 @@ const Example: React.FC = () => {
                                 variant="h6"
                                 color="white"
                                 position="absolute"
-                                bottom={90}
+                                bottom={83}
                                 left={20}
                                 fontWeight="bold"
+                                 style={{
+                                    backgroundColor: 'rgba(71, 70, 70, 0.5)',  // Semi-transparent black background
+                                    padding: '0px 6px',
+                                    borderRadius: '5px'
+                                }}
                             >
                                 {image.additionalText1}
                             </Typography>
@@ -252,7 +266,7 @@ const Example: React.FC = () => {
                                 px={1}
                                 textAlign={'center'}
                                 position="absolute"
-                                bottom={65}
+                                bottom={55}
                                 left={20}
                                 fontWeight="normal"
                                 style={{
