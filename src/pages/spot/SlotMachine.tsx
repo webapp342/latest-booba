@@ -12,7 +12,7 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import SnackbarComponent from './SnackbarComponent';
 import {IconButton, Box, Button,  Modal, Typography, List, ListItem, ListItemText, } from '@mui/material';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import modalImage from '../../assets/modal.png'; // Resmi import edin
+import modalImage from '../../assets/modal.webp'; // Resmi import edin
 import Confetti from 'react-confetti';
 import spinSound from '../../assets/spin.mp3';
 import { doc, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
