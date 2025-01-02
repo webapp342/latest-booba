@@ -21,6 +21,7 @@ import WebApp from '@twa-dev/sdk'; // Telegram WebApp SDK
 
 import winSound from '../../assets/win.mp3';
 import { useWindowSize } from 'react-use';
+import DisplayCards from './DisplayAmounts';
 
 
 
@@ -464,6 +465,9 @@ const [showConfetti, setShowConfetti] = useState(false);
 
     }}
   >    
+
+
+  <DisplayCards total={total} bblip={bblip} />
   <Box sx={{  padding:1,     border: "0px dotted #FFC107",
 }}>
 

@@ -221,6 +221,8 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
         {availableAmount}
       </Typography>
 
+
+
         {/* Minimum Required Subtitle */}
        
 
