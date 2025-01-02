@@ -29,7 +29,7 @@ const DisplayCards = ({ total, bblip }: { total: number; bblip: number }) => {
   const formattedBblip = (bblip / 1000).toFixed(2);
 
   return (
-    <Box  sx={{ p:0.5 }}>
+    <Box  sx={{ p:1 }}>
       <Grid container justifyContent="space-between" alignItems="center">
         {/* TON Balance */}
         <Grid item >
