@@ -1074,20 +1074,7 @@ color:'#FFC107',
       </Typography>
         </Box>
       
-        <button
-          style={{
-            marginTop:-7,
-            width: '100%',
-            background: '#f7cf6d',
-            color: 'black',
-            textTransform: 'none',
-            fontWeight: 'bold',
-          }}
-        
-          onClick={() => setWinModalOpen(false)}
-        >
-          Play Again
-        </button>
+     
       </Box>
     </Modal>
 
