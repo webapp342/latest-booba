@@ -234,7 +234,7 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
           sx={{
             backgroundColor: loading ? '#f7cf6d' : '#f7cf6d', // Yüklenme sırasında gri renk
             color: 'black',
-            mt: 2,
+            mt: 1,
             
             borderRadius: 2,
             fontWeight: 'bold',
