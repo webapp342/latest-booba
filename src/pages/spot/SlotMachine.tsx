@@ -35,7 +35,7 @@ const theme = createTheme({
 export const SlotMachine: FC = () => {
   const [numbers, setNumbers] = useState<string>('000000');
   const [total, setTotal] = useState<number>(0); // Default value
-  const [tickets, setTickets] = useState<number>(0); // Default value
+  const [tickets, setTickets] = useState<number>(5); // Default value
   const [bblip, setBblip] = useState<number>(10000); // Default value
   const [telegramUserId, setTelegramUserId] = useState<string | null>(null);
 
@@ -135,8 +135,8 @@ export const SlotMachine: FC = () => {
 
     
   useEffect(() => {
-    spinAudio.current.load();
-    winAudio.current.load();
+    spinAudio.current.preload = 'auto';
+    winAudio.current.preload = 'auto';
   }, []);
 
 
@@ -170,6 +170,7 @@ export const SlotMachine: FC = () => {
     console.log(`Spin initiated with type: ${selectedSpinType}`);
 
     try {
+      spinAudio.current.currentTime = 0;
       spinAudio.current.play();
       console.log('Spin sound played.');
     } catch (error) {
@@ -212,11 +213,11 @@ export const SlotMachine: FC = () => {
           case 2:
             return generateRandomNumber(0, 0).toString();
           case 3:
-            return generateRandomNumber(1, 1).toString();
+            return generateRandomNumber(0, 1).toString();
           case 4:
-            return generateRandomNumber(0, 6).toString();
+            return generateRandomNumber(7, 9).toString();
           case 5:
-            return generateRandomNumber(0, 9).toString();
+            return generateRandomNumber(4, 9).toString();
           default:
             return generateRandomNumber(0, 9).toString();
         }
@@ -268,7 +269,7 @@ export const SlotMachine: FC = () => {
           case 1:
             return generateRandomNumber(0, 0).toString();
           case 2:
-            return generateRandomNumber(0, 1).toString();
+            return generateRandomNumber(0, 9).toString();
           case 3:
             return generateRandomNumber(0, 1).toString();
           case 4:
@@ -286,11 +287,11 @@ export const SlotMachine: FC = () => {
           case 1:
             return '0'; // Kırmızı kutular
           case 2:
-            return generateRandomNumber(0, 0).toString();
+            return generateRandomNumber(1, 6).toString();
           case 3:
-            return generateRandomNumber(0, 0).toString();
+            return generateRandomNumber(8, 9).toString();
           case 4:
-            return generateRandomNumber(0, 1).toString();
+            return generateRandomNumber(8, 9).toString();
           case 5:
             return generateRandomNumber(7, 9).toString();
           default:
@@ -301,14 +302,14 @@ export const SlotMachine: FC = () => {
       if (selectedBalance === 'bblip' && selectedSpinType === 'ticket') {
         switch (index) {
           case 0:
-            return generateRandomNumber(0, 0).toString();
+            return generateRandomNumber(0, 3).toString();
   
           case 1:
-            return generateRandomNumber(0, 0).toString();
+            return generateRandomNumber(0, 4).toString();
           case 2:
-            return generateRandomNumber(0, 0).toString();
+            return generateRandomNumber(0, 7).toString();
           case 3:
-            return generateRandomNumber(0, 0).toString();
+            return generateRandomNumber(0, 7).toString();
           case 4:
             return generateRandomNumber(0, 0).toString();
           case 5:
