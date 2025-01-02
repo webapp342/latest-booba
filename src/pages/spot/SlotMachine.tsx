@@ -1,4 +1,4 @@
-import React, { FC, useState, useRef, useEffect } from 'react';
+import React, { FC, useState, useRef, useEffect, useMemo } from 'react';
 import { generateRandomNumber } from './utils/random';
 import SlotDisplay from './SlotDisplay';
 import BalanceSelector from './BalanceSelector';
@@ -54,6 +54,18 @@ export const SlotMachine: FC = () => {
 
   const [, setHistory] = useState<{ spinType: string; balanceType: string; amount: string }[]>([]);
   
+const [imageCache, setImageCache] = useState<string | null>(null);
+
+  // Cache the image to avoid reloading it on every modal open
+  const cachedImage = useMemo(() => {
+    if (!imageCache && modalImage) {
+      const img = new Image();
+      img.src = modalImage;
+      setImageCache(img.src); // Now works as imageCache is string | null
+      return img.src;
+    }
+    return imageCache; // Return cached image
+  }, [modalImage, imageCache]);
 
   const counterRefs = Array(6)
     .fill(null)
@@ -402,8 +414,8 @@ const [showConfetti, setShowConfetti] = useState(false);
 
   useEffect(() => {
     const targetValue = Number(winAmount);
-    const duration = 2000; // 2 saniye
-    const steps = 100; // Animasyon karesi
+    const duration = 2500; // 2 saniye
+    const steps = 60; // Animasyon karesi
     const increment = targetValue / steps;
 
     let currentValue = 0;
@@ -413,7 +425,7 @@ const [showConfetti, setShowConfetti] = useState(false);
       if (currentValue >= targetValue) {
         currentValue = targetValue; // Hedef değeri aşmamak için sınırla
         clearInterval(interval);
-        setTimeout(() => setShowConfetti(false), 3000); // Konfetiyi 3 saniye sonra durdur
+        setTimeout(() => setShowConfetti(false), 2500); // Konfetiyi 3 saniye sonra durdur
       }
       setAnimatedValue(Math.floor(currentValue));
     }, duration / steps);
@@ -1058,8 +1070,8 @@ color:'#FFC107',
         {/* PNG'yi modal içinde boyutlandırılmış şekilde göster */}
         <Box
           component="img"
-          src={modalImage}
-          alt="Background"
+    src={cachedImage || undefined} // Ensure that null is not passed to `src`
+              alt="Background"
           sx={{
             maxWidth: '100%', // Modal genişliğine uyum sağlar
             maxHeight: '100%', // Modal yüksekliğine uyum sağlar
