@@ -11,7 +11,7 @@ export function useAdsgram({ blockId, onReward, onError }: useAdsgramParams): ()
   const AdControllerRef = useRef<AdController | undefined>(undefined);
 
   useEffect(() => {
-    AdControllerRef.current = window.Adsgram?.init({ blockId, debug: false });
+    AdControllerRef.current = window.Adsgram?.init({ blockId, debugBannerType: 'RewardedVideo' });
   }, [blockId]);
 
   return useCallback(async () => {
