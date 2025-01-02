@@ -6,7 +6,7 @@ import { Button } from '@mui/material';
 
 const ShowAdButton: React.FC = () => {
   // Reward and error callback types
-  const onReward = useCallback((result: ShowPromiseResult) => {
+  const onReward = useCallback((_result: ShowPromiseResult) => {
     alert('Ad rewarded!');
   }, []);
 
