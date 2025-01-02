@@ -61,6 +61,7 @@ import image43 from '../assets/jackpots/softswiss.quickfire-MGS_queenOfAlexandri
 import image44 from '../assets/jackpots/softswiss.yggdrasil-Holmes.jpg';
 import image45 from  '../assets/jackpots/softswiss.yggdrasil-OzwinsJackpots.jpg';
 import ImageRow from './ImageRow';
+import ShowAdButton from './ShowAdButton';
 
 
 const theme = createTheme({
@@ -281,7 +282,7 @@ const Example: React.FC = () => {
                 </Slide>
                 </Box>
 
-              
+                  <ShowAdButton />
 
 
        <Box mt={4}>

@@ -19,7 +19,7 @@ const SlotDisplay: React.FC<SlotDisplayProps> = ({ numbers, counterRefs, selecte
     // Sayfa yüklendiğinde animasyonu başlatabiliriz (sayfa ilk açıldığında düzgün gösterilmeli)
     setTimeout(() => {
       // Burada animasyon başlatıcı bir işlem olabilir
-    }, 50); // Animasyonu başlatmadan önce küçük bir gecikme ekleyebilirsiniz
+    }, 120); // Animasyonu başlatmadan önce küçük bir gecikme ekleyebilirsiniz
   }, []);
 
   const getColorClass = (index: number) => {
