@@ -17,7 +17,7 @@ const StyledBox = styled(Box)(({ theme }) => ({
 }));
 
 const GameTitle = styled(Typography)(({  }) => ({
-  fontSize: '1rem',
+  fontSize: '0.8rem',
   fontWeight: 'bold',
   color: '#ffeb3b', // Sarı renk
   textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)', // Gölgeli efekt
@@ -32,7 +32,7 @@ const DisplayCards = ({ total, bblip }: { total: number; bblip: number }) => {
     <Box  sx={{ p:0.5 }}>
       <Grid container justifyContent="space-between" alignItems="center">
         {/* TON Balance */}
-        <Grid item xs="auto" >
+        <Grid item >
           <StyledBox width={'100%' } marginRight={1}>
             <Avatar
               alt="TON Logo"
@@ -51,7 +51,7 @@ const DisplayCards = ({ total, bblip }: { total: number; bblip: number }) => {
         {/* Oyunun Başlığı */}
    <Box width={'25%'} >
 
-            <GameTitle>
+            <GameTitle >
             999x CRASH
           </GameTitle>
         
@@ -60,7 +60,7 @@ const DisplayCards = ({ total, bblip }: { total: number; bblip: number }) => {
 
 
         {/* BBLIP Balance */}
-        <Grid item xs="auto">
+        <Grid item >
           <StyledBox width={'100%'} marginRight={1}>
             <Avatar
               alt="Logo 5"
