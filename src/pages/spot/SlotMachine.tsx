@@ -468,7 +468,7 @@ const [showConfetti, setShowConfetti] = useState(false);
 
 
   <DisplayCards total={total} bblip={bblip} />
-  <Box sx={{  padding:1,     border: "0px dotted #FFC107",
+  <Box sx={{       border: "0px dotted #FFC107",
 }}>
 
   
@@ -481,21 +481,20 @@ const [showConfetti, setShowConfetti] = useState(false);
     <Box
           sx={{
            
-            padding: 2,
-  
+            
             borderRadius: 1,
-        
+            mb:2,
    
           }}
         >
           <Typography
-            variant="h5"
+            variant="h6"
             sx={{color:'#FFC107', fontWeight: "bold" }}
           >
             SPIN
           </Typography>
           <Typography
-            variant="h3"
+            variant="h4"
             sx={{color:'#FFC107', fontWeight: "bold" }}
           >
             TO WIN !
@@ -515,11 +514,11 @@ const [showConfetti, setShowConfetti] = useState(false);
           sx={{
             background: "#6f0101",
             borderRadius: 3,
-            px: 3,
+            px: 2,
             ml:1,
             mt: -2,
             border: '2px dotted #FFC107 ',
-            fontSize: "1.5rem",
+            fontSize: "1.1rem",
             marginBottom: "10px",
             color:'#FFC107',
             fontWeight: "bold",
@@ -535,11 +534,11 @@ const [showConfetti, setShowConfetti] = useState(false);
           sx={{
             backgroundImage: 'radial-gradient( circle farthest-corner at 10% 20%,  rgba(237,3,32,0.87) 20.8%, rgba(242,121,1,0.84) 74.4% )',
            
-            padding: 2,
+            padding: 0.5,
             borderRadius: 1,
           }}
         >
-          <Typography fontWeight={'bold'} fontSize={'1.5rem'} sx={{mb:1,}}>
+          <Typography fontWeight={'bold'} fontSize={'1.5rem'} >
             999x CRASH
           </Typography>
         
@@ -582,7 +581,7 @@ const [showConfetti, setShowConfetti] = useState(false);
       <ArrowDownwardIcon
         sx={{
           color: "#ffd700",
-          fontSize: "2rem",
+          fontSize: "1rem",
           animation: `${bounceAnimation} 1.5s infinite`,
         }}
       />
@@ -743,7 +742,7 @@ const [showConfetti, setShowConfetti] = useState(false);
     </Modal>
         <Box
           sx={{
-            py: 1,
+            py: 0,
             mx: 4,
             borderRadius: 1,
 
@@ -760,7 +759,7 @@ const [showConfetti, setShowConfetti] = useState(false);
           background: "#f7cf6d",
           borderRadius: 12,
           padding:10,
-          marginTop: -13,
+          marginTop: -10,
           
           color: "black",
           textTransform: "none",
@@ -921,7 +920,7 @@ const [showConfetti, setShowConfetti] = useState(false);
       <ArrowDownwardIcon
         sx={{
           color: "#ffd700",
-          fontSize: "2rem",
+          fontSize: "1rem",
           animation: `${bounceAnimation} 1.5s infinite`,
         }}
       />
