@@ -13,6 +13,7 @@ import RandomWinner from './RandomWinner'; // RandomWinner bileşenini içeri ak
 import Avatar3 from '../assets/photo_2021-09-17_13-13-13.jpg';
 import avatar2 from '../assets/logo5.jpg';
 import Avatar4 from '../assets/photo_2023-05-11_07-26-40.jpg';
+import UserRewards from './UserRewards';
 
 
 
@@ -44,6 +45,8 @@ const TopComponent: React.FC = () => {
 
   return (
             <ThemeProvider theme={theme}>
+
+                    <UserRewards />  {/* Kullanıcı ödül kontrol bileşenini buraya ekleyin */}
     
 
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', p: 2 }}>
