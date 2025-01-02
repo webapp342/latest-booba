@@ -13,7 +13,7 @@ const StyledBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'start',  // Sol hizalama
   alignItems: 'center',  // Dikeyde ortalama
-  gap: '4px', // Logo ve yazı arasındaki boşluk
+  gap: '2px', // Logo ve yazı arasındaki boşluk
   height: '100%',  // Yükseklikte tam ortalama
   padding: '4px 8px', // Küçük padding
 }));
@@ -44,7 +44,7 @@ const DisplayCards = ({ total, bblip }: { total: number; bblip: number }) => {
             <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
               TON
             </Typography>
-            <Typography  variant="body2" sx={{marginLeft:3, fontWeight: 'bold' }}>
+            <Typography  variant="body2" sx={{marginLeft:2, fontWeight: 'bold' }}>
               {formattedTotal}
             </Typography>
           </StyledBox>
@@ -68,7 +68,7 @@ const DisplayCards = ({ total, bblip }: { total: number; bblip: number }) => {
             <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
               BBLIP
             </Typography>
-            <Typography variant="body2" sx={{marginLeft:3, fontWeight: 'bold' }}>
+            <Typography variant="body2" sx={{marginLeft:2, fontWeight: 'bold' }}>
               {formattedBblip}
             </Typography>
           </StyledBox>
