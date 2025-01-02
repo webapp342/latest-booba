@@ -49,7 +49,7 @@ const DisplayCards = ({ total, bblip }: { total: number; bblip: number }) => {
         </Grid>
 
         {/* Oyunun Başlığı */}
-   <Box width={'25%'} sx={{border:'1px solid black'}}>
+   <Box width={'25%'} >
 
             <GameTitle>
             999x CRASH
