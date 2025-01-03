@@ -124,6 +124,26 @@ const AccountEquityCard: React.FC = () => {
 
   const [openDrawer, setOpenDrawer] = useState(false);
 
+
+  
+  useEffect(() => {
+    const backButton = WebApp.BackButton;
+
+    // BackButton'u görünür yap ve tıklanma işlevi ekle
+    backButton.show();
+    backButton.onClick(() => {
+      navigate("/latest-booba/");
+    });
+
+    // Cleanup: Bileşen unmount olduğunda butonu gizle ve event handler'ı kaldır
+    return () => {
+      backButton.hide();
+      backButton.offClick(() => {
+        navigate("/latest-booba/"); // Buraya tekrar aynı callback sağlanmalıdır.
+      });
+    };
+  }, [navigate]);
+
   // Drawer'ı açma/kapama işlevi
   const handleClick1 = () => {
     setOpenDrawer(true);
