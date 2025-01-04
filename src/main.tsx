@@ -16,6 +16,7 @@ import { SlotMachine } from './pages/spot/SlotMachine';
 import ImageSlider from "./pages/ImageSlider.tsx";
 import MatchesList from "./pages/MatchesList.tsx";
 import AdminPanel from "./pages/AdminPanel.tsx";
+import MatchDetails from "./MatchDetails.tsx";
 
 
 
@@ -42,6 +43,9 @@ const router = createBrowserRouter([
         element:     <LocalStorageViewer />,
       },
      
+      {
+path:"/latest-booba/match/:id",        element: <MatchDetails />,
+      },
       {
         path: "/latest-booba/test",
         element: <TestComponent />,

@@ -7,6 +7,9 @@ import "./index.css"; // Global stil dosyasını import edin
 import "slick-carousel/slick/slick.css"; // Basic styles for the slider
 import "slick-carousel/slick/slick-theme.css"; // Theme styles for the slider
 import { TonConnectUIProvider} from "@tonconnect/ui-react";
+import { ThemeProvider } from '@mui/material/styles';
+
+import theme from './pages/theme'; // Yukarıda oluşturduğunuz tema
 
 
 
@@ -30,6 +33,7 @@ function App() {
  
 
     return (
+          <ThemeProvider theme={theme}>
            <TonConnectUIProvider manifestUrl={manifestUrl} actionsConfiguration={{
               twaReturnUrl: 'https://t.me/BoobaBlipBot'
           }} >
@@ -52,6 +56,7 @@ function App() {
 
         </div>
         </TonConnectUIProvider>
+        </ThemeProvider>
     );
 }
 
