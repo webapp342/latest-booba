@@ -81,7 +81,16 @@ const MatchDetails: React.FC = () => {
   <Grid item xs={4}>
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <img src={match.homeLogo} alt={match.homeTeam} width="120" style={{ borderRadius: '50%' }} />
-      <Typography sx={{ marginTop: 1 , fontWeight:'bold' }}>{match.homeTeam}</Typography>
+      <Typography sx={{
+    
+        fontWeight: 'bold', 
+        textAlign: 'center', 
+        whiteSpace: 'nowrap', 
+        overflow: 'hidden', 
+        textOverflow: 'ellipsis'
+      }}>
+        {match.homeTeam}
+      </Typography>
     </Box>
   </Grid>
 
@@ -93,7 +102,15 @@ const MatchDetails: React.FC = () => {
   <Grid item xs={4} sx={{ textAlign: 'right' }}>
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <img src={match.awayLogo} alt={match.awayTeam} width="120" style={{ borderRadius: '50%' }} />
-      <Typography sx={{ marginTop: 1 , fontWeight:'bold' }}>{match.awayTeam}</Typography>
+      <Typography sx={{
+        fontWeight: 'bold', 
+        textAlign: 'center', 
+        whiteSpace: 'nowrap', 
+        overflow: 'hidden', 
+        textOverflow: 'ellipsis'
+      }}>
+        {match.awayTeam}
+      </Typography>
     </Box>
   </Grid>
 </Grid>
