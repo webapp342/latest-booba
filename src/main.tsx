@@ -14,6 +14,8 @@ import DealsComponent from "./pages/Tasks.tsx";
 import TestComponent from "./pages/TestComponent.tsx";
 import { SlotMachine } from './pages/spot/SlotMachine';
 import ImageSlider from "./pages/ImageSlider.tsx";
+import MatchesList from "./pages/MatchesList.tsx";
+import AdminPanel from "./pages/AdminPanel.tsx";
 
 
 
@@ -53,7 +55,14 @@ const router = createBrowserRouter([
         path: "/latest-booba/games",
         element: <ImageSlider />,
       },
-   
+      {
+        path: "/latest-booba/matches",
+        element: <MatchesList />,
+      },
+   {
+        path: "/latest-booba/admin",
+        element: <AdminPanel />,
+      },
       {
         path: "/latest-booba/slot",
                 element: <SlotMachine />,
