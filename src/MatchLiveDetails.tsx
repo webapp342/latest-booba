@@ -34,7 +34,7 @@ const CompetitionDetails: React.FC = () => {
         });
         setLoading(false);
       })
-      .catch((err) => {
+      .catch(() => {
         setError('Failed to fetch data');
         setLoading(false);
       });
