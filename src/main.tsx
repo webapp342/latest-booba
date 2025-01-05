@@ -20,6 +20,7 @@ import MatchDetails from "./MatchDetails.tsx";
 
 
 
+
     
   WebApp.expand();
 
@@ -67,6 +68,8 @@ path:"/latest-booba/match/:id",        element: <MatchDetails />,
         path: "/latest-booba/admin",
         element: <AdminPanel />,
       },
+  
+
       {
         path: "/latest-booba/slot",
                 element: <SlotMachine />,

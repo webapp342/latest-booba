@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getDoc, doc } from 'firebase/firestore';
 import { db } from './pages/firebase'; // Firebase bağlantısını buradan alıyoruz
-import { Container, Typography, Card, CardContent, Grid, Box, Button } from '@mui/material';
+import { Container, Typography, Card, CardContent,  Box, Button } from '@mui/material';
+import MatchLiveDetails from './MatchLiveDetails';
 
 interface Match {
   league: string;
@@ -52,6 +53,9 @@ const MatchDetails: React.FC = () => {
   const { id } = useParams(); // URL'deki id parametresini alıyoruz
   const [match, setMatch] = useState<Match | null>(null);
 
+
+  
+
   useEffect(() => {
     const fetchMatchDetails = async () => {
       if (id) {
@@ -72,55 +76,22 @@ const MatchDetails: React.FC = () => {
   }
 
   return (
-    <Container maxWidth="md" sx={{ paddingTop: 4 }}>
+    <Container maxWidth="md" sx={{ paddingTop: 4  }}>
       <Typography variant="h4" gutterBottom align="center">Match Details</Typography>
+
+      <Box>
+
+                <MatchLiveDetails/> 
+
+        
+      </Box>
+
       <Card sx={{ marginBottom: 3, borderRadius: 3, boxShadow: 3 }}>
         <CardContent>
          
-     <Grid container spacing={2} alignItems="center" sx={{ marginTop: 2 }}>
-  <Grid item xs={4}>
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <img src={match.homeLogo} alt={match.homeTeam} width="120" style={{ borderRadius: '50%' }} />
-      <Typography sx={{
-    
-        fontWeight: 'bold', 
-        textAlign: 'center', 
-        whiteSpace: 'nowrap', 
-        overflow: 'hidden', 
-        textOverflow: 'ellipsis'
-      }}>
-        {match.homeTeam}
-      </Typography>
-    </Box>
-  </Grid>
+   
 
-  {/* VS */}
-  <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'center' }}>
-    <Typography sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}>VS</Typography>
-  </Grid>
-
-  <Grid item xs={4} sx={{ textAlign: 'right' }}>
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <img src={match.awayLogo} alt={match.awayTeam} width="120" style={{ borderRadius: '50%' }} />
-      <Typography sx={{
-        fontWeight: 'bold', 
-        textAlign: 'center', 
-        whiteSpace: 'nowrap', 
-        overflow: 'hidden', 
-        textOverflow: 'ellipsis'
-      }}>
-        {match.awayTeam}
-      </Typography>
-    </Box>
-  </Grid>
-</Grid>
-
-
-          <Typography variant="body2" color="textSecondary" sx={{ marginTop: 2, textAlign:'center' }}>
-            Date: {new Date(match.date).toLocaleString()}
-          </Typography>
-
-          <Box sx={{ marginTop: 2 }}>
+          <Box sx={{  }}>
 
 
     {/* 1x2 Buttons */}

@@ -75,9 +75,8 @@ const MatchesList: React.FC = () => {
             <Grid container spacing={2} direction="row" alignItems="center">
               <Grid item xs={12} md={6}>
                 <Typography variant="h6">{match.league}</Typography>
-                <Typography variant="body2" color="textSecondary">
-                  {new Date(match.date).toLocaleString()}
-                </Typography>
+                   <Grid item xs={12}>
+                <Typography variant="h6" align="center">{new Date(match.date).toLocaleDateString()}</Typography>              </Grid>
               </Grid>
               <Grid item xs={12} md={6} sx={{ textAlign: 'right' }}>
                 <IconButton color="primary">

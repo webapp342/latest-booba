@@ -67,7 +67,9 @@ plus2_5Deplas:'',
 
   const [selectedCategory, setSelectedCategory] = useState<string>('Top Leagues');
   const [leagues, setLeagues] = useState<string[]>(popularLeagues);
-
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, date: e.target.value });
+  };
   // Firestore'dan maçları çek
   const fetchMatches = async () => {
     try {
@@ -404,14 +406,18 @@ plus2_5Deplas:match.plus2_5Deplas,
 
             {/* Match Date, Teams, Logos, and Odds */}
             <Grid item xs={12} md={6}>
-              <TextField
-                label="Tarih ve Saat"
-                fullWidth
-                name="date"
-                type="datetime-local"
-                value={formData.date}
-                onChange={handleInputChange}
-              />
+             <TextField
+          label="Match Date"
+          type="date"
+          value={formData.date}
+          name="date"
+          onChange={handleDateChange}
+          fullWidth
+          required
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
             </Grid>
             <Grid item xs={12} md={6}>
               <TextField
