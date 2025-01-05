@@ -1,0 +1,11 @@
+{
+  "version": "1.0",
+  "apis": [
+    {
+      "identifier": "sportradar-soccer",
+      "source": "@sportradar-soccer/v4#xp37b13m4u4506x",
+      "integrity": "sha512-o6+n8fpfQANpN/ikjPhng7+NCNSekF4yUL9Pm/XpWHwYmD9OA3VbfBVcA2MbtfVSrwClR1oTcCrTVDDGnUrhMA==",
+      "installerVersion": "6.1.2"
+    }
+  ]
+}

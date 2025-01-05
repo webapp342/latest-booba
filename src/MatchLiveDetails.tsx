@@ -1,62 +1,63 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
 
-interface Match {
-  utcDate: string;
-  homeTeam: { name: string };
-  awayTeam: { name: string };
+interface CompetitionInfo {
+  name: string;
+  region: string;
+  country: string;
+  sport: string;
 }
 
-const UpcomingMatch: React.FC = () => {
-  const [match, setMatch] = useState<Match | null>(null);
-  const [loading, setLoading] = useState(true);
+const CompetitionDetails: React.FC = () => {
+  const [data, setData] = useState<CompetitionInfo | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchMatch = async () => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const apiKey = "58bea8ef5b404f259634a06f47d8263f"; // Buraya API anahtarınızı girin.
-        const url = `https://api.football-data.org/v4/teams/81/matches?status=SCHEDULED`; // Barcelona'nın maçları
-        const response = await axios.get(url, {
-          headers: { "X-Auth-Token": apiKey },
-        });
-
-        const matches: Match[] = response.data.matches;
-        const upcomingMatch = matches.find(
-          (match) =>
-            match.homeTeam.name === "Getafe" || match.awayTeam.name === "Getafe"
-        );
-
-        if (upcomingMatch) {
-          setMatch(upcomingMatch);
-        } else {
-          setError("No upcoming matches between Barcelona and Getafe.");
-        }
-      } catch (err) {
-        setError("Failed to fetch match data.");
-      } finally {
-        setLoading(false);
-      }
+    const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+      },
     };
 
-    fetchMatch();
+    fetch(
+      'https://api.sportradar.com/soccer/trial/v4/en/competitions/sr%3Acompetition%3A17/info.json?api_key=X1EtD4fMbO5e8l020JkvEp1UuS2e5sWFabsVOUFC',
+      options
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setData({
+          name: data.name,
+          region: data.region,
+          country: data.country,
+          sport: data.sport,
+        });
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError('Failed to fetch data');
+        setLoading(false);
+      });
   }, []);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
-  return match ? (
+  return (
     <div>
-      <h3>Barcelona vs Getafe</h3>
-      <p>Date: {new Date(match.utcDate).toLocaleDateString()}</p>
-      <p>Time: {new Date(match.utcDate).toLocaleTimeString()}</p>
+      {data ? (
+        <div>
+          <h2>Competition Details</h2>
+          <p><strong>Name:</strong> {data.name}</p>
+          <p><strong>Region:</strong> {data.region}</p>
+          <p><strong>Country:</strong> {data.country}</p>
+          <p><strong>Sport:</strong> {data.sport}</p>
+        </div>
+      ) : (
+        <div>No data available</div>
+      )}
     </div>
-  ) : (
-    <p>No upcoming match found.</p>
   );
 };
 
-export default UpcomingMatch;
+export default CompetitionDetails;
