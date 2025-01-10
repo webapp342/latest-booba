@@ -54,11 +54,10 @@ const theme = createTheme({
 // Tasks metadata
 const tasksMetadata = [
 
-  { title: 'Follow Booba on X', description: '+5 BBLIP', link: 'twitter://user?screen_name=BoobaBlip', reward: 5000 },
-  { title: 'Follow Booba on Instagram', description: '+5 BBLIP', link: 'https://www.instagram.com/boobablip/profilecard/?igsh=MXUwMWQxNmJ1bzZhYg==', reward: 5000 },
-  { title: 'Follow Booba on Tiktok', description: '+5 BBLIP', link: 'https://www.tiktok.com/@boobablip?_t=8scYCPf4zaQ&_r=1', reward: 5000 },
-  { title: 'Join Booba Community', description: '+5 BBLIP', link: 'https://t.me/BoobaBlipCommunity', reward: 5000 },
-  { title: 'Invite 1 fren', description: '+5 BBLIP', link: '', reward: 5000 },
+    { title: 'Follow Booba on X', description: '+5 BBLIP', link: 'twitter://user?screen_name=BoobaBlip', reward: 5000 },
+  { title: 'Follow Booba on Instagram', description: '+5 BBLIP', link: 'instagram://user?username=boobablip', reward: 5000 },
+  { title: 'Follow Booba on Tiktok', description: '+5 BBLIP', link: 'https://www.tiktok.com/@boobablip?_t=8scYCPf4zaQ&_r=1', reward: 5000 }, // TikTok uygulaması web bağlantılarını destekliyor
+  { title: 'Join Booba Community', description: '+5 BBLIP', link: 'tg://resolve?domain=BoobaBlipCommunity', reward: 5000 },
   { title: 'Invite 10 fren', description: '+25 BBLIP', link: '', reward: 25000 },
   { title: 'Invite 25 fren', description: '+2.5 TON', link: '', reward: 2500 },
   { title: 'Invite 50 fren', description: '+5 TON', link: '', reward: 5000 },
@@ -363,39 +362,40 @@ const DealsComponent: React.FC = () => {
   }, []);
 
   const handleTaskCompletion = async (taskIndex: number) => {
-    try {
-      const telegramUserId = localStorage.getItem('telegramUserId');
-      if (!telegramUserId) throw new Error('User ID not found.');
+  try {
+    const telegramUserId = localStorage.getItem('telegramUserId');
+    if (!telegramUserId) throw new Error('User ID not found.');
 
-      setLoadingTaskIndex(taskIndex); // Show loading spinner for the task
+    setLoadingTaskIndex(taskIndex); // Görevi işleniyor olarak işaretle
 
-      // Immediately update task status before redirection (Only set completed to true)
-      const updatedTasks = {
-        ...taskStatus,
-        [taskIndex]: { ...taskStatus[taskIndex], completed: true },
-      };
+    // Görevi tamamlanmış olarak işaretle
+    const updatedTasks = {
+      ...taskStatus,
+      [taskIndex]: { ...taskStatus[taskIndex], completed: true },
+    };
 
-      setTaskStatus(updatedTasks);
+    setTaskStatus(updatedTasks);
 
-      // Update Firestore with only the completed field
-      const userDocRef = doc(db, 'users', telegramUserId);
-      await updateDoc(userDocRef, {
-        [`tasks.${taskIndex}.completed`]: true,
-      });
+    // Firestore güncelle
+    const userDocRef = doc(db, 'users', telegramUserId);
+    await updateDoc(userDocRef, {
+      [`tasks.${taskIndex}.completed`]: true,
+    });
 
-      // Redirect the user immediately
-      window.location.href = tasksMetadata[taskIndex].link;
+    // Deep link'i aç
+    const taskLink = tasksMetadata[taskIndex].link;
+    window.location.href = taskLink; // Bağlantıyı aç
 
-      // Wait for 5 seconds before hiding the loading spinner
-      setTimeout(() => {
-        setLoadingTaskIndex(null); // Hide the spinner after 5 seconds
-      }, 5000); // Wait for 5 seconds before hiding the spinner
-    } catch (err) {
-      console.error('Error completing task:', err);
-      setError('An error occurred. Please try again.');
-      setLoadingTaskIndex(null); // Hide the spinner in case of error
-    }
-  };
+    setTimeout(() => {
+      setLoadingTaskIndex(null); // 5 saniye sonra spinner'ı gizle
+    }, 5000);
+  } catch (err) {
+    console.error('Error completing task:', err);
+    setError('An error occurred. Please try again.');
+    setLoadingTaskIndex(null); // Hata durumunda spinner'ı gizle
+  }
+};
+
 
   const handleClaimTask = async (taskIndex: number) => {
   try {
