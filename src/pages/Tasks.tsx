@@ -54,9 +54,9 @@ const theme = createTheme({
 // Tasks metadata
 const tasksMetadata = [
 
-  { title: 'Follow Booba on X', description: '+5 BBLIP', link: 'https://x.com/BoobaBlip', reward: 5000 },
-  { title: 'Follow Booba on Instagram', description: '+5 BBLIP', link: 'https://www.instagram.com/boobablip/profilecard/?igsh=MXUwMWQxNmJ1bzZhYg==', reward: 5000 },
-  { title: 'Follow Booba on Tiktok', description: '+5 BBLIP', link: 'https://www.tiktok.com/@boobablip?_t=8scYCPf4zaQ&_r=1', reward: 5000 },
+  { title: 'Follow Booba on X', description: '+5 BBLIP', link: 'x-app://x.com/BoobaBlip', reward: 5000 },
+  { title: 'Follow Booba on Instagram', description: '+5 BBLIP', link: 'instagram://www.instagram.com/boobablip/profilecard/?igsh=MXUwMWQxNmJ1bzZhYg==', reward: 5000 },
+  { title: 'Follow Booba on Tiktok', description: '+5 BBLIP', link: 'tiktok://www.tiktok.com/@boobablip?_t=8scYCPf4zaQ&_r=1', reward: 5000 },
   { title: 'Join Booba Community', description: '+5 BBLIP', link: 'https://t.me/BoobaBlipCommunity', reward: 5000 },
   { title: 'Invite 1 fren', description: '+5 BBLIP', link: '', reward: 5000 },
   { title: 'Invite 10 fren', description: '+25 BBLIP', link: '', reward: 25000 },
@@ -150,7 +150,7 @@ const CategorySelector = ({ category, isSelected, hasBadge, onClick }: {
 );
 
 // Task kartı stilini güncelliyorum
-const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount, requiredCount }: any) => (
+const TaskCard = ({ task, index, status, loading,  onClaim, invitedCount, requiredCount }: any) => (
   <Box
     sx={{
       backgroundColor: 'white',
@@ -257,7 +257,7 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
       <Button
         variant="contained"
         size="small"
-        onClick={onStart}
+        onClick={() => window.open(task.link, '_blank')}
         disabled={index >= 4 && index <= 9 && invitedCount < requiredCount}
         sx={{
           textTransform: 'none',
@@ -394,59 +394,50 @@ const DealsComponent: React.FC = () => {
   };
 
   const handleClaimTask = async (taskIndex: number) => {
-  try {
-    const telegramUserId = localStorage.getItem('telegramUserId');
-    if (!telegramUserId) throw new Error('User ID not found.');
+    try {
+      const telegramUserId = localStorage.getItem('telegramUserId');
+      if (!telegramUserId) throw new Error('User ID not found.');
 
-    setLoadingTaskIndex(taskIndex); // Show loading spinner for the claim action
+      setLoadingTaskIndex(taskIndex); // Show loading spinner for the claim action
 
-    // Immediately update task as claimed (set completed and disabled fields)
-    const updatedTasks = {
-      ...taskStatus,
-      [taskIndex]: { ...taskStatus[taskIndex], disabled: true },
-    };
+      // Get the reward and description for the selected task
+      const reward = tasksMetadata[taskIndex].reward;
+      const description = tasksMetadata[taskIndex].description;
 
-    setTaskStatus(updatedTasks);
+      // Update Firestore with the claim action and reward
+      const userDocRef = doc(db, 'users', telegramUserId);
+      
+      if (description.includes('BBLIP')) {
+        await updateDoc(userDocRef, {
+          [`tasks.${taskIndex}.disabled`]: true,
+          bblip: increment(reward)
+        });
+      } else if (description.includes('TON')) {
+        await updateDoc(userDocRef, {
+          [`tasks.${taskIndex}.disabled`]: true,
+          total: increment(reward)
+        });
+      }
 
-    // Update Firestore with the claim action (set disabled to true)
-    const userDocRef = doc(db, 'users', telegramUserId);
-    await updateDoc(userDocRef, {
-      [`tasks.${taskIndex}.disabled`]: true,
-    });
+      // Update local state
+      const updatedTasks = {
+        ...taskStatus,
+        [taskIndex]: { ...taskStatus[taskIndex], disabled: true },
+      };
+      setTaskStatus(updatedTasks);
 
-    // Get the reward and description for the selected task
-    const reward = tasksMetadata[taskIndex].reward;
-    const description = tasksMetadata[taskIndex].description;
+      // Set the reward message for the snackbar
+      setRewardMessage(`You have claimed ${description} for completing the task: "${tasksMetadata[taskIndex].title}"`);
 
-    // Check if the description includes 'BBLIP' or 'TON' to determine the reward type
-    const isBblipReward = description.includes('BBLIP'); // If description contains 'BBLIP', it's BBLIP
-    const isTonReward = description.includes('TON'); // If description contains 'TON', it's TON
-
-    // Add the reward amount to the appropriate field (bblip or total)
-    if (isBblipReward) {
-      await updateDoc(userDocRef, {
-        bblip: increment(reward), // Add the reward amount to the bblip field
-      });
-    } else if (isTonReward) {
-      await updateDoc(userDocRef, {
-        total: increment(reward), // Add the reward amount to the total field
-      });
+      // Show success message
+      setOpenSnackbar(true);
+      setLoadingTaskIndex(null);
+    } catch (err) {
+      console.error('Error claiming task:', err);
+      setError('An error occurred while claiming the task. Please try again.');
+      setLoadingTaskIndex(null);
     }
-
-    // Set the reward message for the snackbar
-    setRewardMessage(`You have claimed ${description} for completing the task: "${tasksMetadata[taskIndex].title}"`);
-
-    // Wait for 5 seconds for circular progress before showing Snackbar
-    setTimeout(() => {
-      setOpenSnackbar(true); // Show Snackbar after 5 seconds
-      setLoadingTaskIndex(null); // Hide the spinner after 5 seconds
-    }, 5000);
-  } catch (err) {
-    console.error('Error claiming task:', err);
-    setError('An error occurred while claiming the task. Please try again.');
-    setLoadingTaskIndex(null); // Hide the spinner in case of error
-  }
-};
+  };
 
 
 
