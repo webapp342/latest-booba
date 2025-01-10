@@ -248,41 +248,36 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
         }}
       >
         {loading ? (
-          <CircularProgress size={20} sx={{ color: '#4caf50' }} />
+          <CircularProgress size={16} color="inherit" />
         ) : (
           'Claim'
         )}
       </Button>
     ) : (
       <Button
-        variant="outlined"
+        variant="contained"
         size="small"
         onClick={onStart}
-        disabled={status?.disabled || status?.completed || loading}
+        disabled={index >= 4 && index <= 9 && invitedCount < requiredCount}
         sx={{
           textTransform: 'none',
           borderRadius: '12px',
+          backgroundColor: '#00c6ff',
           fontSize: { xs: '0.8rem', sm: '0.85rem' },
           fontWeight: 600,
           px: { xs: 2, sm: 3 },
           py: { xs: 0.5, sm: 0.75 },
-          borderColor: status?.completed ? '#4caf50' : '#2196f3',
-          color: status?.completed ? '#fff' : '#2196f3',
-          backgroundColor: status?.completed ? '#4caf50' : 'transparent',
           '&:hover': {
-            borderColor: status?.completed ? '#43a047' : '#1976d2',
-            backgroundColor: status?.completed ? '#43a047' : 'rgba(33, 150, 243, 0.05)'
+            backgroundColor: '#0072ff'
           },
-          '&.Mui-disabled': {
-            backgroundColor: status?.completed ? '#4caf50' : 'rgba(0, 0, 0, 0.05)',
-            color: status?.completed ? '#fff' : 'rgba(0, 0, 0, 0.3)'
+          '&:disabled': {
+            backgroundColor: 'rgba(0, 0, 0, 0.12)',
+            color: 'rgba(0, 0, 0, 0.26)'
           }
         }}
       >
         {loading ? (
-          <CircularProgress size={20} sx={{ color: status?.completed ? '#fff' : '#2196f3' }} />
-        ) : status?.completed ? (
-          'Done'
+          <CircularProgress size={16} color="inherit" />
         ) : (
           'Start'
         )}
