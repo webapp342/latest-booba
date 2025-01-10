@@ -6,18 +6,16 @@ import SportsEsportsTwoToneIcon from '@mui/icons-material/SportsEsportsTwoTone';
 import AccountBalanceWalletTwoToneIcon from '@mui/icons-material/AccountBalanceWalletTwoTone';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import EmojiEventsTwoToneIcon from '@mui/icons-material/EmojiEventsTwoTone';
-
+import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import InventoryTwoToneIcon from '@mui/icons-material/InventoryTwoTone';
-import PeopleOutlineTwoToneIcon from '@mui/icons-material/PeopleOutlineTwoTone';
-
+import { Paper } from '@mui/material';
 
 const navItems = [
-  { label: 'Game', icon: <SportsEsportsTwoToneIcon />, path: '/latest-booba/games' },
-  { label: 'Frens', icon: <PeopleOutlineTwoToneIcon />, path: '/latest-booba/test' },
+  { label: 'Games', icon: <SportsEsportsTwoToneIcon />, path: '/latest-booba/games' },
+  { label: 'Sports', icon: <SportsSoccerIcon />, path: '/latest-booba/matches' },
   { label: 'Top', icon: <EmojiEventsTwoToneIcon />, path: '/latest-booba/' },
-
-  { label: 'Tasks', icon: <InventoryTwoToneIcon  />, path: '/latest-booba/tasks' },
-      { label: 'Wallet', icon: <AccountBalanceWalletTwoToneIcon />, path: '/latest-booba/spin' },
+  { label: 'Tasks', icon: <InventoryTwoToneIcon />, path: '/latest-booba/tasks' },
+  { label: 'Wallet', icon: <AccountBalanceWalletTwoToneIcon />, path: '/latest-booba/spin' },
 
 ];
 
@@ -40,11 +38,14 @@ export default function SimpleBottomNavigation() {
 
   const theme = createTheme({
     typography: {
-      fontFamily: "monospace",
+      fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
     },
-  
+    palette: {
+      primary: {
+        main: '#1976d2',
+      },
+    },
   });
-
 
   const shouldHideBottomNav = location.pathname === '/latest-booba/spin';
   if (shouldHideBottomNav) {
@@ -53,52 +54,62 @@ export default function SimpleBottomNavigation() {
 
   return (
     <ThemeProvider theme={theme}>
-
-<BottomNavigation
-  value={value}
-  onChange={(_, newValue) => handleNavigationChange(newValue)}
-  showLabels
-  sx={{
-    bgcolor: '#ffffff',
-    px: 4,
-    pt: 1,
-    pb: 2,
-    maxWidth: '100%',
-    boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.2)", // Hafif gölge
-    zIndex: 1000,
-    borderTop: '1px solid #E0E0E0', // Gri ince top border
-  }}
->
-
-      {navItems.map((item, index) => (
-      <BottomNavigationAction
-      key={item.label}
-      icon={item.icon}
-      label={item.label}
-      sx={{
-        borderRadius: 2,
-        pb: 1,
-        color: value === index ? 'black' : '#616161',
-        '& .MuiSvgIcon-root': {
-          fontSize: '1.2rem', // Sabit ikon boyutu
-          color: value === index ? 'black' : '#9E9E9E', // Renk değişimi
-        },
-        '& .MuiBottomNavigationAction-label': {
-          fontSize: '0.7rem', // Sabit label boyutu
-          fontWeight: 500, // Varsayılan font ağırlığı
-          transition: 'none', // Animasyonu iptal eder
-          color: value === index ? 'black' : '#9E9E9E', // Label renk değişimi
-        },
-        '&.Mui-selected .MuiBottomNavigationAction-label': {
-          fontSize: '0.7rem', // Seçili olan için sabit boyut
-          fontWeight: 500, // Aynı font ağırlığı
-        },
-      }}
-    />
-    
-      ))}
-    </BottomNavigation>
+      <Paper 
+        elevation={8}
+        sx={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 1000,
+        }}
+      >
+        <BottomNavigation
+          value={value}
+          onChange={(_, newValue) => handleNavigationChange(newValue)}
+          showLabels
+          sx={{
+            height: '60px',
+            bgcolor: '#ffffff',
+            borderTopLeftRadius: '16px',
+            borderTopRightRadius: '16px',
+            '& .MuiBottomNavigationAction-root': {
+              minWidth: 'auto',
+              padding: '0',
+              '&.Mui-selected': {
+                padding: '0',
+              },
+            },
+          }}
+        >
+          {navItems.map((item, index) => (
+            <BottomNavigationAction
+              key={item.label}
+              icon={item.icon}
+              label={item.label}
+              sx={{
+                '& .MuiSvgIcon-root': {
+                  fontSize: '22px',
+                  transition: 'all 0.2s ease',
+                  color: value === index ? 'primary.main' : '#757575',
+                  mb: 0.5,
+                },
+                '& .MuiBottomNavigationAction-label': {
+                  fontSize: '0.7rem',
+                  transition: 'all 0.2s ease',
+                  fontWeight: value === index ? 600 : 400,
+                  color: value === index ? 'primary.main' : '#757575',
+                },
+                '&.Mui-selected': {
+                  '& .MuiSvgIcon-root': {
+                    transform: 'scale(1.1)',
+                  },
+                },
+              }}
+            />
+          ))}
+        </BottomNavigation>
+      </Paper>
     </ThemeProvider>
-
   );
 }

@@ -90,7 +90,207 @@ const categories = [
   { id: 6, name: 'Farming', tasks: [11] },
 ];
 
+// Kategori seçici stilini güncelliyorum
+const CategorySelector = ({ category, isSelected, hasBadge, onClick }: {
+  category: { id: number; name: string };
+  isSelected: boolean;
+  hasBadge: boolean;
+  onClick: () => void;
+}) => (
+  <Badge
+    color="success"
+    badgeContent=" "
+    invisible={!hasBadge}
+    anchorOrigin={{
+      vertical: 'top',
+      horizontal: 'right',
+    }}
+    sx={{
+      margin: '0 15px',
+      '& .MuiBadge-badge': {
+        height: '8px',
+        minWidth: '8px',
+        borderRadius: '4px',
+        background: 'linear-gradient(45deg, #00c6ff, #0072ff)',
+      },
+    }}
+  >
+    <Typography
+      onClick={onClick}
+      sx={{
+        fontSize: { xs: '0.9rem', sm: '1rem' },
+        cursor: 'pointer',
+        color: isSelected ? '#000' : 'rgba(0, 0, 0, 0.5)',
+        fontWeight: isSelected ? 800 : 500,
+        transition: 'all 0.3s ease',
+        position: 'relative',
+        padding: '6px 12px',
+        borderRadius: '20px',
+        backgroundColor: isSelected ? 'rgba(0, 198, 255, 0.1)' : 'transparent',
+        '&:hover': {
+          color: '#000',
+          backgroundColor: 'rgba(0, 198, 255, 0.05)',
+        },
+        '&::after': isSelected ? {
+          content: '""',
+          position: 'absolute',
+          bottom: '-4px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '20px',
+          height: '2px',
+          background: 'linear-gradient(45deg, #00c6ff, #0072ff)',
+          borderRadius: '1px'
+        } : {}
+      }}
+    >
+      {category.name}
+    </Typography>
+  </Badge>
+);
 
+// Task kartı stilini güncelliyorum
+const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount, requiredCount }: any) => (
+  <Box
+    sx={{
+      backgroundColor: 'white',
+      boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
+      borderRadius: '16px',
+      p: { xs: 2, sm: 2.5 },
+      mb: 2,
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      transition: 'all 0.3s ease',
+      border: '1px solid rgba(0, 0, 0, 0.05)',
+      '&:hover': {
+        transform: 'translateY(-2px)',
+        boxShadow: '0 8px 25px rgba(0, 0, 0, 0.08)',
+      }
+    }}
+  >
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+      <Box
+        component="img"
+        src={taskLogos[index]}
+        alt={`Task ${index + 1} logo`}
+        sx={{
+          width: { xs: '32px', sm: '36px' },
+          height: { xs: '32px', sm: '36px' },
+          borderRadius: '10px',
+          padding: '6px',
+          backgroundColor: 'rgba(0, 198, 255, 0.05)',
+          border: '1px solid rgba(0, 198, 255, 0.1)'
+        }}
+      />
+      <Box>
+        <Typography 
+          variant="body1" 
+          sx={{ 
+            fontWeight: 700,
+            color: '#1a1a1a',
+            fontSize: { xs: '0.9rem', sm: '1rem' },
+            mb: 0.5
+          }}
+        >
+          {task.title}
+        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          {index >= 4 && index <= 9 && (
+            <Typography
+              variant="body2"
+              sx={{
+                color: invitedCount >= requiredCount ? '#4caf50' : '#ff9800',
+                fontSize: { xs: '0.75rem', sm: '0.8rem' },
+                fontWeight: 600,
+                backgroundColor: invitedCount >= requiredCount ? 'rgba(76, 175, 80, 0.1)' : 'rgba(255, 152, 0, 0.1)',
+                padding: '2px 8px',
+                borderRadius: '12px',
+                display: 'inline-flex',
+                alignItems: 'center'
+              }}
+            >
+              {invitedCount}/{requiredCount}
+            </Typography>
+          )}
+          <Typography 
+            variant="body2" 
+            sx={{ 
+              color: 'rgba(0, 0, 0, 0.6)',
+              fontSize: { xs: '0.75rem', sm: '0.8rem' }
+            }}
+          >
+            {task.description}
+          </Typography>
+        </Box>
+      </Box>
+    </Box>
+
+    {status?.completed && !status?.disabled ? (
+      <Button
+        variant="outlined"
+        size="small"
+        onClick={onClaim}
+        sx={{
+          textTransform: 'none',
+          borderRadius: '12px',
+          borderColor: '#4caf50',
+          color: '#4caf50',
+          fontSize: { xs: '0.8rem', sm: '0.85rem' },
+          fontWeight: 600,
+          px: { xs: 2, sm: 3 },
+          py: { xs: 0.5, sm: 0.75 },
+          '&:hover': {
+            borderColor: '#43a047',
+            backgroundColor: 'rgba(76, 175, 80, 0.05)'
+          }
+        }}
+      >
+        {loading ? (
+          <CircularProgress size={20} sx={{ color: '#4caf50' }} />
+        ) : (
+          'Claim'
+        )}
+      </Button>
+    ) : (
+      <Button
+        variant="outlined"
+        size="small"
+        onClick={onStart}
+        disabled={status?.disabled || status?.completed || loading}
+        sx={{
+          textTransform: 'none',
+          borderRadius: '12px',
+          fontSize: { xs: '0.8rem', sm: '0.85rem' },
+          fontWeight: 600,
+          px: { xs: 2, sm: 3 },
+          py: { xs: 0.5, sm: 0.75 },
+          borderColor: status?.completed ? '#4caf50' : '#2196f3',
+          color: status?.completed ? '#fff' : '#2196f3',
+          backgroundColor: status?.completed ? '#4caf50' : 'transparent',
+          '&:hover': {
+            borderColor: status?.completed ? '#43a047' : '#1976d2',
+            backgroundColor: status?.completed ? '#43a047' : 'rgba(33, 150, 243, 0.05)'
+          },
+          '&.Mui-disabled': {
+            backgroundColor: status?.completed ? '#4caf50' : 'rgba(0, 0, 0, 0.05)',
+            color: status?.completed ? '#fff' : 'rgba(0, 0, 0, 0.3)'
+          }
+        }}
+      >
+        {loading ? (
+          <CircularProgress size={20} sx={{ color: status?.completed ? '#fff' : '#2196f3' }} />
+        ) : status?.completed ? (
+          'Done'
+        ) : (
+          'Start'
+        )}
+      </Button>
+    )}
+  </Box>
+);
+
+// Ana bileşeni güncelliyorum
 const DealsComponent: React.FC = () => {
   const [taskStatus, setTaskStatus] = useState<Record<number, { completed: boolean; disabled: boolean }>>({});
   const [loading, setLoading] = useState(true);
@@ -257,274 +457,251 @@ const DealsComponent: React.FC = () => {
 
 
   return (
-        <ThemeProvider theme={theme}>
-    
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        p: 2,
-      }}
-    >
-      
-      <Box>
- 
-              
-        <RandomWinner />
-                      <UserDataTable />
-
-        
-      </Box>
-      <Box component="img" src={Tasks} alt="Tasks" sx={{ mt: 4, width: '80px' }} />
-
-      <Typography variant="h5" sx={{ mt: 4, fontWeight: 'bold', color: 'black' }}>
-        Tasks
-      </Typography>
-      
-
-      <Typography variant="body1" sx={{ mt: 1, color: 'text.secondary' }}>
-        Get rewards for completing tasks.
-      </Typography>
-      <Box>
-
-
-  
-
-      </Box>
-      <Box>
-      </Box>
-
-            
-
-
-      {/* Kategori Seçici */}
+    <ThemeProvider theme={theme}>
       <Box
         sx={{
           display: 'flex',
-          overflowX: 'auto',
-          marginTop: 4,
-          padding: 2,
-          ml: -3,
-          width: '100%',
-          whiteSpace: 'nowrap',
-          scrollbarWidth: 'none',
-          '-ms-overflow-style': 'none',
-          '&::-webkit-scrollbar': {
-            display: 'none',
-          },
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          p: { xs: 2, sm: 3 },
+          mb: 10,
+          maxWidth: '1200px',
+          mx: 'auto'
         }}
       >
-        {categories.map((category) => (
-          <Badge
-            key={category.id}
-            color="success"
-            badgeContent=" "
-            invisible={![1, 2, 3].includes(category.id)}
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            sx={{
-              margin: '0 15px',
-              '& .MuiBadge-badge': {
-                height: '12px',
-                minWidth: '12px',
-                borderRadius: '6px',
-              },
-            }}
-          >
-            <Typography
-              onClick={() => setSelectedCategory(category.id)}
-              sx={{
-                fontSize: '1.1rem',
-                cursor: 'pointer',
-                color: selectedCategory === category.id ? 'black' : 'gray',
-                fontWeight: selectedCategory === category.id ? 'bold' : 'normal',
-                textDecoration: 'none',
-              }}
-            >
-              {category.name}
-            </Typography>
-          </Badge>
-        ))}
-      </Box>
+        <Box sx={{ width: '100%' }}>
+          <RandomWinner />
+          <UserDataTable />
+        </Box>
 
-      {loading ? (
-        <CircularProgress sx={{ mt: 4 }} />
-      ) : error ? (
-        <Typography color="error">{error}</Typography>
-      ) : (
-        <Box sx={{ width: '100%', mt: 4 }}>
-         {categories
-  .find((category) => category.id === selectedCategory)
-  ?.tasks.map((taskIndex) => {
-    // Task 11 için "Coming Soon" mesajını göster
-    if (taskIndex === 11) {
-      return (
-        <Box
-          key={taskIndex}
-          sx={{
-            backgroundColor: 'white',
-            boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-            borderRadius: 2,
-            p: 2,
-            mb: 2,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-     
+        <Box 
+          component="img" 
+          src={Tasks} 
+          alt="Tasks" 
+          sx={{ 
+            mt: 4, 
+            width: { xs: '70px', sm: '80px' },
+            filter: 'drop-shadow(0 4px 12px rgba(0, 198, 255, 0.2))'
+          }} 
+        />
+
+        <Typography 
+          variant="h4" 
+          sx={{ 
+            mt: 3,
+            fontWeight: 800,
+            color: '#1a1a1a',
+            fontSize: { xs: '1.75rem', sm: '2rem' },
+            textAlign: 'center',
+            background: 'linear-gradient(45deg, #00c6ff, #0072ff)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent'
           }}
         >
-          <Typography variant="body2" sx={{ fontWeight: 'bold', color: 'gray' }}>
-            Coming Soon ...
-          </Typography>
-        </Box>
-      );
-    }
+          Tasks
+        </Typography>
 
-    return (
-      <Box
-        key={taskIndex}
-        sx={{
-          backgroundColor: 'white',
-          boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-          borderRadius: 2,
-          p: 2,
-          mb: 2,
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Box
-            component="img"
-            src={taskLogos[taskIndex]} // Task logosunu kullan
-            alt={`Task ${taskIndex + 1} logo`}
-            sx={{ maxWidth: '30px', maxHeight: '30px', marginRight: 2 }}
-          />
-          <Box>
-            <Typography variant="body2" sx={{ fontWeight: 'bold', color: 'black' }}>
-              {tasksMetadata[taskIndex].title}
-            </Typography>
-        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-  {
-    taskIndex >= 4 && taskIndex <= 9 &&
-      ` ${invitedUsersCount}/${taskIndex === 4 ? 1 : taskIndex === 5 ? 10 : taskIndex === 6 ? 25 : taskIndex === 7 ? 50 : 100} ,   `
-  }
+        <Typography 
+          variant="body1" 
+          sx={{ 
+            mt: 1,
+            color: 'rgba(0, 0, 0, 0.6)',
+            textAlign: 'center',
+            maxWidth: '600px',
+            fontSize: { xs: '0.9rem', sm: '1rem' }
+          }}
+        >
+          Get rewards for completing tasks.
+        </Typography>
 
-    {tasksMetadata[taskIndex].description}
-
-</Typography>
-
-
-          </Box>
-        </Box>
-
-        {taskStatus[taskIndex]?.completed && !taskStatus[taskIndex]?.disabled ? (
-          <Button
-            variant="outlined"
-            size="small"
-            onClick={() => handleClaimTask(taskIndex)}
-            sx={{ textTransform: 'none', borderRadius: 2 , borderColor: 'green',color: 'green' }}
-          >
-            {loadingTaskIndex === taskIndex ? (
-              <CircularProgress size={24} sx={{ color: 'gray' }} />
-            ) : (
-              'Claim'
-            )}
-          </Button>
-        ) : (
-         <Button
-  variant="outlined"
-  size="small"
-  onClick={() => handleTaskCompletion(taskIndex)}
-  disabled={
-    taskStatus[taskIndex]?.disabled ||
-    taskStatus[taskIndex]?.completed ||
-    loadingTaskIndex === taskIndex ||
-    (taskIndex >= 4 && taskIndex <= 9 && invitedUsersCount < (taskIndex === 4 ? 1 : taskIndex === 5 ? 10 : taskIndex === 6 ? 25 : taskIndex === 7 ? 50 : 100))
-  }
+        <Box
           sx={{
-    textTransform: 'none',
-    borderRadius: 2,
-    borderColor: taskStatus[taskIndex]?.completed ? 'green' : 'default',
-    color: taskStatus[taskIndex]?.completed ? 'white' : 'default',
-    backgroundColor: taskStatus[taskIndex]?.completed ? 'green' : 'transparent',
-    '&:hover': {
-      borderColor: taskStatus[taskIndex]?.completed ? 'green' : 'default',
-      backgroundColor: taskStatus[taskIndex]?.completed ? 'green' : 'transparent',
-    },
-    '&.Mui-disabled': {
-      color: taskStatus[taskIndex]?.completed ? 'white' : 'default',
-      borderColor: taskStatus[taskIndex]?.completed ? 'green' : 'default',
-      backgroundColor: taskStatus[taskIndex]?.completed ? 'green' : 'transparent',
-    },
-  }}
-          >
-            {loadingTaskIndex === taskIndex ? (
-              <CircularProgress size={24} sx={{ color: 'white' }} />
-            ) : taskStatus[taskIndex]?.completed ? (
-              'Done'
-            ) : (
-              'Start'
+            display: 'flex',
+            overflowX: 'auto',
+            mt: 4,
+            p: 2,
+            width: '100%',
+            justifyContent: 'center',
+            '&::-webkit-scrollbar': {
+              height: '4px'
+            },
+            '&::-webkit-scrollbar-track': {
+              background: 'rgba(0, 0, 0, 0.05)',
+              borderRadius: '2px'
+            },
+            '&::-webkit-scrollbar-thumb': {
+              background: 'rgba(0, 198, 255, 0.3)',
+              borderRadius: '2px',
+              '&:hover': {
+                background: 'rgba(0, 198, 255, 0.5)'
+              }
+            }
+          }}
+        >
+          {categories.map((category) => (
+            <CategorySelector
+              key={category.id}
+              category={category}
+              isSelected={selectedCategory === category.id}
+              hasBadge={[1, 2, 3].includes(category.id)}
+              onClick={() => setSelectedCategory(category.id)}
+            />
+          ))}
+        </Box>
+
+        {loading ? (
+          <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
+            <CircularProgress sx={{ color: '#00c6ff' }} />
+          </Box>
+        ) : error ? (
+          <Typography color="error" sx={{ mt: 4 }}>{error}</Typography>
+        ) : (
+          <Box sx={{ width: '100%', mt: 4 }}>
+            {categories
+              .find((category) => category.id === selectedCategory)
+              ?.tasks.map((taskIndex) => {
+                if (taskIndex === 11) {
+                  return (
+                    <Box
+                      key={taskIndex}
+                      sx={{
+                        backgroundColor: 'white',
+                        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
+                        borderRadius: '16px',
+                        p: { xs: 2, sm: 2.5 },
+                        mb: 2,
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        border: '1px solid rgba(0, 0, 0, 0.05)',
+                        minHeight: '80px'
+                      }}
+                    >
+                      <Typography 
+                        variant="body1" 
+                        sx={{ 
+                          fontWeight: 600,
+                          color: 'rgba(0, 0, 0, 0.4)',
+                          fontSize: { xs: '0.9rem', sm: '1rem' }
+                        }}
+                      >
+                        Coming Soon ...
+                      </Typography>
+                    </Box>
+                  );
+                }
+
+                return (
+                  <TaskCard
+                    key={taskIndex}
+                    task={tasksMetadata[taskIndex]}
+                    index={taskIndex}
+                    status={taskStatus[taskIndex]}
+                    loading={loadingTaskIndex === taskIndex}
+                    onStart={() => handleTaskCompletion(taskIndex)}
+                    onClaim={() => handleClaimTask(taskIndex)}
+                    invitedCount={invitedUsersCount}
+                    requiredCount={
+                      taskIndex === 4 ? 1 :
+                      taskIndex === 5 ? 10 :
+                      taskIndex === 6 ? 25 :
+                      taskIndex === 7 ? 50 :
+                      taskIndex === 8 ? 100 : 0
+                    }
+                  />
+                );
+              })}
+
+            {(selectedCategory === 1 || selectedCategory === 2) && (
+              <Box
+                sx={{
+                  backgroundColor: 'white',
+                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
+                  borderRadius: '16px',
+                  p: { xs: 2, sm: 2.5 },
+                  mb: 2,
+                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  border: '1px solid rgba(0, 0, 0, 0.05)',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    transform: 'translateY(-2px)',
+                    boxShadow: '0 8px 25px rgba(0, 0, 0, 0.08)',
+                  }
+                }}
+              >
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                  <Box
+                    sx={{
+                      width: { xs: '32px', sm: '36px' },
+                      height: { xs: '32px', sm: '36px' },
+                      borderRadius: '10px',
+                      backgroundColor: 'rgba(0, 198, 255, 0.05)',
+                      border: '1px solid rgba(0, 198, 255, 0.1)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}
+                  >
+                    <WalletIcon sx={{ 
+                      fontSize: { xs: '1.25rem', sm: '1.5rem' },
+                      color: '#00c6ff'
+                    }}/>
+                  </Box>
+                  <Box>
+                    <Typography 
+                      variant="body1" 
+                      sx={{ 
+                        fontWeight: 700,
+                        color: '#1a1a1a',
+                        fontSize: { xs: '0.9rem', sm: '1rem' },
+                        mb: 0.5
+                      }}
+                    >
+                      Connect Wallet
+                    </Typography>
+                    <Typography 
+                      variant="body2" 
+                      sx={{ 
+                        color: 'rgba(0, 0, 0, 0.6)',
+                        fontSize: { xs: '0.75rem', sm: '0.8rem' }
+                      }}
+                    >
+                      +5 BBLIP
+                    </Typography>
+                  </Box>
+                </Box>
+                <Header />
+              </Box>
             )}
-          </Button>
+          </Box>
         )}
+
+        <Snackbar
+          open={openSnackbar}
+          autoHideDuration={3000}
+          onClose={() => setOpenSnackbar(false)}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
+          <Alert 
+            severity="success"
+            sx={{
+              backgroundColor: '#4caf50',
+              color: '#fff',
+              '& .MuiAlert-icon': {
+                color: '#fff'
+              }
+            }}
+          >
+            <AlertTitle sx={{ fontWeight: 600 }}>Success</AlertTitle>
+            {rewardMessage}
+          </Alert>
+        </Snackbar>
       </Box>
-    );
-  })}
-
-        </Box>
-      )}
-    {selectedCategory === 1 || selectedCategory === 2 ? (
-       <Box
-      sx={{
-        backgroundColor: 'white',
-        boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-        borderRadius: 2,
-        p: 2,
-        mb: 2,
-                width: '90%',
-
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      }}
-    >
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <WalletIcon sx={{fontSize:'2rem', mr:1.5}}/>
-        <Box>
-          <Typography variant="body2" sx={{ fontWeight: 'bold', color: 'black' }}>
-            Connect Wallet
-          </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          +5 BBLIP
-          </Typography>
-        </Box>
-      </Box>
-                 <Header  />
-
-    </Box>
-    ) : null}
-   {/* Snackbar to show after claiming */}
-<Snackbar
-  open={openSnackbar}
-  autoHideDuration={3000}
-  onClose={() => setOpenSnackbar(false)}
-  anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
->
-  <Alert severity="success">
-    <AlertTitle>Success</AlertTitle>
-    {rewardMessage} {/* Dynamic reward message */}
-  </Alert>
-</Snackbar>
-
-    </Box>
-        </ThemeProvider>
-    
+    </ThemeProvider>
   );
 };
 
