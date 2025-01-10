@@ -156,8 +156,9 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
       backgroundColor: 'white',
       boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
       borderRadius: '16px',
-      p: { xs: 2, sm: 2.5 },
-      mb: 2,
+       p: { xs: 1, sm: 2.5 },
+                  mb: 2,
+                  width: '95%',
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
@@ -189,7 +190,7 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
           sx={{ 
             fontWeight: 700,
             color: '#1a1a1a',
-            fontSize: { xs: '0.9rem', sm: '1rem' },
+            fontSize: { xs: '0.8rem', sm: '0.8rem' },
             mb: 0.5
           }}
         >
@@ -619,9 +620,9 @@ const DealsComponent: React.FC = () => {
                   backgroundColor: 'white',
                   boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
                   borderRadius: '16px',
-                  p: { xs: 2, sm: 2.5 },
+                  p: { xs: 1, sm: 2.5 },
                   mb: 2,
-                  width: '100%',
+                  width: '95%',
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
@@ -642,12 +643,14 @@ const DealsComponent: React.FC = () => {
                       backgroundColor: 'rgba(0, 198, 255, 0.05)',
                       border: '1px solid rgba(0, 198, 255, 0.1)',
                       display: 'flex',
+                                padding: '6px',
+
                       alignItems: 'center',
                       justifyContent: 'center'
                     }}
                   >
                     <WalletIcon sx={{ 
-                      fontSize: { xs: '1.25rem', sm: '1.5rem' },
+                      fontSize: { xs: '1.89rem', sm: '1.89rem' },
                       color: '#00c6ff'
                     }}/>
                   </Box>
@@ -657,8 +660,8 @@ const DealsComponent: React.FC = () => {
                       sx={{ 
                         fontWeight: 700,
                         color: '#1a1a1a',
-                        fontSize: { xs: '0.9rem', sm: '1rem' },
-                        mb: 0.5
+                        fontSize: { xs: '0.8rem', sm: '1rem' },
+                      
                       }}
                     >
                       Connect Wallet
