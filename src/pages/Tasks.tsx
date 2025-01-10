@@ -54,9 +54,9 @@ const theme = createTheme({
 // Tasks metadata
 const tasksMetadata = [
 
-  { title: 'Follow Booba on X', description: '+5 BBLIP', link: 'x-app://x.com/BoobaBlip', reward: 5000 },
-  { title: 'Follow Booba on Instagram', description: '+5 BBLIP', link: 'instagram://www.instagram.com/boobablip/profilecard/?igsh=MXUwMWQxNmJ1bzZhYg==', reward: 5000 },
-  { title: 'Follow Booba on Tiktok', description: '+5 BBLIP', link: 'tiktok://www.tiktok.com/@boobablip?_t=8scYCPf4zaQ&_r=1', reward: 5000 },
+  { title: 'Follow Booba on X', description: '+5 BBLIP', link: 'https://x.com/BoobaBlip', reward: 5000 },
+  { title: 'Follow Booba on Instagram', description: '+5 BBLIP', link: 'https://www.instagram.com/boobablip/profilecard/?igsh=MXUwMWQxNmJ1bzZhYg==', reward: 5000 },
+  { title: 'Follow Booba on Tiktok', description: '+5 BBLIP', link: 'https://www.tiktok.com/@boobablip?_t=8scYCPf4zaQ&_r=1', reward: 5000 },
   { title: 'Join Booba Community', description: '+5 BBLIP', link: 'https://t.me/BoobaBlipCommunity', reward: 5000 },
   { title: 'Invite 1 fren', description: '+5 BBLIP', link: '', reward: 5000 },
   { title: 'Invite 10 fren', description: '+25 BBLIP', link: '', reward: 25000 },
@@ -150,15 +150,14 @@ const CategorySelector = ({ category, isSelected, hasBadge, onClick }: {
 );
 
 // Task kartı stilini güncelliyorum
-const TaskCard = ({ task, index, status, loading,  onClaim, invitedCount, requiredCount }: any) => (
+const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount, requiredCount }: any) => (
   <Box
     sx={{
       backgroundColor: 'white',
       boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
       borderRadius: '16px',
-       p: { xs: 1, sm: 2.5 },
-                  mb: 2,
-                  width: '95%',
+      p: { xs: 2, sm: 2.5 },
+      mb: 2,
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
@@ -190,7 +189,7 @@ const TaskCard = ({ task, index, status, loading,  onClaim, invitedCount, requir
           sx={{ 
             fontWeight: 700,
             color: '#1a1a1a',
-            fontSize: { xs: '0.8rem', sm: '0.8rem' },
+            fontSize: { xs: '0.9rem', sm: '1rem' },
             mb: 0.5
           }}
         >
@@ -248,36 +247,41 @@ const TaskCard = ({ task, index, status, loading,  onClaim, invitedCount, requir
         }}
       >
         {loading ? (
-          <CircularProgress size={16} color="inherit" />
+          <CircularProgress size={20} sx={{ color: '#4caf50' }} />
         ) : (
           'Claim'
         )}
       </Button>
     ) : (
       <Button
-        variant="contained"
+        variant="outlined"
         size="small"
-        onClick={() => window.open(task.link, '_blank')}
-        disabled={index >= 4 && index <= 9 && invitedCount < requiredCount}
+        onClick={onStart}
+        disabled={status?.disabled || status?.completed || loading}
         sx={{
           textTransform: 'none',
           borderRadius: '12px',
-          backgroundColor: '#00c6ff',
           fontSize: { xs: '0.8rem', sm: '0.85rem' },
           fontWeight: 600,
           px: { xs: 2, sm: 3 },
           py: { xs: 0.5, sm: 0.75 },
+          borderColor: status?.completed ? '#4caf50' : '#2196f3',
+          color: status?.completed ? '#fff' : '#2196f3',
+          backgroundColor: status?.completed ? '#4caf50' : 'transparent',
           '&:hover': {
-            backgroundColor: '#0072ff'
+            borderColor: status?.completed ? '#43a047' : '#1976d2',
+            backgroundColor: status?.completed ? '#43a047' : 'rgba(33, 150, 243, 0.05)'
           },
-          '&:disabled': {
-            backgroundColor: 'rgba(0, 0, 0, 0.12)',
-            color: 'rgba(0, 0, 0, 0.26)'
+          '&.Mui-disabled': {
+            backgroundColor: status?.completed ? '#4caf50' : 'rgba(0, 0, 0, 0.05)',
+            color: status?.completed ? '#fff' : 'rgba(0, 0, 0, 0.3)'
           }
         }}
       >
         {loading ? (
-          <CircularProgress size={16} color="inherit" />
+          <CircularProgress size={20} sx={{ color: status?.completed ? '#fff' : '#2196f3' }} />
+        ) : status?.completed ? (
+          'Done'
         ) : (
           'Start'
         )}
@@ -394,50 +398,59 @@ const DealsComponent: React.FC = () => {
   };
 
   const handleClaimTask = async (taskIndex: number) => {
-    try {
-      const telegramUserId = localStorage.getItem('telegramUserId');
-      if (!telegramUserId) throw new Error('User ID not found.');
+  try {
+    const telegramUserId = localStorage.getItem('telegramUserId');
+    if (!telegramUserId) throw new Error('User ID not found.');
 
-      setLoadingTaskIndex(taskIndex); // Show loading spinner for the claim action
+    setLoadingTaskIndex(taskIndex); // Show loading spinner for the claim action
 
-      // Get the reward and description for the selected task
-      const reward = tasksMetadata[taskIndex].reward;
-      const description = tasksMetadata[taskIndex].description;
+    // Immediately update task as claimed (set completed and disabled fields)
+    const updatedTasks = {
+      ...taskStatus,
+      [taskIndex]: { ...taskStatus[taskIndex], disabled: true },
+    };
 
-      // Update Firestore with the claim action and reward
-      const userDocRef = doc(db, 'users', telegramUserId);
-      
-      if (description.includes('BBLIP')) {
-        await updateDoc(userDocRef, {
-          [`tasks.${taskIndex}.disabled`]: true,
-          bblip: increment(reward)
-        });
-      } else if (description.includes('TON')) {
-        await updateDoc(userDocRef, {
-          [`tasks.${taskIndex}.disabled`]: true,
-          total: increment(reward)
-        });
-      }
+    setTaskStatus(updatedTasks);
 
-      // Update local state
-      const updatedTasks = {
-        ...taskStatus,
-        [taskIndex]: { ...taskStatus[taskIndex], disabled: true },
-      };
-      setTaskStatus(updatedTasks);
+    // Update Firestore with the claim action (set disabled to true)
+    const userDocRef = doc(db, 'users', telegramUserId);
+    await updateDoc(userDocRef, {
+      [`tasks.${taskIndex}.disabled`]: true,
+    });
 
-      // Set the reward message for the snackbar
-      setRewardMessage(`You have claimed ${description} for completing the task: "${tasksMetadata[taskIndex].title}"`);
+    // Get the reward and description for the selected task
+    const reward = tasksMetadata[taskIndex].reward;
+    const description = tasksMetadata[taskIndex].description;
 
-      // Show success message
-      setOpenSnackbar(true);
-      setLoadingTaskIndex(null);
-    } catch (err) {
-      console.error('Error claiming task:', err);
-      setError('An error occurred while claiming the task. Please try again.');
-      setLoadingTaskIndex(null);
+    // Check if the description includes 'BBLIP' or 'TON' to determine the reward type
+    const isBblipReward = description.includes('BBLIP'); // If description contains 'BBLIP', it's BBLIP
+    const isTonReward = description.includes('TON'); // If description contains 'TON', it's TON
+
+    // Add the reward amount to the appropriate field (bblip or total)
+    if (isBblipReward) {
+      await updateDoc(userDocRef, {
+        bblip: increment(reward), // Add the reward amount to the bblip field
+      });
+    } else if (isTonReward) {
+      await updateDoc(userDocRef, {
+        total: increment(reward), // Add the reward amount to the total field
+      });
     }
-  };
+
+    // Set the reward message for the snackbar
+    setRewardMessage(`You have claimed ${description} for completing the task: "${tasksMetadata[taskIndex].title}"`);
+
+    // Wait for 5 seconds for circular progress before showing Snackbar
+    setTimeout(() => {
+      setOpenSnackbar(true); // Show Snackbar after 5 seconds
+      setLoadingTaskIndex(null); // Hide the spinner after 5 seconds
+    }, 5000);
+  } catch (err) {
+    console.error('Error claiming task:', err);
+    setError('An error occurred while claiming the task. Please try again.');
+    setLoadingTaskIndex(null); // Hide the spinner in case of error
+  }
+};
 
 
 
@@ -606,9 +619,9 @@ const DealsComponent: React.FC = () => {
                   backgroundColor: 'white',
                   boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
                   borderRadius: '16px',
-                  p: { xs: 1, sm: 2.5 },
+                  p: { xs: 2, sm: 2.5 },
                   mb: 2,
-                  width: '95%',
+                  width: '90%',
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
@@ -629,14 +642,12 @@ const DealsComponent: React.FC = () => {
                       backgroundColor: 'rgba(0, 198, 255, 0.05)',
                       border: '1px solid rgba(0, 198, 255, 0.1)',
                       display: 'flex',
-                                padding: '6px',
-
                       alignItems: 'center',
                       justifyContent: 'center'
                     }}
                   >
                     <WalletIcon sx={{ 
-                      fontSize: { xs: '1.89rem', sm: '1.89rem' },
+                      fontSize: { xs: '1.25rem', sm: '1.5rem' },
                       color: '#00c6ff'
                     }}/>
                   </Box>
@@ -646,8 +657,8 @@ const DealsComponent: React.FC = () => {
                       sx={{ 
                         fontWeight: 700,
                         color: '#1a1a1a',
-                        fontSize: { xs: '0.8rem', sm: '1rem' },
-                      
+                        fontSize: { xs: '0.9rem', sm: '1rem' },
+                        mb: 0.5
                       }}
                     >
                       Connect Wallet
