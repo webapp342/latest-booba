@@ -60,6 +60,7 @@ export default function SimpleBottomNavigation() {
           position: 'fixed',
           bottom: 0,
           left: 0,
+          
           right: 0,
           zIndex: 1000,
         }}
@@ -69,6 +70,7 @@ export default function SimpleBottomNavigation() {
           onChange={(_, newValue) => handleNavigationChange(newValue)}
           showLabels
           sx={{
+            mb:2,
             height: '60px',
             bgcolor: '#ffffff',
             borderTopLeftRadius: '16px',
