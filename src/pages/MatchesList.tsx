@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { 
   FavoriteBorder as FavoriteIcon,
-  SportsSoccer as SportsIcon,
+ 
   AccessTime as TimeIcon
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';

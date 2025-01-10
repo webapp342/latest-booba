@@ -1,5 +1,5 @@
 import { db } from '../firebase';
-import { collection, query, where, getDocs, doc, updateDoc, runTransaction, DocumentData, getDoc } from 'firebase/firestore';
+import { collection, query, where, getDocs, doc, updateDoc, runTransaction,  getDoc } from 'firebase/firestore';
 
 interface MatchData {
   liveData?: {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getDoc, doc } from 'firebase/firestore';
 import { db } from './pages/firebase';
-import { Container, Typography, Card, CardContent, Grid, useTheme, useMediaQuery, Box, IconButton, Collapse } from '@mui/material';
+import { Container, Typography,  Grid, useTheme, useMediaQuery, Box, IconButton, Collapse } from '@mui/material';
 import MatchLiveDetails from './MatchLiveDetails';
 import { Match } from './pages/bet/match';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';

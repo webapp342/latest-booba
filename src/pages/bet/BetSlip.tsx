@@ -21,7 +21,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ClearIcon from '@mui/icons-material/Clear';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
-import { doc, getDoc, updateDoc, addDoc, collection, query, where, getDocs, orderBy, deleteDoc, limit } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, addDoc, collection, query, where, getDocs,  } from 'firebase/firestore';
 import { db } from '../firebase';
 
 interface BetSelection {
@@ -51,14 +51,14 @@ const BetSlip: React.FC<BetSlipProps> = ({
   onClearSlip,
 }) => {
   const [amount, setAmount] = useState<string>('');
-  const [currency] = useState<'TOTAL'>('TOTAL');
+  const [] = useState<'TOTAL'>('TOTAL');
   const [isDrawerOpen, setIsDrawerOpen] = useState(true);
   const [userBalances, setUserBalances] = useState<UserBalances | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [startedMatches, setStartedMatches] = useState<{ [key: string]: boolean }>({});
   const [activeTab, setActiveTab] = useState<'newBet' | 'activeCoupons'>('activeCoupons');
   const [activeCoupons, setActiveCoupons] = useState<any[]>([]);
-  const [shouldRefreshCoupons, setShouldRefreshCoupons] = useState(false);
+  const [, setShouldRefreshCoupons] = useState(false);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
