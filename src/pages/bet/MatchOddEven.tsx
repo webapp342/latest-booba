@@ -14,11 +14,13 @@ const MatchOddEven: React.FC<MatchOddEvenProps> = ({ match, onSelect }) => {
   const [isExpanded, setIsExpanded] = useState(true);
 
   const getButtonStyle = (isOdd: boolean) => {
-    const totalGoals = (match.liveData?.goals?.home ?? 0) + (match.liveData?.goals?.away ?? 0);
-    const isWinner = isOdd ? totalGoals % 2 !== 0 : totalGoals % 2 === 0;
+  const homeGoals = match.liveData?.goals?.home;
+  const awayGoals = match.liveData?.goals?.away;
 
+  // Eğer home veya away goals undefined ise varsayılan renkler dönülür.
+  if (homeGoals === undefined || awayGoals === undefined) {
     return {
-      background: isWinner ? '#ffd700' : '#c8f7c8',
+      background: '#f0f0f0',
       color: '#333',
       borderRadius: '4px',
       padding: '8px 12px',
@@ -28,11 +30,32 @@ const MatchOddEven: React.FC<MatchOddEvenProps> = ({ match, onSelect }) => {
       boxShadow: 'none',
       position: 'relative',
       '&:hover': {
-        background: isWinner ? '#ffed4a' : '#a5e6a5',
+        background: '#e0e0e0',
         transform: 'none',
-      }
+      },
     };
+  }
+
+  const totalGoals = homeGoals + awayGoals;
+  const isWinner = isOdd ? totalGoals % 2 !== 0 : totalGoals % 2 === 0;
+
+  return {
+    background: isWinner ? '#ffd700' : '#c8f7c8',
+    color: '#333',
+    borderRadius: '4px',
+    padding: '8px 12px',
+    height: '40px',
+    transition: 'all 0.2s ease',
+    border: 'none',
+    boxShadow: 'none',
+    position: 'relative',
+    '&:hover': {
+      background: isWinner ? '#ffed4a' : '#a5e6a5',
+      transform: 'none',
+    },
   };
+};
+
 
   const getDescription = (isOdd: boolean) => {
     return `Total goals will be ${isOdd ? 'odd' : 'even'}`;

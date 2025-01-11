@@ -14,34 +14,49 @@ const MatchDoubleChance: React.FC<MatchDoubleChanceProps> = ({ match, onSelect }
   const [isExpanded, setIsExpanded] = useState(true);
 
   const getButtonStyle = (selection: '1X' | '12' | 'X2') => {
-    const homeGoals = match.liveData?.goals?.home ?? 0;
-    const awayGoals = match.liveData?.goals?.away ?? 0;
-    
-    let isWinner = false;
-    if (selection === '1X') {
-      isWinner = homeGoals >= awayGoals;
-    } else if (selection === '12') {
-      isWinner = homeGoals !== awayGoals;
-    } else {
-      isWinner = awayGoals >= homeGoals;
-    }
+  const homeGoals = match.liveData?.goals?.home;
+  const awayGoals = match.liveData?.goals?.away;
 
-    return {
-      background: isWinner ? '#ffd700' : '#c8f7c8',
-      color: '#333',
-      borderRadius: '4px',
-      padding: '8px 12px',
-      height: '40px',
-      transition: 'all 0.2s ease',
-      border: 'none',
-      boxShadow: 'none',
-      position: 'relative',
-      '&:hover': {
-        background: isWinner ? '#ffed4a' : '#a5e6a5',
-        transform: 'none',
-      }
-    };
+  // Varsayılan buton stili
+  const defaultStyle = {
+    background: '#f5f5f5',
+    color: '#333',
+    borderRadius: '4px',
+    padding: '8px 12px',
+    height: '40px',
+    transition: 'all 0.2s ease',
+    border: 'none',
+    boxShadow: 'none',
+    position: 'relative',
+    '&:hover': {
+      background: '#e0e0e0',
+    },
   };
+
+  // Eğer liveData mevcut değilse varsayılan stili döndür
+  if (homeGoals === undefined || awayGoals === undefined) {
+    return defaultStyle;
+  }
+
+  // Kazanan durumu belirleme
+  let isWinner = false;
+  if (selection === '1X') {
+    isWinner = homeGoals >= awayGoals;
+  } else if (selection === '12') {
+    isWinner = homeGoals !== awayGoals;
+  } else {
+    isWinner = awayGoals >= homeGoals;
+  }
+
+  return {
+    ...defaultStyle,
+    background: isWinner ? '#ffd700' : '#c8f7c8',
+    '&:hover': {
+      background: isWinner ? '#ffed4a' : '#a5e6a5',
+    },
+  };
+};
+
 
   const getDescription = (selection: '1X' | '12' | 'X2') => {
     if (selection === '1X') return `${match.homeTeam} will win or draw`;

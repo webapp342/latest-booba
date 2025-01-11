@@ -19,7 +19,7 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ClearIcon from '@mui/icons-material/Clear';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import { doc, getDoc, updateDoc, addDoc, collection, query, where, getDocs,  } from 'firebase/firestore';
 import { db } from '../firebase';
@@ -51,7 +51,7 @@ const BetSlip: React.FC<BetSlipProps> = ({
   onClearSlip,
 }) => {
   const [amount, setAmount] = useState<string>('');
-  const [] = useState<'TOTAL'>('TOTAL');
+  const [] = useState<'TON'>('TON');
   const [isDrawerOpen, setIsDrawerOpen] = useState(true);
   const [userBalances, setUserBalances] = useState<UserBalances | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -148,7 +148,7 @@ const BetSlip: React.FC<BetSlipProps> = ({
     return userBalances.total / 1000;
   };
 
-  // Kuponları getir
+  // Couponsı getir
   const fetchActiveCoupons = async () => {
     try {
       setIsLoading(true);
@@ -190,7 +190,7 @@ const BetSlip: React.FC<BetSlipProps> = ({
       setActiveCoupons(coupons);
 
     } catch (error) {
-      console.error('Kupon getirme hatası:', error);
+      console.error('Coupon getirme hatası:', error);
       setActiveCoupons([]);
     } finally {
       setIsLoading(false);
@@ -248,7 +248,7 @@ const BetSlip: React.FC<BetSlipProps> = ({
           odds: s.odds
         })),
         amount: dbBetAmount,
-        currency: 'TOTAL',
+        currency: 'TON',
         totalOdds,
         potentialWin: dbBetAmount * totalOdds,
         status: 'active',
@@ -260,7 +260,7 @@ const BetSlip: React.FC<BetSlipProps> = ({
 
       const couponsRef = collection(db, 'coupons');
       const couponRef = await addDoc(couponsRef, couponData);
-      console.log('Kupon kaydedildi, ID:', couponRef.id);
+      console.log('Coupon kaydedildi, ID:', couponRef.id);
 
       await updateDoc(userRef, {
         total: currentBalance - dbBetAmount
@@ -276,11 +276,11 @@ const BetSlip: React.FC<BetSlipProps> = ({
       setIsDrawerOpen(false);
       setShouldRefreshCoupons(prev => !prev);
       setActiveTab('activeCoupons');
-      alert('Kupon başarıyla oluşturuldu!');
+      alert('Coupon başarıyla oluşturuldu!');
 
     } catch (error) {
       console.error('Bahis yapma hatası:', error);
-      alert('Kupon oluşturulurken bir hata oluştu!');
+      alert('Coupon oluşturulurken bir hata oluştu!');
     } finally {
       setIsLoading(false);
     }
@@ -292,7 +292,7 @@ const BetSlip: React.FC<BetSlipProps> = ({
       const userId = localStorage.getItem('telegramUserId');
       if (!userId) return;
 
-      console.log('Kuponları kontrol etmeye başlıyorum...');
+      console.log('Couponsı kontrol etmeye başlıyorum...');
 
       // Aktif kuponları getir
       const couponsRef = collection(db, 'coupons');
@@ -307,12 +307,12 @@ const BetSlip: React.FC<BetSlipProps> = ({
 
       for (const couponDoc of querySnapshot.docs) {
         const coupon = couponDoc.data();
-        console.log('Kupon kontrol ediliyor:', couponDoc.id, coupon);
+        console.log('Coupon kontrol ediliyor:', couponDoc.id, coupon);
         
         let isWinning = true;
         let allMatchesEnded = true;
 
-        // Kuponda seçili tüm maçları kontrol et
+        // Couponda seçili tüm maçları kontrol et
         for (const selection of coupon.selections) {
           const matchDoc = await getDoc(doc(db, 'matches', selection.matchId));
           
@@ -350,7 +350,7 @@ const BetSlip: React.FC<BetSlipProps> = ({
           }
         }
 
-        console.log('Kupon durumu:', {
+        console.log('Coupon durumu:', {
           couponId: couponDoc.id,
           allMatchesEnded: allMatchesEnded,
           isWinning: isWinning
@@ -379,7 +379,7 @@ const BetSlip: React.FC<BetSlipProps> = ({
                 [coupon.currency.toLowerCase()]: currentBalance + winAmount
               });
 
-              // Kuponu ödenmiş olarak işaretle
+              // Couponu ödenmiş olarak işaretle
               await updateDoc(doc(db, 'coupons', couponDoc.id), {
                 status: 'won',
                 paid: true,
@@ -392,7 +392,7 @@ const BetSlip: React.FC<BetSlipProps> = ({
                 [coupon.currency.toLowerCase()]: currentBalance + winAmount
               } : null);
 
-              console.log(`Kupon kazandı ve ödeme yapıldı: ${couponDoc.id}`);
+              console.log(`Coupon kazandı ve ödeme yapıldı: ${couponDoc.id}`);
             }
           } else {
             console.log('Kaybeden kupon işaretleniyor:', couponDoc.id);
@@ -403,11 +403,11 @@ const BetSlip: React.FC<BetSlipProps> = ({
             });
           }
         } else {
-          console.log(`Kupon hala aktif, tüm maçlar bitmedi: ${couponDoc.id}`);
+          console.log(`Coupon hala aktif, tüm maçlar bitmedi: ${couponDoc.id}`);
         }
       }
     } catch (error) {
-      console.error('Kupon kontrol hatası:', error);
+      console.error('Coupon kontrol hatası:', error);
     }
   };
 
@@ -512,24 +512,24 @@ const BetSlip: React.FC<BetSlipProps> = ({
       .join(', ');
   };
 
-  // Kupon durumuna göre renk ve metin belirle
+  // Coupon durumuna göre renk ve metin belirle
   const getCouponStatusInfo = (status: string) => {
     switch(status) {
       case 'won':
-        return { color: 'success.main', text: 'Kazandı' };
+        return { color: 'success.main', text: 'won' };
       case 'lost':
-        return { color: 'error.main', text: 'Kaybetti' };
+        return { color: 'error.main', text: 'lost' };
       default:
-        return { color: 'info.main', text: 'Aktif' };
+        return { color: 'info.main', text: 'active' };
     }
   };
 
   const activeCouponsContent = (
     <Box sx={{ p: 2 }}>
-      <Typography variant="h6" sx={{ mb: 2 }}>Son Kuponlarım</Typography>
+      <Typography variant="h6" sx={{ mb: 2 }}>Latest Coupons</Typography>
       {isLoading ? (
         <Typography variant="body2" color="text.secondary" textAlign="center">
-          Kuponlar yükleniyor...
+          Coupons yükleniyor...
         </Typography>
       ) : activeCoupons.length === 0 ? (
         <Typography variant="body2" color="text.secondary" textAlign="center">
@@ -543,7 +543,7 @@ const BetSlip: React.FC<BetSlipProps> = ({
               <Box sx={{ mb: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Box>
                   <Typography variant="subtitle2" color="primary">
-                    Kupon #{coupon.id.slice(-6)}
+                    Coupon #{coupon.id.slice(-6)}
                   </Typography>
                   <Typography variant="caption" color="text.secondary" display="block">
                     {new Date(coupon.createdAt).toLocaleString('tr-TR')}
@@ -568,20 +568,20 @@ const BetSlip: React.FC<BetSlipProps> = ({
                     {selection.betType}: {selection.selection}
                   </Typography>
                   <Typography variant="body2" color="primary">
-                    Oran: {selection.odds.toFixed(2)}
+                    Odd: {selection.odds.toFixed(2)}
                   </Typography>
                 </Box>
               ))}
 
               <Box sx={{ mt: 2, pt: 1, borderTop: '1px solid #ddd' }}>
                 <Typography variant="body2">
-                  Toplam Oran: {coupon.totalOdds.toFixed(2)}
+                  Total Odds: {coupon.totalOdds.toFixed(2)}
                 </Typography>
                 <Typography variant="body2">
-                  Miktar: {(coupon.amount / 1000).toFixed(2)} {coupon.currency}
+                  Bet Amount: {(coupon.amount / 1000).toFixed(2)} {coupon.currency}
                 </Typography>
                 <Typography variant="body1" sx={{ fontWeight: 'bold', color: statusInfo.color }}>
-                  {coupon.status === 'won' ? 'Kazanç:' : 'Potansiyel Kazanç:'} {(coupon.potentialWin / 1000).toFixed(2)} {coupon.currency}
+                  {coupon.status === 'won' ? 'Return:' : 'Potansiyel Return:'} {(coupon.potentialWin / 1000).toFixed(2)} {coupon.currency}
                 </Typography>
               </Box>
             </Card>
@@ -594,7 +594,7 @@ const BetSlip: React.FC<BetSlipProps> = ({
   const betSlipContent = (
     <>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-        <Typography variant="h6">Bahis Kuponu</Typography>
+        <Typography variant="h6">Coupon</Typography>
         {selections.length > 0 && (
           <IconButton onClick={onClearSlip} size="small">
             <ClearIcon />
@@ -614,7 +614,7 @@ const BetSlip: React.FC<BetSlipProps> = ({
         <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
           <AccountBalanceWalletIcon color="primary" />
           <Typography variant="body2">
-            Bakiye: {getCurrentBalance().toFixed(2)} TOTAL
+            Balance: {getCurrentBalance().toFixed(2)} TON
           </Typography>
         </Box>
       )}
@@ -639,7 +639,7 @@ const BetSlip: React.FC<BetSlipProps> = ({
                     {selection.betType}: {selection.selection}
                   </Typography>
                   <Typography variant="body2" color="primary">
-                    Oran: {selection.odds.toFixed(2)}
+                    Odd: {selection.odds.toFixed(2)}
                   </Typography>
                 </Box>
                 <IconButton
@@ -654,12 +654,12 @@ const BetSlip: React.FC<BetSlipProps> = ({
 
           <Box sx={{ mt: 2 }}>
             <Typography variant="body2" sx={{ mb: 1 }}>
-              Toplam Oran: {totalOdds.toFixed(2)}
+              Total Odd: {totalOdds.toFixed(2)}
             </Typography>
 
             <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
               <TextField
-                label="Miktar"
+                label="Bet Amount"
                 value={amount}
                 onChange={handleAmountChange}
                 size="small"
@@ -670,7 +670,7 @@ const BetSlip: React.FC<BetSlipProps> = ({
             </Box>
 
             <Typography variant="body1" sx={{ fontWeight: 'bold', mb: 2 }}>
-              Potansiyel Kazanç: {(Number(amount) * totalOdds).toFixed(2)} TOTAL
+             Total Potential Return: {(Number(amount) * totalOdds).toFixed(2)} TON
             </Typography>
           </Box>
         </>
@@ -692,7 +692,7 @@ const BetSlip: React.FC<BetSlipProps> = ({
       onClick={handlePlaceBet}
       sx={{ mt: 2 }}
     >
-      {hasStartedMatch() ? 'Maç Başladı' : `Bahis Yap (${selections.length})`}
+      {hasStartedMatch() ? 'Bets are Over !!' : `Bet Now (${selections.length})`}
     </Button>
   );
 
@@ -723,15 +723,13 @@ const BetSlip: React.FC<BetSlipProps> = ({
                 sx={{ borderBottom: 1, borderColor: 'divider' }}
               >
                 <Tab 
-                  label="Yeni Kupon" 
+                  label="New Bet" 
                   value="newBet"
-                  icon={<ShoppingCartIcon />}
                   iconPosition="start"
                 />
                 <Tab 
-                  label={`Kuponlarım (${activeCoupons.length})`}
+                  label={`My Coupons (${activeCoupons.length})`}
                   value="activeCoupons"
-                  icon={<AccountBalanceWalletIcon />}
                   iconPosition="start"
                 />
               </Tabs>
@@ -762,7 +760,7 @@ const BetSlip: React.FC<BetSlipProps> = ({
             onClick={() => setIsDrawerOpen(true)}
           >
             <Box sx={{ position: 'relative' }}>
-              <ShoppingCartIcon />
+              <DocumentScannerIcon />
               {(selections.length > 0 || activeCoupons.length > 0) && (
                 <Box
                   sx={{
@@ -805,15 +803,14 @@ const BetSlip: React.FC<BetSlipProps> = ({
               sx={{ mb: 2, borderBottom: 1, borderColor: 'divider' }}
             >
               <Tab 
-                label="Yeni Kupon" 
+                label="Yeni Coupon" 
                 value="newBet"
-                icon={<ShoppingCartIcon />}
+                icon={<DocumentScannerIcon />}
                 iconPosition="start"
               />
               <Tab 
-                label={`Kuponlarım (${activeCoupons.length})`}
+                label={`Couponsım (${activeCoupons.length})`}
                 value="activeCoupons"
-                icon={<AccountBalanceWalletIcon />}
                 iconPosition="start"
               />
             </Tabs>

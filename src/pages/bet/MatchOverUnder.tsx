@@ -35,26 +35,44 @@ const MatchOverUnder: React.FC<MatchOverUnderProps> = ({ match, onSelect }) => {
   };
 
   const getButtonStyle = (value: string, isOver: boolean) => {
-    const totalGoals = (match.liveData?.goals?.home ?? 0) + (match.liveData?.goals?.away ?? 0);
-    const numValue = parseFloat(value);
-    const isWinner = isOver ? totalGoals > numValue : totalGoals < numValue;
+  const totalGoals = 
+    typeof match.liveData?.goals?.home === 'number' &&
+    typeof match.liveData?.goals?.away === 'number'
+      ? match.liveData.goals.home + match.liveData.goals.away
+      : null;
 
-    return {
-      background: isWinner ? '#ffd700' : '#c8f7c8',
-      color: '#333',
-      borderRadius: '4px',
-      padding: '8px 12px',
-      height: '40px',
-      transition: 'all 0.2s ease',
-      border: 'none',
-      boxShadow: 'none',
-      position: 'relative',
-      '&:hover': {
-        background: isWinner ? '#ffed4a' : '#a5e6a5',
-        transform: 'none',
-      }
-    };
+  const numValue = parseFloat(value);
+  const isWinner = totalGoals !== null
+    ? (isOver ? totalGoals > numValue : totalGoals < numValue)
+    : false;
+
+  const baseStyle = {
+    background: '#c8f7c8',
+    color: '#333',
+    borderRadius: '4px',
+    padding: '8px 12px',
+    height: '40px',
+    transition: 'all 0.2s ease',
+    border: 'none',
+    boxShadow: 'none',
+    position: 'relative',
+    '&:hover': {
+      background: '#a5e6a5',
+    },
   };
+
+  if (totalGoals === null) {
+    return baseStyle; // Eğer totalGoals mevcut değilse, varsayılan stili uygula
+  }
+
+  return {
+    ...baseStyle,
+    background: isWinner ? '#ffd700' : '#c8f7c8',
+    '&:hover': {
+      background: isWinner ? '#ffed4a' : '#a5e6a5',
+    },
+  };
+};
 
   const getDescription = (value: string, isOver: boolean) => {
     return `The match will have ${isOver ? 'more than' : 'less than'} ${value} goals`;

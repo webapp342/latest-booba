@@ -368,7 +368,7 @@ const MatchesList: React.FC = () => {
                     <Typography 
                       sx={{ 
                         color: new Date(match.date) < currentTime ? '#ff4d4d' : 'rgba(255, 255, 255, 0.5)',
-                        fontSize: { xs: '0.7rem', sm: '0.75rem' },
+                        fontSize: { xs: '0.6rem', sm: '0.6rem' },
                         display: 'flex',
                         alignItems: 'center',
                         gap: 0.5,
@@ -376,7 +376,7 @@ const MatchesList: React.FC = () => {
                       }}
                     >
                       <TimeIcon sx={{ 
-                        fontSize: '0.9rem',
+                        fontSize: '0.6rem',
                         color: new Date(match.date) < currentTime ? '#ff4d4d' : 'inherit'
                       }} />
                       {new Date(match.date) < currentTime ? 

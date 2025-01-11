@@ -14,9 +14,11 @@ const Match1x2: React.FC<Match1x2Props> = ({ match, onSelect }) => {
   const [isExpanded, setIsExpanded] = useState(true);
 
   const getButtonStyle = (selection: '1' | 'X' | '2') => {
-    const homeGoals = match.liveData?.goals?.home ?? 0;
-    const awayGoals = match.liveData?.goals?.away ?? 0;
-    
+  const homeGoals = match.liveData?.goals?.home ?? null;
+  const awayGoals = match.liveData?.goals?.away ?? null;
+
+  // Eğer veriler mevcutsa, ev sahibi veya deplasman takımı kazanıp kazanmadığını kontrol et
+  if (homeGoals !== null && awayGoals !== null) {
     let isWinner = false;
     if (selection === '1') {
       isWinner = homeGoals > awayGoals;
@@ -41,7 +43,26 @@ const Match1x2: React.FC<Match1x2Props> = ({ match, onSelect }) => {
         transform: 'none',
       }
     };
+  }
+
+  // Eğer veriler mevcut değilse, varsayılan stiller ile döndür
+  return {
+    background: '#c8f7c8', // Varsayılan renk
+    color: '#333',
+    borderRadius: '4px',
+    padding: '8px 12px',
+    height: '40px',
+    transition: 'all 0.2s ease',
+    border: 'none',
+    boxShadow: 'none',
+    position: 'relative',
+    '&:hover': {
+      background: '#a5e6a5', // Varsayılan hover rengi
+      transform: 'none',
+    }
   };
+};
+
 
   const getDescription = (selection: '1' | 'X' | '2') => {
     if (selection === '1') return `${match.homeTeam} will win`;

@@ -16,7 +16,11 @@ const AdminPanel: React.FC = () => {
     awayLogo: '',
     homeWin: '',
     draw: '',
- 
+             country: '',
+             leagueLogo : '',
+             leagueName : '',
+             round : '',
+
     awayWin: '',
    //cifte sans
     doubleChance0_2: '',
@@ -106,6 +110,16 @@ plus2_5Deplas:'',
         setEditMode(false);
         setEditMatchId(null);
         setFormData({
+
+
+
+              country: '',
+             leagueLogo : '',
+             leagueName : '',
+             round : '',
+
+
+             
           league: '',
           date: '',
           homeTeam: '',
@@ -167,6 +181,7 @@ plus2_5Deplas:'',
                                         plus_1home:'',
                                         plus1_5home:'',
                                         plus2_5home:'',
+       
 
                                        //Handikap Deplasman 
 
@@ -241,6 +256,11 @@ plus2_5Deplas:'',
 
                 
 
+             country: '',
+             leagueLogo : '',
+             leagueName : '',
+             round : '',
+
 
           
  // Gol in both halves
@@ -302,9 +322,16 @@ plus2_5Deplas:'',
     setEditMode(true);
     setEditMatchId(match.id);
     setFormData({
-
+ 
       league: match.league,
       date: match.date,
+       
+             leagueLogo : match.leagueLogo,
+             leagueName : match.leagueName,
+             round : match.round,
+
+            country: match.country,
+
 
       homeTeam: match.homeTeam,
       homeLogo: match.homeLogo,
@@ -422,6 +449,7 @@ plus2_5Deplas:match.plus2_5Deplas,
                 onChange={handleInputChange}
               />
             </Grid>
+            
             <Grid item xs={12} md={6}>
               <TextField
                 label="Ev sahibi LOGO"
@@ -714,7 +742,7 @@ plus2_5Deplas:match.plus2_5Deplas,
             </Grid>
 
                             <Grid item xs={12} md={6}>
-              <TextField
+              <TextField    
                 label="Ev  +2.5 Handikap"
                 fullWidth
                 name="plus2_5home"
@@ -722,6 +750,53 @@ plus2_5Deplas:match.plus2_5Deplas,
                 onChange={handleInputChange}
               />
             </Grid>
+            <Grid item xs={12} md={6}>
+              <TextField    
+                label="country "
+                fullWidth
+                name="country"
+                value={formData.country }
+                onChange={handleInputChange}
+              />
+            </Grid>
+
+
+       
+
+
+                   <Grid item xs={12} md={6}>
+              <TextField    
+                label="leagueLogo"
+                fullWidth
+                name="leagueLogo"
+                value={formData.leagueLogo }
+                onChange={handleInputChange}
+              />
+            </Grid>
+
+            
+                   <Grid item xs={12} md={6}>
+              <TextField    
+                label="leagueName"
+                fullWidth
+                name="leagueName"
+                value={formData.leagueName }
+                onChange={handleInputChange}
+              />
+            </Grid>
+
+
+            
+                   <Grid item xs={12} md={6}>
+              <TextField    
+                label="round"
+                fullWidth
+                name="round"
+                value={formData.round }
+                onChange={handleInputChange}
+              />
+            </Grid>
+
 
                                <Grid item xs={12} md={6}>
               <TextField

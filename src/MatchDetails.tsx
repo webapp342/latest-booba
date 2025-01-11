@@ -13,7 +13,6 @@ import MatchHeader from './pages/bet/MatchHeader';
 import Match1x2 from './pages/bet/Match1x2';
 import MatchDoubleChance from './pages/bet/MatchDoubleChance';
 import MatchOverUnder from './pages/bet/MatchOverUnder';
-import MatchGoalInBothHalves from './pages/bet/MatchGoalInBothHalves';
 import MatchFirstGoal from './pages/bet/MatchFirstGoal';
 import MatchHandicap from './pages/bet/MatchHandicap';
 import MatchOddEven from './pages/bet/MatchOddEven';
@@ -226,7 +225,6 @@ const MatchDetails: React.FC = () => {
             <Match1x2 match={match} onSelect={handleBetSelection} />
             <MatchDoubleChance match={match} onSelect={handleBetSelection} />
             <MatchOverUnder match={match} onSelect={handleBetSelection} />
-            <MatchGoalInBothHalves match={match} onSelect={handleBetSelection} />
             <MatchFirstGoal match={match} onSelect={handleBetSelection} />
             <MatchHandicap match={match} onSelect={handleBetSelection} />
             <MatchOddEven match={match} onSelect={handleBetSelection} />

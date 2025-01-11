@@ -35,24 +35,14 @@ const MatchHandicap: React.FC<MatchHandicapProps> = ({ match, onSelect }) => {
   };
 
   const getButtonStyle = (value: string, isHome: boolean) => {
-    const homeGoals = match.liveData?.goals?.home ?? 0;
-    const awayGoals = match.liveData?.goals?.away ?? 0;
-    const handicapValue = parseFloat(value);
-    
-    let isWinner = false;
-    if (isHome) {
-      // Ev sahibi için handikap hesabı
-      const homeScoreWithHandicap = homeGoals + handicapValue;
-      isWinner = homeScoreWithHandicap > awayGoals;
-    } else {
-      // Deplasman için handikap hesabı
-      const awayScoreWithHandicap = awayGoals - handicapValue;
-      isWinner = awayScoreWithHandicap > homeGoals;
-    }
+  const homeGoals = match.liveData?.goals?.home;
+  const awayGoals = match.liveData?.goals?.away;
 
+  // Veriler mevcut değilse varsayılan stil uygula
+  if (homeGoals === undefined || awayGoals === undefined) {
     return {
-      background: isWinner ? '#ffd700' : '#c8f7c8',
-      color: '#333',
+      background: '#f0f0f0', // Varsayılan arka plan rengi
+      color: '#333',         // Varsayılan yazı rengi
       borderRadius: '4px',
       padding: '8px 12px',
       height: '40px',
@@ -61,11 +51,42 @@ const MatchHandicap: React.FC<MatchHandicapProps> = ({ match, onSelect }) => {
       boxShadow: 'none',
       position: 'relative',
       '&:hover': {
-        background: isWinner ? '#ffed4a' : '#a5e6a5',
+        background: '#e0e0e0',
         transform: 'none',
       }
     };
+  }
+
+  const handicapValue = parseFloat(value);
+  let isWinner = false;
+
+  if (isHome) {
+    // Ev sahibi için handikap hesabı
+    const homeScoreWithHandicap = homeGoals + handicapValue;
+    isWinner = homeScoreWithHandicap > awayGoals;
+  } else {
+    // Deplasman için handikap hesabı
+    const awayScoreWithHandicap = awayGoals - handicapValue;
+    isWinner = awayScoreWithHandicap > homeGoals;
+  }
+
+  return {
+    background: isWinner ? '#ffd700' : '#c8f7c8',
+    color: '#333',
+    borderRadius: '4px',
+    padding: '8px 12px',
+    height: '40px',
+    transition: 'all 0.2s ease',
+    border: 'none',
+    boxShadow: 'none',
+    position: 'relative',
+    '&:hover': {
+      background: isWinner ? '#ffed4a' : '#a5e6a5',
+      transform: 'none',
+    }
   };
+};
+
 
   const getDescription = (team: string, handicap: string) => {
     const value = parseFloat(handicap);
