@@ -19,37 +19,22 @@ const PlayMore: React.FC = () => {
   const [activeDot, setActiveDot] = useState<number>(0);
 
   const messages = [
+     {
+      text: "💥 We’ll giving away $10,000 every week !",
+    },
+   
     {
-      title: "🚀 **Launch Special!**",
-      text: "Get a 100% bonus on all deposits during the first week! Don’t miss out on this incredible opportunity!",
+      text: "🎉 Are you ready to race to the top ?",
+    },
+ 
+  
+   
+  
+    {
+      text: "🌟 Keep playing, rewards are waiting for you !",
     },
     {
-      title: "🎯 **Big Goal Ahead!**",
-      text: "Join the weekly 100 TON reward pool by playing more games!",
-    },
-    {
-      title: "💥 **Climb the Leaderboard!**",
-      text: "Win and secure your 10,000 BBLIP reward!",
-    },
-    {
-      title: "🏁 **Join the Race!**",
-      text: "Play more, win big, and aim for your 100 TON goal!",
-    },
-    {
-      title: "🎉 **Increase the Fun!**",
-      text: "Play more to earn and join the weekly reward pool!",
-    },
-    {
-      title: "🔥 **Be the Best!**",
-      text: "100 TON and 10,000 BBLIP rewards await the top players!",
-    },
-    {
-      title: "🌟 **Write Your Name on the Leaderboard!**",
-      text: "Keep playing, rewards are waiting for you!",
-    },
-    {
-      title: "🎁 **Launch Surprise!**",
-      text: "Get a 100% bonus on all deposits this week! Deposit now and double your earnings!",
+      text: "🎁 Get a 100% bonus on all deposits this week !",
     },
   ];
 
@@ -68,7 +53,7 @@ const PlayMore: React.FC = () => {
     const updateMessage = () => {
       const option = getRandomOption();
       setMessage({
-        title: messages[Math.floor(Math.random() * messages.length)].title,
+        title: messages[Math.floor(Math.random() * messages.length)].text,
         text: messages[Math.floor(Math.random() * messages.length)].text,
         amount: getRandomNumber(option),
         option,
@@ -78,7 +63,7 @@ const PlayMore: React.FC = () => {
     };
 
     updateMessage();
-    const interval = setInterval(updateMessage, 8000);
+    const interval = setInterval(updateMessage, 3000);
     return () => clearInterval(interval);
   }, []);
 
@@ -103,9 +88,7 @@ const PlayMore: React.FC = () => {
             }}
           >
             {/* Title */}
-            <Typography variant="h6" sx={{ color: 'white', fontWeight: 'bold', fontSize: '1rem' }}>
-              {message.title}
-            </Typography>
+          
 
             {/* Main Text */}
             <Typography variant="body1" sx={{ color: 'yellow', mt: 1,fontWeight: 'bold', fontSize: '0.8rem', lineHeight: 1.4 }}>
@@ -121,8 +104,8 @@ const PlayMore: React.FC = () => {
                   <Box
                     key={index}
                     sx={{
-                      width: 12,
-                      height: 12,
+                      width: 4,
+                      height: 4,
                       borderRadius: '50%',
                       backgroundColor: index === activeDot ? 'yellow' : 'gray',
                       transition: 'background-color 0.3s ease',

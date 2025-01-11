@@ -16,7 +16,7 @@ import {
 import { 
   FavoriteBorder as FavoriteIcon,
  
-  AccessTime as TimeIcon
+
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
@@ -375,12 +375,9 @@ const MatchesList: React.FC = () => {
                         fontWeight: new Date(match.date) < currentTime ? 600 : 400
                       }}
                     >
-                      <TimeIcon sx={{ 
-                        fontSize: '0.6rem',
-                        color: new Date(match.date) < currentTime ? '#ff4d4d' : 'inherit'
-                      }} />
+                    
                       {new Date(match.date) < currentTime ? 
-                        'Match Finished' : 
+                        '' : 
                         getCountdown(match.date)
                       }
                     </Typography>
