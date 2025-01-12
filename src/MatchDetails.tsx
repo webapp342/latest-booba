@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getDoc, doc } from 'firebase/firestore';
 import { db } from './pages/firebase';
 import { Container, Typography,  Grid, useTheme, useMediaQuery, Box, IconButton, Collapse } from '@mui/material';
@@ -17,6 +17,7 @@ import MatchFirstGoal from './pages/bet/MatchFirstGoal';
 import MatchHandicap from './pages/bet/MatchHandicap';
 import MatchOddEven from './pages/bet/MatchOddEven';
 import BetSlip from './pages/bet/BetSlip';
+import WebApp from '@twa-dev/sdk';
 
 // Bahis seçimi için interface
 interface BetSelection {
@@ -35,6 +36,26 @@ const MatchDetails: React.FC = () => {
   const [showHowToPlay, setShowHowToPlay] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const navigate = useNavigate();
+
+
+  useEffect(() => {
+      const backButton = WebApp.BackButton;
+  
+      // BackButton'u görünür yap ve tıklanma işlevi ekle
+      backButton.show();
+      backButton.onClick(() => {
+        navigate("/latest-booba/matches");
+      });
+  
+      // Cleanup: Bileşen unmount olduğunda butonu gizle ve event handler'ı kaldır
+      return () => {
+        backButton.hide();
+        backButton.offClick(() => {
+          navigate("/latest-booba/matches"); // Buraya tekrar aynı callback sağlanmalıdır.
+        });
+      };
+    }, [navigate]);
 
   useEffect(() => {
     const fetchMatchDetails = async () => {

@@ -19,6 +19,7 @@ import {
 
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import WebApp from '@twa-dev/sdk';
 
 interface Match {
   id: string;
@@ -46,6 +47,25 @@ const MatchesList: React.FC = () => {
   const [matches, setMatches] = useState<Match[]>([]);
   const [currentTime, setCurrentTime] = useState(new Date());
   const navigate = useNavigate();
+
+
+  useEffect(() => {
+      const backButton = WebApp.BackButton;
+  
+      // BackButton'u görünür yap ve tıklanma işlevi ekle
+      backButton.show();
+      backButton.onClick(() => {
+        navigate("/latest-booba/top");
+      });
+  
+      // Cleanup: Bileşen unmount olduğunda butonu gizle ve event handler'ı kaldır
+      return () => {
+        backButton.hide();
+        backButton.offClick(() => {
+          navigate("/latest-booba/top"); // Buraya tekrar aynı callback sağlanmalıdır.
+        });
+      };
+    }, [navigate]);
 
   useEffect(() => {
     const fetchMatches = async () => {

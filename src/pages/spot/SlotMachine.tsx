@@ -22,6 +22,7 @@ import WebApp from '@twa-dev/sdk'; // Telegram WebApp SDK
 import winSound from '../../assets/win.mp3';
 import { useWindowSize } from 'react-use';
 import DisplayCards from './DisplayAmounts';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -56,6 +57,26 @@ export const SlotMachine: FC = () => {
   const [, setHistory] = useState<{ spinType: string; balanceType: string; amount: string }[]>([]);
   
 const [imageCache, setImageCache] = useState<string | null>(null);
+const navigate = useNavigate();
+
+
+  useEffect(() => {
+      const backButton = WebApp.BackButton;
+  
+      // BackButton'u görünür yap ve tıklanma işlevi ekle
+      backButton.show();
+      backButton.onClick(() => {
+        navigate("/latest-booba/top");
+      });
+  
+      // Cleanup: Bileşen unmount olduğunda butonu gizle ve event handler'ı kaldır
+      return () => {
+        backButton.hide();
+        backButton.offClick(() => {
+          navigate("/latest-booba/top"); // Buraya tekrar aynı callback sağlanmalıdır.
+        });
+      };
+    }, [navigate]);
 
   // Cache the image to avoid reloading it on every modal open
   const cachedImage = useMemo(() => {
