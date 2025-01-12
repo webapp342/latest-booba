@@ -80,7 +80,7 @@ const TopComponent: React.FC = () => {
         balance: '194.3K',
         avatarImg: Avatar4,
         badgeColor: '#CD7F32',
-        badgeNumber: '15',
+        badgeNumber: '3',
                 reward: '15',
                                 prizeImage: Avatar8,
                                                                 prizeColor: 'dodgerblue'
