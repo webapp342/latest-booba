@@ -546,7 +546,7 @@ const DealsComponent: React.FC = () => {
             overflowX: 'auto',
             mt: 4,
             p: 2,
-                        ml: 2,
+                
 
             width: '100%',
             justifyContent: 'center',
