@@ -22,8 +22,10 @@ import {
   onSnapshot,
   updateDoc,
   increment,
-} from 'firebase/firestore';
+} from 'firebase/firestore'; 
 import AlertTitle from '@mui/material/AlertTitle';
+
+import TestComponent from '../pages/TestComponent';
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './firebaseConfig';
 import Tasks from '../assets/tasks.png';
@@ -41,6 +43,7 @@ import task10Logo from '../assets/ton_logo_dark_background.svg';
 import task11Logo from '../assets/ton_logo_dark_background.svg';
 import comingSoonLogo from '../assets/task1logo.png';
 import UserDataTable from './UserDataTable';
+import { ShowAdButton } from './ShowAdButton';
 
 // Firebase App initialization
 const app = initializeApp(firebaseConfig);
@@ -63,6 +66,8 @@ const tasksMetadata = [
   { title: 'Invite 25 fren', description: '+2.5 TON', link: '', reward: 2500 },
   { title: 'Invite 50 fren', description: '+5 TON', link: '', reward: 5000 },
   { title: 'Invite 100 fren', description: '+10 TON', link: '', reward: 10000 },
+    { title: 'Watch a Video', description: '+10 BBLIP', link: 'https://example.com/watch-video', reward: 1000 },
+
 
 
   { title: '', description: 'Coming Soon...', link: '' , reward: 100},
@@ -82,12 +87,17 @@ const taskLogos = [
 ];
 
 const categories = [
+
   { id: 1, name: 'New', tasks: [0, 1,2,3] },
+
   { id: 2, name: 'Socials', tasks: [0,1,2, 3] },
+          { id: 7, name: 'Daily', tasks: [9] },
+
   { id: 3, name: 'Frens', tasks: [4,5,6,7,8] },
   { id: 4, name: 'Academy', tasks: [11] },
   { id: 5, name: 'On Chain', tasks: [11] },
   { id: 6, name: 'Farming', tasks: [11] },
+
 ];
 
 // Kategori seçici stilini güncelliyorum
@@ -536,6 +546,8 @@ const DealsComponent: React.FC = () => {
             overflowX: 'auto',
             mt: 4,
             p: 2,
+                        ml: 2,
+
             width: '100%',
             justifyContent: 'center',
             '&::-webkit-scrollbar': {
@@ -576,6 +588,44 @@ const DealsComponent: React.FC = () => {
             {categories
               .find((category) => category.id === selectedCategory)
               ?.tasks.map((taskIndex) => {
+                   if (taskIndex === 9) { // "Watch a Video" görevi
+                return (
+                  <Box
+                    key={taskIndex}
+                    sx={{
+                      backgroundColor: 'white',
+                      boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
+                      borderRadius: '16px',
+                      p: { xs: 2, sm: 2.5 },
+                      mb: 2,
+                      display: 'flex',
+                      justifyContent: 'space-between', // Buton ve açıklama arasında boşluk bırak
+                      alignItems: 'center',
+                      border: '1px solid rgba(0, 0, 0, 0.05)',
+                      minHeight: '80px'
+                    }}
+                  >
+                    <Typography 
+                      variant="body1" 
+                      sx={{ 
+                        fontWeight: 600,
+                        color: 'rgba(0, 0, 0, 0.4)',
+                        fontSize: { xs: '0.9rem', sm: '1rem' }
+                      }}
+                    >
+                      {tasksMetadata[taskIndex].description}
+                    </Typography>
+                    <ShowAdButton /> {/* ShowAdButton bileşenini buraya ekleyin */}
+                  </Box>
+                );
+              }
+                   if (selectedCategory === 3 && taskIndex === 4) {
+                  return (
+                    <Box key="test-component" sx={{ mb: 2 , mt:-3 }}>
+                      <TestComponent />
+                    </Box>
+                  );
+                }
                 if (taskIndex === 11) {
                   return (
                     <Box
@@ -584,8 +634,8 @@ const DealsComponent: React.FC = () => {
                         backgroundColor: 'white',
                         boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
                         borderRadius: '16px',
-                        p: { xs: 2, sm: 2.5 },
                         mb: 2,
+                        mt:-3,
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
@@ -608,6 +658,10 @@ const DealsComponent: React.FC = () => {
                 }
 
                 return (
+
+                    
+
+                  
                   <TaskCard
                     key={taskIndex}
                     task={tasksMetadata[taskIndex]}
@@ -625,8 +679,13 @@ const DealsComponent: React.FC = () => {
                       taskIndex === 8 ? 100 : 0
                     }
                   />
+                  
+               
                 );
+                
               })}
+
+            
 
             {(selectedCategory === 1 || selectedCategory === 2) && (
               <Box
@@ -694,6 +753,7 @@ const DealsComponent: React.FC = () => {
                 <Header />
               </Box>
             )}
+            
           </Box>
         )}
 

@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Table, TableBody, TableCell, TableHead, TableRow, CircularProgress, Button, Snackbar, Alert ,ThemeProvider, createTheme } from '@mui/material';
+import { Box,  CircularProgress, Button, Snackbar, Alert ,ThemeProvider, createTheme } from '@mui/material';
 import { getFirestore, doc, getDoc } from 'firebase/firestore'; // Firestore metodları
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './firebaseConfig'; // Firebase yapılandırma
-import Tasks from '../assets/tasks.png'; // PNG dosyasını import edin
-import RandomWinner from './RandomWinner'; // RandomWinner bileşenini içeri aktarıyoruz
+
 
 // Firebase App başlat
 const app = initializeApp(firebaseConfig);
@@ -16,11 +15,11 @@ const theme = createTheme({
   },
 });
 
-const DealsComponent: React.FC = () => {
-const [invitedUsers, setInvitedUsers] = useState<number[]>([]);
+const TestComponent: React.FC = () => {
+const [, setInvitedUsers] = useState<number[]>([]);
   const [inviteLink, setInviteLink] = useState<string>(''); // inviteLink state'i
   const [loading, setLoading] = useState(true); // Yüklenme durumu
-  const [error, setError] = useState<string | null>(null); // Hata mesajı için state
+  const [, setError] = useState<string | null>(null); // Hata mesajı için state
   const [snackbarOpen, setSnackbarOpen] = useState(false); // Snackbar açık/kapalı durumu
   const [snackbarMessage, setSnackbarMessage] = useState(''); // Snackbar mesajı
 
@@ -110,50 +109,30 @@ const invitedUsersArray = userData.invitedUsers || [];          console.log('Dav
     <Box
       sx={{
         display: 'flex',
-        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
         textAlign: 'center',
-        padding: 2,
+       
               overflow: "hidden",
-
-        maxWidth: '100%',
-        margin: '0 auto',
+          width: '100%',
       }}
     >
 
-      <Box>
-        <RandomWinner />
-      </Box>
-
+    
       {/* PNG Görseli */}
-      <Box
-        component="img"
-        src={Tasks}
-        alt="Deal Icon"
-        sx={{
-          mt: 4,
-          width: '80px',
-          maxWidth: '50%', // Ekranın %50'sini aşmayacak şekilde sınırla
-        }}
-      />
-      {/* Başlık */}
-      <Typography variant="h5" sx={{ marginTop: 4, color: 'black', fontWeight: 'bold' }}>
-        Invite and Earn!
-      </Typography>
+    
+    
 
-      {/* Açıklama */}
-      <Typography variant="body1" sx={{ marginTop: 1, color: 'text.secondary' }}>
-        Invite friends, get up to 10 TON in rewards!
-      </Typography>
+    
 
       {/* Link Kopyalama ve Paylaşma Butonları */}
-      <Box sx={{ display: 'flex', gap: 2, marginTop: 4 }}>
+      <Box sx={{ display: 'flex', gap: 1,  width: '100%' }}>
         {/* Copy Link Butonu */}
         <Button 
           variant="contained" 
           onClick={handleCopyLink}
           disabled={loading}
+          sx={{ flexGrow: 1 }}
         >
           {loading ? <CircularProgress size={24} /> : 'Copy Link'}
         </Button>
@@ -163,12 +142,13 @@ const invitedUsersArray = userData.invitedUsers || [];          console.log('Dav
           variant="contained" 
           onClick={handleShareLink}
           disabled={loading}
+          sx={{ flexGrow: 1 }}
         >
           {loading ? <CircularProgress size={24} /> : 'Share Link'}
         </Button>
       </Box>
 
-      {/* İçerik */}
+      {/* İçerik 
       <Box sx={{ mt: 4, width: '100%' }}>
         {loading ? (
           <CircularProgress /> // Yükleniyor animasyonu
@@ -195,6 +175,7 @@ const invitedUsersArray = userData.invitedUsers || [];          console.log('Dav
           </Table>
         )}
       </Box>
+      */}
 
 
 
@@ -216,4 +197,4 @@ const invitedUsersArray = userData.invitedUsers || [];          console.log('Dav
   );
 };
 
-export default DealsComponent;
+export default TestComponent;
