@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from './firebase';
+import './slide.css';
+
 import { 
   Container, 
   Card, 
@@ -11,8 +13,11 @@ import {
   Box,
   Chip,
   Avatar,
-  Button
+  Button,
+ 
 } from '@mui/material';
+import { Slide } from 'react-slideshow-image';
+import 'react-slideshow-image/dist/styles.css';
 import { 
   FavoriteBorder as FavoriteIcon,
  
@@ -20,6 +25,11 @@ import {
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import WebApp from '@twa-dev/sdk';
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import image1 from '../assets/28827_SA_FA-Cup_Informative_600_388_Desktop.jpg';
+import image2 from '../assets/29255_SA_PickYourPromo_600_388_Desktop.jpg';
+
+
 
 interface Match {
   id: string;
@@ -42,6 +52,15 @@ interface Match {
     status: string;
   };
 }
+
+// Define the images array
+const images: { src: string, text: string, additionalText1: string, additionalText2: string }[] = [
+
+    { src: image1, text: "", additionalText1: " ", additionalText2: "" },
+    { src: image2, text: "", additionalText1: "", additionalText2: "" },
+    
+
+];
 
 const MatchesList: React.FC = () => {
   const [matches, setMatches] = useState<Match[]>([]);
@@ -121,9 +140,124 @@ const MatchesList: React.FC = () => {
   return (
     <Container maxWidth="lg" sx={{ 
       paddingTop: { xs: 2, sm: 4 }, 
-      mb: { xs: 8, sm: 10 },
+      mb: { xs: 15, sm: 22 },
       px: { xs: 1, sm: 2, md: 3 }
     }}>
+    <Box m={0} mb={2} overflow="hidden" sx={{borderTopRightRadius:15,borderTopLeftRadius:15}}>
+                        <Slide 
+                                         nextArrow={
+                                             <Button 
+                                                 style={{
+                                                     background: 'rgba(255, 255, 255, 0.5)',
+                                                     border: 'none',
+                                                     borderRadius: 15,
+                                                     width: '10vw',
+                                                     height: '10vw',
+                                                     position: 'absolute',
+                                                     bottom: '3vh',
+                                                     right: '1vw',
+                                                     transform: 'translateY(50%)',
+                                                     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+                                                     display: 'flex',
+                                                     justifyContent: 'center',
+                                                     alignItems: 'center',
+                                                     cursor: 'pointer',
+                                                     transition: 'background 0.3s, transform 0.3s',
+                                                 }}
+                                                 onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.8)'}
+                                                 onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.5)'}
+                                             >
+                                                 <FaArrowRight size={20} color="black" />
+                                             </Button>
+                                         } 
+                                         prevArrow={
+                                             <Button 
+                                                 style={{
+                                                     background: 'rgba(255, 255, 255, 0.5)',
+                                                     border: 'none',
+                                                     borderRadius: 15,
+                                                     width: '10vw',
+                                                     height: '10vw',
+                                                     position: 'absolute',
+                                                     bottom: '3vh',
+                                                     left: '1vw',
+                                                     transform: 'translateY(50%)',
+                                                     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+                                                     display: 'flex',
+                                                     justifyContent: 'center',
+                                                     alignItems: 'center',
+                                                     cursor: 'pointer',
+                                                     transition: 'background 0.3s, transform 0.3s',
+                                                 }}
+                                                 onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.8)'}
+                                                 onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.5)'}
+                                             >
+                                                 <FaArrowLeft size={20} color="black" />
+                                             </Button>
+                                         } 
+                                     >
+                                         {images.map((image, index) => (
+                                             <Box key={index} className="each-slide-effect"  position="relative">
+                                                 <Box
+                                                     minHeight={'230px'}
+                                                     
+                                                     width={'100vh'}
+                                                     style={{ backgroundImage: `url(${image.src})`, backgroundSize: 'cover', backgroundPosition: 'center',  }}
+                                                 />
+                                                 {/* Text on top of the image */}
+                                                 <Typography
+                                                     variant="subtitle2"
+                                                     color="white"
+                                                     position="absolute"
+                                                     bottom={140}
+                                                     left={20}
+                                                     style={{
+                                                         backgroundColor: 'rgba(71, 70, 70, 0.5)',  // Semi-transparent black background
+                                                         padding: '0px 10px',
+                                                         borderRadius: '5px'
+                                                     }}
+                                                 >
+                                                     {image.text}
+                                                 </Typography>
+                                                 {/* First additional text */}
+                                                 <Typography
+                                                     variant="h6"
+                                                     color="white"
+                                                     position="absolute"
+                                                     bottom={83}
+                                                     left={20}
+                                                     fontWeight="bold"
+                                                      style={{
+                                                         backgroundColor: 'rgba(71, 70, 70, 0.5)',  // Semi-transparent black background
+                                                         padding: '0px 6px',
+                                                         borderRadius: '5px'
+                                                     }}
+                                                 >
+                                                     {image.additionalText1}
+                                                 </Typography>
+                                                 {/* Second additional text */}
+                                                 <Typography
+                                                     variant="body1"
+                                                     color="black"
+                                                     px={1}
+                                                     textAlign={'center'}
+                                                     position="absolute"
+                                                     bottom={55}
+                                                     left={20}
+                                                     fontWeight="normal"
+                                                     style={{
+                                                         backgroundColor: 'rgb(247, 243, 11)',  // Semi-transparent black background
+                                                         borderRadius: '5px'
+                                                     }}
+                                                 >
+                                                     {image.additionalText2}
+                                                 </Typography>
+                                             </Box>
+                                         ))}
+                                     </Slide>
+                                     </Box>
+                      
+    
       <Box sx={{ 
         mb: { xs: 3, sm: 5 }, 
         textAlign: 'center',
@@ -132,7 +266,7 @@ const MatchesList: React.FC = () => {
         <Typography 
           variant="h4" 
           sx={{ 
-            fontSize: { xs: '1.75rem', sm: '2.25rem', md: '2.75rem' },
+            fontSize: { xs: '1.25rem', sm: '2rem', md: '2.25rem' },
             fontWeight: 800,
             background: 'linear-gradient(45deg, #00c6ff, #0072ff)',
             WebkitBackgroundClip: 'text',
@@ -457,7 +591,7 @@ const MatchesList: React.FC = () => {
                         color: '#fff',
                         fontSize: { xs: '0.85rem', sm: '0.95rem' },
                         fontWeight: 600,
-                        padding: { xs: '10px', sm: '12px' },
+                        padding: { xs: '2px', sm: '4px' },
                         borderRadius: '12px',
                         border: '1px solid rgba(255, 255, 255, 0.05)',
                         display: 'flex',

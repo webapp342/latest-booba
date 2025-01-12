@@ -19,6 +19,7 @@ import Avatar8 from '../assets/toncoin-ton-logo.png';
 
 import UserRewards from './UserRewards';
 import PlayMore from './PlayMore';
+import WelcomeBonus from './WelcomeBonus';
 
 
 
@@ -139,11 +140,12 @@ const TopComponent: React.FC = () => {
 
   return (
             <ThemeProvider theme={theme}>
-
+<WelcomeBonus />
                     <UserRewards />  {/* Kullanıcı ödül kontrol bileşenini buraya ekleyin */}
+                    
     
 
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', p: 2, mt:-5, }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', p: 2, mt:-5, mb:5 }}>
 
       <Box>
  

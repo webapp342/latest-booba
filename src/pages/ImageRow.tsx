@@ -73,12 +73,13 @@ const ImageRow: React.FC = () => {
         width: "90%",
         margin: "0 auto",
         textAlign: "center",
+        mb:12
       }}
     >
       <Typography variant="h4" sx={{ mb: 1 , mt:3}}>
         SLOTS
       </Typography>
-      <Typography variant="subtitle1" sx={{ mb: 4, color: "gray" }}>
+      <Typography variant="subtitle1" sx={{ mb: 1, color: "gray" }}>
         Find out more about our games
       </Typography>
       <Grid container spacing={2}>
@@ -93,7 +94,7 @@ const ImageRow: React.FC = () => {
                 borderRadius: "8px", // Köşeleri yuvarlama
               }}
             />
-            <Typography variant="h6" sx={{ mt: 2, textAlign: "center" }}>
+            <Typography variant="body2" sx={{ mt: 2, textAlign: "center", fontWeight:'bold' }}>
               {image.header}
             </Typography>
             <Typography variant="body2" sx={{ textAlign: "center", color: "gray" }}>

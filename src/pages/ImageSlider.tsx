@@ -61,7 +61,6 @@ import image43 from '../assets/jackpots/softswiss.quickfire-MGS_queenOfAlexandri
 import image44 from '../assets/jackpots/softswiss.yggdrasil-Holmes.jpg';
 import image45 from  '../assets/jackpots/softswiss.yggdrasil-OzwinsJackpots.jpg';
 import ImageRow from './ImageRow';
-import {ShowAdButton} from './ShowAdButton';
 
 
 const theme = createTheme({
@@ -159,8 +158,8 @@ const images: { src: string, text: string, additionalText1: string, additionalTe
             { src: image47, text: "50% Highroller Bonus", additionalText1: "Daily Bronze Tournament", additionalText2: "$2,500" },
 
     { src: image3, text: "Winterfest VIP Tournament", additionalText1: "$150,000", additionalText2: "Special Event" },
-    { src: image4, text: "50% Highroller Bonus", additionalText1: "up to $750", additionalText2: "Deposit Now" },
-    { src: image46, text: "50% Highroller Bonus", additionalText1: "Daily VIP Tournament", additionalText2: "$10,000" },
+    { src: image4, text: "100% Highroller Bonus", additionalText1: "up to $750", additionalText2: "Deposit Now" },
+    { src: image46, text: "100% Welcome Bonus", additionalText1: "Launch Special", additionalText2: "Up to 75 TON" },
 
 ];
 
@@ -282,8 +281,7 @@ const Example: React.FC = () => {
                 </Slide>
                 </Box>
 
-                  <ShowAdButton />
-
+              
 
        <Box mt={4}>
   <Typography p={1} fontSize={'1.5rem'}>
