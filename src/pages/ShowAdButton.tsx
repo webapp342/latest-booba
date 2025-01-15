@@ -18,26 +18,20 @@ export function ShowAdButton(): ReactElement {
       return;
     }
 
-    // Local Storage'dan lastRewardTime'ı alalım
-    const storedRewardTime = localStorage.getItem('lastRewardTime');
-    if (storedRewardTime) {
-      setLastRewardTime(new Date(storedRewardTime));
-    } else {
-      // Eğer localStorage'da yoksa, veritabanından alalım
-      const userRef = doc(db, 'users', userId);
-      const unsubscribe = onSnapshot(userRef, (docSnapshot) => {
-        if (docSnapshot.exists()) {
-          const data = docSnapshot.data();
-          if (data.lastRewardTime) {
-            const rewardTime = data.lastRewardTime.toDate();
-            setLastRewardTime(rewardTime);
-            localStorage.setItem('lastRewardTime', rewardTime.toISOString()); // Veriyi Local Storage'a kaydedelim
-          }
+    // Veritabanından lastRewardTime'ı almak için onSnapshot kullanıyoruz
+    const userRef = doc(db, 'users', userId);
+    const unsubscribe = onSnapshot(userRef, (docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const data = docSnapshot.data();
+        if (data.lastRewardTime) {
+          const rewardTime = data.lastRewardTime.toDate();
+          setLastRewardTime(rewardTime);
+          localStorage.setItem('lastRewardTime', rewardTime.toISOString()); // Veriyi Local Storage'a kaydedelim
         }
-      });
+      }
+    });
 
-      return () => unsubscribe();
-    }
+    return () => unsubscribe(); // Cleanup: Abonelikten çıkmak
   }, []);
 
   // lastRewardTime değiştiğinde zaman kalan süreyi hesapla
@@ -61,7 +55,7 @@ export function ShowAdButton(): ReactElement {
     // Zamanı güncellemek için bir defa timeout ile işlem yap
     const timer = setTimeout(calculateTimeLeft, 1000);
 
-    return () => clearTimeout(timer);
+    return () => clearTimeout(timer); // Cleanup: Timer'ı temizle
   }, [lastRewardTime]);
 
   const onReward = useCallback(() => {
