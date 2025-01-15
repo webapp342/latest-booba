@@ -571,7 +571,7 @@ const DealsComponent: React.FC = () => {
               key={category.id}
               category={category}
               isSelected={selectedCategory === category.id}
-              hasBadge={[1, 2, 3].includes(category.id)}
+              hasBadge={[1, 2, 3,4].includes(category.id)}
               onClick={() => setSelectedCategory(category.id)}
             />
           ))}
