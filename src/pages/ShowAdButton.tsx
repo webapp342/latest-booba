@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState, ReactElement } from 'react';
-import { useAdsgram } from "./useAdsgram";
-import { ShowPromiseResult } from "./adsgram";
+import { useAdsgram } from './useAdsgram';
+import { ShowPromiseResult } from './adsgram';
 import { updateUserBblip } from '../utils/database';
 import { getFirestore, doc, onSnapshot } from 'firebase/firestore';
 
@@ -10,7 +10,7 @@ export function ShowAdButton(): ReactElement {
   const [lastRewardTime, setLastRewardTime] = useState<Date | null>(null);
   const [timeLeft, setTimeLeft] = useState<number>(0);
 
-  // Firestore dinleyicisi ve localStorage güncellemesi
+  // Veritabanından veya Local Storage'dan lastRewardTime'ı çekiyoruz
   useEffect(() => {
     const userId = localStorage.getItem('telegramUserId');
     if (!userId) {
@@ -18,39 +18,50 @@ export function ShowAdButton(): ReactElement {
       return;
     }
 
-    const userRef = doc(db, 'users', userId);
-
-    const unsubscribe = onSnapshot(userRef, (docSnapshot) => {
-      if (docSnapshot.exists()) {
-        const data = docSnapshot.data();
-        if (data.lastRewardTime) {
-          const rewardTime = data.lastRewardTime.toDate();
-          setLastRewardTime(rewardTime);  // React state güncelleniyor
-          localStorage.setItem('lastRewardTime', rewardTime.toISOString());  // localStorage güncelleniyor
+    // Local Storage'dan lastRewardTime'ı alalım
+    const storedRewardTime = localStorage.getItem('lastRewardTime');
+    if (storedRewardTime) {
+      setLastRewardTime(new Date(storedRewardTime));
+    } else {
+      // Eğer localStorage'da yoksa, veritabanından alalım
+      const userRef = doc(db, 'users', userId);
+      const unsubscribe = onSnapshot(userRef, (docSnapshot) => {
+        if (docSnapshot.exists()) {
+          const data = docSnapshot.data();
+          if (data.lastRewardTime) {
+            const rewardTime = data.lastRewardTime.toDate();
+            setLastRewardTime(rewardTime);
+            localStorage.setItem('lastRewardTime', rewardTime.toISOString()); // Veriyi Local Storage'a kaydedelim
+          }
         }
-      }
-    });
+      });
 
-    return () => unsubscribe();
+      return () => unsubscribe();
+    }
   }, []);
 
-  // Zamanlayıcıyı çalıştırmak
+  // lastRewardTime değiştiğinde zaman kalan süreyi hesapla
   useEffect(() => {
     if (!lastRewardTime) return;
 
-    const timer = setInterval(() => {
+    const calculateTimeLeft = () => {
       const now = new Date();
       const diff = now.getTime() - lastRewardTime.getTime();
       const oneHour = 60 * 60 * 1000;
       if (diff >= oneHour) {
-        setTimeLeft(0);
-        clearInterval(timer);
+        setTimeLeft(0); // 1 saat geçti, butonu göster
       } else {
-        setTimeLeft(oneHour - diff);
+        setTimeLeft(oneHour - diff); // Kalan süreyi hesapla
       }
-    }, 1000);
+    };
 
-    return () => clearInterval(timer);
+    // İlk hesaplamayı yap
+    calculateTimeLeft();
+
+    // Zamanı güncellemek için bir defa timeout ile işlem yap
+    const timer = setTimeout(calculateTimeLeft, 1000);
+
+    return () => clearTimeout(timer);
   }, [lastRewardTime]);
 
   const onReward = useCallback(() => {
@@ -68,8 +79,9 @@ export function ShowAdButton(): ReactElement {
   /**
    * insert your-block-id
    */
-  const showAd = useAdsgram({ blockId: "6760", onReward, onError });
+  const showAd = useAdsgram({ blockId: '6760', onReward, onError });
 
+  // Kalan süreyi formatla (HH:MM:SS)
   const formatTimeLeft = (milliseconds: number) => {
     const totalSeconds = Math.floor(milliseconds / 1000);
     const hours = Math.floor(totalSeconds / 3600);
