@@ -19,7 +19,7 @@ export function ShowAdButton(): ReactElement {
   /**
    * insert your-block-id
    */
-  const showAd = useAdsgram({ blockId: "5687", onReward, onError });
+  const showAd = useAdsgram({ blockId: "6760", onReward, onError });
 
   return (
     <button onClick={showAd}>Show Ad</button>
