@@ -52,10 +52,10 @@ export function ShowAdButton(): ReactElement {
     // İlk hesaplamayı yap
     calculateTimeLeft();
 
-    // Zamanı güncellemek için interval ile işlem yap
-    const timer = setInterval(calculateTimeLeft, 1000); // setInterval kullanarak her saniye güncelleme
+    // Zamanı güncellemek için bir defa timeout ile işlem yap
+    const timer = setTimeout(calculateTimeLeft, 1000);
 
-    return () => clearInterval(timer); // Cleanup: Interval'ı temizle
+    return () => clearTimeout(timer); // Cleanup: Timer'ı temizle
   }, [lastRewardTime]);
 
   const onReward = useCallback(() => {
