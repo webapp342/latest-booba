@@ -11,11 +11,6 @@ export function ShowAdButton(): ReactElement {
   const [timeLeft, setTimeLeft] = useState<number>(0);
 
   useEffect(() => {
-    const storedLastRewardTime = localStorage.getItem('lastRewardTime');
-    if (storedLastRewardTime) {
-      setLastRewardTime(new Date(storedLastRewardTime));
-    }
-
     const userId = localStorage.getItem('telegramUserId');
     if (!userId) {
       console.error('User ID localStorage\'da bulunamadı.');
@@ -26,9 +21,7 @@ export function ShowAdButton(): ReactElement {
       if (docSnapshot.exists()) {
         const data = docSnapshot.data();
         if (data.lastRewardTime) {
-          const rewardTime = data.lastRewardTime.toDate();
-          setLastRewardTime(rewardTime);
-          localStorage.setItem('lastRewardTime', rewardTime.toISOString());
+          setLastRewardTime(data.lastRewardTime.toDate());
         }
       }
     });
@@ -46,7 +39,6 @@ export function ShowAdButton(): ReactElement {
       if (diff >= oneHour) {
         setTimeLeft(0);
         clearInterval(timer);
-        localStorage.removeItem('lastRewardTime');
       } else {
         setTimeLeft(oneHour - diff);
       }
@@ -57,16 +49,10 @@ export function ShowAdButton(): ReactElement {
 
   const onReward = useCallback(() => {
     alert('Congratulations, your reward has been added to your wallet');
-    updateUserBblip(1000)
-      .then(() => {
-        const newRewardTime = new Date();
-        setLastRewardTime(newRewardTime);
-        localStorage.setItem('lastRewardTime', newRewardTime.toISOString());
-      })
-      .catch((error) => {
-        console.error('Bblip güncellenirken hata oluştu:', error);
-        alert('Bblip güncellenirken bir hata oluştu.');
-      });
+    updateUserBblip(1000).catch((error) => {
+      console.error('Bblip güncellenirken hata oluştu:', error);
+      alert('Bblip güncellenirken bir hata oluştu.');
+    });
   }, []);
   const onError = useCallback((result: ShowPromiseResult) => {
     alert(JSON.stringify(result, null, 4));
