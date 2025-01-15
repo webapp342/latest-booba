@@ -1,11 +1,16 @@
 import { useCallback, ReactElement } from 'react'
 import { useAdsgram } from "./useAdsgram";
 import { ShowPromiseResult } from "./adsgram";
+import { updateUserBblip } from '../utils/database';
 
 
 export function ShowAdButton(): ReactElement {
   const onReward = useCallback(() => {
     alert('Reward');
+    updateUserBblip(1000).catch((error) => {
+      console.error('Bblip güncellenirken hata oluştu:', error);
+      alert('Bblip güncellenirken bir hata oluştu.');
+    });
   }, []);
   const onError = useCallback((result: ShowPromiseResult) => {
     alert(JSON.stringify(result, null, 4));
