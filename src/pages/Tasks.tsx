@@ -43,7 +43,7 @@ import task10Logo from '../assets/ton_logo_dark_background.svg';
 import task11Logo from '../assets/ton_logo_dark_background.svg';
 import comingSoonLogo from '../assets/task1logo.png';
 import UserDataTable from './UserDataTable';
-import { ShowAdButton } from './ShowAdButton';
+import  ShowAdButton  from './ShowAdButton';
 
 // Firebase App initialization
 const app = initializeApp(firebaseConfig);
@@ -477,9 +477,26 @@ const DealsComponent: React.FC = () => {
     }
   };
 
+  const handleAdWatched = async () => {
+    try {
+      const telegramUserId = localStorage.getItem('telegramUserId');
+      if (!telegramUserId) throw new Error('User ID not found.');
 
+      const userDocRef = doc(db, 'users', telegramUserId);
+      
+      // Firestore'da bblip alanını 1000 artırıyoruz
+      await updateDoc(userDocRef, {
+        bblip: increment(1000)
+      });
 
-
+      // Kullanıcıya başarı mesajı gösterebilirsiniz
+      setRewardMessage('Reklamı izlediğiniz için 1000 BBLIP kazandınız!');
+      setOpenSnackbar(true);
+    } catch (err) {
+      console.error('Error updating BBLIP:', err);
+      setError('Reklam izleme işlemi sırasında bir hata oluştu.');
+    }
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -615,7 +632,7 @@ const DealsComponent: React.FC = () => {
                     >
                       {tasksMetadata[taskIndex].description}
                     </Typography>
-                    <ShowAdButton /> {/* ShowAdButton bileşenini buraya ekleyin */}
+                    <ShowAdButton onAdWatched={handleAdWatched} />
                   </Box>
                 );
               }
