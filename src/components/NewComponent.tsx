@@ -1,9 +1,9 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Card, CardContent, Typography, Grid,  Slider, Box, Button, Drawer, Select, MenuItem, FormControl, InputLabel, Accordion, AccordionSummary, AccordionDetails, TextField } from '@mui/material';
+import { Card, CardContent, Typography, Grid,  Slider, Box, Button, Drawer, Select, MenuItem, FormControl, InputLabel, Accordion, AccordionSummary, AccordionDetails, TextField, Modal, LinearProgress } from '@mui/material';
 import { AccessTime, MonetizationOn } from '@mui/icons-material';
 import SpeedIcon from '@mui/icons-material/Speed';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { doc, getDoc, getFirestore, setDoc, updateDoc, increment, arrayUnion } from 'firebase/firestore'; // Import Firestore functions
+import { doc,  getFirestore, setDoc, updateDoc, increment, arrayUnion, onSnapshot } from 'firebase/firestore'; // Import Firestore functions
 import { app } from '../pages/firebaseConfig'; // Import your Firebase app
 import { v4 as uuidv4 } from 'uuid'; // Import UUID for generating unique IDs
 
@@ -254,6 +254,43 @@ const StatsCard: React.FC = () => {
   );
 };
 
+// Add this function to calculate remaining days
+const calculateRemainingDays = (timestamp: string, duration: number): number => {
+    const stakeDate = new Date(timestamp);
+    const endDate = new Date(stakeDate.getTime() + duration * 24 * 60 * 60 * 1000); // Add duration in milliseconds
+    const currentDate = new Date();
+    const remainingTime = endDate.getTime() - currentDate.getTime();
+    return Math.max(0, Math.ceil(remainingTime / (1000 * 60 * 60 * 24))); // Return remaining days
+};
+
+// Add this function to calculate remaining time
+const calculateRemainingTime = (timestamp: string, duration: number) => {
+    const stakeDate = new Date(timestamp);
+    const endDate = new Date(stakeDate.getTime() + duration * 24 * 60 * 60 * 1000); // Add duration in milliseconds
+    const currentDate = new Date();
+    const remainingTime = endDate.getTime() - currentDate.getTime();
+
+    if (remainingTime <= 0) {
+        return { days: 0, hours: 0, minutes: 0 };
+    }
+
+    const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+
+    return { days, hours, minutes };
+};
+
+// Add this function to calculate remaining minutes
+const calculateRemainingMinutes = (timestamp: string, duration: number): number => {
+    const stakeDate = new Date(timestamp);
+    const endDate = new Date(stakeDate.getTime() + duration * 24 * 60 * 60 * 1000); // Add duration in milliseconds
+    const currentDate = new Date();
+    const remainingTime = endDate.getTime() - currentDate.getTime();
+    
+    return Math.max(0, Math.floor(remainingTime / (1000 * 60))); // Return remaining minutes
+};
+
 const NewComponent: React.FC<NewComponentProps> = () => {
   // Staking verilerini tutan state
   const [stakingData, setStakingData] = useState(
@@ -280,29 +317,50 @@ const NewComponent: React.FC<NewComponentProps> = () => {
 
   // Add a new state to hold the total balance
   const [totalBalance, setTotalBalance] = useState<number | null>(null);
+    const [lbBalance, setlbBalance] = useState<number | null>(null);
+
   const [errorMessage, setErrorMessage] = useState<string | null>(null); // New state for error message
+  const [successModalOpen, setSuccessModalOpen] = useState(false); // New state for modal visibility
+  const [isLoading, setIsLoading] = useState(false); // New state for loading animation
+  const [currentMessageIndex, setCurrentMessageIndex] = useState(0); // New state for current message index
+  const [progress, setProgress] = useState(0); // New state for progress
+  const messages = [
+    "⏳ Processing your stake...",
+    "We are verifying your request.",
+    "🔄 Sending transaction to the blockchain...",
+    "Your stake is being recorded on the network.",
+    "⚡ Finalizing your stake...",
+    "Almost done! Confirming transaction status.",
+    "🎉 Staking Successful!",
+    "Your stake has been processed successfully."
+  ]; // Array of messages
 
-  // Fetch total balance from Firestore when the component mounts
+  const [stakingHistory, setStakingHistory] = useState<any[]>([]); // New state for staking history
+
+  // Fetch total balance and staking history from Firestore when the component mounts
   useEffect(() => {
-    const fetchTotalBalance = async () => {
-        const telegramUserId = localStorage.getItem("telegramUserId");
-        if (!telegramUserId) {
-            console.error("Telegram User ID not found!");
-            return;
-        }
+    const telegramUserId = localStorage.getItem("telegramUserId");
+    if (!telegramUserId) {
+      console.error("Telegram User ID not found!");
+      return;
+    }
 
-        const userDocRef = doc(db, 'users', telegramUserId); // Adjust the path as necessary
-        const userDoc = await getDoc(userDocRef);
+    const userDocRef = doc(db, 'users', telegramUserId); // Adjust the path as necessary
 
-        if (userDoc.exists()) {
-            const data = userDoc.data();
-            setTotalBalance(data.total / 1000); // Divide the total by 1000 before setting
-        } else {
-            console.error("No such document!");
-        }
-    };
+    // Set up a real-time listener
+    const unsubscribe = onSnapshot(userDocRef, (userDoc) => {
+      if (userDoc.exists()) {
+        const data = userDoc.data();
+        setTotalBalance(data.total / 1000); // Divide the total by 1000 before setting
+        setlbBalance(data.lbTON / 1000); // Divide the total by 1000 before setting
+        setStakingHistory(data.stakingHistory || []); // Set staking history
+      } else {
+        console.error("No such document!");
+      }
+    });
 
-    fetchTotalBalance();
+    // Cleanup function to unsubscribe from the listener
+    return () => unsubscribe();
   }, []);
 
   // Event handler fonksiyonlarını useCallback ile memoize et
@@ -461,6 +519,10 @@ const NewComponent: React.FC<NewComponentProps> = () => {
             )).toFixed(2); // Kazancı iki ondalık basamağa yuvarla
 
             try {
+                // Show loading animation
+                setIsLoading(true);
+                setProgress(0); // Reset progress
+
                 // Create a new document for the staking process
                 const stakingDocRef = doc(db, 'staking', uniqueId); // Use unique ID for the document
                 await setDoc(stakingDocRef, {
@@ -471,7 +533,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                     apy: stakingOptions[selectedOptionIndex].apy,
                     lbTON: stakingAmount * 1000, // New field for lbTON
                     earnings: earnings, // Kazancı ekle
-                    timestamp: new Date(), // Add a timestamp for the transaction
+                    timestamp: new Date().toISOString(), // Store as ISO string
                 });
 
                 // Update the user's total balance and lbTON
@@ -487,13 +549,44 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                         apy: stakingOptions[selectedOptionIndex].apy,
                         lbTON: stakingAmount * 1000,
                         earnings: earnings, // Kazancı ekle
-                        timestamp: new Date() // Include the timestamp
+                        timestamp: new Date().toISOString() // Store as ISO string
                     })
                 });
 
                 console.log("Staking process saved successfully.");
+
+                // Show success modal and start message sequence
+                setSuccessModalOpen(true);
+                setCurrentMessageIndex(0); // Reset to the first message
+
+                // Start the message sequence
+                const messageInterval = setInterval(() => {
+                  setCurrentMessageIndex(prevIndex => {
+                    if (prevIndex < messages.length - 1) {
+                      return prevIndex + 1;
+                    } else {
+                      clearInterval(messageInterval); // Clear interval after last message
+                      setIsLoading(false); // Stop loading animation
+                      return prevIndex; // Keep the last index
+                    }
+                  });
+                }, 2000); // Change message every 2 seconds
+
+                // Update progress
+                const progressInterval = setInterval(() => {
+                  setProgress(prev => {
+                    if (prev < 100) {
+                      return prev + (100 / (2000 * messages.length / 100)); // Update progress based on message duration
+                    } else {
+                      clearInterval(progressInterval);
+                      return 100; // Ensure it reaches 100%
+                    }
+                  });
+                }, 100); // Update progress every 100ms
+
             } catch (error) {
                 console.error("Error saving staking process:", error);
+                setIsLoading(false); // Stop loading animation on error
             }
         } else {
             console.error("Telegram User ID not found!");
@@ -631,131 +724,270 @@ width:'100%', mt: 1,  fontSize: '1rem' }} onClick={() => handleOpenDrawer(select
         anchor="bottom"
         open={drawerOpen}
         onClose={handleCloseDrawer}
-        sx={{ 
-            backgroundColor: '#ffffff', 
-            transition: 'transform 0.3s ease-in-out', // Smooth opening animation
-            padding: 2,
-        }}
+        sx={{ backgroundColor: '#ffffff', transition: 'transform 0.3s ease-in-out' }} // Smooth transition
       >
-        <Box sx={{ p: 4, display: 'flex', flexDirection: 'column', gap: 3 }}>
-            <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#1976d2', textAlign: 'center' }}>
-                Staking Summary
-            </Typography>
-            
-            {selectedStaking && (
-                <>
-                    <Box sx={{ mb: 2, p: 2, border: '1px solid #e0e0e0', borderRadius: 2, backgroundColor: '#f9f9f9' }}>
-                        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Total Balance:</Typography>
-                        <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#1976d2', fontSize: '1.2rem' }}>
-                            {totalBalance !== null ? `${totalBalance} TON` : 'Loading...'}
-                        </Typography>
-                    </Box>
-                    
-                    <Typography variant="h6" gutterBottom sx={{ color: '#1976d2', fontSize: '1.5rem', fontWeight: 'bold', textAlign: 'center' }}>
-                        {selectedStaking.option.period} Details
-                    </Typography>
-                    
-                    <Grid container spacing={2} sx={{ mb: 2 }}>
-                        <Grid item xs={6}>
-                            <Typography variant="body1">Amount: <strong>{selectedStaking.data.amount || stakingOptions[selectedOptionIndex].tonRange.min} TON</strong></Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Typography variant="body1">Duration: <strong>{selectedStaking.data.duration} {selectedStaking.data.duration > 1 ? 'Days' : 'Day'}</strong></Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Typography variant="body1">Leverage: <strong>{selectedStaking.data.leverage}x</strong></Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Typography variant="body1">
-                                You could earn <strong>{(parseFloat(calculateEarnings(
-                                    selectedStaking.data.amount,
-                                    selectedStaking.data.duration,
-                                    selectedStaking.data.leverage,
-                                    selectedStaking.option.apy
-                                ))).toFixed(2)} TON</strong> in <strong>{selectedStaking.data.duration} Days</strong>
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Typography variant="body1">
-                                Total to repay: <strong>{(
-                                    parseFloat(calculateEarnings(
-                                        selectedStaking.data.amount,
-                                        selectedStaking.data.duration,
-                                        selectedStaking.data.leverage,
-                                        selectedStaking.option.apy
-                                    )) + selectedStaking.data.amount
-                                ).toFixed(2)} TON</strong>
-                            </Typography>
-                        </Grid>
-                    </Grid>
+        <Box sx={{ p: 3, display: 'flex', flexDirection: 'column', gap: 2 }}>
+      
 
-                    {/* Input field for amount */}
-                    <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
-                        <TextField
-                            label="Amount"
-                            variant="outlined"
-                            value={selectedStaking.data.amount || stakingOptions[selectedOptionIndex].tonRange.min} // Set default value to min if empty
-                            onChange={(e) => {
-                                const newAmount = parseFloat(e.target.value);
-                                handleAmountChange(selectedOptionIndex, newAmount); // Update amount in state
-                            }}
-                            sx={{ flexGrow: 1 }} // Make the input field grow to fill space
-                            error={!!errorMessage} // Show error state if there's an error
-                            helperText={errorMessage || `Min: ${stakingOptions[selectedOptionIndex].tonRange.min}`} // Display the error message or min value
-                        />
-                        <Button
-                            variant="outlined"
-                            color="primary"
-                            sx={{ ml: 1 }} // Add some margin to the left
-                            onClick={() => {
-                                if (totalBalance !== null) {
-                                    handleAmountChange(selectedOptionIndex, totalBalance); // Set input to total balance
-                                }
-                            }}
-                        >
-                            Use Max
-                        </Button>
-                    </Box>
-                </>
-            )}
-            
-            <Button
-                variant="contained"
-                color="primary"
-                fullWidth // Make the button full width
-                sx={{ mt: 2 }} // Add some margin to the top
-                onClick={handleStartStaking} // Call the new function
-                disabled={
-                    selectedStaking === null || // Disable if no staking is selected
-                    selectedStaking.data.amount < stakingOptions[selectedOptionIndex].tonRange.min || // Check if amount is less than min
-                    selectedStaking.data.amount > stakingOptions[selectedOptionIndex].tonRange.max || // Check if amount is greater than max
-                    (totalBalance !== null && selectedStaking.data.amount > totalBalance) // Disable if total balance is less than amount
-                }
-            >
-                Confirm & Complete
-            </Button>
-
-            {/* Add Deposit Button and Message */}
-            {totalBalance !== null && selectedStaking && selectedStaking.data.amount > totalBalance && (
-                <Box sx={{ mt: 1 }}>
-                    <Typography variant="body2" color="error" align="center" sx={{ mb: 1 }}>
-                        You do not have enough balance to stake this amount. Please deposit more funds.
+          {selectedStaking && (
+            <>
+              {/* Total Balance Card */}
+              <Card sx={{ p: 2, boxShadow: 1, borderRadius: 2 }}>
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'grey' }}>
+                      TON Balance
                     </Typography>
-                    <Button
-                        variant="outlined"
-                        color="secondary"
-                        fullWidth
-                        onClick={() => {
-                            // Handle deposit logic here
-                            console.log("Redirecting to deposit page...");
-                        }}
-                    >
-                        Deposit
-                    </Button>
+                    <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
+                      {totalBalance !== null ? `${totalBalance.toFixed(2)} TON` : 'Loading...'}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'grey', textAlign: 'right' }}>
+                      lbTON Balance
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#1976d2', textAlign: 'right' }}>
+                      {lbBalance !== null ? `${lbBalance.toFixed(2)} TON` : 'Loading...'}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Card>
+
+              {/* Staking Details Card */}
+               <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
+                  Details
+                </Typography>
+              <Card sx={{  p: 2, boxShadow: 1, borderRadius: 2 }}>
+             
+                <Grid container spacing={1}>
+                
+                  <Grid item xs={6}>
+                    <Typography>Duration: <span style={{fontWeight: 'bold'}}> {selectedStaking.data.duration} {selectedStaking.data.duration > 30 ? 'Days' : 'Day'}</span> </Typography>
+                   
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography>Leverage: <span style={{fontWeight: 'bold'}}>{selectedStaking.data.leverage}x</span> </Typography>
+                  </Grid>
+                </Grid>
+              </Card>
+
+
+              
+              {/* Input Field Card */}
+                <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
+                                Adjust Staking Amount</Typography>
+
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent:'space-between', }}>
+                  <Box sx={{width:'75%'}}>
+  <TextField
+                    label="Amount"
+                    variant="outlined"
+                    value={selectedStaking.data.amount || '0'}
+                    onChange={(e) => {
+                      const newAmount = parseFloat(e.target.value);
+                      handleAmountChange(selectedOptionIndex, newAmount);
+                    }}
+                    sx={{ mt: 2,width:'100%' }}
+                    error={!!errorMessage}
+                    helperText={errorMessage || `Min: ${stakingOptions[selectedOptionIndex].tonRange.min}`}
+                  />
+                  </Box>
+                <Box>
+  <Button
+                    variant="outlined"
+                    color="primary"
+                    sx={{ ml: 1, fontSize:'0.8rem' , p:1.9 , mb:1 }}
+                    onClick={() => {
+                      if (totalBalance !== null) {
+                        handleAmountChange(selectedOptionIndex, totalBalance);
+                      }
+                    }}
+                  >
+                    Use Max
+                  </Button>
                 </Box>
-            )}
+                
+                </Box>
+
+              {/* Earnings Breakdown Section */}
+                <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
+                  Estimated Earnings
+                </Typography>
+                <Box display={'flex'} justifyContent={'space-between'} gap={1}>
+                    <Box sx={{ width:'49%', p: 2, border: '1px solid #1976d2', borderRadius: 2, backgroundColor: '#e3f2fd'}}>
+                  <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
+                    Projected Earnings:
+                  </Typography>
+                  <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
+                    {parseFloat(calculateEarnings(
+                      selectedStaking.data.amount,
+                      selectedStaking.data.duration,
+                      selectedStaking.data.leverage,
+                      selectedStaking.option.apy
+                    )).toFixed(2)} TON
+                  </Typography>
+                </Box>
+                <Box sx={{width:'49%', p: 2, border: '1px solid #1976d2', borderRadius: 2 }}>
+                  <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                    Total to Repay:
+                  </Typography>
+                  <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
+                    {(
+                      parseFloat(calculateEarnings(
+                        selectedStaking.data.amount,
+                        selectedStaking.data.duration,
+                        selectedStaking.data.leverage,
+                        selectedStaking.option.apy
+                      )) + selectedStaking.data.amount
+                    ).toFixed(2)} TON
+                  </Typography>
+                </Box>
+                </Box>
+              
+              
+
+
+              {/* Start Staking Button */}
+              <Box sx={{gap:1, display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  sx={{ width: '25%', borderRadius: 2 }}
+                  onClick={handleCloseDrawer} // Close the drawer on click
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{ width: '75%', borderRadius: 2 }}
+                  onClick={handleStartStaking}
+                  disabled={
+                    selectedStaking === null ||
+                    selectedStaking.data.amount < stakingOptions[selectedOptionIndex].tonRange.min ||
+                    selectedStaking.data.amount > stakingOptions[selectedOptionIndex].tonRange.max ||
+                    (totalBalance !== null && selectedStaking.data.amount > totalBalance)
+                  }
+                >
+                  Confirm & Complete
+                </Button>
+              </Box>
+
+              {/* Deposit Button and Message */}
+              {totalBalance !== null && selectedStaking && selectedStaking.data.amount > totalBalance && (
+                <Box sx={{ mt: 1 }}>
+                  <Typography variant="body2" color="grey" align="center" sx={{ mb: 1 }}>
+                    You do not have enough balance
+                  </Typography>
+                    <Typography variant="body2" color="error" align="center" sx={{ mb: 1 }}>
+                   Please deposit more funds to start
+                  </Typography>
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    fullWidth
+                    onClick={() => {
+                      // Handle deposit logic here
+                      console.log("Redirecting to deposit page...");
+                    }}
+                  >
+                    Deposit
+                  </Button>
+                </Box>
+              )}
+            </>
+          )}
         </Box>
       </Drawer>
+
+      {/* Success Modal */}
+      <Modal
+        open={successModalOpen}
+        onClose={() => setSuccessModalOpen(false)}
+        aria-labelledby="success-modal-title"
+        aria-describedby="success-modal-description"
+      >
+        <Box sx={{ 
+          position: 'absolute', 
+          top: '50%', 
+          left: '50%', 
+          transform: 'translate(-50%, -50%)', 
+          width: 300, 
+          bgcolor: 'background.paper', 
+          boxShadow: 24, 
+          p: 4, 
+          borderRadius: 2,
+          textAlign: 'center' // Center align text
+        }}>
+          <Typography id="success-modal-title" variant="h6" component="h2">
+            {messages[currentMessageIndex]} {/* Display current message */}
+          </Typography>
+          {isLoading && (
+            <Box sx={{ mt: 2 }}>
+              <LinearProgress variant="determinate" value={progress} /> {/* Loading progress bar */}
+            </Box>
+          )}
+          {currentMessageIndex === messages.length - 1 && ( // Show close button after last message
+            <Button 
+              variant="contained" 
+              color="primary" 
+              onClick={() => setSuccessModalOpen(false)} 
+              sx={{ mt: 2 }}
+            >
+              Close
+            </Button>
+          )}
+        </Box>
+      </Modal>
+
+      {/* Unstake Card */}
+      <Card sx={{ mt: 4, p: 2, boxShadow: 1, borderRadius: 2 }}>
+        <CardContent>
+          <Typography variant="h5" component="div" sx={{ fontWeight: 'bold', mb: 2 }}>
+            Unstake
+          </Typography>
+          {stakingHistory.length > 0 ? (
+            stakingHistory.map((stake, index) => (
+              <Box key={index} sx={{ mb: 1, p: 1, border: '1px solid #e0e0e0', borderRadius: 1 }}>
+                <Typography variant="body1">
+                  Amount: {stake.amount} TON
+                </Typography>
+                <Typography variant="body1">
+                  Duration: {stake.duration} Days
+                </Typography>
+                <Typography variant="body1">
+                  Leverage: {stake.leverage}x
+                </Typography>
+                <Typography variant="body1">
+                  APY: {stake.apy}%
+                </Typography>
+                <Typography variant="body1">
+                  Earnings: {stake.earnings} TON
+                </Typography>
+                <Typography variant="body1">
+                  Timestamp: {new Date(stake.timestamp).toLocaleString()}
+                </Typography>
+                <Typography variant="body1">
+                  Countdown: {calculateRemainingTime(stake.timestamp, stake.duration).days} days, {calculateRemainingTime(stake.timestamp, stake.duration).hours} hours, {calculateRemainingTime(stake.timestamp, stake.duration).minutes} minutes remaining
+                </Typography>
+                <Typography variant="body1">
+                  Days Remaining: {calculateRemainingDays(stake.timestamp, stake.duration)} days
+                </Typography>
+                <Typography variant="body1">
+                  Remaining Minutes: {calculateRemainingMinutes(stake.timestamp, stake.duration)} minutes
+                </Typography>
+                <Typography variant="body1">
+                  Earnings Increase Per Minute: {calculateRemainingMinutes(stake.timestamp, stake.duration) > 0 ? (stake.earnings / calculateRemainingMinutes(stake.timestamp, stake.duration)).toFixed(2) : 0} TON
+                </Typography>
+              </Box>
+            ))
+          ) : (
+            <Typography variant="body2" color="text.secondary">
+              No staking history available.
+            </Typography>
+          )}
+        </CardContent>
+      </Card>
     </Box>
   );
 };
