@@ -136,9 +136,15 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
                         </Box>
 
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Typography variant="body2" color="text.secondary" sx={{ mr: 2 }}>
-                {tonRange.min} 
+             
+              
+                 <Box>
+                
+ <Typography variant="body2" color="text.secondary" sx={{ mr: 2 }}>
+                Min
               </Typography>
+                </Box>
+             
               <Slider
                 value={stakingData[index].amount}
                 onChange={(_e, newValue) => handleAmountChange(index, newValue as number)}
@@ -151,7 +157,7 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
                 sx={{ color: '#1976d2' }}
               />
               <Typography variant="body2" color="text.secondary" sx={{ ml: 2 }}>
-                {tonRange.max} 
+               Max
               </Typography>
             </Box>
           </Box>
