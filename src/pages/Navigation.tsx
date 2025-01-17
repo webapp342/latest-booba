@@ -12,7 +12,7 @@ import { Paper } from '@mui/material';
 
 const navItems = [
   { label: 'Games', icon: <SportsEsportsTwoToneIcon />, path: '/latest-booba/games' },
-  { label: 'Sports', icon: <SportsSoccerIcon />, path: '/latest-booba/matches' },
+  { label: 'Sports', icon: <SportsSoccerIcon />, path: '/latest-booba/stake' },
   { label: 'Top', icon: <EmojiEventsTwoToneIcon />, path: '/latest-booba/' },
   { label: 'Tasks', icon: <InventoryTwoToneIcon />, path: '/latest-booba/tasks' },
   { label: 'Wallet', icon: <AccountBalanceWalletTwoToneIcon />, path: '/latest-booba/spin' },

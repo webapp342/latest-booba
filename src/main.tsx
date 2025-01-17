@@ -16,7 +16,7 @@ import { SlotMachine } from './pages/spot/SlotMachine';
 import ImageSlider from "./pages/ImageSlider.tsx";
 import MatchesList from "./pages/MatchesList.tsx";
 import AdminPanel from "./pages/AdminPanel.tsx";
-import MatchDetails from "./MatchDetails.tsx";
+import NewComponent from "./components/NewComponent.tsx";
 
 
 
@@ -45,7 +45,7 @@ const router = createBrowserRouter([
       },
      
       {
-path:"/latest-booba/match/:id",        element: <MatchDetails />,
+path:"/latest-booba/stake",        element: <NewComponent />,
       },
       {
         path: "/latest-booba/test",
@@ -95,5 +95,6 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
  
   <RouterProvider
       router={router}
-    />    </React.StrictMode>
+    />    
+   </React.StrictMode>
 );
