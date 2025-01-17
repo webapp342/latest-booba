@@ -1,10 +1,15 @@
-import React, { useState, useCallback } from 'react';
-import { Card, CardContent, Typography, Grid,  Slider, Box, Button, Drawer, Select, MenuItem, FormControl, InputLabel, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
+import React, { useState, useCallback, useEffect } from 'react';
+import { Card, CardContent, Typography, Grid,  Slider, Box, Button, Drawer, Select, MenuItem, FormControl, InputLabel, Accordion, AccordionSummary, AccordionDetails, TextField } from '@mui/material';
 import { AccessTime, MonetizationOn } from '@mui/icons-material';
 import SpeedIcon from '@mui/icons-material/Speed';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { doc, getDoc, getFirestore, setDoc, updateDoc, increment, arrayUnion } from 'firebase/firestore'; // Import Firestore functions
+import { app } from '../pages/firebaseConfig'; // Import your Firebase app
+import { v4 as uuidv4 } from 'uuid'; // Import UUID for generating unique IDs
 
 interface NewComponentProps {}
+
+const db = getFirestore(app); // Define the Firestore database instance
 
 const stakingOptions = [
    { 
@@ -273,11 +278,47 @@ const NewComponent: React.FC<NewComponentProps> = () => {
     };
   } | null>(null);
 
+  // Add a new state to hold the total balance
+  const [totalBalance, setTotalBalance] = useState<number | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null); // New state for error message
+
+  // Fetch total balance from Firestore when the component mounts
+  useEffect(() => {
+    const fetchTotalBalance = async () => {
+        const telegramUserId = localStorage.getItem("telegramUserId");
+        if (!telegramUserId) {
+            console.error("Telegram User ID not found!");
+            return;
+        }
+
+        const userDocRef = doc(db, 'users', telegramUserId); // Adjust the path as necessary
+        const userDoc = await getDoc(userDocRef);
+
+        if (userDoc.exists()) {
+            const data = userDoc.data();
+            setTotalBalance(data.total / 1000); // Divide the total by 1000 before setting
+        } else {
+            console.error("No such document!");
+        }
+    };
+
+    fetchTotalBalance();
+  }, []);
+
   // Event handler fonksiyonlarını useCallback ile memoize et
   const handleAmountChange = useCallback((index: number, newAmount: number) => {
     setStakingData(prevData => {
       const updatedData = [...prevData];
       updatedData[index].amount = newAmount;
+
+      // Check min and max values for amount
+      const tonRange = stakingOptions[index].tonRange;
+      if (newAmount < tonRange.min || newAmount > tonRange.max) {
+        setErrorMessage(`Amount must be between ${tonRange.min} and ${tonRange.max}.`); // Set error message
+      } else {
+        setErrorMessage(null); // Clear error message if valid
+      }
+
       return updatedData;
     });
   }, []);
@@ -404,6 +445,61 @@ const NewComponent: React.FC<NewComponentProps> = () => {
  
  
   ];
+
+  const handleStartStaking = async () => {
+    if (selectedStaking) {
+        const stakingAmount = selectedStaking.data.amount;
+        const telegramUserId = localStorage.getItem("telegramUserId");
+
+        if (telegramUserId) {
+            const uniqueId = uuidv4(); // Generate a unique ID for the staking transaction
+            const earnings = parseFloat(calculateEarnings( // Kazancı hesapla
+                stakingAmount,
+                selectedStaking.data.duration,
+                selectedStaking.data.leverage,
+                selectedStaking.option.apy
+            )).toFixed(2); // Kazancı iki ondalık basamağa yuvarla
+
+            try {
+                // Create a new document for the staking process
+                const stakingDocRef = doc(db, 'staking', uniqueId); // Use unique ID for the document
+                await setDoc(stakingDocRef, {
+                    userId: telegramUserId, // Store the user ID
+                    amount: stakingAmount,
+                    duration: selectedStaking.data.duration,
+                    leverage: selectedStaking.data.leverage,
+                    apy: stakingOptions[selectedOptionIndex].apy,
+                    lbTON: stakingAmount * 1000, // New field for lbTON
+                    earnings: earnings, // Kazancı ekle
+                    timestamp: new Date(), // Add a timestamp for the transaction
+                });
+
+                // Update the user's total balance and lbTON
+                const userDocRef = doc(db, 'users', telegramUserId);
+                await updateDoc(userDocRef, {
+                    total: increment(-stakingAmount * 1000), // Deduct the amount multiplied by 1000 from total balance
+                    lbTON: increment(stakingAmount * 1000), // Add to lbTON balance
+                    stakingHistory: arrayUnion({ // Add the staking details to the user's staking history
+                        id: uniqueId,
+                        amount: stakingAmount,
+                        duration: selectedStaking.data.duration,
+                        leverage: selectedStaking.data.leverage,
+                        apy: stakingOptions[selectedOptionIndex].apy,
+                        lbTON: stakingAmount * 1000,
+                        earnings: earnings, // Kazancı ekle
+                        timestamp: new Date() // Include the timestamp
+                    })
+                });
+
+                console.log("Staking process saved successfully.");
+            } catch (error) {
+                console.error("Error saving staking process:", error);
+            }
+        } else {
+            console.error("Telegram User ID not found!");
+        }
+    }
+  };
 
   return (
     <Box  style={{ marginBottom: '76px', backgroundColor: '#f0f4ff', borderRadius: '8px', padding: '20px' }}>
@@ -535,27 +631,129 @@ width:'100%', mt: 1,  fontSize: '1rem' }} onClick={() => handleOpenDrawer(select
         anchor="bottom"
         open={drawerOpen}
         onClose={handleCloseDrawer}
-        sx={{ backgroundColor: '#ffffff' }}
+        sx={{ 
+            backgroundColor: '#ffffff', 
+            transition: 'transform 0.3s ease-in-out', // Smooth opening animation
+            padding: 2,
+        }}
       >
-        <Box sx={{ p: 4 }}>
-          {selectedStaking && (
-            <>
-              <Typography variant="h5" gutterBottom sx={{ color: '#1976d2', fontSize: '1.5rem' }}>
-                {selectedStaking.option.period} Details
-              </Typography>
-              <Typography>Miktar: {selectedStaking.data.amount} TON</Typography>
-              <Typography>Süre: {selectedStaking.data.duration} {selectedStaking.data.duration > 30 ? 'Days' : 'Days'}</Typography>
-              <Typography>Leverage: {selectedStaking.data.leverage}x</Typography>
-              <Typography>
-                You could earn { ( parseFloat(calculateEarnings(
-                  selectedStaking.data.amount,
-                  selectedStaking.data.duration,
-                  selectedStaking.data.leverage,
-                  selectedStaking.option.apy
-                ))).toFixed(2) } TON in {selectedStaking.data.duration} Days
-              </Typography>
-            </>
-          )}
+        <Box sx={{ p: 4, display: 'flex', flexDirection: 'column', gap: 3 }}>
+            <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#1976d2', textAlign: 'center' }}>
+                Staking Summary
+            </Typography>
+            
+            {selectedStaking && (
+                <>
+                    <Box sx={{ mb: 2, p: 2, border: '1px solid #e0e0e0', borderRadius: 2, backgroundColor: '#f9f9f9' }}>
+                        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Total Balance:</Typography>
+                        <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#1976d2', fontSize: '1.2rem' }}>
+                            {totalBalance !== null ? `${totalBalance} TON` : 'Loading...'}
+                        </Typography>
+                    </Box>
+                    
+                    <Typography variant="h6" gutterBottom sx={{ color: '#1976d2', fontSize: '1.5rem', fontWeight: 'bold', textAlign: 'center' }}>
+                        {selectedStaking.option.period} Details
+                    </Typography>
+                    
+                    <Grid container spacing={2} sx={{ mb: 2 }}>
+                        <Grid item xs={6}>
+                            <Typography variant="body1">Amount: <strong>{selectedStaking.data.amount || stakingOptions[selectedOptionIndex].tonRange.min} TON</strong></Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Typography variant="body1">Duration: <strong>{selectedStaking.data.duration} {selectedStaking.data.duration > 1 ? 'Days' : 'Day'}</strong></Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Typography variant="body1">Leverage: <strong>{selectedStaking.data.leverage}x</strong></Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Typography variant="body1">
+                                You could earn <strong>{(parseFloat(calculateEarnings(
+                                    selectedStaking.data.amount,
+                                    selectedStaking.data.duration,
+                                    selectedStaking.data.leverage,
+                                    selectedStaking.option.apy
+                                ))).toFixed(2)} TON</strong> in <strong>{selectedStaking.data.duration} Days</strong>
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Typography variant="body1">
+                                Total to repay: <strong>{(
+                                    parseFloat(calculateEarnings(
+                                        selectedStaking.data.amount,
+                                        selectedStaking.data.duration,
+                                        selectedStaking.data.leverage,
+                                        selectedStaking.option.apy
+                                    )) + selectedStaking.data.amount
+                                ).toFixed(2)} TON</strong>
+                            </Typography>
+                        </Grid>
+                    </Grid>
+
+                    {/* Input field for amount */}
+                    <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
+                        <TextField
+                            label="Amount"
+                            variant="outlined"
+                            value={selectedStaking.data.amount || stakingOptions[selectedOptionIndex].tonRange.min} // Set default value to min if empty
+                            onChange={(e) => {
+                                const newAmount = parseFloat(e.target.value);
+                                handleAmountChange(selectedOptionIndex, newAmount); // Update amount in state
+                            }}
+                            sx={{ flexGrow: 1 }} // Make the input field grow to fill space
+                            error={!!errorMessage} // Show error state if there's an error
+                            helperText={errorMessage || `Min: ${stakingOptions[selectedOptionIndex].tonRange.min}`} // Display the error message or min value
+                        />
+                        <Button
+                            variant="outlined"
+                            color="primary"
+                            sx={{ ml: 1 }} // Add some margin to the left
+                            onClick={() => {
+                                if (totalBalance !== null) {
+                                    handleAmountChange(selectedOptionIndex, totalBalance); // Set input to total balance
+                                }
+                            }}
+                        >
+                            Use Max
+                        </Button>
+                    </Box>
+                </>
+            )}
+            
+            <Button
+                variant="contained"
+                color="primary"
+                fullWidth // Make the button full width
+                sx={{ mt: 2 }} // Add some margin to the top
+                onClick={handleStartStaking} // Call the new function
+                disabled={
+                    selectedStaking === null || // Disable if no staking is selected
+                    selectedStaking.data.amount < stakingOptions[selectedOptionIndex].tonRange.min || // Check if amount is less than min
+                    selectedStaking.data.amount > stakingOptions[selectedOptionIndex].tonRange.max || // Check if amount is greater than max
+                    (totalBalance !== null && selectedStaking.data.amount > totalBalance) // Disable if total balance is less than amount
+                }
+            >
+                Confirm & Complete
+            </Button>
+
+            {/* Add Deposit Button and Message */}
+            {totalBalance !== null && selectedStaking && selectedStaking.data.amount > totalBalance && (
+                <Box sx={{ mt: 1 }}>
+                    <Typography variant="body2" color="error" align="center" sx={{ mb: 1 }}>
+                        You do not have enough balance to stake this amount. Please deposit more funds.
+                    </Typography>
+                    <Button
+                        variant="outlined"
+                        color="secondary"
+                        fullWidth
+                        onClick={() => {
+                            // Handle deposit logic here
+                            console.log("Redirecting to deposit page...");
+                        }}
+                    >
+                        Deposit
+                    </Button>
+                </Box>
+            )}
         </Box>
       </Drawer>
     </Box>

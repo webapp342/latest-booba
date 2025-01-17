@@ -25,7 +25,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 
-    const telegramUser = WebApp.initDataUnsafe.user;
+const telegramUser = WebApp.initDataUnsafe.user;
 
 
 

@@ -64,6 +64,7 @@
     "ton": "^13.9.0",
     "ton-core": "^0.53.0",
     "use-sound": "^4.0.3",
+    "uuid": "^11.0.5",
     "vite-plugin-node-polyfills": "^0.22.0"
   },
   "devDependencies": {
