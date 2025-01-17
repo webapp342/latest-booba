@@ -6,6 +6,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { doc,  getFirestore, setDoc, updateDoc, increment, arrayUnion, onSnapshot } from 'firebase/firestore'; // Import Firestore functions
 import { app } from '../pages/firebaseConfig'; // Import your Firebase app
 import { v4 as uuidv4 } from 'uuid'; // Import UUID for generating unique IDs
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 interface NewComponentProps {}
 
@@ -292,6 +293,8 @@ const calculateRemainingMinutes = (timestamp: string, duration: number): number 
 };
 
 const NewComponent: React.FC<NewComponentProps> = () => {
+  const navigate = useNavigate(); // Initialize useNavigate
+
   // Staking verilerini tutan state
   const [stakingData, setStakingData] = useState(
     stakingOptions.map(option => ({
@@ -879,16 +882,15 @@ width:'100%', mt: 1,  fontSize: '1rem' }} onClick={() => handleOpenDrawer(select
                   <Typography variant="body2" color="grey" align="center" sx={{ mb: 1 }}>
                     You do not have enough balance
                   </Typography>
-                    <Typography variant="body2" color="error" align="center" sx={{ mb: 1 }}>
-                   Please deposit more funds to start
+                  <Typography variant="body2" color="error" align="center" sx={{ mb: 1 }}>
+                    Please deposit more funds to start
                   </Typography>
                   <Button
                     variant="outlined"
                     color="secondary"
                     fullWidth
                     onClick={() => {
-                      // Handle deposit logic here
-                      console.log("Redirecting to deposit page...");
+                      navigate("/latest-booba/spin"); // Redirect to the specified path
                     }}
                   >
                     Deposit
