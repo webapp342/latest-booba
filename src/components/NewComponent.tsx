@@ -136,7 +136,7 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
                         </Box>
 
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Typography variant="body2" color="text.secondary" sx={{ mr: 1 }}>
+              <Typography variant="body2" color="text.secondary" sx={{ mr: 2 }}>
                 {tonRange.min} 
               </Typography>
               <Slider

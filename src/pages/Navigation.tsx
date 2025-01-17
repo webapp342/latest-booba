@@ -6,13 +6,13 @@ import SportsEsportsTwoToneIcon from '@mui/icons-material/SportsEsportsTwoTone';
 import AccountBalanceWalletTwoToneIcon from '@mui/icons-material/AccountBalanceWalletTwoTone';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import EmojiEventsTwoToneIcon from '@mui/icons-material/EmojiEventsTwoTone';
-import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
+import AssistantTwoToneIcon from '@mui/icons-material/AssistantTwoTone';
 import InventoryTwoToneIcon from '@mui/icons-material/InventoryTwoTone';
 import { Paper } from '@mui/material';
 
 const navItems = [
   { label: 'Games', icon: <SportsEsportsTwoToneIcon />, path: '/latest-booba/games' },
-  { label: 'Sports', icon: <SportsSoccerIcon />, path: '/latest-booba/stake' },
+  { label: 'Earn', icon: <AssistantTwoToneIcon />, path: '/latest-booba/stake' },
   { label: 'Top', icon: <EmojiEventsTwoToneIcon />, path: '/latest-booba/' },
   { label: 'Tasks', icon: <InventoryTwoToneIcon />, path: '/latest-booba/tasks' },
   { label: 'Wallet', icon: <AccountBalanceWalletTwoToneIcon />, path: '/latest-booba/spin' },
