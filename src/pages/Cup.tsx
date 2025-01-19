@@ -6,11 +6,11 @@ import { userData } from './UserData'; // Kullanıcı verileri
 
 import { winnersData } from './WinnersData'; // Kazanan verileri
 
-import Avatar1 from '../assets/logo5.png';
+import Avatar1 from '../assets/bblip.png';
 
 import Avatar2 from '../assets/photo_2022-08-17_14-02-04.jpg';
 import Avatar3 from '../assets/photo_2021-09-17_13-13-13.jpg';
-import avatar2 from '../assets/logo5.jpg';   
+import avatar2 from '../assets/bblip.png';   
 import Avatar4 from '../assets/photo_2023-05-11_07-26-40.jpg';
 import Avatar5 from '../assets/photo_2025-01-11_19-40-01.jpg';
 import Avatar6 from '../assets/photo_2025-01-11_19-40-34.jpg';     
@@ -18,7 +18,6 @@ import Avatar7 from '../assets/photo_2025-01-11_19-43-34.jpg';
 import Avatar8 from '../assets/toncoin-ton-logo.png';
 
 import UserRewards from './UserRewards';
-import PlayMore from './PlayMore';
 import WelcomeBonus from './WelcomeBonus';
 
 
@@ -57,7 +56,7 @@ const TopComponent: React.FC = () => {
         badgeNumber: '1',
                 reward: '50',
                                 prizeImage: Avatar8,
-                                                                prizeColor: 'dodgerblue'
+                                                                prizeColor: '#00c6ff'
 
 
 
@@ -71,7 +70,7 @@ const TopComponent: React.FC = () => {
         badgeNumber: '2',
                 reward: '20',
                                 prizeImage: Avatar8,
-                                prizeColor: 'dodgerblue'
+                                prizeColor: '#00c6ff'
 
 
       },
@@ -84,7 +83,7 @@ const TopComponent: React.FC = () => {
         badgeNumber: '3',
                 reward: '15',
                                 prizeImage: Avatar8,
-                                                                prizeColor: 'dodgerblue'
+                                                                prizeColor: '#00c6ff'
 
 
 
@@ -143,14 +142,14 @@ const TopComponent: React.FC = () => {
 <WelcomeBonus />
                     <UserRewards />  {/* Kullanıcı ödül kontrol bileşenini buraya ekleyin */}
                     
-    
 
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', p: 2, mt:-5, mb:5 }}>
+
+    <Box sx={{          backgroundColor:  'black',
+ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', p: 2, mt:2, mb:5 }}>
 
       <Box>
  
               
-                <PlayMore />
 
         
       </Box>
@@ -216,19 +215,20 @@ const TopComponent: React.FC = () => {
               {avatarsData[activeTab][0].badgeNumber}
             </Box>
           </Box>
-          <Typography sx={{ display: 'flex', fontSize: '0.8rem', mt: 1.5, color: 'black', fontWeight: 'bold' , mx:1,}}>
+          <Typography sx={{ display: 'flex', fontSize: '0.8rem', mt: 1.5, color: '#FFFFFF', fontWeight: 'bold' , mx:1,}}>
             {avatarsData[activeTab][0].username}
           </Typography>
               <Typography sx={{ display: 'flex', alignItems: 'center', textAlign: 'center', fontSize: '0.8rem', fontWeight: 'bold',  mx:1 }}>
             <img               src={avatarsData[activeTab][0].prizeImage}
- alt="Avatar" style={{ width: '20px', height: '20px', objectFit: 'cover', marginRight: '2px' }} />
+ alt="Avatar" style={{ width: '20px', height: '20px', objectFit: 'cover', marginRight: '2px' , borderRadius:'50%'}} />
             {avatarsData[activeTab][0].balance}
 
           </Typography>
               <Typography color={avatarsData[activeTab][0].prizeColor} sx={{ display: 'flex', alignItems: 'center', textAlign: 'center', fontSize: '0.8rem',  fontWeight: 'bold' }}>
              Prize:
+                                     <img src={avatarsData[activeTab][0].prizeImage} alt="Avatar" style={{ width: '15px', height: '15px', objectFit: 'cover', marginLeft: '2px', marginRight:'2px' , borderRadius:'50%'}} />
+
             {avatarsData[activeTab][0].reward}
-                        <img src={avatarsData[activeTab][0].prizeImage} alt="Avatar" style={{ width: '18px', height: '18px', objectFit: 'cover', marginLeft: '2px' }} />
 
 
           </Typography>
@@ -293,18 +293,18 @@ const TopComponent: React.FC = () => {
         <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', mt: 1 }}>
           {avatarsData[activeTab].slice(1).map((avatar) => (
             <Box key={avatar.rank} sx={{ textAlign: 'center' }}>
-              <Typography sx={{  fontSize: '0.6rem', mt: 1, color: 'black', fontWeight: 'bold',  mx:1 }}>
+              <Typography sx={{  fontSize: '0.6rem', mt: 1, color: '#FFFFFF', fontWeight: 'bold',  mx:1 }}>
                 {avatar.username}
               </Typography>
               <Typography sx={{ display: 'flex', alignItems: 'center', textAlign: 'center', fontSize: '0.8rem', fontWeight: 'bold', ml:'22%',  mx:1 }}>
-                                   <img src={avatarsData[activeTab][0].prizeImage} alt="Avatar" style={{ width: '20px', height: '20px', objectFit: 'cover', marginRight: '2px' }} />
+                                   <img src={avatarsData[activeTab][0].prizeImage} alt="Avatar" style={{ width: '17px', height: '17px', objectFit: 'cover', marginRight: '2px', borderRadius:'50%' }} />
  {avatar.balance}
 
               </Typography>
               
               <Typography color={avatarsData[activeTab][0].prizeColor} sx={{ display: 'flex', alignItems: 'center', textAlign: 'center', fontSize: '0.8rem',  fontWeight: 'bold' }}>
-  Prize: {avatar.reward}
-    <img src={avatarsData[activeTab][0].prizeImage} alt="Avatar" style={{ width: '15px', height: '15px', objectFit: 'cover', marginLeft: '2px' }} />
+  Prize:      <img src={avatarsData[activeTab][0].prizeImage} alt="Avatar" style={{ width: '15px', height: '15px', objectFit: 'cover', marginLeft: '2px',marginRight:'2px', borderRadius:'50%' }} />
+{avatar.reward}
 
 </Typography>
             </Box>
@@ -330,9 +330,9 @@ const TopComponent: React.FC = () => {
       flexGrow: 1, // Buton genişler
       textTransform: 'none',
       marginRight: 1, // Butonlar arasına boşluk
-      backgroundColor: activeTab === 'holders' ? '#1976d2' : 'white',
+      backgroundColor: activeTab === 'holders' ? '#00c6ff' : 'white',
       color: activeTab === 'holders' ? 'white' : '#1976d2',
-      borderColor: '#1976d2',
+      borderColor: '#00c6ff',
       borderRadius: 2,
        px:2,
        fontSize:'0.8rem',
@@ -364,9 +364,9 @@ const TopComponent: React.FC = () => {
   sx={{
     flexGrow: 1,
     marginLeft: 1,
-    backgroundColor: activeTab === 'winners' ? '#1976d2' : 'white',
+    backgroundColor: activeTab === 'winners' ? '#00c6ff' : 'white',
     color: activeTab === 'winners' ? 'white' : '#1976d2',
-    borderColor: '#1976d2',
+    borderColor: '#00c6ff',
     textTransform: 'none',
     borderRadius: 2,
     px:2,
@@ -376,10 +376,7 @@ const TopComponent: React.FC = () => {
     transition: 'all 0.9s ease',
     display: 'flex', // İç öğelerin yatay hizalanması için
     alignItems: 'center',
-    '&:hover': {
-      backgroundColor: activeTab === 'winners' ? '#1565c0' : '#e3f2fd',
-      borderColor: '#1565c0',
-    },
+ 
   }}
 >
   Top{' '}
@@ -403,13 +400,13 @@ const TopComponent: React.FC = () => {
       {/* Aktif Sekme İçeriği */}
 
       {activeTab === 'winners' ? (
-        <Box sx={{ width: '100%', backgroundColor: 'white', padding: 2, marginTop: 2 }}>
+        <Box sx={{ width: '100%', backgroundColor: '#1E1E1E', padding: 2, marginTop: 2 }}>
           <Box sx={{ marginTop: 0 }}>
             {/* Add headings for Place ID and Prize */}
             <Box sx={{ display: 'flex', justifyContent: 'space-between', fontWeight: 'bold', marginBottom: 1 }}>
-              <Typography sx={{ fontSize: '0.8rem', color: 'black' }}>Place / USERNAME </Typography>
+              <Typography sx={{ fontSize: '0.8rem', color: '#FFFFFF', }}>Place / USERNAME </Typography>
 
-              <Typography sx={{ fontSize: '0.8rem', color: 'black' }}>Weekly Prize</Typography>
+              <Typography sx={{ fontSize: '0.8rem', color: '#FFFFFF', }}>Weekly Prize</Typography>
             </Box>
             {winnersData.map((item, index) => (
               <Box
@@ -423,13 +420,13 @@ const TopComponent: React.FC = () => {
                 }}
               >
                 {/* Rank Value */}
-                <Typography sx={{ fontSize: '1.5rem', color: 'black', marginRight: 2 }}>
+                <Typography sx={{ fontSize: '1.5rem', color: '#FFFFFF', marginRight: 2 }}>
                   #{index + 4}
                 </Typography>
 
                 {/* Left Section: Username and Avatar+Balance */}
                 <Box sx={{ flexGrow: 1 }}>
-                  <Typography sx={{ fontSize: '1rem', color: 'black' }}>
+                  <Typography sx={{ fontSize: '1rem', color: '#FFFFFF', }}>
                     {item.username}
                   </Typography>
                   <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '5px' }}>
@@ -439,11 +436,12 @@ const TopComponent: React.FC = () => {
                       style={{
                         width: '22px',
                         height: '22px',
+                        borderRadius:'50%',
                         objectFit: 'cover',
                         marginRight: '5px',
                       }}
                     />
-                    <Typography sx={{ fontSize: '0.8rem', color: 'black' }}>
+                    <Typography sx={{ fontSize: '0.8rem', color: '#FFFFFF', }}>
                       {item.balance}
                     </Typography>
                   </Box>
@@ -453,7 +451,7 @@ const TopComponent: React.FC = () => {
         
 
                 {/* Prize Area */}
-                <Typography sx={{ fontSize: '1rem', color: 'dodgerblue', marginLeft: 2 }}> 
+                <Typography sx={{ fontSize: '1rem', color: '#00c6ff', marginLeft: 2 }}> 
                   {item.prize ? item.prize : 'N/A'}
                 </Typography>
               </Box>
@@ -461,13 +459,13 @@ const TopComponent: React.FC = () => {
           </Box>
         </Box>
       ) : (
-        <Box sx={{ width: '100%', backgroundColor: 'white', padding: 2, marginTop: 2 }}>
+        <Box sx={{ width: '100%', backgroundColor: '#1E1E1E', padding: 2, marginTop: 2 }}>
           <Box sx={{ marginTop: 0 }}>
             {/* Add headings for Place ID and Prize */}
             <Box sx={{ display: 'flex', justifyContent: 'space-between', fontWeight: 'bold', marginBottom: 1 }}>
-            <Typography sx={{ fontSize: '0.8rem', color: 'black' }}>Place / USERNAME </Typography>
+            <Typography sx={{ fontSize: '0.8rem', color: '#FFFFFF', }}>Place / USERNAME </Typography>
 
-              <Typography sx={{ fontSize: '0.8rem', color: 'black' }}>Weekly Prize</Typography>
+              <Typography sx={{ fontSize: '0.8rem', color: '#FFFFFF', }}>Weekly Prize</Typography>
             </Box>
             {userData.map((item, index) => (
               <Box
@@ -481,13 +479,13 @@ const TopComponent: React.FC = () => {
                 }}
               >
                 {/* Rank Value */}
-                <Typography sx={{ fontSize: '1.5rem', color: 'black', marginRight: 2 }}>
+                <Typography sx={{ fontSize: '1.5rem', color: '#FFFFFF', marginRight: 2 }}>
                   #{index + 4}
                 </Typography>
 
                 {/* Left Section: Username and Avatar+Balance */}
                 <Box sx={{ flexGrow: 1 }}>
-                  <Typography sx={{ fontSize: '1rem', color: 'black' }}>
+                  <Typography sx={{ fontSize: '1rem', color: '#FFFFFF', }}>
                     {item.username}
                   </Typography>
                   <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '5px' }}>
@@ -497,11 +495,13 @@ const TopComponent: React.FC = () => {
                       style={{
                         width: '22px',
                         height: '22px',
+                                                borderRadius:'50%',
+
                         objectFit: 'cover',
                         marginRight: '5px',
                       }}
                     />
-                    <Typography sx={{ fontSize: '0.8rem', color: 'black' }}>
+                    <Typography sx={{ fontSize: '0.8rem', color: '#FFFFFF', }}>
                       {item.balance}
                     </Typography>
                   </Box>

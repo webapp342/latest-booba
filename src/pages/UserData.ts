@@ -1,5 +1,5 @@
 // userData.ts
-import Avatar1 from '../assets/logo5.png';
+import Avatar1 from '../assets/bblip.png';
 import Avatar2 from '../assets/silver.png';
 import Avatar3 from '../assets/silver.png';
 import Avatar4 from '../assets/silver.png';

@@ -11,7 +11,6 @@ import {
 import WalletIcon from '@mui/icons-material/Wallet';
 import './slide.css'
 
-import RandomWinner from './RandomWinner'; // RandomWinner bileşenini içeri aktarıyoruz
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Header } from './ConnectButton';
 
@@ -130,7 +129,7 @@ const CategorySelector = ({ category, isSelected, hasBadge, onClick }: {
       sx={{
         fontSize: { xs: '0.9rem', sm: '1rem' },
         cursor: 'pointer',
-        color: isSelected ? '#000' : 'rgba(0, 0, 0, 0.5)',
+        color: isSelected ? '#00c6ff' : 'rgba(255, 255, 255, 0.5)',
         fontWeight: isSelected ? 800 : 500,
         transition: 'all 0.3s ease',
         position: 'relative',
@@ -138,7 +137,7 @@ const CategorySelector = ({ category, isSelected, hasBadge, onClick }: {
         borderRadius: '20px',
         backgroundColor: isSelected ? 'rgba(0, 198, 255, 0.1)' : 'transparent',
         '&:hover': {
-          color: '#000',
+          color: '#FFFFFF',
           backgroundColor: 'rgba(0, 198, 255, 0.05)',
         },
         '&::after': isSelected ? {
@@ -163,7 +162,7 @@ const CategorySelector = ({ category, isSelected, hasBadge, onClick }: {
 const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount, requiredCount }: any) => (
   <Box
     sx={{
-      backgroundColor: 'white',
+      backgroundColor: '#1E1E1E',
       boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
       borderRadius: '16px',
        p: { xs: 1, sm: 2.5 },
@@ -199,7 +198,7 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
           variant="body1" 
           sx={{ 
             fontWeight: 700,
-            color: '#1a1a1a',
+            color: '#FFFFFF',
             fontSize: { xs: '0.8rem', sm: '0.8rem' },
             mb: 0.5
           }}
@@ -227,8 +226,7 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
           <Typography 
             variant="body2" 
             sx={{ 
-              color: 'rgba(0, 0, 0, 0.6)',
-              fontSize: { xs: '0.75rem', sm: '0.8rem' }
+              color: '#FFFFFF',              fontSize: { xs: '0.75rem', sm: '0.8rem' }
             }}
           >
             {task.description}
@@ -491,12 +489,13 @@ const DealsComponent: React.FC = () => {
           justifyContent: 'center',
           p: { xs: 2, sm: 3 },
           mb: 10,
+                    backgroundColor:  'black',
+
           maxWidth: '1200px',
           mx: 'auto'
         }}
       >
         <Box sx={{ width: '100%' }}>
-          <RandomWinner />
           <UserDataTable />
         </Box>
 
@@ -516,7 +515,7 @@ const DealsComponent: React.FC = () => {
           sx={{ 
             mt: 3,
             fontWeight: 800,
-            color: '#1a1a1a',
+            color: '#FFFFFF',
             fontSize: { xs: '1.75rem', sm: '2rem' },
             textAlign: 'center',
             background: 'linear-gradient(45deg, #00c6ff, #0072ff)',
@@ -531,8 +530,7 @@ const DealsComponent: React.FC = () => {
           variant="body1" 
           sx={{ 
             mt: 1,
-            color: 'rgba(0, 0, 0, 0.6)',
-            textAlign: 'center',
+            color: '#FFFFFF',            textAlign: 'center',
             maxWidth: '600px',
             fontSize: { xs: '0.9rem', sm: '1rem' }
           }}
@@ -593,7 +591,7 @@ const DealsComponent: React.FC = () => {
                   <Box
                     key={taskIndex}
                     sx={{
-                      backgroundColor: 'white',
+                      backgroundColor: '#1E1E1E',
                       boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
                       borderRadius: '16px',
                       p: { xs: 2, sm: 2.5 },
@@ -631,7 +629,7 @@ const DealsComponent: React.FC = () => {
                     <Box
                       key={taskIndex}
                       sx={{
-                        backgroundColor: 'white',
+                        backgroundColor: '#1E1E1E',
                         boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
                         borderRadius: '16px',
                         mb: 2,
@@ -690,7 +688,7 @@ const DealsComponent: React.FC = () => {
             {(selectedCategory === 1 || selectedCategory === 2) && (
               <Box
                 sx={{
-                  backgroundColor: 'white',
+                  backgroundColor: '#1E1E1E',
                   boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
                   borderRadius: '16px',
                   p: { xs: 1, sm: 2.5 },
@@ -732,7 +730,7 @@ const DealsComponent: React.FC = () => {
                       variant="body1" 
                       sx={{ 
                         fontWeight: 700,
-                        color: '#1a1a1a',
+                        color: '#FFFFFF',
                         fontSize: { xs: '0.8rem', sm: '1rem' },
                       
                       }}
@@ -742,8 +740,7 @@ const DealsComponent: React.FC = () => {
                     <Typography 
                       variant="body2" 
                       sx={{ 
-                        color: 'rgba(0, 0, 0, 0.6)',
-                        fontSize: { xs: '0.75rem', sm: '0.8rem' }
+                        color: '#FFFFFF',                        fontSize: { xs: '0.75rem', sm: '0.8rem' }
                       }}
                     >
                       +5 BBLIP

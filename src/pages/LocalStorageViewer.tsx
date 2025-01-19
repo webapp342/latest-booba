@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { ThemeProvider, createTheme ,Tooltip} from "@mui/material";
+import { ThemeProvider, createTheme, Tooltip } from "@mui/material";
 import QRCode from 'qrcode';
-import { Box, Card, CardContent, Typography,  Button, Avatar, TextField, InputAdornment ,Drawer, Snackbar, SnackbarContent } from "@mui/material";
+import { Box, Card, CardContent, Typography, Button, Avatar, TextField, InputAdornment, Drawer, Snackbar, SnackbarContent } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
@@ -11,10 +11,9 @@ import { CheckCircleOutline } from '@mui/icons-material';
 import LoupeIcon from '@mui/icons-material/Loupe';
 import { useNavigate } from 'react-router-dom';
 import TokenSwap from "./SwapComponent"; // TokenSwap bileşenini eklediğiniz yer
-import logo5 from '../assets/logo5.png';
-import UserAvatar from "./UserAvatar";
+import logo5 from '../assets/bblip.png';
 
-import { doc, onSnapshot , getFirestore, getDoc} from "firebase/firestore";
+import { doc, onSnapshot, getFirestore, getDoc } from "firebase/firestore";
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './firebaseConfig';
 import WebApp from "@twa-dev/sdk";
@@ -25,12 +24,22 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 
-const telegramUser = WebApp.initDataUnsafe.user;
 
 
 
 // Tema oluşturma
 const theme = createTheme({
+  palette: {
+    mode: 'dark',
+    background: {
+      default: '#121212',
+      paper: '#1E1E1E',
+    },
+    text: {
+      primary: '#FFFFFF',
+      secondary: '#B0BEC5',
+    },
+  },
   typography: {
     fontFamily: "monospace",
   },
@@ -347,49 +356,15 @@ const AccountEquityCard: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
   
-      <Box width={'92vw'}  justifyContent= "space-between"
-          alignItems= "center"
-          m={2}
-          mt={3}
-          display="flex">
-       
-           
-    
-    
-          
-
-
-
-            <Typography   
-            sx={{
-              fontSize: '1.3rem',
-              fontWeight: 'bold',
-              
-              background: 'linear-gradient(90deg, #031340, #08AEEA)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}>
-           Wallet
-
-           </Typography>
-
-  
-
-   <UserAvatar 
-      telegramUserId={telegramUser?.id?.toString() ?? ''} 
-      displayName={telegramUser?.first_name ?? 'User'} 
-    />
-      
-       
-              </Box>
+ 
               <Box>
         {/* İlk Kart */}
-        <Card sx={{ borderRadius: 3, mt: 1 , mx:1}}>
+        <Card sx={{ borderRadius: 3, mt: 1, mx: 1, backgroundColor: 'background.paper' }}>
           <CardContent>
             {/* Total Account Equity */}
             <Typography
               variant="subtitle2"
-              sx={{ color: "grey.600" }}
+              sx={{ color: "text.secondary" }}
               align="center"
               gutterBottom
             >

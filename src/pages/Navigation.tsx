@@ -42,7 +42,7 @@ export default function SimpleBottomNavigation() {
     },
     palette: {
       primary: {
-        main: '#1976d2',
+        main: '#00c6ff',
       },
     },
   });
@@ -55,14 +55,15 @@ export default function SimpleBottomNavigation() {
   return (
     <ThemeProvider theme={theme}>
       <Paper 
-        elevation={8}
+        elevation={1}
         sx={{
           position: 'fixed',
           bottom: 0,
           left: 0,
-          
           right: 0,
           zIndex: 1000,
+          borderTopLeftRadius: '55px',
+          borderTopRightRadius: '16px',
         }}
       >
         <BottomNavigation
@@ -70,11 +71,12 @@ export default function SimpleBottomNavigation() {
           onChange={(_, newValue) => handleNavigationChange(newValue)}
           showLabels
           sx={{
-            mb:2,
+           
+             borderTopLeftRadius: '16px',
+          borderTopRightRadius: '16px',
             height: '60px',
-            bgcolor: '#ffffff',
-            borderTopLeftRadius: '16px',
-            borderTopRightRadius: '16px',
+            bgcolor: '#121212',
+        
             '& .MuiBottomNavigationAction-root': {
               minWidth: 'auto',
               padding: '0',
@@ -92,21 +94,17 @@ export default function SimpleBottomNavigation() {
               sx={{
                 '& .MuiSvgIcon-root': {
                   fontSize: '22px',
-                  transition: 'all 0.2s ease',
+           mt:0.5,
                   color: value === index ? 'primary.main' : '#757575',
                   mb: 0.5,
                 },
                 '& .MuiBottomNavigationAction-label': {
                   fontSize: '0.7rem',
-                  transition: 'all 0.2s ease',
+                     mb:1.95,
                   fontWeight: value === index ? 600 : 400,
                   color: value === index ? 'primary.main' : '#757575',
                 },
-                '&.Mui-selected': {
-                  '& .MuiSvgIcon-root': {
-                    transform: 'scale(1.1)',
-                  },
-                },
+             
               }}
             />
           ))}

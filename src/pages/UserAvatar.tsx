@@ -15,8 +15,10 @@ const UserAvatar: React.FC<UserAvatarProps> = ({ displayName }) => {
       alt={displayName}
       src={user?.photo_url}
       sx={{ 
-        width: 34, 
-        height: 34, 
+        p:0.6,
+        width: 18, 
+        height: 18, 
+        ml:0.1,
         backgroundColor: user?.photo_url ? "transparent" : "blue", 
         color: "white" 
       }}

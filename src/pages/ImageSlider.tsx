@@ -77,7 +77,7 @@ const NavigateButton = () => {
     navigate('/latest-booba/slot');
   };
 
-  return <Button sx={{bgcolor:'yellow',color:'black', left:32, width:'41vw'}} onClick={handleClick}>Play Now</Button>;
+  return <Button sx={{backgroundColor:'#00c6ff',color:'white', left:32, width:'41vw'}} onClick={handleClick}>Play Now</Button>;
 };
 
 //lucky games 
@@ -166,7 +166,8 @@ const images: { src: string, text: string, additionalText1: string, additionalTe
 const Example: React.FC = () => {
     return (
         <ThemeProvider theme={theme}>
-            <Box m={1} borderRadius={5} overflow="hidden">
+            <Box sx={{                    backgroundColor:  'black',
+}} m={1} borderRadius={5} overflow="hidden">
                 <Box>
                 <Slide 
                     nextArrow={

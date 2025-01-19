@@ -121,11 +121,9 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
           minWidth: 275, 
           textAlign: 'center', 
           padding: 0.5, 
-          boxShadow: 6,
           borderRadius: 2,
-          transition: 'transform 0.3s, box-shadow 0.3s',
        
-          backgroundColor:  '#f0f4ff',
+          backgroundColor:  '#1E1E1E',
         }}
       >
         <CardContent>
@@ -134,7 +132,7 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
           {/* Miktar Seçici */}
           <Box sx={{  }}>
             <Box justifyContent={'space-between'} display={'flex'}>
-                   <Typography textAlign={'left'} variant="body2" color="text.secondary" sx={{ fontSize: '1rem' }}>
+                   <Typography textAlign={'left'} variant="body2" color="#B0BEC5" sx={{ fontSize: '1rem' }}>
           You Stake 
             </Typography>
           
@@ -164,7 +162,7 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
 
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Box>
-                <Typography variant="body2" color="text.secondary" sx={{ mr: 2 }}>
+                <Typography variant="body2" color="#B0BEC5" sx={{ mr: 2 }}>
                   Min
                 </Typography>
               </Box>
@@ -177,27 +175,29 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
                 marks
                 min={tonRange.min}
                 max={tonRange.max}
-                sx={{ color: '#1976d2' }}
+                sx={{ color: '#00c6ff' }}
               />
             
-              <Typography variant="body2" color="text.secondary" sx={{ ml: 2 }}>
+              <Typography variant="body2" color="#B0BEC5" sx={{ ml: 2 }}>
                 Max
               </Typography>
             </Box>
           </Box>
 
+
+        
           {/* Leverage Seçici */}
          <Box sx={{ mt: 1, display: 'flex', justifyContent: 'space-between' }}>
-            <Typography variant="body2" color="text.secondary" sx={{  }}>
-          Duration:   <span style={{color:'black', fontWeight:'bold',fontSize: '1rem'}}>  {stakingData[index].duration} {stakingData[index].duration > 30 ? 'Days' : 'Day'}</span> 
+            <Typography variant="body2" color="#B0BEC5" sx={{  }}>
+          Duration:   <span style={{color:'#FFFFFF', fontWeight:'bold',fontSize: '1rem'}}>  {stakingData[index].duration} {stakingData[index].duration > 30 ? 'Days' : 'Day'}</span> 
             </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{  }}>
-              Leverage:  <span style={{color:'black', fontWeight:'bold',fontSize: '1rem'}}> {stakingData[index].leverage}x</span>
+            <Typography variant="body2" color="#B0BEC5" sx={{  }}>
+              Leverage:  <span style={{color:'#FFFFFF', fontWeight:'bold',fontSize: '1rem'}}> {stakingData[index].leverage}x</span>
             </Typography>
           </Box>
          <Box sx={{ mt: 2,mb:-2,  textAlign:'left' }}>
-              <Typography variant="body2" color="text.secondary" sx={{  }}>
-              Leveraged Power :  <span style={{color:'#1976d2', fontWeight:'bolder', fontSize:'1rem'}}>{stakingData[index].amount * stakingData[index].leverage} TON </span> 
+              <Typography variant="body2" color="#B0BEC5" sx={{  }}>
+              Leveraged Power :  <span style={{color:'#00c6ff', fontWeight:'bolder', fontSize:'1rem'}}>{stakingData[index].amount * stakingData[index].leverage} TON </span> 
               </Typography>
               
           </Box>
@@ -214,7 +214,7 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
 const InfoCard: React.FC = () => {
   return (
     
-    <Box sx={{ mt: 2, p: 2, border: '1px solid #e0e0e0', borderRadius: 2, backgroundColor: '#f9f9f9' }}>
+    <Box sx={{ mt: 2, p: 2, border: '1px solid #e0e0e0', borderRadius: 2, backgroundColor: '#1E1E1E' }}>
         
       <Grid container spacing={2}>
         <Grid item xs={4} display="flex" flexDirection="column" alignItems="center">
@@ -612,7 +612,32 @@ const NewComponent: React.FC<NewComponentProps> = () => {
   };
 
   return (
-    <Box style={{ marginBottom: '76px', backgroundColor: '#f0f4ff', borderRadius: '8px', padding: '20px' }}>
+    <Box style={{ marginBottom: '76px', backgroundColor: 'black', borderRadius: '8px', padding: '20px' }}>
+      <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} mb={2} mt={2}>
+<Typography
+  sx={{
+    background: "linear-gradient(90deg, #1976d2, #00c6ff)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    fontFamily: "'Press Start 2P', sans-serif", // Pikselleştirilmiş retro font
+    fontWeight: 700,
+
+    fontSize: "20px",
+    letterSpacing: "1px"
+  }}
+>
+  Booba
+</Typography>
+
+
+      <Typography fontWeight={'bold'} color={'grey'}>
+       Leveraged staking for TON
+
+
+      </Typography>
+
+      </Box>
+      
       {/* Button Group for Stake and Unstake */}
       <ToggleButtonGroup
         value={selectedAction}
@@ -677,51 +702,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
         </Grid>
       ) : (
         <>
-          <Grid container spacing={2}>
-          {[...Array(1)].map((_, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              <Card sx={{ minWidth: 275, textAlign: 'center', padding: 1, boxShadow: 6, borderRadius: 2, backgroundColor: '#e3f2fd' }}>
-                <CardContent>
-
-                  <Box sx={{display:'flex', justifyContent:'space-between' }}>
-                        <Typography mb={1} variant="body1" sx={{fontWeight: 'bold', color: '#1976d2' }}>
-                    Ton Balance  
-                    </Typography>
-                   <Typography variant="body1" sx={{fontWeight: 'bold', color: '#1976d2' }}>
-                   {totalBalance !== null ? `${totalBalance.toFixed(2)} TON` : 'Loading...'}
-                    </Typography>
-               
-                  </Box>
-               
-                
-                  
-                  <Divider sx={{  }} />
-                  <Box mt={1} sx={{display:'flex', justifyContent:'space-between' }}>
-                       <Typography variant="body1" sx={{  }}>
-                    Staking in progress 
-                  </Typography>
-                     <Typography variant="body1" sx={{ }}>
-                 {calculateTotalStakedAmount(stakingHistory).toFixed(2)} TON
-                  </Typography>
-
-                  </Box>
-                  <Box mb={-2} sx={{display:'flex', justifyContent:'space-between' }}>
-                      <Typography variant="body2" sx={{  fontWeight: 'bold' }}>
-                   lbTON Balance
-                  </Typography>
-                    <Typography variant="body2" sx={{  fontWeight: 'bold' }}>
-                {lbBalance !== null ? `${lbBalance.toFixed(2)} lbTON` : 'Loading...'}
-                  </Typography>
-                    
-                  </Box>
-               
-                   
-                  
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-      
+          
             
             <Grid item xs={12} sm={6}>
               <StakingCard
@@ -735,7 +716,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                 calculateEarnings={calculateEarnings}
               />
             </Grid>
-          </Grid>
+         
 
           {/* Earnings Display Outside of StakingCard */}
           <Box sx={{   
@@ -745,7 +726,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
               boxShadow: 6,
               borderRadius: 2,
               transition: 'transform 0.3s, box-shadow 0.3s',
-              backgroundColor:  '#f0f4ff',
+              backgroundColor:  '#1E1E1E',
               mt: 2, 
               p: 2,   
               display: 'flex', 
@@ -772,10 +753,12 @@ const NewComponent: React.FC<NewComponentProps> = () => {
               </Box>
             
 
-              <FormControl sx={{mb:1, borderRadius: 3, minWidth:'40%' }}>
+              <FormControl sx={{mb:1,color:'whitesmoke', borderRadius: 3, minWidth:'40%' }}>
                 <Select
                   labelId="staking-select-label"
                   label=""
+                  
+                  sx={{color:'whitesmoke',bgcolor:'grey', borderRadius:2,fontWeight:'bold'}}
                   variant="standard"
                   value={selectedOptionIndex}
                   onChange={(e) => setSelectedOptionIndex(e.target.value as number)}
@@ -803,7 +786,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
 
                                   <Typography textAlign={'left'} variant="h6" sx={{ fontWeight: 'bold', fontSize: '1rem' }}> 
 
-                   <span style={{color: 'black',}}>
+                   <span style={{color: 'white',}}>
                     {((parseFloat(calculateEarnings(
                       stakingData[selectedOptionIndex].amount,
                       stakingData[selectedOptionIndex].duration,
@@ -825,7 +808,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                 
 
                   
-               +   <span style={{color: 'black',}}>
+               +   <span style={{color: 'white',}}>
                     {((parseFloat(calculateEarnings(
                       stakingData[selectedOptionIndex].amount,
                       stakingData[selectedOptionIndex].duration,
@@ -950,7 +933,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
       }}>
       {/* Conditionally render the Stake Now button based on unstaking mode */}
       {!isUnstaking && (
-        <Button variant="contained" color="primary" sx={{ borderRadius: 2, width: '100%', mt: 1, fontSize: '1rem' }} onClick={() => handleOpenDrawer(selectedOptionIndex)}>
+        <Button variant="contained"  sx={{backgroundColor:'#00c6ff', borderRadius: 2, width: '100%', mt: 1, fontSize: '1rem' }} onClick={() => handleOpenDrawer(selectedOptionIndex)}>
           Stake Now 
         </Button>
       )}
@@ -969,7 +952,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
           with our Terms of Service.
         </Typography>
         {leveragedItems.map((item, index) => (
-          <Accordion key={index}>
+        <Accordion sx={{backgroundColor:'#1E1E1E',color:'whitesmoke'}} key={index}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography variant="h6">{item.question}</Typography>
             </AccordionSummary>
@@ -1006,7 +989,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
       </Typography>
 
       {leveragedStakingItems.map((item, index) => (
-        <Accordion key={index}>
+        <Accordion sx={{backgroundColor:'#1E1E1E',color:'whitesmoke',}} key={index}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography variant="h6">{item.question}</Typography>
           </AccordionSummary>
@@ -1021,7 +1004,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
         anchor="bottom"
         open={drawerOpen}
         onClose={handleCloseDrawer}
-        sx={{ backgroundColor: '#ffffff', transition: 'transform 0.3s ease-in-out' }} // Smooth transition
+        sx={{ backgroundColor: '#1E1E1E', transition: 'transform 0.3s ease-in-out' }} // Smooth transition
       >
         <Box sx={{ p: 3, display: 'flex', flexDirection: 'column', gap: 2 }}>
       
@@ -1120,7 +1103,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                 border: '1px solid #1976d2', 
                 borderTop: 0, 
                 borderRadius: '0 0 4px 4px', // Alt köşeleri yuvarlak, üst köşeleri düz
-                backgroundColor: '#e3f2fd' 
+                backgroundColor: '#1E1E1E' 
               }}>
                 <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
                   You will receive:
