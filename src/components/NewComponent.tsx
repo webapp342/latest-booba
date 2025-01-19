@@ -767,7 +767,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                     stakingOptions[selectedOptionIndex].apy
                   ))).toFixed(2)} 
                 </span>
-                <span style={{marginLeft:'55px ',fontSize:'1rem'}}>in</span>
+                <span style={{marginLeft:'7px ',fontSize:'1rem'}}>in</span>
               </Typography>
               </Box>
             
