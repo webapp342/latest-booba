@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Card, CardContent, Typography, Grid,  Slider, Box, Button, Drawer, Select, MenuItem, FormControl, InputLabel, Accordion, AccordionSummary, AccordionDetails, TextField, Modal, LinearProgress } from '@mui/material';
+import { Card, CardContent, Typography, Grid,  Slider, Box, Button, Drawer, Select, MenuItem, FormControl, Accordion, AccordionSummary, AccordionDetails, TextField, Modal, LinearProgress, InputAdornment, Divider, ToggleButton, ToggleButtonGroup, Chip } from '@mui/material';
 import { AccessTime, MonetizationOn } from '@mui/icons-material';
 import SpeedIcon from '@mui/icons-material/Speed';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -7,74 +7,84 @@ import { doc,  getFirestore, setDoc, updateDoc, increment, arrayUnion, onSnapsho
 import { app } from '../pages/firebaseConfig'; // Import your Firebase app
 import { v4 as uuidv4 } from 'uuid'; // Import UUID for generating unique IDs
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
-
+import tonLogo from '../assets/toncoin-ton-logo.png'; // Logo dosyasını import et
+import SwitchAccessShortcutAddIcon from '@mui/icons-material/SwitchAccessShortcutAdd';
+import DonutSmallSharpIcon from '@mui/icons-material/DonutSmallSharp';
 interface NewComponentProps {}
 
 const db = getFirestore(app); // Define the Firestore database instance
 
 const stakingOptions = [
    { 
+    period: '1 Day', 
+    apy: 38.72, 
+    durations: [1],
+    leverageOptions: [125],
+    tonRange: { min: 50, max: 250 }
+  },
+
+  { 
     period: '7 Days', 
-    apy: 28.20, 
+    apy: 26.44, 
     durations: [7],
     leverageOptions: [150],
-    tonRange: { min: 25, max: 125 }
+    tonRange: { min: 25, max: 250 }
   },
   { 
     period: '14 Days', 
-    apy: 26.44, 
+    apy: 21.42, 
     durations: [14],
     leverageOptions: [175],
-    tonRange: { min: 25, max: 125 }
+    tonRange: { min: 25, max: 250 }
   },
   { 
     period: '21 Days', 
-    apy: 16, 
+    apy: 19.00, 
     durations: [21],
     leverageOptions: [200],
-    tonRange: { min: 25, max: 125 }
+    tonRange: { min: 10, max: 500 }
   },
   { 
     period: '30 Days', 
-    apy: 28, 
+    apy: 17.25, 
     durations: [30],
-    leverageOptions: [25],
-    tonRange: { min: 10, max: 250 }
+    leverageOptions: [200],
+    tonRange: { min: 1, max: 500 }
   },
   { 
     period: '60 Days', 
-    apy: 17.4, 
+    apy: 16.40, 
     durations: [60],
-    leverageOptions: [50],
-    tonRange: { min: 1, max: 250 }
+    leverageOptions: [200],
+    tonRange: { min: 1, max: 1000 }
   },
   { 
     period: '90 Days', 
-    apy: 13.87, 
+    apy: 13.72, 
     durations: [90],
-    leverageOptions: [75],
-    tonRange: { min: 1, max: 250 }
+    leverageOptions: [200],
+    tonRange: { min: 1, max: 1000 }
   },
   { 
     period: '121 Days', 
-    apy: 15, 
+    apy: 11.90, 
     durations: [121],
-    leverageOptions: [5],
-    tonRange: { min: 1, max: 250 }
+    leverageOptions: [200],
+    tonRange: { min: 1, max: 1000 }
   },
   { 
     period: '152 Days', 
-    apy: 12, 
+    apy: 8.14, 
     durations: [152],
-    leverageOptions: [10],
-    tonRange: { min: 1, max: 250 }
+    leverageOptions: [200],
+    tonRange: { min: 1, max: 1000 }
   },
   { 
     period: '365 Days', 
-    apy: 10, 
+    apy: 5.83, 
     durations: [365],
-    leverageOptions: [15],
-    tonRange: { min: 1, max: 250 }
+    leverageOptions: [200],
+    tonRange: { min: 1, max: 1000 }
   },
  
 ];
@@ -100,7 +110,6 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
   index,
   stakingData,
   handleAmountChange,
-  calculateEarnings,
   children
 }) => {
   const tonRange = option.tonRange;
@@ -111,12 +120,12 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
         sx={{ 
           minWidth: 275, 
           textAlign: 'center', 
-          padding: 1, 
+          padding: 0.5, 
           boxShadow: 6,
           borderRadius: 2,
           transition: 'transform 0.3s, box-shadow 0.3s',
        
-          backgroundColor: index % 2 === 0 ? '#f0f4ff' : '#e3f2fd',
+          backgroundColor:  '#f0f4ff',
         }}
       >
         <CardContent>
@@ -126,31 +135,39 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
           <Box sx={{  }}>
             <Box justifyContent={'space-between'} display={'flex'}>
                    <Typography textAlign={'left'} variant="body2" color="text.secondary" sx={{ fontSize: '1rem' }}>
-            You stake 
+          You Stake 
             </Typography>
           
             </Box>
           
                         <Box justifyContent={'space-between'} display={'flex'}>
+                            <Box mb={2} mt={1} display={'flex'} alignItems={'center'}>
+                                                         <img src={tonLogo} alt="TON Logo" style={{marginRight:'15px', width: '28px', height: '28px'  }} />
 
-              <Typography textAlign={'left'} variant="h4" component="div" sx={{ mb: 2, fontWeight: 'bold', color: '#1976d2', fontSize: '1.8rem' }}>
-              {stakingData[index].amount} <span style={{color:'grey'}}>TON </span> 
+              <Typography textAlign={'left'} variant="h4" component="div" sx={{  fontWeight: 'bold', color: '#1976d2', fontSize: '1.8rem' }}>
+              {stakingData[index].amount} <span style={{color:'grey'}}> </span> 
             </Typography>
-                <Typography textAlign={'left'} variant="body2" color="text.secondary" sx={{mt:1.5, fontSize: '0.9rem' }}>
-                {option.apy}% APY
-            </Typography>
+  </Box>
+            <Box mt={1} mb={2}>
+              <Chip 
+              icon={<SwitchAccessShortcutAddIcon />}
+                label={`${option.apy}% APY`} 
+                variant="outlined" 
+                color="success" 
+                sx={{ fontSize: '0.9rem' }}
+              />
+            </Box>
+     
+              
+               
                         </Box>
 
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-             
-              
-                 <Box>
-                
- <Typography variant="body2" color="text.secondary" sx={{ mr: 2 }}>
-                Min
-              </Typography>
-                </Box>
-             
+              <Box>
+                <Typography variant="body2" color="text.secondary" sx={{ mr: 2 }}>
+                  Min
+                </Typography>
+              </Box>
               <Slider
                 value={stakingData[index].amount}
                 onChange={(_e, newValue) => handleAmountChange(index, newValue as number)}
@@ -162,43 +179,27 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
                 max={tonRange.max}
                 sx={{ color: '#1976d2' }}
               />
+            
               <Typography variant="body2" color="text.secondary" sx={{ ml: 2 }}>
-               Max
+                Max
               </Typography>
             </Box>
           </Box>
 
           {/* Leverage Seçici */}
          <Box sx={{ mt: 1, display: 'flex', justifyContent: 'space-between' }}>
-            <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.9rem' }}>
-              Duration: {stakingData[index].duration} {stakingData[index].duration > 30 ? 'Days' : 'Day'}
+            <Typography variant="body2" color="text.secondary" sx={{  }}>
+          Duration:   <span style={{color:'black', fontWeight:'bold',fontSize: '1rem'}}>  {stakingData[index].duration} {stakingData[index].duration > 30 ? 'Days' : 'Day'}</span> 
             </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.9rem' }}>
-              Leverage: {stakingData[index].leverage}x
+            <Typography variant="body2" color="text.secondary" sx={{  }}>
+              Leverage:  <span style={{color:'black', fontWeight:'bold',fontSize: '1rem'}}> {stakingData[index].leverage}x</span>
             </Typography>
           </Box>
-
-          {/* Tahmini Kazanç */}
-          <Box sx={{ mt: 3 , mb:-2 }}>
-            <Typography textAlign={'left'} variant="h6" sx={{ fontWeight: 'bold', fontSize: '1.3rem' }}>
-              You could earn 
-            </Typography>
-            <Typography textAlign={'left'} variant="h6" sx={{ fontWeight: 'bold', fontSize: '1.5rem' }}> 
-                <span style={{color: '#1976d2',}}>
- {(parseFloat(calculateEarnings(
-                stakingData[index].amount,
-                stakingData[index].duration,
-                stakingData[index].leverage,
-                option.apy
-              ))).toFixed(2)} TON 
-                </span>
-                <span style={{marginLeft:'15px ',fontSize:'1rem'}}>in</span>
-                <span style={{fontSize:'1.5rem'}}> {stakingData[index].duration} Days</span>
+         <Box sx={{ mt: 2,mb:-2,  textAlign:'left' }}>
+              <Typography variant="body2" color="text.secondary" sx={{  }}>
+              Your Leveraged Power :  <span style={{color:'#1976d2', fontWeight:'bolder', fontSize:'1rem'}}>{stakingData[index].amount * stakingData[index].leverage} lbTON </span> 
+              </Typography>
               
-            </Typography>
-
-
-
           </Box>
 
           {/* Buton yerleştirme */}
@@ -234,26 +235,6 @@ const InfoCard: React.FC = () => {
 };
 
 // Add this new component for the statistics card
-const StatsCard: React.FC = () => {
-  return (
-    <Box sx={{ p: 2, border: '1px solid #e0e0e0', borderRadius: 2, backgroundColor: '#f9f9f9', mb: 2 }}>
-      <Grid container spacing={2} justifyContent="space-between" alignItems="center">
-        <Grid item xs={4} textAlign="center">
-          <Typography variant="subtitle2" color={'#0072ff'}  fontWeight="bold">#3</Typography>
-          <Typography variant="subtitle2" fontSize={'0.8rem'}>Staking on TON</Typography>
-        </Grid>
-        <Grid item xs={4} textAlign="center">
-          <Typography variant="subtitle2" fontWeight="bold" color={'#0072ff'}>$182.21M</Typography>
-          <Typography variant="subtitle2">TVL</Typography>
-        </Grid>
-        <Grid item xs={4} textAlign="center">
-          <Typography variant="subtitle2" fontWeight="bold" color={'#0072ff'}>19652</Typography>
-          <Typography variant="subtitle2">Stakers now</Typography>
-        </Grid>
-      </Grid>
-    </Box>
-  );
-};
 
 // Add this function to calculate remaining days
 const calculateRemainingDays = (timestamp: string, duration: number): number => {
@@ -290,6 +271,11 @@ const calculateRemainingMinutes = (timestamp: string, duration: number): number 
     const remainingTime = endDate.getTime() - currentDate.getTime();
     
     return Math.max(0, Math.floor(remainingTime / (1000 * 60))); // Return remaining minutes
+};
+
+// Add this function to calculate the total staked amount
+const calculateTotalStakedAmount = (history: any[]): number => {
+    return history.reduce((total, stake) => total + stake.amount, 0);
 };
 
 const NewComponent: React.FC<NewComponentProps> = () => {
@@ -339,6 +325,10 @@ const NewComponent: React.FC<NewComponentProps> = () => {
   ]; // Array of messages
 
   const [stakingHistory, setStakingHistory] = useState<any[]>([]); // New state for staking history
+  const [isUnstaking, setIsUnstaking] = useState(false); // New state for unstaking mode
+
+  // New state to manage the selected action
+  const [selectedAction, setSelectedAction] = useState<'stake' | 'unstake'>('stake');
 
   // Fetch total balance and staking history from Firestore when the component mounts
   useEffect(() => {
@@ -597,94 +587,398 @@ const NewComponent: React.FC<NewComponentProps> = () => {
     }
   };
 
+
+
+  const handleUnstakeAction = (index: number) => {
+    const stakeToUnstake = stakingHistory[index];
+    // Implement your unstaking logic here, e.g., calling a function to update the database
+    console.log(`Unstaking ${stakeToUnstake.amount} TON from stake index ${index}`);
+    // You might want to show a confirmation modal or perform the unstaking operation here
+  };
+
+  const handleEarlyUnstakeAction = (index: number) => {
+    const stakeToUnstake = stakingHistory[index];
+    // Implement your early unstaking logic here, e.g., calling a function to update the database
+    console.log(`Early unstaking ${stakeToUnstake.amount} TON from stake index ${index}`);
+    // You might want to show a confirmation modal or perform the early unstaking operation here
+  };
+
+  // Function to handle button selection
+  const handleActionChange = (_event: React.MouseEvent<HTMLElement>, newAction: 'stake' | 'unstake') => {
+    if (newAction !== null) {
+      setSelectedAction(newAction);
+      setIsUnstaking(newAction === 'unstake'); // Update unstaking mode based on selection
+    }
+  };
+
   return (
-    <Box  style={{ marginBottom: '76px', backgroundColor: '#f0f4ff', borderRadius: '8px', padding: '20px' }}>
-      {/* Add StatsCard here */}
-
-      <Typography 
-        variant="h4" 
-        component="h4" 
-        align="center" 
-        sx={{ mb: 1, fontWeight: 'bold', color: '#0072ff', textTransform: 'uppercase', fontSize: '1.2rem' }}
+    <Box style={{ marginBottom: '76px', backgroundColor: '#f0f4ff', borderRadius: '8px', padding: '20px' }}>
+      {/* Button Group for Stake and Unstake */}
+      <ToggleButtonGroup
+        value={selectedAction}
+        exclusive
+        onChange={handleActionChange}
+        sx={{width:'100%' ,mb: 2 }}
       >
-        Leveraged Staking
-      </Typography>
-      
-      <Typography 
-        variant="body1" 
-        align="center" 
-        sx={{ mb: 1, color: 'black', fontSize: '0.8rem', fontWeight:'bold' }}
-      >
-        Explore various staking options with different durations and leverage levels. 
-      </Typography>
-    
-    
+        <ToggleButton value="stake" color="primary" sx={{width:'50%' , backgroundColor: selectedAction === 'stake' ? '#1976d2' : 'transparent' }}>
+          Stake
+        </ToggleButton>
+        <ToggleButton value="unstake" color="secondary" sx={{width:'50%' ,  backgroundColor: selectedAction === 'unstake' ? '#e0e0e0' : 'transparent' }}>
+          Unstake
+        </ToggleButton>
+      </ToggleButtonGroup>
 
-      <StatsCard />
+      {/* Conditionally render cards based on unstaking mode */}
+      {isUnstaking ? (
+        <Grid container spacing={2}>
+          {[...Array(1)].map((_, index) => (
+            <Grid item xs={12} sm={6} md={4} key={index}>
+              <Card sx={{ minWidth: 275, textAlign: 'center', padding: 1, boxShadow: 6, borderRadius: 2, backgroundColor: '#e3f2fd' }}>
+                <CardContent>
 
-     
-        <FormControl  fullWidth sx={{borderRadius:3, mb: 1, mt:2 }}>
-        <InputLabel id="staking-select-label">Staking Option</InputLabel>
-        <Select
-          labelId="staking-select-label"
-          label="Staking Option"
-          
-          value={selectedOptionIndex}
-          onChange={(e) => setSelectedOptionIndex(e.target.value as number)}
-        >
-          {stakingOptions.map((option, index) => (
-            <MenuItem key={index} value={index}>
-              {option.period}
-            </MenuItem>
+                  <Box sx={{display:'flex', justifyContent:'space-between' }}>
+                        <Typography mb={1} variant="body1" sx={{fontWeight: 'bold', color: '#1976d2' }}>
+                    Ton Balance  
+                    </Typography>
+                   <Typography variant="body1" sx={{fontWeight: 'bold', color: '#1976d2' }}>
+                   {totalBalance !== null ? `${totalBalance.toFixed(2)} TON` : 'Loading...'}
+                    </Typography>
+               
+                  </Box>
+               
+                
+                  
+                  <Divider sx={{  }} />
+                  <Box mt={1} sx={{display:'flex', justifyContent:'space-between' }}>
+                       <Typography variant="body1" sx={{  }}>
+                    Staking in progress 
+                  </Typography>
+                     <Typography variant="body1" sx={{ }}>
+                 {calculateTotalStakedAmount(stakingHistory).toFixed(2)} TON
+                  </Typography>
+
+                  </Box>
+                  <Box mb={-2} sx={{display:'flex', justifyContent:'space-between' }}>
+                      <Typography variant="body2" sx={{  fontWeight: 'bold' }}>
+                   lbTON Balance
+                  </Typography>
+                    <Typography variant="body2" sx={{  fontWeight: 'bold' }}>
+                {lbBalance !== null ? `${lbBalance.toFixed(2)} lbTON` : 'Loading...'}
+                  </Typography>
+                    
+                  </Box>
+               
+                   
+                  
+                </CardContent>
+              </Card>
+            </Grid>
           ))}
-        </Select>
-      </FormControl>
+        </Grid>
+      ) : (
+        <>
+          <Grid container spacing={2}>
+          {[...Array(1)].map((_, index) => (
+            <Grid item xs={12} sm={6} md={4} key={index}>
+              <Card sx={{ minWidth: 275, textAlign: 'center', padding: 1, boxShadow: 6, borderRadius: 2, backgroundColor: '#e3f2fd' }}>
+                <CardContent>
 
-      {/* Sadece Seçilen Kartı Göster */}
-      <StakingCard
-        key={selectedOptionIndex}
-        option={stakingOptions[selectedOptionIndex]}
-        index={selectedOptionIndex}
-        stakingData={stakingData}
-        handleAmountChange={handleAmountChange}
-        handleDurationChange={handleDurationChange}
-        handleLeverageChange={handleLeverageChange}
-        calculateEarnings={calculateEarnings}
-      >
-        {/* Buton eklendi */}
-       
-      </StakingCard>
-       <Box sx={{     
- }}>
-          <Button  variant="contained" color="primary" sx={{          borderRadius: 2,
-width:'100%', mt: 1,  fontSize: '1rem' }} onClick={() => handleOpenDrawer(selectedOptionIndex)}>
-            Stake Now 
-          </Button>
-            <Typography 
-        variant="body1" 
-        align="center" 
-        sx={{ mt: 1, color: 'grey', fontSize: '0.8rem' }}
-      >
-      By using the app, you confirm compliance 
-      </Typography>
-       <Typography 
-        variant="body1" 
-        align="center" 
-        sx={{ mb: 1, color: 'grey', fontSize: '0.8rem' }}
-      >
-      with our Terms of Service.
-      </Typography>
-       {leveragedItems.map((item, index) => (
-        <Accordion key={index}>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography variant="h6">{item.question}</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>{item.answer}</Typography>
-          </AccordionDetails>
-        </Accordion>
-      ))}
+                  <Box sx={{display:'flex', justifyContent:'space-between' }}>
+                        <Typography mb={1} variant="body1" sx={{fontWeight: 'bold', color: '#1976d2' }}>
+                    Ton Balance  
+                    </Typography>
+                   <Typography variant="body1" sx={{fontWeight: 'bold', color: '#1976d2' }}>
+                   {totalBalance !== null ? `${totalBalance.toFixed(2)} TON` : 'Loading...'}
+                    </Typography>
+               
+                  </Box>
+               
+                
+                  
+                  <Divider sx={{  }} />
+                  <Box mt={1} sx={{display:'flex', justifyContent:'space-between' }}>
+                       <Typography variant="body1" sx={{  }}>
+                    Staking in progress 
+                  </Typography>
+                     <Typography variant="body1" sx={{ }}>
+                 {calculateTotalStakedAmount(stakingHistory).toFixed(2)} TON
+                  </Typography>
+
+                  </Box>
+                  <Box mb={-2} sx={{display:'flex', justifyContent:'space-between' }}>
+                      <Typography variant="body2" sx={{  fontWeight: 'bold' }}>
+                   lbTON Balance
+                  </Typography>
+                    <Typography variant="body2" sx={{  fontWeight: 'bold' }}>
+                {lbBalance !== null ? `${lbBalance.toFixed(2)} lbTON` : 'Loading...'}
+                  </Typography>
+                    
+                  </Box>
+               
+                   
+                  
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+      
+            
+            <Grid item xs={12} sm={6}>
+              <StakingCard
+                key={selectedOptionIndex}
+                option={stakingOptions[selectedOptionIndex]}
+                index={selectedOptionIndex}
+                stakingData={stakingData}
+                handleAmountChange={handleAmountChange}
+                handleDurationChange={handleDurationChange}
+                handleLeverageChange={handleLeverageChange}
+                calculateEarnings={calculateEarnings}
+              />
+            </Grid>
+          </Grid>
+
+          {/* Earnings Display Outside of StakingCard */}
+          <Box sx={{   
+              minWidth: 275, 
+              textAlign: 'center', 
+              padding: 0.5, 
+              boxShadow: 6,
+              borderRadius: 2,
+              transition: 'transform 0.3s, box-shadow 0.3s',
+              backgroundColor:  '#f0f4ff',
+              mt: 2, 
+              p: 2,   
+              display: 'flex', 
+              flexDirection: 'column', 
+            }}>
+            <Typography textAlign={'left'} variant="h6" sx={{ fontWeight: 'bold', fontSize: '1.3rem' }}>
+              You could earn 
+            </Typography>
+            <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'} sx={{ width: '100%', mt: 1 }}>
+              <Box display={'flex'} alignItems={'center'}>
+                                                         <img src={tonLogo} alt="TON Logo" style={{marginRight:'15px', width: '28px', height: '28px'  }} />
+
+  <Typography textAlign={'left'} variant="h6" sx={{ fontWeight: 'bold', fontSize: '1.5rem' }}> 
+   <span style={{color: '#1976d2',}}>
+                  {(parseFloat(calculateEarnings(
+                    stakingData[selectedOptionIndex].amount,
+                    stakingData[selectedOptionIndex].duration,
+                    stakingData[selectedOptionIndex].leverage,
+                    stakingOptions[selectedOptionIndex].apy
+                  ))).toFixed(2)} 
+                </span>
+                <span style={{marginLeft:'55px ',fontSize:'1rem'}}>in</span>
+              </Typography>
+              </Box>
+            
+
+              <FormControl sx={{mb:1, borderRadius: 3, minWidth:'40%' }}>
+                <Select
+                  labelId="staking-select-label"
+                  label=""
+                  variant="standard"
+                  value={selectedOptionIndex}
+                  onChange={(e) => setSelectedOptionIndex(e.target.value as number)}
+                >
+                  {stakingOptions.map((option, index) => (
+                    <MenuItem key={index} value={index}>
+                      {option.period}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+
+ <Typography textAlign={'left'} variant="h6" sx={{color:'secondary', fontWeight:'bold',fontSize: '1.2rem', mt:2 }}>
+              Total of   <DonutSmallSharpIcon/>
+            </Typography>
+                              <Divider sx={{  }} />
+
+
+            <Box display={'flex'} justifyContent={'space-between'} sx={{ width: '100%' }}>
+              
+              <Box>
+                <Typography textAlign={'left'} variant="h6" sx={{color:'grey', fontWeight: 'bold', fontSize: '1rem' }}> 
+                 <span style={{fontSize:'1rem'}}>Staking reward</span>                </Typography>
+
+                                  <Typography textAlign={'left'} variant="h6" sx={{ fontWeight: 'bold', fontSize: '1rem' }}> 
+
+                   <span style={{color: 'black',}}>
+                    {((parseFloat(calculateEarnings(
+                      stakingData[selectedOptionIndex].amount,
+                      stakingData[selectedOptionIndex].duration,
+                      stakingData[selectedOptionIndex].leverage,
+                      stakingOptions[selectedOptionIndex].apy
+                    )) * 0.16).toFixed(2))} 
+                  </span> 
+                   <span style={{color: 'grey',marginLeft:'5px'}}>
+                   TON   </span>
+                </Typography>
+              </Box>
+
+              <Box>
+                <Typography textAlign={'left'} variant="h6" sx={{color:'grey', fontWeight: 'bold', fontSize: '1rem' }}> 
+                  <span style={{fontSize:'1rem'}}>DeFi extra yield</span>                </Typography>
+
+                                  <Typography textAlign={'left'} variant="h6" sx={{ fontWeight: 'bold', fontSize: '1rem' }}> 
+
+                
+
+                  
+               +   <span style={{color: 'black',}}>
+                    {((parseFloat(calculateEarnings(
+                      stakingData[selectedOptionIndex].amount,
+                      stakingData[selectedOptionIndex].duration,
+                      stakingData[selectedOptionIndex].leverage,
+                      stakingOptions[selectedOptionIndex].apy
+                    )) * 0.84).toFixed(2))}  
+                  </span>
+                                     <span style={{color: 'grey',marginLeft:'5px'}}>
+ TON                   </span>
+
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+
+          
+        </>
+      )}
+
+      {/* Conditionally render the Unstake Card only when in unstaking mode */}
+      {isUnstaking && (
+       <Box sx={{ mt: 2 }}>
+        
+         
+            {stakingHistory.length > 0 ? (
+              stakingHistory.map((stake, index) => {
+                const currentTime = new Date().getTime();
+                const stakeTime = new Date(stake.timestamp).getTime();
+                const durationInMillis = stake.duration * 24 * 60 * 60 * 1000; // Convert duration to milliseconds
+                const totalPotentialEarnings = (stake.amount * (stake.apy / 100) * (stake.duration / 365)); // Total potential earnings
+                const elapsedTime = Math.min(currentTime - stakeTime, durationInMillis); // Time elapsed since stake
+                const elapsedDays = elapsedTime / (1000 * 60 * 60 * 24); // Convert to days
+                const accruedEarnings = (stake.amount * (stake.apy / 100) * (elapsedDays / 365)); // Earnings accrued so far
+
+                // Calculate progress
+                const progress = (accruedEarnings / totalPotentialEarnings) * 100;
+
+                // Check if the duration has passed
+                const isDurationPassed = currentTime >= (stakeTime + durationInMillis);
+
+                // Calculate the activation time for the Unstake button
+                const activationTime = new Date(stakeTime + durationInMillis);
+
+                return (
+                  <Box key={index} sx={{ mb: 2, p: 2, border: '1px solid #e0e0e0', borderRadius: 1, backgroundColor: '#fff' }}>
+                    <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                      Amount: <span style={{ color: '#1976d2' }}>{stake.amount} TON</span>
+                    </Typography>
+                    <Typography variant="body1">
+                      Duration: <span style={{ fontWeight: 'bold' }}>{stake.duration} Days</span>
+                    </Typography>
+                    <Typography variant="body1">
+                      Leverage: <span style={{ fontWeight: 'bold' }}>{stake.leverage}x</span>
+                    </Typography>
+                    <Typography variant="body1">
+                      APY: <span style={{ fontWeight: 'bold' }}>{stake.apy}%</span>
+                    </Typography>
+                    <Typography variant="body1">
+                      Earnings: <span style={{ color: '#1976d2', fontWeight: 'bold' }}>{stake.earnings} TON</span>
+                    </Typography>
+                    <Typography variant="body1">
+                      Timestamp: <span style={{ fontStyle: 'italic' }}>{new Date(stake.timestamp).toLocaleString()}</span>
+                    </Typography>
+                    <Typography variant="body1">
+                      Countdown: <span style={{ fontWeight: 'bold' }}>{calculateRemainingTime(stake.timestamp, stake.duration).days} days, {calculateRemainingTime(stake.timestamp, stake.duration).hours} hours, {calculateRemainingTime(stake.timestamp, stake.duration).minutes} minutes remaining</span>
+                    </Typography>
+                    <Typography variant="body1">
+                      Days Remaining: <span style={{ fontWeight: 'bold' }}>{calculateRemainingDays(stake.timestamp, stake.duration)} days</span>
+                    </Typography>
+                    <Typography variant="body1">
+                      Remaining Minutes: <span style={{ fontWeight: 'bold' }}>{calculateRemainingMinutes(stake.timestamp, stake.duration)} minutes</span>
+                    </Typography>
+                    <Typography variant="body1">
+                      Accrued Earnings: <span style={{ fontWeight: 'bold' }}>{accruedEarnings.toFixed(12)} TON</span>
+                    </Typography>
+                    <LinearProgress variant="determinate" value={Math.min(100, progress)} sx={{ mt: 2 }} />
+                    
+                    {/* Early Unstake Button */}
+                    {!isDurationPassed && (
+                      <Button 
+                        fullWidth
+                        variant="outlined" 
+                        color="warning" 
+                        onClick={() => handleEarlyUnstakeAction(index)} // Implement this function to handle early unstaking
+                        sx={{ mt: 2 }}
+                      >
+                        Early Unstake
+                      </Button>
+                    )}
+
+                    {/* Unstake Button */}
+                    <Button 
+                      fullWidth
+                      variant="contained" 
+                      color="secondary" 
+                      onClick={() => handleUnstakeAction(index)} // Implement this function to handle unstaking
+                      sx={{ mt: 1 }}
+                      disabled={!isDurationPassed} // Disable if duration has not passed
+                    >
+                      Unstake
+                    </Button>
+
+                    {/* Display activation time */}
+                    <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                      This will be active on: <strong>{activationTime.toLocaleString()}</strong>
+                    </Typography>
+                  </Box>
+                );
+              })
+            ) : (
+              <Typography variant="body2" color="text.secondary">
+                No staking history available.
+              </Typography>
+            )}
         </Box>
+      )}
+
+      {/* Unstake Button under all cards */}
+    
+
+      <Box sx={{     
+      }}>
+      {/* Conditionally render the Stake Now button based on unstaking mode */}
+      {!isUnstaking && (
+        <Button variant="contained" color="primary" sx={{ borderRadius: 2, width: '100%', mt: 1, fontSize: '1rem' }} onClick={() => handleOpenDrawer(selectedOptionIndex)}>
+          Stake Now 
+        </Button>
+      )}
+        <Typography 
+          variant="body1" 
+          align="center" 
+          sx={{ mt: 1, color: 'grey', fontSize: '0.8rem' }}
+        >
+          By using the app, you confirm compliance 
+        </Typography>
+        <Typography 
+          variant="body1" 
+          align="center" 
+          sx={{ mb: 1, color: 'grey', fontSize: '0.8rem' }}
+        >
+          with our Terms of Service.
+        </Typography>
+        {leveragedItems.map((item, index) => (
+          <Accordion key={index}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography variant="h6">{item.question}</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>{item.answer}</Typography>
+            </AccordionDetails>
+          </Accordion>
+        ))}
+      </Box>
 
 
         
@@ -780,37 +1074,61 @@ width:'100%', mt: 1,  fontSize: '1rem' }} onClick={() => handleOpenDrawer(select
                 <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
                                 Adjust Staking Amount</Typography>
 
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent:'space-between', }}>
-                  <Box sx={{width:'75%'}}>
-  <TextField
-                    label="Amount"
-                    variant="outlined"
-                    value={selectedStaking.data.amount || '0'}
-                    onChange={(e) => {
-                      const newAmount = parseFloat(e.target.value);
-                      handleAmountChange(selectedOptionIndex, newAmount);
-                    }}
-                    sx={{ mt: 2,width:'100%' }}
-                    error={!!errorMessage}
-                    helperText={errorMessage || `Min: ${stakingOptions[selectedOptionIndex].tonRange.min}`}
-                  />
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Box sx={{ width: '100%' }}>
+                    <TextField
+                      label=""
+          variant="outlined"                      value={selectedStaking.data.amount || '0'}
+                      onChange={(e) => {
+                        const newAmount = parseFloat(e.target.value);
+                        handleAmountChange(selectedOptionIndex, newAmount);
+                      }}
+                      sx={{ mt: 2, width: '100%', fontSize:'2rem' // Alt köşeleri yuvarlak, üst köşeleri düz
+ }}
+                      error={!!errorMessage}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <img src={tonLogo} alt="TON Logo" style={{ width: '25px', height: '25px' }} />
+                          </InputAdornment>
+                        ),
+                        endAdornment: (
+                          <Button
+                            variant="outlined"
+                            color="primary"
+                            sx={{ ml: 1, fontSize: '1rem' }}
+                            onClick={() => {
+                              if (totalBalance !== null) {
+                                handleAmountChange(selectedOptionIndex, totalBalance);
+                              }
+                            }}
+                          >
+                           Max
+                          </Button>
+                        ),
+                      }}
+                    />
                   </Box>
-                <Box>
-  <Button
-                    variant="outlined"
-                    color="primary"
-                    sx={{ ml: 1, fontSize:'0.8rem' , p:1.9 , mb:1 }}
-                    onClick={() => {
-                      if (totalBalance !== null) {
-                        handleAmountChange(selectedOptionIndex, totalBalance);
-                      }
-                    }}
-                  >
-                    Use Max
-                  </Button>
                 </Box>
-                
-                </Box>
+
+              {/* Yeni kutu ekleniyor */}
+              <Box sx={{ 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                mt: -2, 
+                p: 1, 
+                border: '1px solid #1976d2', 
+                borderTop: 0, 
+                borderRadius: '0 0 4px 4px', // Alt köşeleri yuvarlak, üst köşeleri düz
+                backgroundColor: '#e3f2fd' 
+              }}>
+                <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
+                  You will receive:
+                </Typography>
+                <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
+                  {parseFloat(String(selectedStaking.data.amount * selectedStaking.data.leverage || '0')).toFixed(2)} lbTON
+                </Typography>
+              </Box>
 
               {/* Earnings Breakdown Section */}
                 <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
@@ -941,55 +1259,6 @@ width:'100%', mt: 1,  fontSize: '1rem' }} onClick={() => handleOpenDrawer(select
           )}
         </Box>
       </Modal>
-
-      {/* Unstake Card */}
-      <Card sx={{ mt: 4, p: 2, boxShadow: 1, borderRadius: 2 }}>
-        <CardContent>
-          <Typography variant="h5" component="div" sx={{ fontWeight: 'bold', mb: 2 }}>
-            Unstake
-          </Typography>
-          {stakingHistory.length > 0 ? (
-            stakingHistory.map((stake, index) => (
-              <Box key={index} sx={{ mb: 1, p: 1, border: '1px solid #e0e0e0', borderRadius: 1 }}>
-                <Typography variant="body1">
-                  Amount: {stake.amount} TON
-                </Typography>
-                <Typography variant="body1">
-                  Duration: {stake.duration} Days
-                </Typography>
-                <Typography variant="body1">
-                  Leverage: {stake.leverage}x
-                </Typography>
-                <Typography variant="body1">
-                  APY: {stake.apy}%
-                </Typography>
-                <Typography variant="body1">
-                  Earnings: {stake.earnings} TON
-                </Typography>
-                <Typography variant="body1">
-                  Timestamp: {new Date(stake.timestamp).toLocaleString()}
-                </Typography>
-                <Typography variant="body1">
-                  Countdown: {calculateRemainingTime(stake.timestamp, stake.duration).days} days, {calculateRemainingTime(stake.timestamp, stake.duration).hours} hours, {calculateRemainingTime(stake.timestamp, stake.duration).minutes} minutes remaining
-                </Typography>
-                <Typography variant="body1">
-                  Days Remaining: {calculateRemainingDays(stake.timestamp, stake.duration)} days
-                </Typography>
-                <Typography variant="body1">
-                  Remaining Minutes: {calculateRemainingMinutes(stake.timestamp, stake.duration)} minutes
-                </Typography>
-                <Typography variant="body1">
-                  Earnings Increase Per Minute: {calculateRemainingMinutes(stake.timestamp, stake.duration) > 0 ? (stake.earnings / calculateRemainingMinutes(stake.timestamp, stake.duration)).toFixed(2) : 0} TON
-                </Typography>
-              </Box>
-            ))
-          ) : (
-            <Typography variant="body2" color="text.secondary">
-              No staking history available.
-            </Typography>
-          )}
-        </CardContent>
-      </Card>
     </Box>
   );
 };
