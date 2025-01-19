@@ -21,7 +21,6 @@ import WebApp from '@twa-dev/sdk'; // Telegram WebApp SDK
 
 import winSound from '../../assets/win.mp3';
 import { useWindowSize } from 'react-use';
-import DisplayCards from './DisplayAmounts';
 import { useNavigate } from 'react-router-dom';
 
 
