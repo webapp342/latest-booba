@@ -16,7 +16,7 @@ const db = getFirestore(app); // Define the Firestore database instance
 
 const stakingOptions = [
    { 
-    period: '1 Day', 
+    period: '1 Day ', 
     apy: 38.72, 
     durations: [1],
     leverageOptions: [125],
@@ -197,7 +197,7 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
           </Box>
          <Box sx={{ mt: 2,mb:-2,  textAlign:'left' }}>
               <Typography variant="body2" color="text.secondary" sx={{  }}>
-              Your Leveraged Power :  <span style={{color:'#1976d2', fontWeight:'bolder', fontSize:'1rem'}}>{stakingData[index].amount * stakingData[index].leverage} lbTON </span> 
+              Leveraged Power :  <span style={{color:'#1976d2', fontWeight:'bolder', fontSize:'1rem'}}>{stakingData[index].amount * stakingData[index].leverage} TON </span> 
               </Typography>
               
           </Box>
