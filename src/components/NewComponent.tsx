@@ -248,7 +248,7 @@ const calculateTotalStakedAmount = (history: any[]): number => {
 };
 
 const NewComponent: React.FC<NewComponentProps> = () => {
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate(); // Initialize useNavigate()
 
   // Staking verilerini tutan state
   const [stakingData, setStakingData] = useState(
@@ -260,7 +260,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
   );
 
   // Yeni state: Seçilen staking kartı
-  const [selectedOptionIndex, setSelectedOptionIndex] = useState(0); // Varsayılan olarak ilk kartı seç
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState(0); // Varsayılan olarak 7D seçili
 
   // Drawer state'i eklendi
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -593,6 +593,19 @@ const NewComponent: React.FC<NewComponentProps> = () => {
         setIsSelectionEnabled(true);
       }, 2000);
     }
+  };
+
+  const renderStakingData = () => {
+    if (!stakingData || stakingData.length === 0) {
+        return <div>No staking data available.</div>; // Hata mesajı
+    }
+
+    if (selectedOptionIndex < 0 || selectedOptionIndex >= stakingData.length) {
+        return <div>Invalid selection.</div>; // Geçersiz seçim mesajı
+    }
+
+    const data = stakingData[selectedOptionIndex];
+    // ... data ile ilgili diğer işlemler
   };
 
   return (
