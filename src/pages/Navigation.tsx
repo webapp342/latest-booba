@@ -77,8 +77,12 @@ export default function SimpleBottomNavigation() {
             '& .MuiBottomNavigationAction-root': {
               minWidth: 'auto',
               padding: '0',
+                          transition: 'none',
+
               '&.Mui-selected': {
                 padding: '0',
+                            transition: 'none',
+
               },
             },
           }}
@@ -90,14 +94,15 @@ export default function SimpleBottomNavigation() {
               label={item.label}
               sx={{
                 '& .MuiSvgIcon-root': {
-                  fontSize: '22px',
                   mt: 0.5,
+                                    fontSize: '1.5rem',
+
                   color: value === index ? '#9fdfff' : '#757575',
                   mb: 0.5,
                   transition: 'none',
                 },
                 '& .MuiBottomNavigationAction-label': {
-                  fontSize: '0.7rem',
+                  fontSize: '0.8rem',
                   mb: 1.95,
                   fontWeight: value === index ? 600 : 400,
                   color: value === index ? '#9fdfff' : '#757575',

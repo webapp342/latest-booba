@@ -166,7 +166,7 @@ const images: { src: string, text: string, additionalText1: string, additionalTe
 const Example: React.FC = () => {
     return (
         <ThemeProvider theme={theme}>
-            <Box sx={{                    backgroundColor:  'black',
+            <Box sx={{                  
 }} m={1} borderRadius={5} overflow="hidden">
                 <Box>
                 <Slide 
@@ -178,7 +178,7 @@ const Example: React.FC = () => {
                                 borderRadius: 15,
                                 width: '10vw',
                                 height: '10vw',
-                                position: 'absolute',
+                                position: 'absolute', 
                                 bottom: '3vh',
                                 right: '1vw',
                                 transform: 'translateY(50%)',
@@ -285,9 +285,19 @@ const Example: React.FC = () => {
               
 
        <Box mt={4}>
-  <Typography p={1} fontSize={'1.5rem'}>
+
+        <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
+           <Typography p={1} fontSize={'1.5rem'}>
     Lucky Games
   </Typography>
+
+
+   <Typography p={1} fontSize={'1rem'} sx={{color:"#b4e6ff",}}>
+    See all
+  </Typography>
+
+        </Box>
+ 
 
   {/* Top Games Section */}
   <Box
@@ -332,7 +342,7 @@ const Example: React.FC = () => {
           <Typography
             variant="body2"
             pt={1}
-            color="black"
+            color="white"
             sx={{
               textAlign: 'left',
               fontWeight:'bold',
@@ -374,9 +384,19 @@ const Example: React.FC = () => {
  <Box>
     
               <Box mt={4}>
-  <Typography p={1} fontSize={'1.5rem'}>
+  
+
+  <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
+           <Typography p={1} fontSize={'1.5rem'}>
     Live Games
   </Typography>
+
+
+   <Typography p={1} fontSize={'1rem'} sx={{color:"#b4e6ff",}}>
+    See all
+  </Typography>
+
+        </Box>
 
   {/* Top Games Section */}
   <Box
@@ -424,7 +444,7 @@ const Example: React.FC = () => {
               textAlign: 'left',
               fontWeight:'bold',
               alignSelf: 'flex-start', // Align text to the start of the container
-            }}  variant="body2" fontWeight={'bold'}  pt={1} color="black">
+            }}  variant="body2" fontWeight={'bold'}  pt={1} color="white">
           {image.description}
         </Typography>
 
@@ -445,9 +465,20 @@ const Example: React.FC = () => {
 
 
               <Box mt={4}>
-  <Typography p={1} fontSize={'1.5rem'}>
+
+
+
+  <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
+           <Typography p={1} fontSize={'1.5rem'}>
     Bonus Buy
   </Typography>
+
+
+   <Typography p={1} fontSize={'1rem'} sx={{color:"#b4e6ff",}}>
+    See all
+  </Typography>
+
+        </Box>
 
   {/* Top Games Section */}
   <Box
@@ -495,7 +526,7 @@ const Example: React.FC = () => {
               textAlign: 'left',
               fontWeight:'bold',
               alignSelf: 'flex-start', // Align text to the start of the container
-            }}  variant="body2" fontWeight={'bold'}  pt={1} color="black">
+            }}  variant="body2" fontWeight={'bold'}  pt={1} color="white">
           {image.description}
         </Typography>
 
@@ -515,9 +546,21 @@ const Example: React.FC = () => {
 
 
               <Box mt={4}>
-  <Typography p={1} fontSize={'1.5rem'}>
+
+
+ 
+
+    <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
+           <Typography p={1} fontSize={'1.5rem'}>
     Instant Win
   </Typography>
+
+
+   <Typography p={1} fontSize={'1rem'} sx={{color:"#b4e6ff",}}>
+    See all
+  </Typography>
+
+        </Box>
 
   {/* Top Games Section */}
   <Box
@@ -565,7 +608,7 @@ const Example: React.FC = () => {
               textAlign: 'left',
               fontWeight:'bold',
               alignSelf: 'flex-start', // Align text to the start of the container
-            }} variant="body2" fontWeight={'bold'}  pt={1} color="black">
+            }} variant="body2" fontWeight={'bold'}  pt={1} color="white">
           {image.description}
         </Typography>
 
@@ -586,9 +629,20 @@ const Example: React.FC = () => {
 
 
               <Box mt={4}>
-  <Typography p={1} fontSize={'1.5rem'}>
+ 
+
+
+   <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
+           <Typography p={1} fontSize={'1.5rem'}>
     Jackpots
   </Typography>
+
+
+   <Typography p={1} fontSize={'1rem'} sx={{color:"#b4e6ff",}}>
+    See all
+  </Typography>
+
+        </Box>
 
   {/* Top Games Section */}
   <Box
@@ -636,7 +690,7 @@ const Example: React.FC = () => {
               textAlign: 'left',
               fontWeight:'bold',
               alignSelf: 'flex-start', // Align text to the start of the container
-            }} variant="body2" fontWeight={'bold'}  pt={1} color="black">
+            }} variant="body2" fontWeight={'bold'}  pt={1} color="white">
           {image.description}
         </Typography>
 

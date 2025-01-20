@@ -37,6 +37,9 @@ import task7Logo from '../assets/bblip.png';
 import task8Logo from '../assets/bblip.png';
 import WebApp from "@twa-dev/sdk";
 
+import watchad from '../assets/ad.png';
+
+
 import task9Logo from '../assets/ton_logo_dark_background.svg';
 import task10Logo from '../assets/ton_logo_dark_background.svg';
 import task11Logo from '../assets/ton_logo_dark_background.svg';
@@ -161,7 +164,7 @@ const CategorySelector = ({ category, isSelected, hasBadge, onClick }: {
 const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount, requiredCount }: any) => (
   <Box
     sx={{
-      backgroundColor: '#1E1E1E',
+      backgroundColor: '#282828',
       boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
       borderRadius: '16px',
        p: { xs: 1, sm: 2.5 },
@@ -292,7 +295,8 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
     sx={{
       textTransform: 'none',
       borderRadius: '12px',
-      backgroundColor: '#00c6ff',
+      color:'black',
+      backgroundColor: '#b4e6ff',
       fontSize: { xs: '0.8rem', sm: '0.85rem' },
       fontWeight: 600,
       px: { xs: 2, sm: 3 },
@@ -301,8 +305,8 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
         backgroundColor: '#0072ff'
       },
       '&:disabled': {
-        backgroundColor: 'rgba(0, 0, 0, 0.12)',
-        color: 'rgba(0, 0, 0, 0.26)'
+        backgroundColor: '#2f363a',
+        color: '#8b8b8b'
       }
     }}
   >
@@ -484,7 +488,6 @@ const DealsComponent: React.FC = () => {
           justifyContent: 'center',
           p: { xs: 2, sm: 3 },
           mb: 10,
-                    backgroundColor:  'black',
 
           maxWidth: '1200px',
           mx: 'auto'
@@ -583,38 +586,74 @@ const DealsComponent: React.FC = () => {
               ?.tasks.map((taskIndex) => {
                    if (taskIndex === 9) { // "Watch a Video" görevi
                 return (
+
+                  // "Watch a Video" görevi
+              
+ 
+                  // "Watch a Video" görevi
+                  // "Watch a Video" görevi
                   <Box
                     key={taskIndex}
-                    sx={{
-                      backgroundColor: '#1E1E1E',
-                      boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
-                      borderRadius: '16px',
-                      p: { xs: 2, sm: 2.5 },
-                      mb: 2,
-                      display: 'flex',
-                      justifyContent: 'space-between', // Buton ve açıklama arasında boşluk bırak
-                      alignItems: 'center',
-                      border: '1px solid rgba(0, 0, 0, 0.05)',
-                      minHeight: '80px'
-                    }}
+              sx={{
+      backgroundColor: '#282828',
+      boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
+      borderRadius: '16px',
+       p: { xs: 1, sm: 2.5 },
+                  mb: 2,
+                  width: '95%',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      border: '1px solid rgba(0, 0, 0, 0.05)',
+     
+    }}
                   >
-                    <Typography 
-                      variant="body1" 
-                      sx={{ 
-                        fontWeight: 600,
-                        color: 'rgba(0, 0, 0, 0.4)',
-                        fontSize: { xs: '0.9rem', sm: '1rem' }
-                      }}
-                    >
-                      {tasksMetadata[taskIndex].description}
-                    </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+      <Box
+        component="img"
+        src={watchad}
+        alt={`Task } logo`}
+        sx={{
+          width: { xs: '28px', sm: '32px' },
+          height: { xs: '28px', sm: '32px' },
+          borderRadius: '50%',
+          padding: '6px',
+          backgroundColor: 'rgba(0, 198, 255, 0.05)',
+          border: '1px solid rgba(0, 198, 255, 0.1)'
+        }}
+      />
+      <Box>
+        <Typography 
+          variant="body1" 
+          sx={{ 
+            fontWeight: 700,
+            color: '#FFFFFF',
+            fontSize: { xs: '0.8rem', sm: '0.8rem' },
+            mb: 0.5
+          }}
+        >
+       Hourly Task
+        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+         
+          <Typography 
+            variant="body2" 
+            sx={{ 
+              color: '#FFFFFF',              fontSize: { xs: '0.75rem', sm: '0.8rem' }
+            }}
+          >
+         +5 BBLIP
+          </Typography>
+        </Box>
+      </Box>
+    </Box>
                     <ShowAdButton /> {/* ShowAdButton bileşenini buraya ekleyin */}
                   </Box>
                 );
               }
                    if (selectedCategory === 3 && taskIndex === 4) {
                   return (
-                    <Box key="test-component" sx={{ mb: 2 , mt:-3 }}>
+                    <Box key="test-component" sx={{ mb: 2  }}>
                       <TestComponent />
                     </Box>
                   );
@@ -624,23 +663,23 @@ const DealsComponent: React.FC = () => {
                     <Box
                       key={taskIndex}
                       sx={{
-                        backgroundColor: '#1E1E1E',
+                        backgroundColor: '#282828',
                         boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
                         borderRadius: '16px',
                         mb: 2,
-                        mt:-3,
+                    
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
                         border: '1px solid rgba(0, 0, 0, 0.05)',
-                        minHeight: '80px'
+                        minHeight: '55px'
                       }}
                     >
                       <Typography 
                         variant="body1" 
                         sx={{ 
                           fontWeight: 600,
-                          color: 'rgba(0, 0, 0, 0.4)',
+                          color: 'gray',
                           fontSize: { xs: '0.9rem', sm: '1rem' }
                         }}
                       >
@@ -683,7 +722,7 @@ const DealsComponent: React.FC = () => {
             {(selectedCategory === 1 || selectedCategory === 2) && (
               <Box
                 sx={{
-                  backgroundColor: '#1E1E1E',
+                  backgroundColor: '#282828',
                   boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
                   borderRadius: '16px',
                   p: { xs: 1, sm: 2.5 },

@@ -1016,7 +1016,7 @@ const [showConfetti, setShowConfetti] = useState(false);
             margin: '0 12px',
           }}
         >
-          999.999 TON
+          999 TON
         </Typography>
 
         {/* Right Stars */}

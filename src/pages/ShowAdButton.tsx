@@ -3,6 +3,7 @@ import { useAdsgram } from './useAdsgram';
 import { ShowPromiseResult } from './adsgram';
 import { updateUserBblip } from '../utils/database';
 import { getFirestore, doc, onSnapshot } from 'firebase/firestore';
+import { Button } from '@mui/material';
 
 const db = getFirestore();
 
@@ -91,7 +92,17 @@ export function ShowAdButton(): ReactElement {
           <p>{formatTimeLeft(timeLeft)}</p>
         </div>
       ) : (
-        <button onClick={showAd}>Show Ad</button>
+        <Button onClick={showAd}  sx={{
+      textTransform: 'none',
+      borderRadius: '12px',
+      color:'black',
+      backgroundColor: '#b4e6ff',
+      fontSize: { xs: '0.8rem', sm: '0.85rem' },
+      fontWeight: 600,
+      px: { xs: 2, sm: 3 },
+      py: { xs: 0.5, sm: 0.75 },
+     
+    }}>Watch Now</Button>
       )}
     </>
   );
