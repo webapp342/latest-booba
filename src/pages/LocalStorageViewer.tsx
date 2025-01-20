@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ThemeProvider, createTheme, Tooltip } from "@mui/material";
 import QRCode from 'qrcode';
-import { Box,  Typography, Button, Avatar, TextField, InputAdornment, Drawer, Snackbar, SnackbarContent } from "@mui/material";
+import { Box, Card, CardContent, Typography, Button, Avatar, TextField, InputAdornment, Drawer, Snackbar, SnackbarContent } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import SwapHorizontalCircleIcon from '@mui/icons-material/SwapHorizontalCircle';import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import OutboundIcon from '@mui/icons-material/Outbound';import TransactionHashes from "./TransactionHashes"; // Bileşeninizin yolu
@@ -145,24 +145,23 @@ const AccountEquityCard: React.FC = () => {
 
   const [openDrawer, setOpenDrawer] = useState(false);
 
-
-  useEffect(() => {
-    const backButton = WebApp.BackButton;
-
-    // BackButton'u görünür yap ve tıklanma işlevi ekle
-    backButton.show();
-    backButton.onClick(() => {
-      navigate("/latest-booba/");
-    });
-
-    // Cleanup: Bileşen unmount olduğunda butonu gizle ve event handler'ı kaldır
-    return () => {
-      backButton.hide();
-      backButton.offClick(() => {
-        navigate("/latest-booba/"); // Buraya tekrar aynı callback sağlanmalıdır.
+useEffect(() => {
+      const backButton = WebApp.BackButton;
+  
+      // BackButton'u görünür yap ve tıklanma işlevi ekle
+      backButton.show();
+      backButton.onClick(() => {
+        navigate("/latest-booba/top");
       });
-    };
-  }, [navigate]);
+  
+      // Cleanup: Bileşen unmount olduğunda butonu gizle ve event handler'ı kaldır
+      return () => {
+        backButton.hide();
+        backButton.offClick(() => {
+          navigate("/latest-booba/top"); // Buraya tekrar aynı callback sağlanmalıdır.
+        });
+      };
+    }, [navigate]);
 
   // Drawer'ı açma/kapama işlevi
   const handleClick1 = () => {
@@ -258,12 +257,17 @@ const AccountEquityCard: React.FC = () => {
       return actualAmount;
     }
     if (symbol === "BBLIP") {
-      return actualAmount * 0.07; // BBLIP fiyatı
+      return actualAmount * 0.07; // BBLIP price using actual amount
     }
-    if (symbol === "TON" && tonPrice !== null) {
-      return actualAmount * tonPrice; // TON fiyatı
+    if (symbol === "TON") {
+      if (tonPrice !== null) {
+        return actualAmount * tonPrice; // TON price using actual amount
+      } else {
+        console.warn("TON price is not available");
+        return 0; // Return 0 if tonPrice is not available
+      }
     }
-    return 0; // Eğer hiçbir koşul sağlanmazsa 0 döner
+    return 0;
   };
 
   useEffect(() => {
@@ -274,7 +278,7 @@ const AccountEquityCard: React.FC = () => {
     }));
 
     setData(updatedData);
-  }, [tonPrice, data]);
+  }, [tonPrice]); // Sadece tonPrice'ı bağımlılık olarak bırakıyoruz
 
   // Arama filtreleme fonksiyonu
   const filteredData = data.filter(
@@ -370,20 +374,20 @@ const AccountEquityCard: React.FC = () => {
  
               <Box>
         {/* İlk Kart */}
-        <Box sx={{ borderRadius: 3, mt: 1, mx: 1,p:1, backgroundColor: '#282828' }}>
-       
+        <Box sx={{ borderRadius: 3, mt: 1, mx: 1,p:2, backgroundColor: '#282828' }}>
             {/* Total Account Equity */}
             <Typography
               variant="subtitle2"
               sx={{ color: "white" }}
               align="center"
+              gutterBottom
             >
               Total Account Equity
             </Typography>
             <Typography mt={-1} variant="subtitle1" align="center" gutterBottom>
-              <span style={{ fontSize: "3rem" ,color:"grey"}}>$</span>
-              <span style={{ fontSize: "3rem", fontWeight:"bold" }}>{totalEquity.split('.')[0]}</span>
-              <span style={{ fontSize: "1.8rem" }}>.{totalEquity.split('.')[1]}</span>
+              <span style={{ fontSize: "2.5rem" ,color:"grey"}}>$</span>
+              <span style={{ fontSize: "2.5rem", fontWeight:"bold" }}>{totalEquity.split('.')[0]}</span>
+              <span style={{ fontSize: "1.6rem" }}>.{totalEquity.split('.')[1]}</span>
             </Typography>
            
 
@@ -409,16 +413,14 @@ const AccountEquityCard: React.FC = () => {
                   backgroundColor: "transparent",
               color:'white',
                   fontSize: '0.7rem',
-                  border:"1px solid #575757",
+                  border:"1px solid #717171",
                   width:"25%",
                   mr:1,
-                                    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
-
                   borderRadius: 2,
                 }}
                 onClick={handleDepositClick}
               >
-                <AddCircleIcon sx={{color:"#9fdfff", fontSize: '1.5rem' }} />
+                <AddCircleIcon sx={{ fontSize: '1.5rem', color:"#89d9ff" }} />
                 Deposit
               </Button>
       <Button
@@ -433,13 +435,12 @@ const AccountEquityCard: React.FC = () => {
                   fontSize: '0.7rem',
                   border:"1px solid #575757",
                                     backgroundColor: "#282828",
-                  boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
 
                   borderRadius: 2,
                 }}
         onClick={handleClick1}
       >
-        <OutboundIcon sx={{color:"#9fdfff", fontSize: '1.5rem' }} />
+        <OutboundIcon sx={{ fontSize: '1.5rem', color:"#89d9ff" }} />
         Withdraw
       </Button>
 
@@ -468,15 +469,16 @@ const AccountEquityCard: React.FC = () => {
     sx={{
                   flexDirection: 'column', // Stack icon and text vertically
                   textTransform: "none",
-  border:"1px solid #575757",
-                                    backgroundColor: "#282828",                                    width:"25%",
+                border:"1px solid #575757",
+                                    backgroundColor: "#282828",
+                                    width:"25%",
 color:'white',
                   fontSize: '0.7rem',
                   boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
                   borderRadius: 2,
                 }}
 >
-  <SwapHorizontalCircleIcon sx={{color:"#9fdfff", fontSize: '1.5rem' }} />
+  <SwapHorizontalCircleIcon sx={{ fontSize: '1.5rem', color:"#89d9ff" }} />
   Swap
 </Button>
 
@@ -486,7 +488,7 @@ color:'white',
        sx={{
                   flexDirection: 'column', // Stack icon and text vertically
                   textTransform: "none",
-               border:"1px solid #575757",
+                border:"1px solid #575757",
                                     backgroundColor: "#282828",
                                     width:"25%",
 ml:1,
@@ -496,7 +498,7 @@ ml:1,
                   borderRadius: 2,
                 }}
       >
-        <ReceiptLongIcon sx={{color:"#9fdfff", fontSize: '1.5rem' }} />
+        <ReceiptLongIcon sx={{ fontSize: '1.5rem', color:"#89d9ff" }} />
         History
       </Button>
       <Drawer
@@ -559,7 +561,8 @@ ml:1,
     </Box>
 
       {/* İkinci Kart - Asset List */}
-<Box sx={{bgcolor:"#282828",p:"1", borderRadius: 3, mt: 1, m:1 }}>
+<Card sx={{ borderRadius: 3, mt: 1, m:1 }}>
+  <CardContent>
    
     {/* Başlık ve Arama Kutusu */}
     <Box
@@ -567,9 +570,8 @@ ml:1,
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-
+        mb: 2,
         
-        p:2,
       }}
     >
       {/* Arama Kutusunun Görünümü */}
@@ -627,8 +629,8 @@ ml:1,
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            mb: 0.5,
-            borderBottom: index < filteredData.length - 1 ? "" : "#575757",
+            mb: 1,
+            borderBottom: index < filteredData.length - 1 ? "" : "none",
             p: 1,
             backgroundColor: !item.active ? "grey.100" : "transparent",
             backgroundImage: !item.active
@@ -656,7 +658,7 @@ ml:1,
                 )}
               </Typography>
                <Typography variant="subtitle2" color={"gray"}>
-              {formatDisplayAmount(item.amount, item.symbol)}  {item.name}   
+              {formatDisplayAmount(item.amount, item.symbol)}  {item.name}
             </Typography>
              
             </Box>
@@ -674,7 +676,8 @@ ml:1,
     ))}
 
   
-</Box>
+  </CardContent>
+</Card>
 </Box>
 
 
@@ -740,9 +743,7 @@ ml:1,
           <span>Loading QR Code...</span>
         )}
       </Box>
-      
     </Box>
-    
 
     
 
