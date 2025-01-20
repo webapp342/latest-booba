@@ -20,7 +20,10 @@ const UserAvatar: React.FC<UserAvatarProps> = ({ displayName }) => {
         height: 22, 
         ml:0.1,
         backgroundColor: user?.photo_url ? "transparent" : "blue", 
-        color: "white" 
+        color: "white",
+        borderRadius: '50%',
+        overflow: 'hidden',
+        objectFit: 'cover',
       }}
     >
       {!user?.photo_url && displayName.slice(0, 2).toUpperCase()}
