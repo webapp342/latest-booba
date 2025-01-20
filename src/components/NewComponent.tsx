@@ -751,7 +751,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                     stakingData[selectedOptionIndex].duration,
                     stakingData[selectedOptionIndex].leverage,
                     stakingOptions[selectedOptionIndex].apy
-                  ))).toFixed(8)} 
+                  ))).toFixed(6)} 
                 </span>
                 <span style={{marginLeft:'7px ',fontSize:'1.2rem', color:"#90EE90"}}>TON</span>
               </Typography>
