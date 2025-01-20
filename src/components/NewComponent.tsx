@@ -767,7 +767,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                       stakingOptions[selectedOptionIndex].apy
                     ))).toFixed(2)} 
                   </span>
-                  <span style={{marginLeft:'7px ',fontSize:'2rem', color:"#90EE90"}}>TON</span>
+                  <span style={{marginLeft:'7px ',fontSize:'1.5rem', color:"#90EE90"}}>TON</span>
                   <span style={{ marginLeft: '5px', fontSize: '1rem', color: 'gray' }}>
                    ({ (parseFloat(calculateEarnings(
                       stakingData[selectedOptionIndex].amount, 
