@@ -24,20 +24,20 @@ const db = getFirestore(app); // Define the Firestore database instance
 const calculateAPY = (amount: number, period: string): number => {
     if (period === '1 D') {
         if (amount < 125) {
-            return 38.89; // 12% APY for amounts less than 50
+            return 7.89; // 12% APY for amounts less than 50
         } else if (amount < 500) {
-            return 19.10; // 16% APY for amounts between 50 and 100
+            return 11.10; // 16% APY for amounts between 50 and 100
         } else {
-            return 34.89; // 20% APY for amounts between 100 and 250
+            return 23.89; // 20% APY for amounts between 100 and 250
         } 
     } else if (period === '14 D') {
         if (amount < 50) {
             return 8.89; // 15% APY for amounts less than 100
         } else if (amount < 250) {
-            return 10.02; // 20% APY for amounts between 100 and 300
+            return 14.02; // 20% APY for amounts between 100 and 300
         }
         else {
-            return 15.12; // 20% APY for amounts between 100 and 250
+            return 22.12; // 20% APY for amounts between 100 and 250
         } 
     } else if (period === '30 D') {
         if (amount < 50) {
@@ -53,7 +53,7 @@ const calculateAPY = (amount: number, period: string): number => {
         } else if (amount < 250) {
             return 10.19; // 15% APY for amounts between 25 and 100
         } else {
-            return 17.12; // 20% APY for amounts between 100 and 250
+            return 13.12; // 20% APY for amounts between 100 and 250
         }
     }
     return 0; // Default return if no conditions are met
@@ -74,10 +74,10 @@ const calculateLeverage = (amount: number, period: string): number => {
         if (amount < 50) {
             return 125; // 1. kademe
         } else if (amount < 250) {
-            return 150; // 2. kademe
+            return 125; // 2. kademe
         }
        else {
-            return 175; // 4. kademe
+            return 125; // 4. kademe
         }
     } else if (period === '30 D') {
         if (amount < 50) {
@@ -95,7 +95,7 @@ const calculateLeverage = (amount: number, period: string): number => {
             return 125; // 2. kademe
         }
         else {
-            return 125; // 4. kademe
+            return 200; // 4. kademe
         }
     }
     return 0; // Default return if no conditions are met
@@ -107,7 +107,7 @@ const stakingOptions = [
         period: '1 D', 
         apy: calculateAPY(25, '1 D'), // Example amount of 25
         durations: [1],
-        leverageOptions: [220],
+        leverageOptions: [320],
         tonRange: { min: 50, max: 1500 }
     },
     { 
@@ -128,7 +128,7 @@ const stakingOptions = [
         period: '90 D', 
         apy: calculateAPY(300, '90 D'), // Example amount of 300
         durations: [90],
-        leverageOptions: [200],
+        leverageOptions: [180],
         tonRange: { min: 1, max: 1500 }
     },
 ];
