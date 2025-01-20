@@ -299,6 +299,9 @@ const NewComponent: React.FC<NewComponentProps> = () => {
   // New state to manage the selected action
   const [selectedAction, setSelectedAction] = useState<'stake' | 'unstake'>('stake');
 
+  // New state to manage selection enablement
+  const [isSelectionEnabled, setIsSelectionEnabled] = useState(true);
+
   // Fetch total balance and staking history from Firestore when the component mounts
   useEffect(() => {
     const telegramUserId = localStorage.getItem("telegramUserId");
@@ -580,6 +583,18 @@ const NewComponent: React.FC<NewComponentProps> = () => {
     }
   };
 
+  const handleSelectionChange = (newValue: number) => {
+    if (isSelectionEnabled) {
+      setSelectedOptionIndex(newValue);
+      setIsSelectionEnabled(false); // Seçimi devre dışı bırak
+
+      // 2 saniye sonra tekrar seçim yapılabilir hale getir
+      setTimeout(() => {
+        setIsSelectionEnabled(true);
+      }, 2000);
+    }
+  };
+
   return (
     <Box style={{ marginBottom: '76px', backgroundColor: '#1E1E1E',  padding: 8 }}>
       <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} mb={2} mt={2}>
@@ -730,7 +745,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                 color="primary"
                 value={selectedOptionIndex}
                 exclusive
-                onChange={(_e, newValue) => setSelectedOptionIndex(newValue as number)}
+                onChange={(_e, newValue) => handleSelectionChange(newValue as number)}
                 sx={{ minWidth: '20%' }}
               >
                 {stakingOptions.map((option, index) => (
