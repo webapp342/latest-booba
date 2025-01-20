@@ -71,7 +71,7 @@ export default function SimpleBottomNavigation() {
           onChange={(_, newValue) => handleNavigationChange(newValue)}
           showLabels
           sx={{
-            height: '60px',
+            height: '65px',
             bgcolor: '#282828',
             transition: 'none',
             '& .MuiBottomNavigationAction-root': {
@@ -94,16 +94,16 @@ export default function SimpleBottomNavigation() {
               label={item.label}
               sx={{
                 '& .MuiSvgIcon-root': {
-                  mt: 0.5,
+                  mt: 2,
                                     fontSize: '1.5rem',
 
                   color: value === index ? '#9fdfff' : '#757575',
-                  mb: 0.5,
+                  
                   transition: 'none',
                 },
                 '& .MuiBottomNavigationAction-label': {
                   fontSize: '0.8rem',
-                  mb: 1.95,
+                  mb: 4,
                   fontWeight: value === index ? 600 : 400,
                   color: value === index ? '#9fdfff' : '#757575',
                   transition: 'none',
