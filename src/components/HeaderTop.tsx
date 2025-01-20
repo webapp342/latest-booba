@@ -118,17 +118,21 @@ function ResponsiveAppBar() {
                     const balance = selected === 'bblip' ? bblip : total;
                     const logo = selected === 'bblip' ? bblipLogo : totalLogo;
                     const displayedBalance = balance !== null ? (balance / 1000).toFixed(2) : 'Loading...';
+
+                    // Her logo için ayrı stil tanımlama
+                    const avatarStyles = selected === 'bblip' 
+                      ? { width: "90%", height: "90%" } // BBLIP için stil
+                      : { width: "70%", height: "70%" }; // Total için stil
+
                     return (
                       <Box sx={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
-                        <Box
-                          sx={{ height: '30px', mr: '10px' }}
-                        >
+                        <Box sx={{ mr: '10px' }}>
                           <Avatar
-                          sx={{width:"100%", height:"100%"}}
+                            sx={avatarStyles} // Burada stil uygulama
                             src={logo}
                           />
                         </Box>
-                        <ChangeCircleOutlinedIcon
+                        <ChangeCircleOutlinedIcon fontSize='medium'
                           style={{
                             position: 'absolute',
                             bottom: '0',
@@ -136,7 +140,7 @@ function ResponsiveAppBar() {
                             color: '#00c6ff',
                             padding: 1,
                             transform: `translate(-55%, 30%) rotate(${menuOpen ? 140 : 0}deg)`, // Rotate based on menu state
-                            transition: 'transform 0.3s ease', // Smooth transition for rotation
+                            transition: 'transform 0.1s ease', // Kısa geçiş süresi
                             borderRadius: '50%', // Make it circular
                             backgroundColor: '#282828', // Use dark theme background
                           }}
