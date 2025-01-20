@@ -99,7 +99,7 @@ const TopComponent: React.FC = () => {
         badgeNumber: '1',
                 reward: '5000',
                                 prizeImage: Avatar1,
-                                                                prizeColor: 'green'
+                                                                prizeColor: '#90EE90'
 
 
 
@@ -113,7 +113,7 @@ const TopComponent: React.FC = () => {
         badgeNumber: '2',
                 reward: '2500',
                 prizeImage: Avatar1,
-                                                                                prizeColor: 'green'
+                                                                                prizeColor: '#90EE90'
 
 
       },
@@ -126,7 +126,7 @@ const TopComponent: React.FC = () => {
         badgeNumber: '3',
         reward: '2500',
                         prizeImage: Avatar1,
-                                                                                        prizeColor: 'green'
+                                                                                        prizeColor: '#90EE90'
 
 
       },
@@ -144,7 +144,7 @@ const TopComponent: React.FC = () => {
                     
 
 
-    <Box sx={{          backgroundColor:  'black',
+    <Box sx={{          backgroundColor:  '#1E1E1E',
  display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', p: 2, mt:2, mb:5 }}>
 
       <Box>
@@ -330,13 +330,12 @@ const TopComponent: React.FC = () => {
       flexGrow: 1, // Buton genişler
       textTransform: 'none',
       marginRight: 1, // Butonlar arasına boşluk
-      backgroundColor: activeTab === 'holders' ? '#00c6ff' : 'white',
-      color: activeTab === 'holders' ? 'white' : '#1976d2',
-      borderColor: '#00c6ff',
+      backgroundColor: activeTab === 'holders' ? '#b4e6ff' : '#e0e0e0',
+      color: activeTab === 'holders' ? 'black' : 'black',
       borderRadius: 2,
        px:2,
        fontSize:'0.8rem',
-      boxShadow: activeTab === 'holders' ? '0px 4px 10px rgba(0, 0, 0, 0.2)' : 'none',
+      boxShadow: activeTab === 'holders' ? '0px 4px 10px rgba(0, 198, 255, 0.5)' : 'none',
       transition: 'all 0.9s ease',
       '&:hover': {
         backgroundColor: activeTab === 'holders' ? '#1565c0' : '#e3f2fd',
@@ -364,15 +363,14 @@ const TopComponent: React.FC = () => {
   sx={{
     flexGrow: 1,
     marginLeft: 1,
-    backgroundColor: activeTab === 'winners' ? '#00c6ff' : 'white',
-    color: activeTab === 'winners' ? 'white' : '#1976d2',
-    borderColor: '#00c6ff',
+    backgroundColor: activeTab === 'winners' ? '#b4e6ff' : '#e0e0e0',
+    color: activeTab === 'winners' ? 'black' : 'black',
     textTransform: 'none',
     borderRadius: 2,
     px:2,
            fontSize:'0.8rem',
 
-    boxShadow: activeTab === 'winners' ? '0px 4px 10px rgba(0, 0, 0, 0.2)' : 'none',
+    boxShadow: activeTab === 'winners' ? '0px 4px 10px rgba(0, 198, 255, 0.5)' : 'none',
     transition: 'all 0.9s ease',
     display: 'flex', // İç öğelerin yatay hizalanması için
     alignItems: 'center',
@@ -390,7 +388,7 @@ const TopComponent: React.FC = () => {
       marginX: 1, // Yazı ile avatar arasında boşluk
     }}
   />
-  Winners <span> (Jackpot)</span>
+  Winners <span> </span>
 </Button>
 
 
@@ -400,7 +398,7 @@ const TopComponent: React.FC = () => {
       {/* Aktif Sekme İçeriği */}
 
       {activeTab === 'winners' ? (
-        <Box sx={{ width: '100%', backgroundColor: '#1E1E1E', padding: 2, marginTop: 2 }}>
+        <Box sx={{ width: '100%', backgroundColor: '#2f363a', padding: 2, marginTop: 2 }}>
           <Box sx={{ marginTop: 0 }}>
             {/* Add headings for Place ID and Prize */}
             <Box sx={{ display: 'flex', justifyContent: 'space-between', fontWeight: 'bold', marginBottom: 1 }}>
@@ -459,7 +457,7 @@ const TopComponent: React.FC = () => {
           </Box>
         </Box>
       ) : (
-        <Box sx={{ width: '100%', backgroundColor: '#1E1E1E', padding: 2, marginTop: 2 }}>
+        <Box sx={{ width: '100%', backgroundColor: '#2f363a', padding: 2, marginTop: 2 }}>
           <Box sx={{ marginTop: 0 }}>
             {/* Add headings for Place ID and Prize */}
             <Box sx={{ display: 'flex', justifyContent: 'space-between', fontWeight: 'bold', marginBottom: 1 }}>
@@ -511,7 +509,7 @@ const TopComponent: React.FC = () => {
                
 
                 {/* Prize Area */}
-                <Typography sx={{ fontSize: '1rem', color: 'green', marginLeft: 2 }}>
+                <Typography sx={{ fontSize: '1rem', color: '#90EE90', marginLeft: 2 }}>
                   {item.prize ? item.prize : 'N/A'}
                 </Typography>
               </Box>
