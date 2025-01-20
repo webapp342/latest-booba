@@ -581,7 +581,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
   };
 
   return (
-    <Box style={{ marginBottom: '76px', backgroundColor: 'black', borderRadius: '8px', padding: '20px' }}>
+    <Box style={{ marginBottom: '76px', backgroundColor: 'black',  padding: 8 }}>
       <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} mb={2} mt={2}>
 <Typography
   sx={{
