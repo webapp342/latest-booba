@@ -22,33 +22,33 @@ const stakingOptions = [
    
   { 
     period: '7 D', 
-    apy: 26.44, 
+    apy: 13.44, 
     durations: [7],
-    leverageOptions: [150],
-    tonRange: { min: 25, max: 250 }
+    leverageOptions: [100],
+    tonRange: { min: 25, max: 1000 }
   },
   { 
     period: '14 D', 
-    apy: 21.42, 
+    apy: 31.42, 
     durations: [14],
-    leverageOptions: [175],
-    tonRange: { min: 1, max: 500 }
+    leverageOptions: [125],
+    tonRange: { min: 5, max: 500 }
   },
 
   { 
     period: '30 D', 
-    apy: 17.25, 
+    apy: 32.26, 
     durations: [30],
-    leverageOptions: [200],
+    leverageOptions: [175],
     tonRange: { min: 1, max: 500 }
   },
  
   { 
     period: '90 D', 
-    apy: 13.72, 
+    apy: 32.72, 
     durations: [90],
     leverageOptions: [200],
-    tonRange: { min: 1, max: 1000 }
+    tonRange: { min: 1, max: 500 }
   },
  
  
