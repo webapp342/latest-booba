@@ -71,12 +71,9 @@ export default function SimpleBottomNavigation() {
           onChange={(_, newValue) => handleNavigationChange(newValue)}
           showLabels
           sx={{
-           
-             borderTopLeftRadius: '16px',
-          borderTopRightRadius: '16px',
             height: '60px',
-            bgcolor: '#121212',
-        
+            bgcolor: '#282828',
+            transition: 'none',
             '& .MuiBottomNavigationAction-root': {
               minWidth: 'auto',
               padding: '0',
@@ -94,17 +91,18 @@ export default function SimpleBottomNavigation() {
               sx={{
                 '& .MuiSvgIcon-root': {
                   fontSize: '22px',
-           mt:0.5,
-                  color: value === index ? 'primary.main' : '#757575',
+                  mt: 0.5,
+                  color: value === index ? '#9fdfff' : '#757575',
                   mb: 0.5,
+                  transition: 'none',
                 },
                 '& .MuiBottomNavigationAction-label': {
                   fontSize: '0.7rem',
-                     mb:1.95,
+                  mb: 1.95,
                   fontWeight: value === index ? 600 : 400,
-                  color: value === index ? 'primary.main' : '#757575',
+                  color: value === index ? '#9fdfff' : '#757575',
+                  transition: 'none',
                 },
-             
               }}
             />
           ))}

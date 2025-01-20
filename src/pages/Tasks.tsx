@@ -33,8 +33,8 @@ import { useNavigate } from 'react-router-dom'; // React Router'ın navigate fon
 import task2Logo from '../assets/instagram.png';
 import task4Logo from '../assets/tik-tok.png';
 import task5Logo from '../assets/telegram.png';
-import task7Logo from '../assets/logo5.png';
-import task8Logo from '../assets/logo5.png';
+import task7Logo from '../assets/bblip.png';
+import task8Logo from '../assets/bblip.png';
 import WebApp from "@twa-dev/sdk";
 
 import task9Logo from '../assets/ton_logo_dark_background.svg';
@@ -87,12 +87,11 @@ const taskLogos = [
 
 const categories = [
 
-  { id: 1, name: 'New', tasks: [0, 1,2,3] },
+  { id: 1, name: 'New', tasks: [9,0, 1,2,3] },
 
-  { id: 2, name: 'Socials', tasks: [0,1,2, 3] },
-          { id: 7, name: 'Daily', tasks: [9] },
+  { id: 2, name: 'Socials', tasks: [9,0,1,2, 3] },
 
-  { id: 3, name: 'Frens', tasks: [4,5,6,7,8] },
+  { id: 3, name: 'Frens', tasks: [9,4,5,6,7,8] },
   { id: 4, name: 'Academy', tasks: [11] },
   { id: 5, name: 'On Chain', tasks: [11] },
   { id: 6, name: 'Farming', tasks: [11] },
@@ -171,23 +170,19 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      transition: 'all 0.3s ease',
       border: '1px solid rgba(0, 0, 0, 0.05)',
-      '&:hover': {
-        transform: 'translateY(-2px)',
-        boxShadow: '0 8px 25px rgba(0, 0, 0, 0.08)',
-      }
+     
     }}
   >
-    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
       <Box
         component="img"
         src={taskLogos[index]}
         alt={`Task ${index + 1} logo`}
         sx={{
-          width: { xs: '32px', sm: '36px' },
-          height: { xs: '32px', sm: '36px' },
-          borderRadius: '10px',
+          width: { xs: '28px', sm: '32px' },
+          height: { xs: '28px', sm: '32px' },
+          borderRadius: '50%',
           padding: '6px',
           backgroundColor: 'rgba(0, 198, 255, 0.05)',
           border: '1px solid rgba(0, 198, 255, 0.1)'

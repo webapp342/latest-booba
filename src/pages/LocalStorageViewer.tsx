@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { ThemeProvider, createTheme, Tooltip } from "@mui/material";
 import QRCode from 'qrcode';
-import { Box, Card, CardContent, Typography, Button, Avatar, TextField, InputAdornment, Drawer, Snackbar, SnackbarContent } from "@mui/material";
+import { Box,  Typography, Button, Avatar, TextField, InputAdornment, Drawer, Snackbar, SnackbarContent } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
-import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
-import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
-import TransactionHashes from "./TransactionHashes"; // Bileşeninizin yolu
+import SwapHorizontalCircleIcon from '@mui/icons-material/SwapHorizontalCircle';import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
+import OutboundIcon from '@mui/icons-material/Outbound';import TransactionHashes from "./TransactionHashes"; // Bileşeninizin yolu
 import { CheckCircleOutline } from '@mui/icons-material';
-import LoupeIcon from '@mui/icons-material/Loupe';
-import { useNavigate } from 'react-router-dom';
+import AddCircleIcon from '@mui/icons-material/AddCircle';import { useNavigate } from 'react-router-dom';
 import TokenSwap from "./SwapComponent"; // TokenSwap bileşenini eklediğiniz yer
 import logo5 from '../assets/bblip.png';
+import banner from '../assets/banner.gif'; // Import the banner image
 
 import { doc, onSnapshot, getFirestore, getDoc } from "firebase/firestore";
 import { initializeApp } from 'firebase/app';
@@ -51,6 +49,7 @@ interface Asset {
   symbol: string;
   name: string;
   amount: number;
+  view:string;
   usdValue: number;
   active: boolean;
 }
@@ -60,7 +59,8 @@ const initialData: Asset[] = [
   {
     logo: logo5,
     symbol: "BBLIP",
-    name: "Booba",
+    view:"Booba Blip",
+    name: "BBLIP",
     amount: 0, // Placeholder, updated dynamically
     usdValue: 0,
     active: true
@@ -69,6 +69,8 @@ const initialData: Asset[] = [
     logo: "https://cryptologos.cc/logos/toncoin-ton-logo.png?v=040",
     symbol: "TON",
     name: "Ton",
+        view:"Booba Blip",
+
     amount: 10000,
     usdValue: 0,
     active: true
@@ -76,7 +78,9 @@ const initialData: Asset[] = [
   {
     logo: "https://s3-symbol-logo.tradingview.com/crypto/XTVCUSDT--big.svg",
     symbol: "USDT",
-    name: "Tether",
+    name: "USDT",
+        view:"Booba Blip",
+
     amount: 0,
     usdValue: 0,
     active: true
@@ -84,7 +88,9 @@ const initialData: Asset[] = [
   {
     logo: "https://cryptologos.cc/logos/telcoin-tel-logo.png?v=040",
     symbol: "TICKET",
-    name: "Lucky Ticket",
+    name: "Ticket",
+        view:"Booba Blip",
+
     amount: 0,
     usdValue: 0,
     active: true
@@ -93,6 +99,8 @@ const initialData: Asset[] = [
     logo: "https://s3-symbol-logo.tradingview.com/crypto/XTVCETH--big.svg",
     symbol: "ETH",
     name: "Ethereum",
+        view:"Booba Blip",
+
     amount: 0,
     usdValue: 0,
     active: false
@@ -101,6 +109,8 @@ const initialData: Asset[] = [
     logo: "https://s3-symbol-logo.tradingview.com/crypto/XTVCBNB--big.svg",
     symbol: "BNB",
     name: "Binance Coin",
+        view:"Booba Blip",
+
     amount: 0,
     usdValue: 0,
     active: false
@@ -109,6 +119,8 @@ const initialData: Asset[] = [
     logo: "https://s3-symbol-logo.tradingview.com/crypto/XTVCADA--big.svg",
     symbol: "ADA",
     name: "Cardano",
+        view:"Booba Blip",
+
     amount: 0,
     usdValue: 0,
     active: false
@@ -134,7 +146,6 @@ const AccountEquityCard: React.FC = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
 
 
-  
   useEffect(() => {
     const backButton = WebApp.BackButton;
 
@@ -162,7 +173,7 @@ const AccountEquityCard: React.FC = () => {
     setOpenDrawer(false);
   };
 
- 
+  
 
   
 
@@ -247,12 +258,12 @@ const AccountEquityCard: React.FC = () => {
       return actualAmount;
     }
     if (symbol === "BBLIP") {
-      return actualAmount * 0.07; // BBLIP price using actual amount
+      return actualAmount * 0.07; // BBLIP fiyatı
     }
     if (symbol === "TON" && tonPrice !== null) {
-      return actualAmount * tonPrice; // TON price using actual amount
+      return actualAmount * tonPrice; // TON fiyatı
     }
-    return 0;
+    return 0; // Eğer hiçbir koşul sağlanmazsa 0 döner
   };
 
   useEffect(() => {
@@ -263,7 +274,7 @@ const AccountEquityCard: React.FC = () => {
     }));
 
     setData(updatedData);
-  }, [tonPrice]);
+  }, [tonPrice, data]);
 
   // Arama filtreleme fonksiyonu
   const filteredData = data.filter(
@@ -359,27 +370,22 @@ const AccountEquityCard: React.FC = () => {
  
               <Box>
         {/* İlk Kart */}
-        <Card sx={{ borderRadius: 3, mt: 1, mx: 1, backgroundColor: 'background.paper' }}>
-          <CardContent>
+        <Box sx={{ borderRadius: 3, mt: 1, mx: 1,p:1, backgroundColor: '#282828' }}>
+       
             {/* Total Account Equity */}
             <Typography
               variant="subtitle2"
-              sx={{ color: "text.secondary" }}
+              sx={{ color: "white" }}
               align="center"
-              gutterBottom
             >
               Total Account Equity
             </Typography>
             <Typography mt={-1} variant="subtitle1" align="center" gutterBottom>
-        {totalEquity} USDT
-      </Typography>
-            <Typography mt={-1}
-              variant="subtitle2"
-              align="center"
-              color="text.secondary"
-            >
-              = ${totalEquity}
+              <span style={{ fontSize: "3rem" ,color:"grey"}}>$</span>
+              <span style={{ fontSize: "3rem", fontWeight:"bold" }}>{totalEquity.split('.')[0]}</span>
+              <span style={{ fontSize: "1.8rem" }}>.{totalEquity.split('.')[1]}</span>
             </Typography>
+           
 
         
 
@@ -388,40 +394,52 @@ const AccountEquityCard: React.FC = () => {
             <Box
               sx={{
                 display: "flex",
+                width:"100%",
                 justifyContent: "space-between",
-                mt: 4,
+                mt: 1,
                 mb: 0,
-                gap: 1,
+               
               }}
             >
              <Button
-                startIcon={<LoupeIcon />}
-                variant="contained"
-                color="primary"
-                size="small"
-                sx={{
-                  fontSize: '0.6rem',
+              
+                 sx={{
+                  flexDirection: 'column', // Stack icon and text vertically
                   textTransform: "none",
-                  boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
+                  backgroundColor: "transparent",
+              color:'white',
+                  fontSize: '0.7rem',
+                  border:"1px solid #575757",
+                  width:"25%",
+                  mr:1,
+                                    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
+
                   borderRadius: 2,
                 }}
                 onClick={handleDepositClick}
               >
+                <AddCircleIcon sx={{color:"#9fdfff", fontSize: '1.5rem' }} />
                 Deposit
               </Button>
       <Button
-        startIcon={<ArrowCircleUpIcon />}
-        variant="outlined"
-        size="small"
-        sx={{
-          textTransform: "none",
-          fontSize: "0.6rem",
-          backgroundColor: "transparent",
-          boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
-          borderRadius: 2,
-        }}
+   
+      sx={{
+                  flexDirection: 'column', // Stack icon and text vertically
+                  textTransform: "none",
+                                    width:"25%",
+                  mr:1,
+
+                color:'white',
+                  fontSize: '0.7rem',
+                  border:"1px solid #575757",
+                                    backgroundColor: "#282828",
+                  boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
+
+                  borderRadius: 2,
+                }}
         onClick={handleClick1}
       >
+        <OutboundIcon sx={{color:"#9fdfff", fontSize: '1.5rem' }} />
         Withdraw
       </Button>
 
@@ -440,44 +458,46 @@ const AccountEquityCard: React.FC = () => {
         }}
       >
         {/* Alttan kayan drawer içerisinde TwoFieldsComponent */}
-        <TwoFieldsComponent />
+        <TwoFieldsComponent  />
       </Drawer>
 
     
               <Button
-  startIcon={<PublishedWithChangesIcon />}
-  variant="outlined"
-  size="small"
+  
   onClick={() => setShowTokenSwap(true)} // TokenSwap'ı göster
-  sx={{
-    textTransform: "none",
-    backgroundColor: "transparent",
-                      fontSize: '0.6rem',
-
-    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
-    borderRadius: 2,
-  }}
+    sx={{
+                  flexDirection: 'column', // Stack icon and text vertically
+                  textTransform: "none",
+  border:"1px solid #575757",
+                                    backgroundColor: "#282828",                                    width:"25%",
+color:'white',
+                  fontSize: '0.7rem',
+                  boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
+                  borderRadius: 2,
+                }}
 >
-  Convert
+  <SwapHorizontalCircleIcon sx={{color:"#9fdfff", fontSize: '1.5rem' }} />
+  Swap
 </Button>
 
   <>
       <Button
         onClick={toggleDrawer(true)}
-        sx={{
-          backgroundColor: "transparent",
-          boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
-          borderRadius: 2,
-          minWidth: 40,
-          minHeight: 40,
-          padding: 0,
-          border:'0.5px solid grey',
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
+       sx={{
+                  flexDirection: 'column', // Stack icon and text vertically
+                  textTransform: "none",
+               border:"1px solid #575757",
+                                    backgroundColor: "#282828",
+                                    width:"25%",
+ml:1,
+                  color:'white',
+                  fontSize: '0.7rem',
+                  boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
+                  borderRadius: 2,
+                }}
       >
-        <ReceiptLongIcon sx={{color:'grey', fontSize: 20 }} />
+        <ReceiptLongIcon sx={{color:"#9fdfff", fontSize: '1.5rem' }} />
+        History
       </Button>
       <Drawer
         anchor="bottom"
@@ -519,20 +539,37 @@ const AccountEquityCard: React.FC = () => {
   </Box>
 )}
             </Box>
-          </CardContent>
-        </Card>
+        </Box>
+
+           {/* New Box for the Banner */}
+    <Box
+      sx={{
+        mb: 1,
+        mt: 1, // Margin top for spacing
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 5,
+        overflow: 'hidden',
+        backgroundColor: 'transparent', // Optional: Set background color if needed
+      }}
+    >
+      <img src={banner} alt="Banner" style={{        borderRadius: 5,
+ width: '95%', height: '18vh' }} />
+    </Box>
 
       {/* İkinci Kart - Asset List */}
-<Card sx={{ borderRadius: 3, mt: 1, m:1 }}>
-  <CardContent>
+<Box sx={{bgcolor:"#282828",p:"1", borderRadius: 3, mt: 1, m:1 }}>
+   
     {/* Başlık ve Arama Kutusu */}
     <Box
       sx={{
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        mb: 2,
+
         
+        p:2,
       }}
     >
       {/* Arama Kutusunun Görünümü */}
@@ -590,26 +627,24 @@ const AccountEquityCard: React.FC = () => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            mb:1,
-            borderBottom:
-              index < filteredData.length  -1 ? "" : "none",
+            mb: 0.5,
+            borderBottom: index < filteredData.length - 1 ? "" : "#575757",
             p: 1,
-            // Devre dışı öğeler için gri tonlama veya desen
             backgroundColor: !item.active ? "grey.100" : "transparent",
             backgroundImage: !item.active
               ? "linear-gradient(45deg, #f3f3f3 25%, #eaeaea 25%, #eaeaea 50%, #f3f3f3 50%, #f3f3f3 75%, #eaeaea 75%, #eaeaea)"
               : "none",
             borderRadius: 1,
-            pointerEvents: !item.active ? "none" : "auto", // Tıklamayı devre dışı bırak
-            opacity: item.active ? 1 : 0.6, // Görsel farklılık
+            pointerEvents: !item.active ? "none" : "auto",
+            opacity: item.active ? 1 : 0.6,
           }}
         >
           {/* Sol Kısım: Logo ve Yazılar */}
-          <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Box sx={{ display: "flex", alignItems: "center",color:"white",fontWeight:"bold" }}>
             <Avatar
               src={item.logo}
               alt={item.symbol}
-              sx={{ width: 40, height: 40, mr: 2 }}
+              sx={{ width: 40, height: 40, mr: 2 ,color:"black"}}
             />
             <Box>
               <Typography variant="body2">
@@ -620,28 +655,26 @@ const AccountEquityCard: React.FC = () => {
                   </span>
                 )}
               </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {item.name}
-              </Typography>
+               <Typography variant="subtitle2" color={"gray"}>
+              {formatDisplayAmount(item.amount, item.symbol)}  {item.name}   
+            </Typography>
+             
             </Box>
           </Box>
 
           {/* Sağ Kısım: Rakamlar */}
           <Box sx={{ textAlign: "right" }}>
-            <Typography variant="subtitle2">
-                {formatDisplayAmount(item.amount, item.symbol)}
-              </Typography>
-            <Typography variant="subtitle2" color="text.secondary">
-              <Typography variant="body2" sx={{ fontWeight: "bold" }}>
+           
+            <Typography variant="subtitle2" fontSize={"1rem"} color="white">
                 ${item.usdValue.toFixed(2)}
-              </Typography>
             </Typography>
           </Box>
         </Box>
       </Tooltip>
     ))}
-  </CardContent>
-</Card>
+
+  
+</Box>
 </Box>
 
 
@@ -707,7 +740,9 @@ const AccountEquityCard: React.FC = () => {
           <span>Loading QR Code...</span>
         )}
       </Box>
+      
     </Box>
+    
 
     
 

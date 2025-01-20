@@ -106,7 +106,7 @@ export const Header = () => {
       {/* If user is not connected, show the TonConnectButton */}
       {!isConnected ? (
         <div >
-          <Button size='small' sx={{    borderRadius: 2,
+          <Button size='small' sx={{    borderRadius: 3,
     textTransform: 'none',
 }}  variant='outlined'  onClick={() => tonConnectUI.openModal()}>
             Connect Wallet
@@ -149,6 +149,8 @@ const styles = {
   
   addressContainer: {
     display: 'flex',
+        borderRadius: '5px',
+
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
@@ -157,9 +159,9 @@ const styles = {
   
   addressBox: {
     padding: '5px 10px',
-    marginRight: '10px',
     backgroundColor: '#e0e0e0',
     borderRadius: '5px',
+    color:'black',
     maxWidth: '200px',
     whiteSpace: 'nowrap',
     overflow: 'hidden',
@@ -170,9 +172,9 @@ const styles = {
   
   menu: {
     position: 'absolute' as 'absolute', // Explicitly type position as 'absolute'
-    top: '40px',
+    top: '25px',
     right: '0',
-    backgroundColor: '#ffffff',
+    backgroundColor: 'transparent',
     boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
     borderRadius: '5px',
     padding: '10px',
@@ -180,7 +182,7 @@ const styles = {
   },
   
   disconnectButton: {
-    padding: '8px 12px',
+    padding: '4px 8px',
     backgroundColor: '#ff4d4d',
     border: 'none',
     borderRadius: '5px',

@@ -83,8 +83,8 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar position="fixed" sx={{ backgroundColor: '#121212', borderBottomLeftRadius: '16px', borderBottomRightRadius: '16px' }}>
-      <Container maxWidth="xl">
+    <AppBar position="fixed" sx={{ backgroundColor: '#282828', borderBottomLeftRadius: '16px', borderBottomRightRadius: '16px' }}>
+      <Container  maxWidth="xl">
         <Toolbar disableGutters>
           <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
@@ -117,12 +117,14 @@ function ResponsiveAppBar() {
                   renderValue={(selected) => {
                     const balance = selected === 'bblip' ? bblip : total;
                     const logo = selected === 'bblip' ? bblipLogo : totalLogo;
+                    const displayedBalance = balance !== null ? (balance / 1000).toFixed(2) : 'Loading...';
                     return (
                       <Box sx={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
                         <Box
                           sx={{ height: '30px', mr: '10px' }}
                         >
                           <Avatar
+                          sx={{width:"100%", height:"100%"}}
                             src={logo}
                           />
                         </Box>
@@ -136,7 +138,7 @@ function ResponsiveAppBar() {
                             transform: `translate(-55%, 30%) rotate(${menuOpen ? 140 : 0}deg)`, // Rotate based on menu state
                             transition: 'transform 0.3s ease', // Smooth transition for rotation
                             borderRadius: '50%', // Make it circular
-                            backgroundColor: '#121212', // Use dark theme background
+                            backgroundColor: '#282828', // Use dark theme background
                           }}
                         />
                         <Box
@@ -154,8 +156,8 @@ function ResponsiveAppBar() {
                         />
                         <Box display={'flex'} justifyContent={'space-between'}>
                           <Box>
-                            <Typography sx={{ fontWeight: 'light', fontSize: '1.3rem', color:'#FFFFFF' }}>
-                              {balance !== null ? balance : 'Loading...'}
+                            <Typography sx={{ fontWeight: 'light', fontSize: '1.1rem', color:'#FFFFFF' }}>
+                              {displayedBalance}
                             </Typography>
                           </Box>
                         </Box>
@@ -170,22 +172,23 @@ function ResponsiveAppBar() {
                         {menuOpen && <Typography variant="body2" sx={{ color: theme.palette.text.primary }}>BBLIP</Typography>}
                       </Box>
                       <span style={{ color: theme.palette.text.primary }}>
-                        {bblip !== null ? bblip : 'Loading...'} BBLIP
+                        {bblip !== null ? (bblip / 1000).toFixed(2) : 'Loading...'} BBLIP
                       </span>
                     </Box>
                   </MenuItem>
 
                   <MenuItem value="total" sx={{ width: '100%' }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 26 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 23 }}>
                       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                         <img src={totalLogo} alt="Total" style={{ height: '20px', marginRight: '8px' }} />
                         {menuOpen && <Typography variant="body2" sx={{ color: theme.palette.text.primary }}>TON</Typography>}
                       </Box>
                       <span style={{ color: theme.palette.text.primary }}>
-                        {total !== null ? total : 'Loading...'} TON
+                        {total !== null ? (total / 1000).toFixed(2) : 'Loading...'} TON
                       </span>
                     </Box>
                   </MenuItem>
+                  
                 </Select>
               </FormControl>
 

@@ -19,6 +19,7 @@ const UserAvatar: React.FC<UserAvatarProps> = ({ displayName }) => {
         width: 18, 
         height: 18, 
         ml:0.1,
+        borderRadius:'50%',
         backgroundColor: user?.photo_url ? "transparent" : "blue", 
         color: "white" 
       }}
