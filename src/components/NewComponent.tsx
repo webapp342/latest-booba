@@ -88,7 +88,7 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
           padding: 0.5, 
           borderRadius: 2,
        
-          backgroundColor:  '#1E1E1E',
+          backgroundColor:  '#3f3f3f',
         }}
       >
         <CardContent>
@@ -599,7 +599,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
 </Typography>
 
 
-      <Typography fontWeight={'bold'} color={'grey'}>
+      <Typography fontWeight={'bold'} color={'white'}>
        Leveraged staking for TON
 
 
@@ -615,9 +615,8 @@ const NewComponent: React.FC<NewComponentProps> = () => {
           onClick={(e) => handleActionChange(e, 'stake')} 
           sx={{ 
             width: '48%', 
-            backgroundColor: selectedAction === 'stake' ? '#1976d2' : '#e0e0e0', // Gray for unselected
-            color: selectedAction === 'stake' ? 'white' : 'black', // Change text color based on selection
-            border: selectedAction === 'stake' ? '2px solid #00c6ff' : 'none', // Add border for selected
+            backgroundColor: selectedAction === 'stake' ? '#b4e6ff' : '#e0e0e0', // Gray for unselected
+            color: selectedAction === 'stake' ? 'black' : 'black', // Change text color based on selection
             boxShadow: selectedAction === 'stake' ? '0px 4px 10px rgba(0, 198, 255, 0.5)' : 'none' // Add shadow for selected
           }}
         >
@@ -630,9 +629,8 @@ const NewComponent: React.FC<NewComponentProps> = () => {
           onClick={(e) => handleActionChange(e, 'unstake')} 
           sx={{ 
             width: '48%', 
-            backgroundColor: selectedAction === 'unstake' ? '#1976d2' : '#e0e0e0', // Gray for unselected
-            color: selectedAction === 'unstake' ? 'white' : 'black', // Change text color based on selection
-            border: selectedAction === 'unstake' ? '2px solid #00c6ff' : 'none', // Add border for selected
+            backgroundColor: selectedAction === 'unstake' ? '#b4e6ff' : '#e0e0e0', // Gray for unselected
+            color: selectedAction === 'unstake' ? 'black' : 'black', // Change text color based on selection
             boxShadow: selectedAction === 'unstake' ? '0px 4px 10px rgba(0, 198, 255, 0.5)' : 'none' // Add shadow for selected
           }}
         >
@@ -924,7 +922,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
       }}>
       {/* Conditionally render the Stake Now button based on unstaking mode */}
       {!isUnstaking && (
-        <Button variant="contained"  sx={{backgroundColor:'#00c6ff', borderRadius: 2, width: '100%', mt: 1, fontSize: '1rem' }} onClick={() => handleOpenDrawer(selectedOptionIndex)}>
+        <Button variant="contained"  sx={{backgroundColor:'#b4e6ff', borderRadius: 2, width: '100%', mt: 1, fontSize: '1rem',color:"black" }} onClick={() => handleOpenDrawer(selectedOptionIndex)}>
           Stake Now 
         </Button>
       )}

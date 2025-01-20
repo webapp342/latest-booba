@@ -77,7 +77,7 @@ const NavigateButton = () => {
     navigate('/latest-booba/slot');
   };
 
-  return <Button sx={{backgroundColor:'#00c6ff',color:'white', left:32, width:'41vw'}} onClick={handleClick}>Play Now</Button>;
+  return <Button sx={{backgroundColor:'#b4e6ff',color:'black', left:32, width:'41vw'}} onClick={handleClick}>Play Now</Button>;
 };
 
 //lucky games 
