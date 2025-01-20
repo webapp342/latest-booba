@@ -758,22 +758,26 @@ const NewComponent: React.FC<NewComponentProps> = () => {
           
             <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'} sx={{ width: '100%', mt: 1 }}>
               <Box display={'flex'} alignItems={'center'}>
-
-  <Typography textAlign={'left'} variant="h6" sx={{ fontWeight: 'bold', fontSize: '2rem' }}> 
-   <span style={{color: '#90EE90',}}>
-              +    {(parseFloat(calculateEarnings(
-                    stakingData[selectedOptionIndex].amount, 
-                    stakingData[selectedOptionIndex].duration,
-                    stakingData[selectedOptionIndex].leverage,
-                    stakingOptions[selectedOptionIndex].apy
-                  ))).toFixed(6)} 
-                </span>
-                <span style={{marginLeft:'7px ',fontSize:'1.2rem', color:"#90EE90"}}>TON</span>
-              </Typography>
+                <Typography textAlign={'left'} variant="h6" sx={{ fontWeight: 'bold', fontSize: '2rem' }}> 
+                  <span style={{color: '#90EE90',}}>
+                    +{(parseFloat(calculateEarnings(
+                      stakingData[selectedOptionIndex].amount, 
+                      stakingData[selectedOptionIndex].duration,
+                      stakingData[selectedOptionIndex].leverage,
+                      stakingOptions[selectedOptionIndex].apy
+                    ))).toFixed(2)} 
+                  </span>
+                  <span style={{marginLeft:'7px ',fontSize:'2rem', color:"#90EE90"}}>TON</span>
+                  <span style={{ marginLeft: '5px', fontSize: '1rem', color: 'gray' }}>
+                   ({ (parseFloat(calculateEarnings(
+                      stakingData[selectedOptionIndex].amount, 
+                      stakingData[selectedOptionIndex].duration,
+                      stakingData[selectedOptionIndex].leverage,
+                      stakingOptions[selectedOptionIndex].apy
+                    )) * 5.20).toFixed(2)} USD)
+                  </span>
+                </Typography>
               </Box>
-            
-
-          
             </Box>
 
  <Typography textAlign={'left'} variant="h6" sx={{color:'secondary', fontWeight:'bold',fontSize: '1.2rem', mt:2 }}>
