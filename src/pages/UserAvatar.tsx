@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar } from "@mui/material";
+import { Avatar, Box } from "@mui/material";
 import WebApp from "@twa-dev/sdk";
 
 interface UserAvatarProps {
@@ -11,6 +11,7 @@ const UserAvatar: React.FC<UserAvatarProps> = ({ displayName }) => {
   const user = WebApp.initDataUnsafe.user;
   
   return (
+    <Box  sx={{ borderRadius: '50%'}}>
     <Avatar
       alt={displayName}
       src={user?.photo_url}
@@ -28,6 +29,7 @@ const UserAvatar: React.FC<UserAvatarProps> = ({ displayName }) => {
     >
       {!user?.photo_url && displayName.slice(0, 2).toUpperCase()}
     </Avatar>
+    </Box>
   );
 };
 
