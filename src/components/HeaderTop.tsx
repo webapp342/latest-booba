@@ -19,7 +19,7 @@ import { Avatar } from '@mui/material';
 
 // Import images
 import bblipLogo from '../assets/bblip.png'; // Image for BBLIP
-import totalLogo from '../assets/kucukTON.png'; // Image for Total
+import totalLogo from '../assets/ton_symbol.png'; // Image for Total
 import UserAvatar from '../pages/UserAvatar';
 
 function ResponsiveAppBar() {
