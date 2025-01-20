@@ -1,0 +1,15 @@
+.stepIcon {
+  background-color: transparent; /* Make background transparent */
+  border: 2px solid #b0bec5; /* Default border color */
+  border-radius: 50%; /* Circular shape */
+  width: 30px; /* Width of the icon */
+  height: 30px; /* Height of the icon */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.3s; /* Smooth transition for border color */
+}
+
+.stepIcon:hover {
+  border-color: #00c6ff; /* Change border color on hover */
+} 

@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Card, CardContent, Typography, Grid,  Slider, Box, Button, Drawer, Accordion, AccordionSummary, AccordionDetails, TextField, Modal, LinearProgress, InputAdornment, Divider, ToggleButton, ToggleButtonGroup, Chip } from '@mui/material';
+import { Card, CardContent, Typography, Grid,  Slider, Box, Button, Drawer, Accordion, AccordionSummary, AccordionDetails, TextField, Modal, LinearProgress, InputAdornment, Divider, ToggleButton, ToggleButtonGroup, Chip, Stepper, Step, StepLabel } from '@mui/material';
 import { AccessTime, MonetizationOn } from '@mui/icons-material';
 import SpeedIcon from '@mui/icons-material/Speed';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -14,44 +14,123 @@ import DonutSmallSharpIcon from '@mui/icons-material/DonutSmallSharp';
 import OutboundIcon from '@mui/icons-material/Outbound';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import { styled } from '@mui/material/styles';
+import BoltIcon from '@mui/icons-material/Bolt';
 interface NewComponentProps {}
 
 const db = getFirestore(app); // Define the Firestore database instance
 
-const stakingOptions = [
-   
-  { 
-    period: '7 D', 
-    apy: 13.44, 
-    durations: [7],
-    leverageOptions: [100],
-    tonRange: { min: 25, max: 1000 }
-  },
-  { 
-    period: '14 D', 
-    apy: 31.42, 
-    durations: [14],
-    leverageOptions: [125],
-    tonRange: { min: 5, max: 500 }
-  },
+// Function to calculate APY based on the amount staked
+const calculateAPY = (amount: number, period: string): number => {
+    if (period === '1 D') {
+        if (amount < 125) {
+            return 38.89; // 12% APY for amounts less than 50
+        } else if (amount < 500) {
+            return 19.10; // 16% APY for amounts between 50 and 100
+        } else {
+            return 34.89; // 20% APY for amounts between 100 and 250
+        } 
+    } else if (period === '14 D') {
+        if (amount < 50) {
+            return 8.89; // 15% APY for amounts less than 100
+        } else if (amount < 250) {
+            return 10.02; // 20% APY for amounts between 100 and 300
+        }
+        else {
+            return 15.12; // 20% APY for amounts between 100 and 250
+        } 
+    } else if (period === '30 D') {
+        if (amount < 50) {
+            return 8.99; // 18% APY for amounts less than 100
+        } else if (amount < 250) {
+            return 10.12; // 22% APY for amounts between 100 and 200
+        }else {
+            return 17.90; // 20% APY for amounts between 100 and 250
+        } 
+    } else if (period === '90 D') {
+        if (amount < 50) {
+            return 9.99; // 10% APY for amounts less than 25
+        } else if (amount < 250) {
+            return 10.19; // 15% APY for amounts between 25 and 100
+        } else {
+            return 17.12; // 20% APY for amounts between 100 and 250
+        }
+    }
+    return 0; // Default return if no conditions are met
+};
 
-  { 
-    period: '30 D', 
-    apy: 32.26, 
-    durations: [30],
-    leverageOptions: [175],
-    tonRange: { min: 1, max: 500 }
-  },
- 
-  { 
-    period: '90 D', 
-    apy: 32.72, 
-    durations: [90],
-    leverageOptions: [200],
-    tonRange: { min: 1, max: 500 }
-  },
- 
- 
+// Function to calculate leverage based on the amount staked and the period
+const calculateLeverage = (amount: number, period: string): number => {
+    if (period === '1 D') {
+        if (amount < 50) {
+            return 255; // 1. kademe
+        } else if (amount < 150) {
+            return 150; // 2. kademe
+        } else  {
+            return 175; // 3. kademe
+        }
+       
+    } else if (period === '14 D') {
+        if (amount < 50) {
+            return 125; // 1. kademe
+        } else if (amount < 250) {
+            return 150; // 2. kademe
+        }
+       else {
+            return 175; // 4. kademe
+        }
+    } else if (period === '30 D') {
+        if (amount < 50) {
+            return 125; // 1. kademe
+        } else if (amount < 250) {
+            return 150; // 2. kademe
+        }
+        else {
+            return 200; // 4. kademe
+        }
+    } else if (period === '90 D') {
+        if (amount < 50) {
+            return 175; // 1. kademe
+        } else if (amount < 250) {
+            return 125; // 2. kademe
+        }
+        else {
+            return 125; // 4. kademe
+        }
+    }
+    return 0; // Default return if no conditions are met
+};
+
+// Update staking options to use the calculateAPY function
+const stakingOptions = [
+    { 
+        period: '1 D', 
+        apy: calculateAPY(25, '1 D'), // Example amount of 25
+        durations: [1],
+        leverageOptions: [220],
+        tonRange: { min: 50, max: 1500 }
+    },
+    { 
+        period: '14 D', 
+        apy: calculateAPY(100, '14 D'), // Example amount of 100
+        durations: [14],
+        leverageOptions: [125],
+        tonRange: { min: 5, max: 1500 }
+    },
+    { 
+        period: '30 D', 
+        apy: calculateAPY(200, '30 D'), // Example amount of 200
+        durations: [30],
+        leverageOptions: [175],
+        tonRange: { min: 1, max: 1500 }
+    },
+    { 
+        period: '90 D', 
+        apy: calculateAPY(300, '90 D'), // Example amount of 300
+        durations: [90],
+        leverageOptions: [200],
+        tonRange: { min: 1, max: 1500 }
+    },
 ];
 
 // Yeni StakingCard bileşeni
@@ -70,6 +149,33 @@ interface StakingCardProps {
   children?: React.ReactNode;
 }
 
+// Create a custom styled slider
+const CustomSlider = styled(Slider)(({  }) => ({
+  color: '#00c6ff', // Change the color to match the design
+  height: 42,
+  '& .MuiSlider-track': {
+    border: 'none',
+    borderRadius: 4, // Rounded corners for the track
+    backgroundColor: '#00c6ff', // Track color
+  },
+  '& .MuiSlider-thumb': {
+    height: 24,
+    width: 24,
+    border: 'none', // Remove the border
+    backgroundColor: 'transparent', // Make the background transparent
+    // Use the arrows_14999158.png as a background image
+    backgroundImage: 'url(../assets/arrows_14999158.png)', // Path to your icon
+    backgroundSize: 'cover', // Ensure the icon covers the thumb area
+    cursor: 'pointer', // Change cursor to pointer
+  },
+  '& .MuiSlider-rail': {
+    height: 42,
+    borderRadius: 4, // Rounded corners for the rail
+    backgroundColor: '#b0bec5', // Rail color
+  },
+}));
+
+
 const StakingCard: React.FC<StakingCardProps> = React.memo(({
   option, 
   index,
@@ -79,6 +185,41 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
 }) => {
   const tonRange = option.tonRange;
 
+  // State for animated leverage
+  const [displayedLeverage, setDisplayedLeverage] = useState(calculateLeverage(stakingData[index].amount, option.period));
+  
+  // New state for animation
+  const [fadeIn, setFadeIn] = useState(false);
+
+  useEffect(() => {
+    // Animate the leverage value change
+    const targetLeverage = calculateLeverage(stakingData[index].amount, option.period);
+    let start = displayedLeverage;
+    const end = targetLeverage;
+    const duration = 500; // Duration of the animation in milliseconds
+    const stepTime = 50; // Time between each step in milliseconds
+    const steps = Math.ceil(duration / stepTime);
+    const increment = (end - start) / steps;
+
+    const interval = setInterval(() => {
+      start += increment;
+      if ((increment > 0 && start >= end) || (increment < 0 && start <= end)) {
+        start = end; // Ensure we don't overshoot
+        clearInterval(interval);
+      }
+      setDisplayedLeverage(Math.round(start)); // Update the displayed leverage
+    }, stepTime);
+
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, [stakingData[index].amount, option.period]); // Re-run effect when amount or period changes
+
+  // Effect to trigger fade-in animation when amount changes
+  useEffect(() => {
+    setFadeIn(true);
+    const timer = setTimeout(() => setFadeIn(false), 500); // Reset fade-in after 500ms
+    return () => clearTimeout(timer);
+  }, [stakingData[index].amount]); // Trigger on amount change
+
   return (
     <Grid item xs={12} sm={6} md={4} key={index}>
       <Card 
@@ -87,7 +228,6 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
           textAlign: 'center', 
           padding: 0.5, 
           borderRadius: 2,
-       
           backgroundColor:  '#3f3f3f',
         }}
       >
@@ -111,20 +251,46 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
                         <Box justifyContent={'space-between'} display={'flex'}>
                             <Box mb={2} mt={1} display={'flex'} alignItems={'center'}>
 
-              <Typography textAlign={'left'} variant="h4" component="div" sx={{  fontWeight: 'bold', color: 'white', fontSize: '2rem' }}>
+              <Typography textAlign={'left'} variant="h4" component="div" sx={{  fontWeight: 'bold', color: 'white', fontSize: '2rem', transition: 'opacity 0.5s', opacity: fadeIn ? 1 : 0.5 }}>
               {stakingData[index].amount} <span style={{color:'grey'}}> TON</span> 
             </Typography>
   </Box>
             <Box   mt={1} mb={2}>
               <Chip  
               icon={<SwitchAccessShortcutAddIcon sx={{color:'#b4e6ff ' }} />}
-                label={`${option.apy}% APY`} 
+                label={`${calculateAPY(stakingData[index].amount, option.period)}% APY`} 
                 variant="outlined" 
                 color='primary'
                 sx={{color:"#b4e6ff ", fontSize: '0.9rem' }}
               />
+              <Stepper activeStep={calculateAPY(stakingData[index].amount, option.period) / 10 - 1} alternativeLabel>
+                {[...Array(3)].map((_, step) => (
+                  <Step key={step}>
+                    <StepLabel 
+                      sx={{ margin: '0 -4px' }}
+                      icon={
+                        <BoltIcon 
+                          fontSize='small' 
+                          style={{ 
+                            color: step < (calculateAPY(stakingData[index].amount, option.period) / 10) ? '#eac039' : '#b0bec5' 
+                          }} 
+                        />
+                      }
+                      StepIconProps={{
+                        classes: {
+                          root: 'stepIcon',
+                        },
+                      }}
+                    >
+                    
+                    </StepLabel>
+                  </Step>
+                ))}
+              </Stepper>
             </Box>
-     
+
+          
+        
               
                
                         </Box>
@@ -135,16 +301,14 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
                   Min
                 </Typography>
               </Box>
-              <Slider
+              <CustomSlider
                 value={stakingData[index].amount}
                 onChange={(_e, newValue) => handleAmountChange(index, newValue as number)}
                 aria-labelledby="amount-slider"
                 valueLabelDisplay="off" // Disable default label display
                 step={1}
-                marks
                 min={tonRange.min}
                 max={tonRange.max}
-                sx={{ color: '#00c6ff' }}
               />
             
               <Typography variant="body2" color="#B0BEC5" sx={{ ml: 2 }}>
@@ -161,12 +325,36 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
           Duration:   <span style={{color:'#FFFFFF', fontWeight:'bold',fontSize: '1rem'}}>  {stakingData[index].duration} {stakingData[index].duration > 30 ? 'Days' : 'Day'}</span> 
             </Typography>
             <Typography variant="body2" color="#B0BEC5" sx={{  }}>
-              Leverage:  <span style={{color:'#FFFFFF', fontWeight:'bold',fontSize: '1rem'}}> {stakingData[index].leverage}x</span>
-            </Typography>
+              Leverage:  <span style={{color:'#FFFFFF', fontWeight:'bold',fontSize: '1rem'}}>{displayedLeverage}x</span>
+              <Stepper  activeStep={calculateAPY(stakingData[index].amount, option.period) / 10 - 1} alternativeLabel>
+                {[...Array(3)].map((_, step) => (
+                  <Step key={step}>
+                    <StepLabel 
+                      sx={{ margin: '0 -4px' }}
+                      icon={
+                        <BoltIcon 
+                          fontSize='small' 
+                          style={{ 
+                            color: step < (calculateAPY(stakingData[index].amount, option.period) / 10) ? '#eac039' : '#b0bec5' 
+                          }} 
+                        />
+                      }
+                      StepIconProps={{
+                        classes: {
+                          root: 'stepIcon',
+                        },
+                      }}
+                    >
+                    
+                    </StepLabel>
+                  </Step>
+                ))}
+              </Stepper>
+ </Typography>
           </Box>
          <Box sx={{ mt: 2,mb:-2,  textAlign:'left' }}>
               <Typography variant="body2" color="#B0BEC5" sx={{  }}>
-              Multiplied Power :  <span style={{color:'#00c6ff', fontWeight:'bolder', fontSize:'1rem'}}>{stakingData[index].amount * stakingData[index].leverage} TON </span> 
+              Multiplied Power :  <span style={{color:'#00c6ff', fontWeight:'bolder', fontSize:'1rem'}}>{stakingData[index].amount * calculateLeverage(stakingData[index].amount, option.period)} TON </span> 
               </Typography>
               
           </Box>
@@ -246,6 +434,8 @@ const calculateRemainingMinutes = (timestamp: string, duration: number): number 
 const calculateTotalStakedAmount = (history: any[]): number => {
     return history.reduce((total, stake) => total + stake.amount, 0);
 };
+
+
 
 const NewComponent: React.FC<NewComponentProps> = () => {
   const navigate = useNavigate(); // Initialize useNavigate()
@@ -604,12 +794,26 @@ const NewComponent: React.FC<NewComponentProps> = () => {
         return <div>Invalid selection.</div>; // Geçersiz seçim mesajı
     }
 
-    const data = stakingData[selectedOptionIndex];
-    // ... data ile ilgili diğer işlemler
+
+    // Use the data variable to render relevant information
+    return (
+        <div>
+         
+        </div>
+    );
   };
 
+  // APY ve leverage seviyelerini hesapla
+  const currentAPYLevel = calculateAPY(stakingData[selectedOptionIndex].amount, stakingOptions[selectedOptionIndex].period);
+
+  // Log the current APY level whenever it changes
+  useEffect(() => {
+    console.log(`Current APY Level: ${currentAPYLevel}`);
+  }, [currentAPYLevel]); // Dependency array to log when currentAPYLevel changes
+
   return (
-    <Box style={{ marginBottom: '76px', backgroundColor: '#1E1E1E',  padding: 8 }}>
+    <Box style={{ marginBottom: '76px', backgroundColor: '#1E1E1E', padding: 8 }}>
+      {renderStakingData()}
       <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} mb={2} mt={2}>
 <Typography
   sx={{
@@ -807,6 +1011,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
 
                                   <Typography textAlign={'left'} variant="h6" sx={{ fontWeight: 'bold', fontSize: '1rem' }}> 
 
+                  
                    <span style={{color: 'white',}}>
                     {((parseFloat(calculateEarnings(
                       stakingData[selectedOptionIndex].amount,
@@ -1263,6 +1468,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
           )}
         </Box>
       </Modal>
+
     </Box>
   );
 };
