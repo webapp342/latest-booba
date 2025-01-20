@@ -183,7 +183,7 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
 const InfoCard: React.FC = () => {
   return (
     
-    <Box sx={{ mt: 2, p: 2, border: '1px solid #e0e0e0', borderRadius: 2, backgroundColor: '#1E1E1E' }}>
+    <Box sx={{ mt: 2, p: 2, border: '1px solid #575757', borderRadius: 2, backgroundColor: '#282828' }}>
         
       <Grid container spacing={2}>
         <Grid item xs={4} display="flex" flexDirection="column" alignItems="center">
@@ -581,7 +581,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
   };
 
   return (
-    <Box style={{ marginBottom: '76px', backgroundColor: 'black',  padding: 8 }}>
+    <Box style={{ marginBottom: '76px', backgroundColor: '#1E1E1E',  padding: 8 }}>
       <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} mb={2} mt={2}>
 <Typography
   sx={{
@@ -941,8 +941,8 @@ const NewComponent: React.FC<NewComponentProps> = () => {
           with our Terms of Service.
         </Typography>
         {leveragedItems.map((item, index) => (
-        <Accordion sx={{backgroundColor:'#1E1E1E',color:'whitesmoke'}} key={index}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+        <Accordion sx={{backgroundColor:'#282828',color:'whitesmoke', border:"1px solid #575757"}} key={index}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon sx={{color:"#575757"}} />}>
               <Typography variant="h6">{item.question}</Typography>
             </AccordionSummary>
             <AccordionDetails>
@@ -978,8 +978,8 @@ const NewComponent: React.FC<NewComponentProps> = () => {
       </Typography>
 
       {leveragedStakingItems.map((item, index) => (
-        <Accordion sx={{backgroundColor:'#1E1E1E',color:'whitesmoke',}} key={index}>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+        <Accordion sx={{backgroundColor:'#282828',color:'whitesmoke', border:"1px solid #575757"}} key={index}>
+          <AccordionSummary expandIcon={<ExpandMoreIcon sx={{color:"#575757"}} />}>
             <Typography variant="h6">{item.question}</Typography>
           </AccordionSummary>
           <AccordionDetails>
