@@ -204,7 +204,7 @@ function ResponsiveAppBar() {
                     <LanguageIcon sx={{ color: '#FFFFFF', width: 28, height: 28 }} />
                   </IconButton>
                 </Tooltip>
-                <UserAvatar
+                <UserAvatar 
                   telegramUserId={telegramUser?.id?.toString() ?? ''}
                   displayName={telegramUser?.first_name ?? 'User'}
                 />
