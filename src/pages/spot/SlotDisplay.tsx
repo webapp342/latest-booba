@@ -84,6 +84,8 @@ const SlotDisplay: React.FC<SlotDisplayProps> = ({ numbers, counterRefs, selecte
                   charClassName="slot-char"
                   containerClassName="slot-container"
                 />
+
+                
               )}
             </Box>
           </React.Fragment>

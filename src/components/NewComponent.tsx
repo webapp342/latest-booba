@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Card, CardContent, Typography, Grid,  Slider, Box, Button, Drawer, Accordion, AccordionSummary, AccordionDetails, TextField, Modal, LinearProgress, InputAdornment, Divider, ToggleButton, ToggleButtonGroup, Chip, Stepper, Step, StepLabel } from '@mui/material';
+import { Card, CardContent, Typography, Grid,  Slider, Box, Button, Drawer, Accordion, AccordionSummary, AccordionDetails, TextField, Modal, LinearProgress, InputAdornment, Divider, ToggleButton, ToggleButtonGroup, Chip, Stepper, Step, StepLabel, CircularProgress, CircularProgressProps } from '@mui/material';
 import { AccessTime, MonetizationOn } from '@mui/icons-material';
 import SpeedIcon from '@mui/icons-material/Speed';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -16,6 +16,9 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { styled } from '@mui/material/styles';
 import BoltIcon from '@mui/icons-material/Bolt';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
+import SlotCounter from 'react-slot-counter'; // Kütüphaneyi içe aktar
+
 interface NewComponentProps {}
 
 const db = getFirestore(app); // Define the Firestore database instance
@@ -224,9 +227,9 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
     <Grid item xs={12} sm={6} md={4} key={index}>
       <Card 
         sx={{ 
-          minWidth: 275, 
+          
           textAlign: 'center', 
-          padding: 0.5, 
+          
           borderRadius: 2,
           backgroundColor:  '#3f3f3f',
         }}
@@ -238,7 +241,7 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
           <Box sx={{  }}>
             <Box justifyContent={'space-between'} display={'flex'}>
               
-                          <Box  mt={1} display={'flex'} alignItems={'center'}>
+                          <Box   display={'flex'} alignItems={'center'}>
                             <OutboundIcon  sx={{color:"#90EE90",marginRight:'5px', width: '26px', height: '26px'  }}/>
 
               <Typography textAlign={'left'} variant="h4" component="div" sx={{  fontWeight: 'bold', color: 'white', fontSize: '1rem' }}>
@@ -249,13 +252,13 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
             </Box>
           
                         <Box justifyContent={'space-between'} display={'flex'}>
-                            <Box mb={2} mt={1} display={'flex'} alignItems={'center'}>
+                            <Box  display={'flex'} alignItems={'center'}>
 
               <Typography textAlign={'left'} variant="h4" component="div" sx={{  fontWeight: 'bold', color: 'white', fontSize: '2rem', transition: 'opacity 0.5s', opacity: fadeIn ? 1 : 0.5 }}>
               {stakingData[index].amount} <span style={{color:'grey'}}> TON</span> 
             </Typography>
   </Box>
-            <Box   mt={1} mb={2}>
+            <Box   >
               <Chip  
               icon={<SwitchAccessShortcutAddIcon sx={{color:'#b4e6ff ' }} />}
                 label={`${calculateAPY(stakingData[index].amount, option.period)}% APY`} 
@@ -315,12 +318,14 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
                 Max
               </Typography>
             </Box>
+
           </Box>
+                                          <Divider sx={{backgroundColor:'gray'  }} />
 
 
         
           {/* Leverage Seçici */}
-         <Box sx={{ mt: 1, display: 'flex', justifyContent: 'space-between' }}>
+         <Box sx={{ mt: 0, display: 'flex', justifyContent: 'space-between' }}>
             <Typography variant="body2" color="#B0BEC5" sx={{  }}>
           Duration:   <span style={{color:'#FFFFFF', fontWeight:'bold',fontSize: '1rem'}}>  {stakingData[index].duration} {stakingData[index].duration > 30 ? 'Days' : 'Day'}</span> 
             </Typography>
@@ -352,10 +357,12 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
               </Stepper>
  </Typography>
           </Box>
-         <Box sx={{ mt: 2,mb:-2,  textAlign:'left' }}>
+         <Box sx={{mb:-2,   textAlign:'left' }}>
               <Typography variant="body2" color="#B0BEC5" sx={{  }}>
               Multiplied Power :  <span style={{color:'#00c6ff', fontWeight:'bolder', fontSize:'1rem'}}>{stakingData[index].amount * calculateLeverage(stakingData[index].amount, option.period)} TON </span> 
+
               </Typography>
+       
               
           </Box>
 
@@ -391,43 +398,22 @@ const InfoCard: React.FC = () => {
   );
 };
 
-// Add this new component for the statistics card
-
-// Add this function to calculate remaining days
-const calculateRemainingDays = (timestamp: string, duration: number): number => {
+// Ensure you are using calculateRemainingSeconds instead
+const calculateRemainingSeconds = (timestamp: string, duration: number): number => {
     const stakeDate = new Date(timestamp);
     const endDate = new Date(stakeDate.getTime() + duration * 24 * 60 * 60 * 1000); // Add duration in milliseconds
     const currentDate = new Date();
-    const remainingTime = endDate.getTime() - currentDate.getTime();
-    return Math.max(0, Math.ceil(remainingTime / (1000 * 60 * 60 * 24))); // Return remaining days
-};
+    const remainingTime = currentDate.getTime() - stakeDate.getTime(); // Calculate elapsed time
 
-// Add this function to calculate remaining time
-const calculateRemainingTime = (timestamp: string, duration: number) => {
-    const stakeDate = new Date(timestamp);
-    const endDate = new Date(stakeDate.getTime() + duration * 24 * 60 * 60 * 1000); // Add duration in milliseconds
-    const currentDate = new Date();
-    const remainingTime = endDate.getTime() - currentDate.getTime();
+    console.log(`Stake Date: ${stakeDate}, End Date: ${endDate}, Current Date: ${currentDate}, Remaining Time: ${remainingTime}`);
 
+    // If remaining time is less than or equal to zero, return 0
     if (remainingTime <= 0) {
-        return { days: 0, hours: 0, minutes: 0 };
+        return 0; // Return 0 if the staking period is completed
     }
 
-    const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
-
-    return { days, hours, minutes };
-};
-
-// Add this function to calculate remaining minutes
-const calculateRemainingMinutes = (timestamp: string, duration: number): number => {
-    const stakeDate = new Date(timestamp);
-    const endDate = new Date(stakeDate.getTime() + duration * 24 * 60 * 60 * 1000); // Add duration in milliseconds
-    const currentDate = new Date();
-    const remainingTime = endDate.getTime() - currentDate.getTime();
-    
-    return Math.max(0, Math.floor(remainingTime / (1000 * 60))); // Return remaining minutes
+    // Return remaining time in seconds
+    return Math.floor(remainingTime / 1000); // Return remaining time in seconds
 };
 
 // Add this function to calculate the total staked amount
@@ -435,7 +421,71 @@ const calculateTotalStakedAmount = (history: any[]): number => {
     return history.reduce((total, stake) => total + stake.amount, 0);
 };
 
+// Accrued Earnings hesaplaması
+const calculateAccruedEarnings = (stake: any) => {
+    const totalEarnings = stake.earnings; // Toplam kazanç
+    const durationInDays = stake.duration; // Staking süresi (gün cinsinden)
 
+    // Toplam süreyi saniye cinsinden hesapla
+    const totalStakeDurationSeconds = durationInDays * 24 * 60 * 60; 
+    console.log(`Total Duration in Seconds: ${totalStakeDurationSeconds}`);
+
+    // Geçen süreyi hesapla
+    const elapsedSeconds = calculateRemainingSeconds(stake.timestamp, durationInDays); 
+    console.log(`Elapsed Seconds: ${elapsedSeconds}`);
+
+    // Staking süresi tamamlandı mı?
+    if (elapsedSeconds >= totalStakeDurationSeconds) {
+        console.log(`Staking period completed. Returning total earnings: ${totalEarnings}`);
+        return totalEarnings; // Süre tamamlandıysa, toplam kazancı döndür
+    }
+
+    // Saniye başına kazancı hesapla
+    const earningsPerSecond = totalEarnings / totalStakeDurationSeconds; 
+    console.log(`Earnings Per Second: ${earningsPerSecond}`);
+
+    // Geçen süreye göre kazancı hesapla
+    const accruedEarnings = earningsPerSecond * elapsedSeconds; 
+    console.log(`Accrued Earnings based on elapsed time: ${accruedEarnings}`);
+
+    // Eğer hesaplanan kazanç toplam kazancı aşarsa, toplam kazancı döndür
+    const finalEarnings = Math.min(accruedEarnings, totalEarnings);
+    console.log(`Final Accrued Earnings (capped at total earnings): ${finalEarnings}`);
+    
+    return finalEarnings; // Hesaplanan kazancı döndür
+};
+
+// Yüzde hesaplama
+
+
+// Add this new component for Circular Progress with Label
+function CircularProgressWithLabel(
+  props: CircularProgressProps & { value: number },
+) {
+  return (
+    <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+      <CircularProgress variant="determinate" {...props} />
+      <Box
+        sx={{
+          top: 0,
+          left: 0,
+          bottom: 0,
+          right: 0,
+          position: 'absolute',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Typography
+        
+          component="div"
+          sx={{ color: 'primary' }}
+        >{`${Math.round(props.value)}%`}</Typography>
+      </Box>
+    </Box>
+  );
+}
 
 const NewComponent: React.FC<NewComponentProps> = () => {
   const navigate = useNavigate(); // Initialize useNavigate()
@@ -443,14 +493,19 @@ const NewComponent: React.FC<NewComponentProps> = () => {
   // Staking verilerini tutan state
   const [stakingData, setStakingData] = useState(
     stakingOptions.map(option => ({
-      amount: option.tonRange.max, // Varsayılan olarak maksimum miktar
-      duration: Math.max(...option.durations), // Her kart için maksimum süre
-      leverage: Math.max(...option.leverageOptions), // Her kart için maksimum leverage
+        amount: option.tonRange.max, // Default to maximum amount
+        duration: Math.max(...option.durations), // Maximum duration for each card
+        leverage: Math.max(...option.leverageOptions), // Maximum leverage for each card
+        earnings: option.apy, // Add earnings property (assuming apy represents earnings)
+        timestamp: new Date().toISOString() // Add timestamp property (current time)
     }))
   );
 
   // Yeni state: Seçilen staking kartı
-  const [selectedOptionIndex, setSelectedOptionIndex] = useState(0); // Varsayılan olarak 7D seçili
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState(2); // Varsayılan olarak 7D seçili
+
+  // Kazanç state'i
+  const [, setAccruedEarnings] = useState(0);
 
   // Drawer state'i eklendi
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -465,7 +520,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
 
   // Add a new state to hold the total balance
   const [totalBalance, setTotalBalance] = useState<number | null>(null);
-    const [lbBalance, setlbBalance] = useState<number | null>(null);
+  const [lbBalance, setlbBalance] = useState<number | null>(null);
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null); // New state for error message
   const [successModalOpen, setSuccessModalOpen] = useState(false); // New state for modal visibility
@@ -490,7 +545,24 @@ const NewComponent: React.FC<NewComponentProps> = () => {
   const [selectedAction, setSelectedAction] = useState<'stake' | 'unstake'>('stake');
 
   // New state to manage selection enablement
-  const [isSelectionEnabled, setIsSelectionEnabled] = useState(true);
+  const [, setIsSelectionEnabled] = useState(true);
+
+  // Add state for early unstake drawer visibility
+  const [earlyUnstakeDrawerOpen, setEarlyUnstakeDrawerOpen] = useState(false);
+  const [selectedEarlyUnstake, setSelectedEarlyUnstake] = useState<any | null>(null); // State to hold the selected stake for early unstaking
+
+  // Kazancı güncellemek için useEffect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const elapsedSeconds = calculateRemainingSeconds(stakingData[selectedOptionIndex].timestamp, stakingData[selectedOptionIndex].duration);
+      const earningsPerSecond = stakingData[selectedOptionIndex].earnings / (stakingData[selectedOptionIndex].duration * 24 * 60 * 60);
+      const newAccruedEarnings = earningsPerSecond * elapsedSeconds;
+
+      setAccruedEarnings(newAccruedEarnings);
+    }, 1000); // Her saniye güncelle
+
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, [stakingData, selectedOptionIndex]);
 
   // Fetch total balance and staking history from Firestore when the component mounts
   useEffect(() => {
@@ -507,7 +579,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
       if (userDoc.exists()) {
         const data = userDoc.data();
         setTotalBalance(data.total / 1000); // Divide the total by 1000 before setting
-        setlbBalance(data.lbTON / 1000); // Divide the total by 1000 before setting
+        setlbBalance(data.lbTON ); // Divide the total by 1000 before setting
         setStakingHistory(data.stakingHistory || []); // Set staking history
       } else {
         console.error("No such document!");
@@ -758,11 +830,11 @@ const NewComponent: React.FC<NewComponentProps> = () => {
     // You might want to show a confirmation modal or perform the unstaking operation here
   };
 
+  // Function to handle early unstake action and open the drawer
   const handleEarlyUnstakeAction = (index: number) => {
     const stakeToUnstake = stakingHistory[index];
-    // Implement your early unstaking logic here, e.g., calling a function to update the database
-    console.log(`Early unstaking ${stakeToUnstake.amount} TON from stake index ${index}`);
-    // You might want to show a confirmation modal or perform the early unstaking operation here
+    setSelectedEarlyUnstake(stakeToUnstake); // Set the selected stake
+    setEarlyUnstakeDrawerOpen(true); // Open the early unstake drawer
   };
 
   // Function to handle button selection
@@ -774,14 +846,21 @@ const NewComponent: React.FC<NewComponentProps> = () => {
   };
 
   const handleSelectionChange = (newValue: number) => {
-    if (isSelectionEnabled) {
-      setSelectedOptionIndex(newValue);
-      setIsSelectionEnabled(false); // Seçimi devre dışı bırak
+    // Check if the new value is the same as the currently selected value
+    if (newValue === selectedOptionIndex) {
+        return; // Do nothing if the same option is clicked
+    }
 
-      // 2 saniye sonra tekrar seçim yapılabilir hale getir
-      setTimeout(() => {
-        setIsSelectionEnabled(true);
-      }, 2000);
+    // Ensure the new value is within the bounds of stakingOptions
+    const validOptions = [0, 1, 2, 3]; // 0: 7D, 1: 14D, 2: 30D, 3: 90D
+    if (validOptions.includes(newValue)) {
+        setSelectedOptionIndex(newValue);
+        setIsSelectionEnabled(false); // Disable selection temporarily
+
+        // Re-enable selection after 2 seconds
+        setTimeout(() => {
+            setIsSelectionEnabled(true);
+        }, 2000);
     }
   };
 
@@ -876,7 +955,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
         <Grid container spacing={2}>
           {[...Array(1)].map((_, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
-              <Card sx={{ minWidth: 275, textAlign: 'center', padding: 1, boxShadow: 6, borderRadius: 2, backgroundColor: '#e3f2fd' }}>
+              <Card sx={{  textAlign: 'center', padding: 0.5, boxShadow: 6, borderRadius: 2, backgroundColor: '#e3f2fd' }}>
                 <CardContent>
 
                   <Box sx={{display:'flex', justifyContent:'space-between' }}>
@@ -959,18 +1038,18 @@ const NewComponent: React.FC<NewComponentProps> = () => {
             </Typography>
   </Box>
                 <ToggleButtonGroup
-                color="primary"
+                color="primary" 
                 value={selectedOptionIndex}
                 exclusive
                 onChange={(_e, newValue) => handleSelectionChange(newValue as number)}
-                sx={{ minWidth: '20%' }}
+                sx={{ minWidth: '20%' }} 
               >
                 {stakingOptions.map((option, index) => (
                     <ToggleButton key={index} value={index} sx={{border:"1px solid #575757",p:1, color: 'whitesmoke', bgcolor: '#3f3f3f', borderRadius: 2, fontWeight: 'bolder' , fontSize:'0.8rem'}}>
                         {option.period}
                     </ToggleButton>
                 ))}
-              </ToggleButtonGroup>
+              </ToggleButtonGroup> 
               </Box>
           
             <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'} sx={{ width: '100%', mt: 1 }}>
@@ -988,7 +1067,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                   <span style={{ marginLeft: '5px', fontSize: '1rem', color: 'gray' }}>
                    ({ (parseFloat(calculateEarnings(
                       stakingData[selectedOptionIndex].amount, 
-                      stakingData[selectedOptionIndex].duration,
+                      stakingData[selectedOptionIndex].duration, 
                       stakingData[selectedOptionIndex].leverage,
                       stakingOptions[selectedOptionIndex].apy
                     )) * 5.20).toFixed(2)} USD)
@@ -997,17 +1076,17 @@ const NewComponent: React.FC<NewComponentProps> = () => {
               </Box>
             </Box>
 
- <Typography textAlign={'left'} variant="h6" sx={{color:'secondary', fontWeight:'bold',fontSize: '1.2rem', mt:2 }}>
-              Total of   <DonutSmallSharpIcon/>
+ <Typography textAlign={'left'} variant="h6" sx={{color:'secondary', fontWeight:'bold',fontSize: '1rem', mt:2 }}>
+              Total of   <DonutSmallSharpIcon fontSize='small'/>
             </Typography>
-                              <Divider sx={{  }} />
+                              <Divider sx={{backgroundColor:'gray'  }} />
 
 
             <Box display={'flex'} justifyContent={'space-between'} sx={{ width: '100%' }}>
               
               <Box>
-                <Typography textAlign={'left'} variant="h6" sx={{color:'grey', fontWeight: 'bold', fontSize: '1rem' }}> 
-                 <span style={{fontSize:'1rem'}}>Staking reward</span>                </Typography>
+                <Typography textAlign={'left'} variant="h6" sx={{color:'grey', fontWeight: 'bold' }}> 
+                 <span style={{fontSize:'0.8rem'}}>Staking reward</span>                </Typography>
 
                                   <Typography textAlign={'left'} variant="h6" sx={{ fontWeight: 'bold', fontSize: '1rem' }}> 
 
@@ -1026,8 +1105,8 @@ const NewComponent: React.FC<NewComponentProps> = () => {
               </Box>
 
               <Box>
-                <Typography textAlign={'left'} variant="h6" sx={{color:'grey', fontWeight: 'bold', fontSize: '1rem' }}> 
-                  <span style={{fontSize:'1rem'}}>DeFi extra yield</span>                </Typography>
+                <Typography textAlign={'left'} variant="h6" sx={{color:'grey', fontWeight: 'bold' }}> 
+                  <span style={{fontSize:'0.8rem'}}>DeFi extra yield</span>                </Typography>
 
                                   <Typography textAlign={'left'} variant="h6" sx={{ fontWeight: 'bold', fontSize: '1rem' }}> 
 
@@ -1064,13 +1143,12 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                 const currentTime = new Date().getTime();
                 const stakeTime = new Date(stake.timestamp).getTime();
                 const durationInMillis = stake.duration * 24 * 60 * 60 * 1000; // Convert duration to milliseconds
-                const totalPotentialEarnings = (stake.amount * (stake.apy / 100) * (stake.duration / 365)); // Total potential earnings
                 const elapsedTime = Math.min(currentTime - stakeTime, durationInMillis); // Time elapsed since stake
-                const elapsedDays = elapsedTime / (1000 * 60 * 60 * 24); // Convert to days
-                const accruedEarnings = (stake.amount * (stake.apy / 100) * (elapsedDays / 365)); // Earnings accrued so far
+                const accruedEarnings = calculateAccruedEarnings(stake); // Accrued earnings
 
                 // Calculate progress
-                const progress = (accruedEarnings / totalPotentialEarnings) * 100;
+                const totalDurationInMillis = durationInMillis; // Toplam süre (milisaniye cinsinden)
+                const progress = Math.min((elapsedTime / totalDurationInMillis) * 100, 100); // Yüzde hesaplama
 
                 // Check if the duration has passed
                 const isDurationPassed = currentTime >= (stakeTime + durationInMillis);
@@ -1078,39 +1156,102 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                 // Calculate the activation time for the Unstake button
                 const activationTime = new Date(stakeTime + durationInMillis);
 
+                // Calculate total repay and ensure they are numbers
+                const totalRepay = (Number(stake.earnings) + Number(stake.amount)).toFixed(2);
+
                 return (
-                  <Box key={index} sx={{ mb: 2, p: 2, border: '1px solid #e0e0e0', borderRadius: 1, backgroundColor: '#fff' }}>
-                    <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-                      Amount: <span style={{ color: '#1976d2' }}>{stake.amount} TON</span>
+                  <Box key={index} sx={{ mb: 2, p: 2, border: '1px solid #e0e0e0', borderRadius: 1, backgroundColor: '#282828' }}>
+                          {/* Kutu içinde gösterim */}
+
+
+                                 <Box mb={1} alignItems={'center'} display={'flex'} justifyContent={'space-between'}>
+  
+                     <Typography variant="body1">
+                    <span style={{ fontWeight: 'bold' }}>{stake.duration} Day </span> 
+                    <span style={{color:"#b4e6ff"}}>
+                      Staking
+                    </span>
                     </Typography>
-                    <Typography variant="body1">
-                      Duration: <span style={{ fontWeight: 'bold' }}>{stake.duration} Days</span>
+                        <Typography fontSize={'0.7rem'} variant="body1">
+                     <span style={{ fontStyle: 'italic' }}>{new Date(stake.timestamp).toLocaleString()}</span>
+                    </Typography>
+                    </Box>
+                    <Box 
+                      sx={{ 
+                        border: '1px solid #1976d2', 
+                        borderRadius: 2, 
+                        padding: 2, 
+                        backgroundColor: '#282828', 
+                        marginBottom: 1, 
+                        display: 'flex', // Flexbox kullanarak içeriği yan yana yerleştir
+                        justifyContent: 'space-between', // İçeriği iki kenara yay
+                        alignItems: 'center' // Dikey olarak ortala
+                      }}
+                    >
+                      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                        <Typography variant="h6" sx={{ color: '#b4e6ff', fontWeight: 'bold' }}>
+                          Process       <CircularProgress color="success" size="15px" />
+                        </Typography>
+                        <Typography textAlign={'left'} variant="h6" sx={{ fontWeight: 'bold', fontSize: '1rem' }}> 
+                          <span style={{color: '#90EE90',}}> 
+            <SlotCounter delay={1}  sequentialAnimationMode
+  useMonospaceWidth value={parseFloat(accruedEarnings.toFixed(3))}  /> <span>TON</span>  {/* 8 ondalık basamakla göster */}
+                          </span>
+                           <span style={{marginLeft:'5px', color: 'gray',fontSize:'0.7rem'}}> 
+                           ({(accruedEarnings * 5.20).toFixed(2)} USD)
+                          </span>
+                        </Typography>
+                        {/* Calculate total repay */}
+                    
+                      </Box>
+                      
+                      {/* Dairesel ilerleme çubuğu */}
+                      <Box 
+                        sx={{ 
+                          position: 'relative', 
+                          display: 'flex', 
+                          alignItems: 'center' 
+                        }}
+                      >
+                        <CircularProgressWithLabel 
+                          value={progress} // İlerleme yüzdesi
+                          size={40} // Boyutunu ayarlayın
+                          sx={{ color: '#00c6ff' }} // Renk ayarı
+                        />
+                      </Box>
+                    </Box>
+
+                    <Box display={'flex'} justifyContent={'space-between'}>
+  <Typography variant="body1">
+                      APY: <span style={{ fontWeight: 'bold' }}>{stake.apy}%</span>
                     </Typography>
                     <Typography variant="body1">
                       Leverage: <span style={{ fontWeight: 'bold' }}>{stake.leverage}x</span>
                     </Typography>
-                    <Typography variant="body1">
-                      APY: <span style={{ fontWeight: 'bold' }}>{stake.apy}%</span>
+                   
+                    </Box>
+                    
+                         
+                       <Box mb={-1} mt={2} display={'flex'} justifyContent={'center'} >
+                    <Typography textAlign={'center'} variant="body1">
+                      <span style={{color:'gray', marginRight:'5px'}}>
+ Total Repay: 
+                      </span>
+                         
+                          <span style={{color:'#00c6ff'}}>{totalRepay} TON </span>
+                          +
+                          <span style={{color:'#67f177'}}> {(stake.amount * (stake.apy) * (2))} BBLIP</span>
                     </Typography>
-                    <Typography variant="body1">
-                      Earnings: <span style={{ color: '#1976d2', fontWeight: 'bold' }}>{stake.earnings} TON</span>
-                    </Typography>
-                    <Typography variant="body1">
-                      Timestamp: <span style={{ fontStyle: 'italic' }}>{new Date(stake.timestamp).toLocaleString()}</span>
-                    </Typography>
-                    <Typography variant="body1">
-                      Countdown: <span style={{ fontWeight: 'bold' }}>{calculateRemainingTime(stake.timestamp, stake.duration).days} days, {calculateRemainingTime(stake.timestamp, stake.duration).hours} hours, {calculateRemainingTime(stake.timestamp, stake.duration).minutes} minutes remaining</span>
-                    </Typography>
-                    <Typography variant="body1">
-                      Days Remaining: <span style={{ fontWeight: 'bold' }}>{calculateRemainingDays(stake.timestamp, stake.duration)} days</span>
-                    </Typography>
-                    <Typography variant="body1">
-                      Remaining Minutes: <span style={{ fontWeight: 'bold' }}>{calculateRemainingMinutes(stake.timestamp, stake.duration)} minutes</span>
-                    </Typography>
-                    <Typography variant="body1">
-                      Accrued Earnings: <span style={{ fontWeight: 'bold' }}>{accruedEarnings.toFixed(12)} TON</span>
-                    </Typography>
-                    <LinearProgress variant="determinate" value={Math.min(100, progress)} sx={{ mt: 2 }} />
+                  
+                    </Box> 
+
+
+                      
+                  
+                
+                  
+                
+                 
                     
                     {/* Early Unstake Button */}
                     {!isDurationPassed && (
@@ -1124,30 +1265,57 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                         Early Unstake
                       </Button>
                     )}
-
-                    {/* Unstake Button */}
+                      {/* Unstake Button */}
                     <Button 
                       fullWidth
                       variant="contained" 
                       color="secondary" 
+                      sx={{
+                        mt: 1,
+                        backgroundColor: !isDurationPassed
+                          ? 'gray !important' // Background color when disabled
+                          : '#89d9ff !important', // Background color when enabled
+                        color: !isDurationPassed
+                          ? 'white !important' // Text color when disabled
+                          : 'black !important', // Text color when enabled
+                        opacity: !isDurationPassed
+                          ? 0.6 // Reduced opacity when disabled
+                          : 1, // Full opacity when enabled
+                        filter: !isDurationPassed
+                          ? 'blur(1px)' // Blur effect when disabled
+                          : 'none', // No blur when enabled
+                      }}
                       onClick={() => handleUnstakeAction(index)} // Implement this function to handle unstaking
-                      sx={{ mt: 1 }}
                       disabled={!isDurationPassed} // Disable if duration has not passed
                     >
                       Unstake
                     </Button>
-
-                    {/* Display activation time */}
-                    <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                      This will be active on: <strong>{activationTime.toLocaleString()}</strong>
+<Box display={'flex'} justifyContent={'space-between'}>
+    <Typography textAlign={'center'} variant="body2" color="gray" sx={{ mt: 1 }}>
+                      Unlock Date 
                     </Typography>
+                    <Typography textAlign={'center'} variant="body2" color="PRIMARY" sx={{ mt: 1 }}>
+                    <strong>{activationTime.toLocaleString()}</strong>
+                    </Typography>
+</Box>
+                 
+                
+                 
+              
+                     
+            
                   </Box>
                 );
               })
             ) : (
-              <Typography variant="body2" color="text.secondary">
-                No staking history available.
-              </Typography>
+                      <Box sx={{ borderRadius: 2, p: 2, gap: 1, bgcolor: "#282828", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <SentimentVeryDissatisfiedIcon />
+                        <Typography variant="body2" color="error">
+                            You don't have any active process 
+                        </Typography>
+                      </Box>
+            
+         
             )}
         </Box>
       )}
@@ -1353,7 +1521,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
               </Box>
 
                {/* Add this section to display the error message */}
-              <Box sx={{ mt: 1 }}>
+              <Box sx={{  }}>
                 {errorMessage && (
                   <Typography variant="body2" color="error" sx={{ textAlign: 'center' }}>
                     {errorMessage}
@@ -1516,6 +1684,109 @@ const NewComponent: React.FC<NewComponentProps> = () => {
           )}
         </Box>
       </Modal>
+
+      {/* Early Unstake Drawer */}
+      <Drawer
+        anchor="bottom"
+        open={earlyUnstakeDrawerOpen}
+        onClose={() => setEarlyUnstakeDrawerOpen(false)}
+        sx={{ backgroundColor: '#1E1E1E', transition: 'transform 0.3s ease-in-out' }} // Smooth transition
+      >
+        <Box sx={{ p: 3, display: 'flex', flexDirection: 'column', gap: 2, backgroundColor: "#1E1E1E" }}>
+          {selectedEarlyUnstake && (
+            <>
+            <Box display={'flex'} justifyContent={'space-between'}>
+
+                  <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#b4e6ff' }}>
+                    Early Unstake Details
+                </Typography>
+
+              {/* Calculate remaining time */}
+                {(() => {
+                    const currentTime = new Date().getTime();
+                    const stakeTime = new Date(selectedEarlyUnstake.timestamp).getTime();
+                    const durationInMillis = selectedEarlyUnstake.duration * 24 * 60 * 60 * 1000; // Convert duration to milliseconds
+                    const remainingTime = stakeTime + durationInMillis - currentTime; // Calculate remaining time
+
+                    if (remainingTime > 0) {
+                        const remainingDays = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+                        const remainingHours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        const remainingMinutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+
+                        if (remainingDays >= 1) {
+                            return (
+                                <Typography variant="body1" sx={{ color: 'white' }}>
+                                  <CircularProgress color="error" size={'15px'} />  {remainingDays} D , {remainingHours} H
+                                </Typography>
+                            );
+                        } else {
+                            return (
+                                <Typography variant="body1" sx={{ color: 'white' }}>
+                                     <CircularProgress color="error" size={'15px'} />  {remainingHours} H ,{remainingMinutes} Min
+                                </Typography>
+                            );
+                        }
+                    } else {
+                        return (
+                            <Typography variant="body1" sx={{ color: 'white' }}>
+                                Staking period has ended.
+                            </Typography>
+                        );
+                    }
+                })()}
+                
+              
+          
+            </Box>
+           
+            <Box border={'1px solid red'} borderRadius={2} bgcolor={'#282828'} p={1} display={'flex'} justifyContent={'space-between'}>
+                <Typography variant="body1" sx={{ color: 'white' }}>
+                    Penalty:  
+                    <span style={{color:'red', marginLeft:'5px'}}>
+                    -{(selectedEarlyUnstake.earnings)} TON </span> 
+                </Typography>
+                    <Typography variant="body1" sx={{ color: 'white' }}>
+                    Fee: 
+                    <span style={{color:'red', marginLeft:'5px'}}>
+                  -{(selectedEarlyUnstake.amount * 0.04).toFixed(2)} TON   </span> 
+                </Typography>
+
+            </Box>
+                 <Box display={'flex'} justifyContent={'center'}>
+                        <Typography variant="body1" sx={{ color: 'gray' }}>
+                          Total Repay:    
+                          <span style={{color:"#b4e6ff", marginLeft:'5px', fontSize:'1.2rem'}}>
+                      {(selectedEarlyUnstake.amount - selectedEarlyUnstake.amount * 0.04).toFixed(2)} TON
+
+                          </span>
+                </Typography>
+
+            </Box>
+             
+            
+                  
+                
+              
+             
+              
+              
+          
+          
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                        // Implement the unstaking logic here
+                        console.log(`Unstaking ${selectedEarlyUnstake.amount} TON from stake index ${stakingHistory.indexOf(selectedEarlyUnstake)}`);
+                        setEarlyUnstakeDrawerOpen(false); // Close the drawer after action
+                    }}
+                >
+                    Confirm Early Unstake
+                </Button>
+            </>
+          )}
+        </Box>
+      </Drawer>
 
     </Box>
   );
