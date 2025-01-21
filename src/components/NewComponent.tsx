@@ -299,23 +299,16 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
 
         
           {/* Leverage Seçici */}
-         <Box sx={{ mt: 0, display: 'flex', justifyContent: 'space-between' }}>
-            <Typography variant="body2" color="#B0BEC5" sx={{  }}>
-          Duration:   <span style={{color:'#FFFFFF', fontWeight:'bold',fontSize: '1rem'}}>  {stakingData[index].duration} {stakingData[index].duration > 30 ? 'Days' : 'Day'}</span> 
+         <Box sx={{mb:-2, mt: 0, display: 'flex', justifyContent: 'space-between' }}>
+            <Typography variant="body2" color="#B0BEC5" sx={{ fontSize:'0.8rem' }}>
+          Duration:   <span style={{color:'#FFFFFF', fontWeight:'bold'}}>  {stakingData[index].duration} {stakingData[index].duration > 1 ? 'Day' : 'Day'}</span> 
             </Typography>
-            <Typography variant="body2" color="#B0BEC5" sx={{  }}>
-              Leverage:  <span style={{color:'#FFFFFF', fontWeight:'bold',fontSize: '1rem'}}>{displayedLeverage}x</span>
+            <Typography variant="body2" color="#B0BEC5" sx={{fontSize: '0.8rem'  }}>
+              Leverage:  <span style={{color:'#FFFFFF', fontWeight:'bold'}}>{displayedLeverage}x</span>
             
  </Typography>
           </Box>
-         <Box sx={{mb:-2,   textAlign:'left' }}>
-              <Typography variant="body2" color="#B0BEC5" sx={{  }}>
-              Multiplied Power :  <span style={{color:'#00c6ff', fontWeight:'bolder', fontSize:'1rem'}}>{stakingData[index].amount * calculateLeverage(stakingData[index].amount, option.period)} TON </span> 
-
-              </Typography>
        
-              
-          </Box>
 
           {/* Buton yerleştirme */}
           {children}
@@ -871,6 +864,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
       
       {/* Button Group for Stake and Unstake */}
       <Box display={'flex'} justifyContent="space-between" mb={2}>
+      
         <Button 
           variant="contained" 
           color="primary" 
@@ -900,6 +894,8 @@ const NewComponent: React.FC<NewComponentProps> = () => {
           Unstake
         </Button>
       </Box>
+      
+
 
       {/* Conditionally render cards based on unstaking mode */}
       {isUnstaking ? (
@@ -965,7 +961,11 @@ const NewComponent: React.FC<NewComponentProps> = () => {
               />
             </Grid>
          
-
+   <Typography mt={2}>
+             <span style={{marginRight:'5px', fontSize:'1.2rem'}}>
+ You could earn 
+                </span>
+          </Typography>
           {/* Earnings Display Outside of StakingCard */}
           <Box sx={{   
               minWidth: 275, 
@@ -975,7 +975,6 @@ const NewComponent: React.FC<NewComponentProps> = () => {
               borderRadius: 2,
               transition: 'transform 0.3s, box-shadow 0.3s',
               backgroundColor:  '#282828',
-              mt: 2, 
               p: 2,   
               display: 'flex', 
               flexDirection: 'column', 
@@ -1013,7 +1012,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                 value={selectedOptionIndex}
                 exclusive
                 onChange={(_e, newValue) => handleSelectionChange(newValue as number)}
-                sx={{ maxWidth: '45%', fontSize:'1.8rem' }} 
+                sx={{minWidth: '45%', maxWidth: '45%', fontSize:'1.8rem' }} 
               >
                 {stakingOptions.map((option, index) => (
                     <ToggleButton key={index} value={index} sx={{border:"1px solid #575757",p:1, color: 'whitesmoke', bgcolor: '#3f3f3f', borderRadius: 2, fontWeight: 'bolder' , fontSize:'0.6rem'}}>
@@ -1281,15 +1280,10 @@ const NewComponent: React.FC<NewComponentProps> = () => {
         <Typography 
           variant="body1" 
           align="center" 
-          sx={{ mt: 1, color: 'grey', fontSize: '0.8rem' }}
+          sx={{mt:1, mb: 1, color: 'grey', fontSize: '0.6rem' }}
         >
           By using the app, you confirm compliance 
-        </Typography>
-        <Typography 
-          variant="body1" 
-          align="center" 
-          sx={{ mb: 1, color: 'grey', fontSize: '0.8rem' }}
-        >
+      
           with our Terms of Service.
         </Typography>
         {leveragedItems.map((item, index) => (
