@@ -527,7 +527,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
       // Check min and max values for amount
       const tonRange = stakingOptions[index].tonRange;
       if (newAmount < tonRange.min || newAmount > tonRange.max) {
-        setErrorMessage(`Amount must be between ${tonRange.min} and ${tonRange.max}.`); // Set error message
+        setErrorMessage(`Amount must be  (Min ${tonRange.min} ~ Max ${tonRange.max} TON)`); // Set error message
       } else {
         setErrorMessage(null); // Clear error message if valid
       }
@@ -1232,13 +1232,13 @@ const NewComponent: React.FC<NewComponentProps> = () => {
         onClose={handleCloseDrawer}
         sx={{ backgroundColor: '#1E1E1E', transition: 'transform 0.3s ease-in-out' }} // Smooth transition
       >
-        <Box sx={{ p: 3, display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Box sx={{ p: 3, display: 'flex', flexDirection: 'column', gap: 2,backgroundColor:"#1E1E1E" }}>
       
 
           {selectedStaking && (
             <>
               {/* Total Balance Card */}
-              <Card sx={{ p: 2, boxShadow: 1, borderRadius: 2 }}>
+              <Card sx={{ p: 2, boxShadow: 1, borderRadius: 2, backgroundColor:"#282828" }}>
                 <Grid container spacing={2}>
                   <Grid item xs={6}>
                     <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'grey' }}>
@@ -1263,16 +1263,16 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
                   Details
                 </Typography>
-              <Card sx={{  p: 2, boxShadow: 1, borderRadius: 2 }}>
+              <Card sx={{  p: 2,backgroundColor:"#282828", boxShadow: 1, borderRadius: 2 }}>
              
-                <Grid container spacing={1}>
+              <Grid container  spacing={1}>
                 
                   <Grid item xs={6}>
-                    <Typography>Duration: <span style={{fontWeight: 'bold'}}> {selectedStaking.data.duration} {selectedStaking.data.duration > 30 ? 'Days' : 'Day'}</span> </Typography>
+                    <Typography sx={{color:"gray"}}>Duration: <span style={{color:"white",fontWeight: 'bold'}}> {selectedStaking.data.duration} {selectedStaking.data.duration > 30 ? 'Days' : 'Day'}</span> </Typography>
                    
                   </Grid>
                   <Grid item xs={6}>
-                    <Typography>Leverage: <span style={{fontWeight: 'bold'}}>{selectedStaking.data.leverage}x</span> </Typography>
+                    <Typography sx={{color:"gray"}}>Leverage: <span style={{color:"white",fontWeight: 'bold'}}>{selectedStaking.data.leverage}x</span> </Typography>
                   </Grid>
                 </Grid>
               </Card>
@@ -1280,20 +1280,32 @@ const NewComponent: React.FC<NewComponentProps> = () => {
 
               
               {/* Input Field Card */}
-                <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
+                <Typography  sx={{ fontWeight: 'bold', color: '#1976d2', mb:-2 }}>
                                 Adjust Staking Amount</Typography>
 
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <Box sx={{ width: '100%' }}>
                     <TextField
                       label=""
-          variant="outlined"                      value={selectedStaking.data.amount || '0'}
+                          value={selectedStaking.data.amount || '0'}
                       onChange={(e) => {
                         const newAmount = parseFloat(e.target.value);
                         handleAmountChange(selectedOptionIndex, newAmount);
                       }}
-                      sx={{ mt: 2, width: '100%', fontSize:'2rem' // Alt köşeleri yuvarlak, üst köşeleri düz
- }}
+                      sx={{ 
+                        mt: 2, 
+                        width: '100%', 
+                        backgroundColor: '#282828', // Set background color
+                        color: 'white', // Set text color
+                        fontSize: '2rem',
+                        borderRadius: 2,
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: 'transparent', // Set border color to transparent
+                        },
+                        '& .MuiInputBase-input': {
+                          color: 'white', // Ensure input text is white
+                        },
+                      }}
                       error={!!errorMessage}
                       InputProps={{
                         startAdornment: (
@@ -1320,18 +1332,19 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                   </Box>
                 </Box>
 
+             
+
               {/* Yeni kutu ekleniyor */}
               <Box sx={{ 
                 display: 'flex', 
                 justifyContent: 'space-between', 
                 mt: -2, 
-                p: 1, 
-                border: '1px solid #1976d2', 
+           
                 borderTop: 0, 
                 borderRadius: '0 0 4px 4px', // Alt köşeleri yuvarlak, üst köşeleri düz
                 backgroundColor: '#1E1E1E' 
               }}>
-                <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
+                <Typography variant="body1" sx={{ fontWeight: 'bold', color: 'gray' }}>
                   You will receive:
                 </Typography>
                 <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
@@ -1339,14 +1352,23 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                 </Typography>
               </Box>
 
+               {/* Add this section to display the error message */}
+              <Box sx={{ mt: 1 }}>
+                {errorMessage && (
+                  <Typography variant="body2" color="error" sx={{ textAlign: 'center' }}>
+                    {errorMessage}
+                  </Typography>
+                )}
+              </Box>
+
               {/* Earnings Breakdown Section */}
-                <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
+                <Typography  sx={{ fontWeight: 'bold', color: '#1976d2', mt:-2 }}>
                   Estimated Earnings
                 </Typography>
                 <Box display={'flex'} justifyContent={'space-between'} gap={1}>
-                    <Box sx={{ width:'49%', p: 2, border: '1px solid #1976d2', borderRadius: 2, backgroundColor: '#e3f2fd'}}>
+                <Box sx={{width:'49%', p: 2, border: '1px solid #1976d2', borderRadius: 2 }}>
                   <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
-                    Projected Earnings:
+                   Earnings:
                   </Typography>
                   <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
                     {parseFloat(calculateEarnings(
@@ -1357,7 +1379,8 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                     )).toFixed(2)} TON
                   </Typography>
                 </Box>
-                <Box sx={{width:'49%', p: 2, border: '1px solid #1976d2', borderRadius: 2 }}>
+                                    <Box sx={{ width:'49%', p: 2, border: '1px solid #1976d2', borderRadius: 2, backgroundColor: '#e3f2fd'}}>
+
                   <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
                     Total to Repay:
                   </Typography>
@@ -1381,7 +1404,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
               <Box sx={{gap:1, display: 'flex', justifyContent: 'space-between', mt: 2 }}>
                 <Button
                   variant="outlined"
-                  color="secondary"
+                  color="error"
                   sx={{ width: '25%', borderRadius: 2 }}
                   onClick={handleCloseDrawer} // Close the drawer on click
                 >
@@ -1390,7 +1413,34 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                 <Button
                   variant="contained"
                   color="primary"
-                  sx={{ width: '75%', borderRadius: 2 }}
+                  sx={{
+                    width: '75%',
+                    borderRadius: 2,
+                    backgroundColor: selectedStaking === null ||
+                      selectedStaking.data.amount < stakingOptions[selectedOptionIndex].tonRange.min ||
+                      selectedStaking.data.amount > stakingOptions[selectedOptionIndex].tonRange.max ||
+                      (totalBalance !== null && selectedStaking.data.amount > totalBalance)
+                      ? 'gray !important' // Background color when disabled
+                      : '#89d9ff !important', // Background color when enabled
+                    color: selectedStaking === null ||
+                      selectedStaking.data.amount < stakingOptions[selectedOptionIndex].tonRange.min ||
+                      selectedStaking.data.amount > stakingOptions[selectedOptionIndex].tonRange.max ||
+                      (totalBalance !== null && selectedStaking.data.amount > totalBalance)
+                      ? 'white !important' // Text color when disabled
+                      : 'black !important', // Text color when enabled
+                    opacity: selectedStaking === null ||
+                      selectedStaking.data.amount < stakingOptions[selectedOptionIndex].tonRange.min ||
+                      selectedStaking.data.amount > stakingOptions[selectedOptionIndex].tonRange.max ||
+                      (totalBalance !== null && selectedStaking.data.amount > totalBalance)
+                      ? 0.6 // Reduced opacity when disabled
+                      : 1, // Full opacity when enabled
+                    filter: selectedStaking === null ||
+                      selectedStaking.data.amount < stakingOptions[selectedOptionIndex].tonRange.min ||
+                      selectedStaking.data.amount > stakingOptions[selectedOptionIndex].tonRange.max ||
+                      (totalBalance !== null && selectedStaking.data.amount > totalBalance)
+                      ? 'blur(2px)' // Blur effect when disabled
+                      : 'none', // No blur when enabled
+                  }}
                   onClick={handleStartStaking}
                   disabled={
                     selectedStaking === null ||
@@ -1406,15 +1456,13 @@ const NewComponent: React.FC<NewComponentProps> = () => {
               {/* Deposit Button and Message */}
               {totalBalance !== null && selectedStaking && selectedStaking.data.amount > totalBalance && (
                 <Box sx={{ mt: 1 }}>
-                  <Typography variant="body2" color="grey" align="center" sx={{ mb: 1 }}>
+                  <Typography variant="body2" color="error" align="center" sx={{ mb: 1 }}>
                     You do not have enough balance
                   </Typography>
-                  <Typography variant="body2" color="error" align="center" sx={{ mb: 1 }}>
-                    Please deposit more funds to start
-                  </Typography>
+           
                   <Button
                     variant="outlined"
-                    color="secondary"
+                    color="error"
                     fullWidth
                     onClick={() => {
                       navigate("/latest-booba/spin"); // Redirect to the specified path
