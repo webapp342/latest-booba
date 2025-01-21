@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Card, CardContent, Typography, Grid,  Slider, Box, Button, Drawer, Accordion, AccordionSummary, AccordionDetails, TextField, Modal, LinearProgress, InputAdornment, Divider, ToggleButton, ToggleButtonGroup, Chip, Stepper, Step, StepLabel, CircularProgress, CircularProgressProps } from '@mui/material';
+import { Card, CardContent, Typography, Grid,  Slider, Box, Button, Drawer, Accordion, AccordionSummary, AccordionDetails, TextField, Modal, LinearProgress, InputAdornment, Divider, ToggleButton, ToggleButtonGroup, Chip, CircularProgress, CircularProgressProps } from '@mui/material';
 import { AccessTime, MonetizationOn } from '@mui/icons-material';
 import SpeedIcon from '@mui/icons-material/Speed';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -9,13 +9,10 @@ import { v4 as uuidv4 } from 'uuid'; // Import UUID for generating unique IDs
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import tonLogo from '../assets/toncoin-ton-logo.png'; // Logo dosyasını import et
 import SwitchAccessShortcutAddIcon from '@mui/icons-material/SwitchAccessShortcutAdd';
-import PaidIcon from '@mui/icons-material/Paid';
-import DonutSmallSharpIcon from '@mui/icons-material/DonutSmallSharp';
 import OutboundIcon from '@mui/icons-material/Outbound';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { styled } from '@mui/material/styles';
-import BoltIcon from '@mui/icons-material/Bolt';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import SlotCounter from 'react-slot-counter'; // Kütüphaneyi içe aktar
 
@@ -266,30 +263,7 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
                 color='primary'
                 sx={{color:"#b4e6ff ", fontSize: '0.9rem' }}
               />
-              <Stepper activeStep={calculateAPY(stakingData[index].amount, option.period) / 10 - 1} alternativeLabel>
-                {[...Array(3)].map((_, step) => (
-                  <Step key={step}>
-                    <StepLabel 
-                      sx={{ margin: '0 -4px' }}
-                      icon={
-                        <BoltIcon 
-                          fontSize='small' 
-                          style={{ 
-                            color: step < (calculateAPY(stakingData[index].amount, option.period) / 10) ? '#eac039' : '#b0bec5' 
-                          }} 
-                        />
-                      }
-                      StepIconProps={{
-                        classes: {
-                          root: 'stepIcon',
-                        },
-                      }}
-                    >
-                    
-                    </StepLabel>
-                  </Step>
-                ))}
-              </Stepper>
+      
             </Box>
 
           
@@ -331,30 +305,7 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
             </Typography>
             <Typography variant="body2" color="#B0BEC5" sx={{  }}>
               Leverage:  <span style={{color:'#FFFFFF', fontWeight:'bold',fontSize: '1rem'}}>{displayedLeverage}x</span>
-              <Stepper  activeStep={calculateAPY(stakingData[index].amount, option.period) / 10 - 1} alternativeLabel>
-                {[...Array(3)].map((_, step) => (
-                  <Step key={step}>
-                    <StepLabel 
-                      sx={{ margin: '0 -4px' }}
-                      icon={
-                        <BoltIcon 
-                          fontSize='small' 
-                          style={{ 
-                            color: step < (calculateAPY(stakingData[index].amount, option.period) / 10) ? '#eac039' : '#b0bec5' 
-                          }} 
-                        />
-                      }
-                      StepIconProps={{
-                        classes: {
-                          root: 'stepIcon',
-                        },
-                      }}
-                    >
-                    
-                    </StepLabel>
-                  </Step>
-                ))}
-              </Stepper>
+            
  </Typography>
           </Box>
          <Box sx={{mb:-2,   textAlign:'left' }}>
@@ -1030,22 +981,42 @@ const NewComponent: React.FC<NewComponentProps> = () => {
               flexDirection: 'column', 
             }}>
               <Box sx={{display:'flex', justifyContent:'space-between'}}>
-                                            <Box  mt={1} display={'flex'} alignItems={'center'}>
-                            <PaidIcon  sx={{color:"#90EE90",marginRight:'5px', width: '26px', height: '26px'  }}/>
+                                            <Box   display={'flex'} alignItems={'center'}>
+                                              <Box>
 
               <Typography textAlign={'left'} variant="h4" component="div" sx={{  fontWeight: 'bold', color: 'white', fontSize: '1rem' }}>
-             You earn
+                  <span style={{color: '#90EE90',marginRight:'5px', fontSize:'1.2rem'}}>
+ {(parseFloat(calculateEarnings(
+                      stakingData[selectedOptionIndex].amount, 
+                      stakingData[selectedOptionIndex].duration,
+                      stakingData[selectedOptionIndex].leverage,
+                      stakingOptions[selectedOptionIndex].apy
+                    ))).toFixed(2)} TON 
+                </span>
+               in 
             </Typography>
+            
+              <Typography textAlign={'left'}  sx={{  fontWeight: 'bold', color: 'gray', fontSize: '0.8rem' }}>
+                 ~ ({ (parseFloat(calculateEarnings(
+                      stakingData[selectedOptionIndex].amount, 
+                      stakingData[selectedOptionIndex].duration, 
+                      stakingData[selectedOptionIndex].leverage,
+                      stakingOptions[selectedOptionIndex].apy
+                    )) * 5.20).toFixed(2)} USDT)
+            </Typography>
+                                              </Box>
+
+            
   </Box>
                 <ToggleButtonGroup
                 color="primary" 
                 value={selectedOptionIndex}
                 exclusive
                 onChange={(_e, newValue) => handleSelectionChange(newValue as number)}
-                sx={{ minWidth: '20%' }} 
+                sx={{ maxWidth: '45%', fontSize:'1.8rem' }} 
               >
                 {stakingOptions.map((option, index) => (
-                    <ToggleButton key={index} value={index} sx={{border:"1px solid #575757",p:1, color: 'whitesmoke', bgcolor: '#3f3f3f', borderRadius: 2, fontWeight: 'bolder' , fontSize:'0.8rem'}}>
+                    <ToggleButton key={index} value={index} sx={{border:"1px solid #575757",p:1, color: 'whitesmoke', bgcolor: '#3f3f3f', borderRadius: 2, fontWeight: 'bolder' , fontSize:'0.6rem'}}>
                         {option.period}
                     </ToggleButton>
                 ))}
@@ -1054,42 +1025,19 @@ const NewComponent: React.FC<NewComponentProps> = () => {
           
             <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'} sx={{ width: '100%', mt: 1 }}>
               <Box display={'flex'} alignItems={'center'}>
-                <Typography textAlign={'left'} variant="h6" sx={{ fontWeight: 'bold', fontSize: '2rem' }}> 
-                  <span style={{color: '#90EE90',}}>
-                    +{(parseFloat(calculateEarnings(
-                      stakingData[selectedOptionIndex].amount, 
-                      stakingData[selectedOptionIndex].duration,
-                      stakingData[selectedOptionIndex].leverage,
-                      stakingOptions[selectedOptionIndex].apy
-                    ))).toFixed(2)} 
-                  </span>
-                  <span style={{marginLeft:'7px ',fontSize:'1.5rem', color:"#90EE90"}}>TON</span>
-                  <span style={{ marginLeft: '5px', fontSize: '1rem', color: 'gray' }}>
-                   ({ (parseFloat(calculateEarnings(
-                      stakingData[selectedOptionIndex].amount, 
-                      stakingData[selectedOptionIndex].duration, 
-                      stakingData[selectedOptionIndex].leverage,
-                      stakingOptions[selectedOptionIndex].apy
-                    )) * 5.20).toFixed(2)} USD)
-                  </span>
-                </Typography>
+             
               </Box>
             </Box>
 
- <Typography textAlign={'left'} variant="h6" sx={{color:'secondary', fontWeight:'bold',fontSize: '1rem', mt:2 }}>
-              Total of   <DonutSmallSharpIcon fontSize='small'/>
-            </Typography>
+ 
                               <Divider sx={{backgroundColor:'gray'  }} />
 
 
-            <Box display={'flex'} justifyContent={'space-between'} sx={{ width: '100%' }}>
+            <Box flexDirection={'column'} display={'flex'} mb={-1} justifyContent={'space-between'} sx={{ width: '100%' }}>
               
               <Box>
-                <Typography textAlign={'left'} variant="h6" sx={{color:'grey', fontWeight: 'bold' }}> 
-                 <span style={{fontSize:'0.8rem'}}>Staking reward</span>                </Typography>
-
-                                  <Typography textAlign={'left'} variant="h6" sx={{ fontWeight: 'bold', fontSize: '1rem' }}> 
-
+                <Typography textAlign={'left'} variant="h6" sx={{color:'gray', fontWeight: 'bold' }}> 
+                
                   
                    <span style={{color: 'white',}}>
                     {((parseFloat(calculateEarnings(
@@ -1099,21 +1047,15 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                       stakingOptions[selectedOptionIndex].apy
                     )) * 0.16).toFixed(2))} 
                   </span> 
-                   <span style={{color: 'grey',marginLeft:'5px'}}>
-                   TON   </span>
+                   <span style={{color: '#6ed3ff',marginLeft:'5px'}}>
+                   TON   </span> -  <span style={{fontSize:'0.8rem'}}>Booba Staking</span>              
+
                 </Typography>
               </Box>
 
               <Box>
                 <Typography textAlign={'left'} variant="h6" sx={{color:'grey', fontWeight: 'bold' }}> 
-                  <span style={{fontSize:'0.8rem'}}>DeFi extra yield</span>                </Typography>
-
-                                  <Typography textAlign={'left'} variant="h6" sx={{ fontWeight: 'bold', fontSize: '1rem' }}> 
-
-                
-
-                  
-               +   <span style={{color: 'white',}}>
+                   <span style={{color: 'white',}}>
                     {((parseFloat(calculateEarnings(
                       stakingData[selectedOptionIndex].amount,
                       stakingData[selectedOptionIndex].duration,
@@ -1121,8 +1063,13 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                       stakingOptions[selectedOptionIndex].apy
                     )) * 0.84).toFixed(2))}  
                   </span>
-                                     <span style={{color: 'grey',marginLeft:'5px'}}>
- TON                   </span>
+                                     <span style={{color: '#6ed3ff',marginLeft:'5px'}}>
+ TON</span> -  <span style={{fontSize:'0.8rem'}}>DeFi extra yield</span>             
+
+                
+
+                  
+             
 
                 </Typography>
               </Box>
