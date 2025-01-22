@@ -1105,6 +1105,8 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                 // Calculate total repay and ensure they are numbers
                 const totalRepay = (Number(stake.earnings) + Number(stake.amount)).toFixed(2);
 
+                const formattedEarnings = (typeof accruedEarnings === 'number' ? accruedEarnings : 0).toFixed(2);
+
                 return (
                   <Box key={index} sx={{ mb: 2, p: 2, border: '1px solid #e0e0e0', borderRadius: 1, backgroundColor: '#282828' }}>
                           {/* Kutu içinde gösterim */}
@@ -1127,7 +1129,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                         border: '1px solid #1976d2', 
                         borderRadius: 2, 
                         padding: 2, 
-                        backgroundColor: '#282828', 
+                        backgroundColor: '#282828',  
                         marginBottom: 1, 
                         display: 'flex', // Flexbox kullanarak içeriği yan yana yerleştir
                         justifyContent: 'space-between', // İçeriği iki kenara yay
@@ -1141,10 +1143,10 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                         <Typography textAlign={'left'} variant="h6" sx={{ fontWeight: 'bold', fontSize: '1rem' }}> 
                           <span style={{color: '#90EE90',}}> 
             <SlotCounter delay={1}  sequentialAnimationMode
-  useMonospaceWidth value={parseFloat(accruedEarnings.toFixed(3))}  /> <span>TON</span>  {/* 8 ondalık basamakla göster */}
+  useMonospaceWidth value={parseFloat(formattedEarnings)}  /> <span>TON</span>  {/* 8 ondalık basamakla göster */}
                           </span>
                            <span style={{marginLeft:'5px', color: 'gray',fontSize:'0.7rem'}}> 
-                           ({(accruedEarnings * 5.20).toFixed(2)} USD)
+                           ({(parseFloat(formattedEarnings) * 5.20).toFixed(2)} USD)
                           </span>
                         </Typography>
                         {/* Calculate total repay */}
@@ -1709,7 +1711,6 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                 
               
              
-              
               
           
           
