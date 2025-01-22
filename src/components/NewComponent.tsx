@@ -13,6 +13,7 @@ import OutboundIcon from '@mui/icons-material/Outbound';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { styled } from '@mui/material/styles';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import SlotCounter from 'react-slot-counter'; // Kütüphaneyi içe aktar
 
 interface NewComponentProps {}
@@ -905,6 +906,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
       {/* Conditionally render cards based on unstaking mode */}
       {isUnstaking ? (
         <Grid container spacing={2}>
+          
           {[...Array(1)].map((_, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
               <Card sx={{  textAlign: 'center', padding: 0.5, boxShadow: 6, borderRadius: 2, backgroundColor: '#e3f2fd' }}>
@@ -946,7 +948,11 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                   
                 </CardContent>
               </Card>
+                  <Box sx={{mt:1,height:'1980px', borderRadius: 2, p: 2, gap: 1, bgcolor: "transparent", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    
+                      </Box>
             </Grid>
+            
           ))}
         </Grid>
       ) : (
@@ -1274,8 +1280,11 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                 );
               })
             ) : (
-                      <Box sx={{height:'1080px', borderRadius: 2, p: 2, gap: 1, bgcolor: "transparent", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-             
+                      <Box sx={{ borderRadius: 2, p: 2, gap: 1, bgcolor: "#282828", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <SentimentVeryDissatisfiedIcon />
+                        <Typography variant="body2" color="error">
+                            You don't have any active process 
+                        </Typography>
                       </Box>
             
          
