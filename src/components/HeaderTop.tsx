@@ -196,7 +196,7 @@ function ResponsiveAppBar() {
                 </Select>
               </FormControl>
 
-              <Box mr={13} display={'flex'} sx={{ alignItems: 'center', mt: 1 }}>
+              <Box mr={13} display={'flex'} sx={{ alignItems: 'center', mt: 0 }}>
                 <Link to="/latest-booba/spin" style={{ textDecoration: 'none' }}>
                   <DataSaverOnOutlinedIcon sx={{ color: '#00c6ff' }} />
                 </Link>
