@@ -936,10 +936,10 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                   </Box>
                   <Box mb={-2} sx={{display:'flex', justifyContent:'space-between' }}>
                       <Typography variant="body2" sx={{  fontWeight: 'bold' }}>
-                   lbTON Balance
+                   Leveraged Power
                   </Typography>
                     <Typography variant="body2" sx={{  fontWeight: 'bold' }}>
-                {lbBalance !== null ? `${lbBalance.toFixed(2)} lbTON` : 'Loading...'}
+                {lbBalance !== null ? `${lbBalance.toFixed(2)} TON` : 'Loading...'}
                   </Typography>
                     
                   </Box>
