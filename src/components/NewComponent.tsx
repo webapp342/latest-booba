@@ -841,7 +841,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
   }, [currentAPYLevel]); // Dependency array to log when currentAPYLevel changes
 
   return (
-    <Box style={{ marginBottom: '76px', backgroundColor: '#282828', padding: 8 }}>
+    <Box style={{ marginBottom: '76px', backgroundColor: '#3f3f3f', padding: 8 }}>
       {renderStakingData()}
       <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} mb={2} mt={2}>
 <Typography
@@ -1007,7 +1007,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                       stakingData[selectedOptionIndex].duration, 
                       stakingData[selectedOptionIndex].leverage,
                       stakingOptions[selectedOptionIndex].apy
-                    )) * 5.20).toFixed(2)} USD)
+                    )) * 5.20).toFixed(2)} USDT)
             </Typography>
                                               </Box>
 
@@ -1114,7 +1114,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                 const formattedEarnings = (typeof accruedEarnings === 'number' ? accruedEarnings : 0).toFixed(2);
 
                 return (
-                  <Box key={index} sx={{ mb: 2, p: 2, border: '0px solid #e0e0e0', borderRadius: 1, backgroundColor: '#282828' }}>
+                  <Box key={index} sx={{ mb: 2, p: 2, border: '0px solid #e0e0e0', borderRadius: 1, backgroundColor: '#3f3f3f' }}>
                           {/* Kutu içinde gösterim */}
 
 
@@ -1144,27 +1144,16 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                     >
                       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
                         <Typography variant="h6" sx={{ color: '#b4e6ff', fontWeight: 'bold' }}>
-                          Earnings       <CircularProgress color="success" size="15px" />
+                          Process       <CircularProgress color="success" size="15px" />
                         </Typography>
                         <Typography textAlign={'left'} variant="h6" sx={{ fontWeight: 'bold', fontSize: '1rem' }}> 
-                          {isDurationPassed ? (
-                              <span style={{ color: '#90EE90' }}>
-                                  {stake.earnings}  <span>
-                                     TON </span>
-                                  <span style={{ marginLeft: '5px', color: 'gray', fontSize: '0.7rem' }}>
-                                      ~ ({(stake.earnings * 5.20).toFixed(2)} USD)
-                                  </span>
-                              </span>
-                          ) : (
-                                                    <span style={{color: '#90EE90',display:'flex', alignItems:'center'}}> 
-
-                              <SlotCounter delay={1} sequentialAnimationMode useMonospaceWidth value={parseFloat(formattedEarnings)}   /><span style={{marginLeft: '10px',}}>
-                                     TON </span>  <span style={{marginLeft:'10px', color: 'gray',fontSize:'0.7rem'}}> 
-                           ~ ({(parseFloat(formattedEarnings) * 5.20).toFixed(2)} USD)
+                          <span style={{color: '#90EE90',}}> 
+            <SlotCounter delay={1}  sequentialAnimationMode
+  useMonospaceWidth value={parseFloat(formattedEarnings)}  /> <span>TON</span>  {/* 8 ondalık basamakla göster */}
                           </span>
-                                                   </span> 
- )}
-                            {/* 8 decimal places */}
+                           <span style={{marginLeft:'5px', color: 'gray',fontSize:'0.7rem'}}> 
+                           ({(parseFloat(formattedEarnings) * 5.20).toFixed(2)} USD)
+                          </span>
                         </Typography>
                         {/* Calculate total repay */}
                     
@@ -1205,7 +1194,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                          
                           <span style={{color:'#00c6ff'}}>{totalRepay} TON </span>
                           +
-                          <span style={{color:'#67f177'}}> {(stake.amount * (stake.apy) * (2)).toFixed(2)} BBLIP</span>
+                          <span style={{color:'#67f177'}}> {(stake.amount * (stake.apy) * (2))} BBLIP</span>
                     </Typography>
                   
                     </Box> 
