@@ -1114,7 +1114,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                 const formattedEarnings = (typeof accruedEarnings === 'number' ? accruedEarnings : 0).toFixed(2);
 
                 return (
-                  <Box key={index} sx={{ mb: 2, p: 2, border: '1px solid #e0e0e0', borderRadius: 1, backgroundColor: '#282828' }}>
+                  <Box key={index} sx={{ mb: 2, p: 2, border: '0px solid #e0e0e0', borderRadius: 1, backgroundColor: 'traansparent' }}>
                           {/* Kutu içinde gösterim */}
 
 
