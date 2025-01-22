@@ -82,6 +82,14 @@ function ResponsiveAppBar() {
     setMenuOpen(false);
   };
 
+  const displayedBalance = selectedBalance === 'bblip' 
+    ? (bblip !== null ? (bblip / 1000).toFixed(2) : 'Loading...') 
+    : (total !== null ? (total / 1000).toFixed(2) : 'Loading...');
+
+       const avatarStyles = selectedBalance === 'bblip' 
+                      ? { width: "8vw", height: "auto" } // BBLIP için stil
+                      : { width: "8vw", height: "auto" }; // Total için stil
+
   return (
     <AppBar position="fixed" sx={{ backgroundColor: '#282828', borderBottomLeftRadius: '16px', borderBottomRightRadius: '16px' }}>
       <Container  maxWidth="xl">
@@ -114,25 +122,17 @@ function ResponsiveAppBar() {
                   }}
                   inputProps={{ disableUnderline: true }}
                   IconComponent={() => null}
-                  renderValue={(selected) => {
-                    const balance = selected === 'bblip' ? bblip : total;
-                    const logo = selected === 'bblip' ? bblipLogo : totalLogo;
-                    const displayedBalance = balance !== null ? (balance / 1000).toFixed(2) : 'Loading...';
-
-                    // Her logo için ayrı stil tanımlama
-                    const avatarStyles = selected === 'bblip' 
-                      ? { width: "90%", height: "90%" } // BBLIP için stil
-                      : { width: "70%", height: "70%" }; // Total için stil
+                  renderValue={() => {
+                    const logo = selectedBalance === 'bblip' ? bblipLogo : totalLogo;
 
                     return (
-                      <Box sx={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
-                        <Box sx={{ mr: '10px' }}>
-                          <Avatar
+                      <Box sx={{ display: 'flex', alignItems: 'center' ,position: 'relative' }}>
+                        <Box sx={{  }}>
+  <Avatar
                             sx={avatarStyles} // Burada stil uygulama
                             src={logo}
-                          />
-                        </Box>
-                        <ChangeCircleOutlinedIcon fontSize='medium'
+                          />                        </Box>
+    <ChangeCircleOutlinedIcon fontSize='medium'
                           style={{
                             position: 'absolute',
                             bottom: '0',
@@ -144,61 +144,71 @@ function ResponsiveAppBar() {
                             borderRadius: '50%', // Make it circular
                             backgroundColor: '#282828', // Use dark theme background
                           }}
-                        />
-                        <Box
-                          sx={{
-                            position: 'absolute',
-                            bottom: '0',
-                            left: '0',
-                            width: '35px', // Adjust size as needed
-                            height: '35px', // Adjust size as needed
-                            borderRadius: '50%', // Make it circular
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                          }}
-                        />
-                        <Box display={'flex'} justifyContent={'space-between'}>
-                          <Box>
-                            <Typography sx={{ fontWeight: 'light', fontSize: '1.1rem', color:'#FFFFFF' }}>
-                              {displayedBalance}
-                            </Typography>
-                          </Box>
-                        </Box>
+                        />                        <Typography sx={{marginLeft:'1vw', fontWeight: 'light', fontSize: '1rem', color: '#FFFFFF' }}>
+                          {displayedBalance}
+                        </Typography>
                       </Box>
                     );
                   }}
                 >
-                  <MenuItem value="bblip" sx={{ width: '100%' }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 18 }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <img src={bblipLogo} alt="BBLIP" style={{ height: '20px', marginRight: '8px' }} />
+                  <MenuItem value="bblip" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+
+
+<Box display={'flex'}>
+   <img src={bblipLogo} alt="BBLIP" style={{ height: '20px', marginRight: '8px' }} />
+
                         {menuOpen && <Typography variant="body2" sx={{ color: theme.palette.text.primary }}>BBLIP</Typography>}
-                      </Box>
-                      <span style={{ color: theme.palette.text.primary }}>
-                        {bblip !== null ? (bblip / 1000).toFixed(2) : 'Loading...'} BBLIP
-                      </span>
+</Box>
+                     
+
+                  <Box display={'flex'} gap={1}>
+                    <Box>
+                            {bblip !== null ? (bblip / 1000).toFixed(2) : 'Loading...'} 
                     </Box>
+
+
+                      <Box>
+   BBLIP
+                      </Box>
+
+               
+                   
+                  </Box>
+    
+                  
                   </MenuItem>
 
-                  <MenuItem value="total" sx={{ width: '100%' }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 23 }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <img src={totalLogo} alt="Total" style={{ height: '20px', marginRight: '8px' }} />
+
+
+                  <MenuItem value="total" sx={{minWidth:"90vw", display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+
+
+                    <Box sx={{ display: 'flex' }}>
+
+   <img src={totalLogo} alt="Total" style={{ height: '20px', marginRight: '8px' }} />
                         {menuOpen && <Typography variant="body2" sx={{ color: theme.palette.text.primary }}>TON</Typography>}
-                      </Box>
-                      <span style={{ color: theme.palette.text.primary }}>
-                        {total !== null ? (total / 1000).toFixed(2) : 'Loading...'} TON
-                      </span>
+                         </Box>
+                  
+
+                  <Box   display={'flex'} gap={1}>
+                    <Box>
+
+                                            {total !== null ? (total / 1000).toFixed(2) : 'Loading...'} 
+                    </Box>
+                     <Box>
+                    TON
+                   </Box>
+
+                     
                     </Box>
                   </MenuItem>
                   
                 </Select>
               </FormControl>
 
-              <Box mr={13} display={'flex'} sx={{ alignItems: 'center', mt: 0 }}>
+              <Box ml={-16}  display={'flex'} sx={{ alignItems: 'center', mt: 1 }}>
                 <Link to="/latest-booba/spin" style={{ textDecoration: 'none' }}>
-                  <DataSaverOnOutlinedIcon sx={{ color: '#00c6ff' }} />
+                  <DataSaverOnOutlinedIcon  sx={{width:'8vw', height:'auto', color: '#00c6ff' }} />
                 </Link>
               </Box>
 
