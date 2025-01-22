@@ -226,7 +226,7 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
         sx={{ 
           
           textAlign: 'center', 
-          boxShadow: 0 ,
+          
           borderRadius: 2,
           backgroundColor:  '#3f3f3f',
         }}
@@ -455,7 +455,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedStaking, setSelectedStaking] = useState<{
     option: typeof stakingOptions[0];
-    data: {
+    data: { 
       amount: number;
       duration: number;
       leverage: number;
@@ -835,7 +835,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
   }, [currentAPYLevel]); // Dependency array to log when currentAPYLevel changes
 
   return (
-    <Box style={{ marginBottom: '76px', backgroundColor: '#3f3f3f', padding: 8 }}>
+    <Box style={{ marginBottom: '76px', backgroundColor: '#1E1E1E', padding: 8 }}>
       {renderStakingData()}
       <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} mb={2} mt={2}>
 <Typography
@@ -971,9 +971,10 @@ const NewComponent: React.FC<NewComponentProps> = () => {
               minWidth: 275, 
               textAlign: 'center', 
               padding: 0.5, 
+              boxShadow: 6,
               borderRadius: 2,
               transition: 'transform 0.3s, box-shadow 0.3s',
-              backgroundColor:  '#3f3f3f',
+              backgroundColor:  '#282828',
               p: 2,   
               display: 'flex', 
               flexDirection: 'column', 
@@ -1014,7 +1015,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                 sx={{minWidth: '45%', maxWidth: '45%', fontSize:'1.8rem' }} 
               >
                 {stakingOptions.map((option, index) => (
-                    <ToggleButton key={index} value={index} sx={{border:"1px solid #575757",p:1, color: 'whitesmoke', bgcolor: '#282828', borderRadius: 2, fontWeight: 'bolder' , fontSize:'0.6rem'}}>
+                    <ToggleButton key={index} value={index} sx={{border:"1px solid #575757",p:1, color: 'whitesmoke', bgcolor: '#3f3f3f', borderRadius: 2, fontWeight: 'bolder' , fontSize:'0.6rem'}}>
                         {option.period}
                     </ToggleButton>
                 ))}
