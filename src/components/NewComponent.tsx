@@ -906,7 +906,6 @@ const NewComponent: React.FC<NewComponentProps> = () => {
       {/* Conditionally render cards based on unstaking mode */}
       {isUnstaking ? (
         <Grid container spacing={2}>
-          
           {[...Array(1)].map((_, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
               <Card sx={{  textAlign: 'center', padding: 0.5, boxShadow: 6, borderRadius: 2, backgroundColor: '#e3f2fd' }}>
@@ -936,10 +935,10 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                   </Box>
                   <Box mb={-2} sx={{display:'flex', justifyContent:'space-between' }}>
                       <Typography variant="body2" sx={{  fontWeight: 'bold' }}>
-                   Leveraged Power
+                   lbTON Balance
                   </Typography>
                     <Typography variant="body2" sx={{  fontWeight: 'bold' }}>
-                {lbBalance !== null ? `${lbBalance.toFixed(2)} TON` : 'Loading...'}
+                {lbBalance !== null ? `${lbBalance.toFixed(2)} lbTON` : 'Loading...'}
                   </Typography>
                     
                   </Box>
@@ -948,11 +947,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                   
                 </CardContent>
               </Card>
-                  <Box sx={{mt:1,height:'1980px', borderRadius: 2, p: 2, gap: 1, bgcolor: "transparent", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    
-                      </Box>
             </Grid>
-            
           ))}
         </Grid>
       ) : (
@@ -1119,8 +1114,6 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                 const formattedEarnings = (typeof accruedEarnings === 'number' ? accruedEarnings : 0).toFixed(2);
 
                 return (
-
-                  
                   <Box key={index} sx={{ mb: 2, p: 2, border: '0px solid #e0e0e0', borderRadius: 1, backgroundColor: 'traansparent' }}>
                           {/* Kutu içinde gösterim */}
 
