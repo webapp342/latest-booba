@@ -378,8 +378,14 @@ const calculateAccruedEarnings = (stake: any) => {
     const elapsedSeconds = calculateRemainingSeconds(stake.timestamp, durationInDays); 
     console.log(`Elapsed Seconds: ${elapsedSeconds}`);
 
-    // Staking süresi tamamlandı mı?
-    if (elapsedSeconds >= totalStakeDurationSeconds) {
+    // Bitiş tarihini kontrol et
+    const currentTime = new Date().getTime();
+    const stakeTime = new Date(stake.timestamp).getTime();
+    const durationInMillis = durationInDays * 24 * 60 * 60 * 1000; // Süreyi milisaniyeye çevir
+    const endTime = stakeTime + durationInMillis; // Bitiş zamanı
+
+    // Eğer bitiş zamanı geçmişse, toplam kazancı döndür
+    if (currentTime >= endTime) {
         console.log(`Staking period completed. Returning total earnings: ${totalEarnings}`);
         return totalEarnings; // Süre tamamlandıysa, toplam kazancı döndür
     }
@@ -1001,7 +1007,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                       stakingData[selectedOptionIndex].duration, 
                       stakingData[selectedOptionIndex].leverage,
                       stakingOptions[selectedOptionIndex].apy
-                    )) * 5.20).toFixed(2)} USDT)
+                    )) * 5.20).toFixed(2)} USD)
             </Typography>
                                               </Box>
 
@@ -1036,7 +1042,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
               
               <Box>
                 <Typography textAlign={'left'} variant="h6" sx={{color:'gray', fontWeight: 'bold' }}> 
-                
+                  
                   
                    <span style={{color: 'white',}}>
                     {((parseFloat(calculateEarnings(
@@ -1138,16 +1144,27 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                     >
                       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
                         <Typography variant="h6" sx={{ color: '#b4e6ff', fontWeight: 'bold' }}>
-                          Process       <CircularProgress color="success" size="15px" />
+                          Earnings       <CircularProgress color="success" size="15px" />
                         </Typography>
                         <Typography textAlign={'left'} variant="h6" sx={{ fontWeight: 'bold', fontSize: '1rem' }}> 
-                          <span style={{color: '#90EE90',}}> 
-            <SlotCounter delay={1}  sequentialAnimationMode
-  useMonospaceWidth value={parseFloat(formattedEarnings)}  /> <span>TON</span>  {/* 8 ondalık basamakla göster */}
+                          {isDurationPassed ? (
+                              <span style={{ color: '#90EE90' }}>
+                                  {stake.earnings}  <span>
+                                     TON </span>
+                                  <span style={{ marginLeft: '5px', color: 'gray', fontSize: '0.7rem' }}>
+                                      ~ ({(stake.earnings * 5.20).toFixed(2)} USD)
+                                  </span>
+                              </span>
+                          ) : (
+                                                    <span style={{color: '#90EE90',display:'flex', alignItems:'center'}}> 
+
+                              <SlotCounter delay={1} sequentialAnimationMode useMonospaceWidth value={parseFloat(formattedEarnings)}   /><span style={{marginLeft: '10px',}}>
+                                     TON </span>  <span style={{marginLeft:'10px', color: 'gray',fontSize:'0.7rem'}}> 
+                           ~ ({(parseFloat(formattedEarnings) * 5.20).toFixed(2)} USD)
                           </span>
-                           <span style={{marginLeft:'5px', color: 'gray',fontSize:'0.7rem'}}> 
-                           ({(parseFloat(formattedEarnings) * 5.20).toFixed(2)} USD)
-                          </span>
+                                                   </span> 
+ )}
+                            {/* 8 decimal places */}
                         </Typography>
                         {/* Calculate total repay */}
                     
@@ -1188,7 +1205,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                          
                           <span style={{color:'#00c6ff'}}>{totalRepay} TON </span>
                           +
-                          <span style={{color:'#67f177'}}> {(stake.amount * (stake.apy) * (2))} BBLIP</span>
+                          <span style={{color:'#67f177'}}> {(stake.amount * (stake.apy) * (2)).toFixed(2)} BBLIP</span>
                     </Typography>
                   
                     </Box> 
