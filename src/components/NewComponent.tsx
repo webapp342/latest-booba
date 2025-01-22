@@ -226,7 +226,7 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
         sx={{ 
           
           textAlign: 'center', 
-          
+          boxShadow: 0 ,
           borderRadius: 2,
           backgroundColor:  '#3f3f3f',
         }}
@@ -835,7 +835,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
   }, [currentAPYLevel]); // Dependency array to log when currentAPYLevel changes
 
   return (
-    <Box style={{ marginBottom: '76px', backgroundColor: '#1E1E1E', padding: 8 }}>
+    <Box style={{ marginBottom: '76px', backgroundColor: '#3f3f3f', padding: 8 }}>
       {renderStakingData()}
       <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} mb={2} mt={2}>
 <Typography
