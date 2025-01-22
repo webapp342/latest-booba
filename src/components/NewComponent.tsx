@@ -971,10 +971,9 @@ const NewComponent: React.FC<NewComponentProps> = () => {
               minWidth: 275, 
               textAlign: 'center', 
               padding: 0.5, 
-              boxShadow: 6,
               borderRadius: 2,
               transition: 'transform 0.3s, box-shadow 0.3s',
-              backgroundColor:  '#282828',
+              backgroundColor:  '#3f3f3f',
               p: 2,   
               display: 'flex', 
               flexDirection: 'column', 
@@ -1015,7 +1014,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                 sx={{minWidth: '45%', maxWidth: '45%', fontSize:'1.8rem' }} 
               >
                 {stakingOptions.map((option, index) => (
-                    <ToggleButton key={index} value={index} sx={{border:"1px solid #575757",p:1, color: 'whitesmoke', bgcolor: '#3f3f3f', borderRadius: 2, fontWeight: 'bolder' , fontSize:'0.6rem'}}>
+                    <ToggleButton key={index} value={index} sx={{border:"1px solid #575757",p:1, color: 'whitesmoke', bgcolor: '#282828', borderRadius: 2, fontWeight: 'bolder' , fontSize:'0.6rem'}}>
                         {option.period}
                     </ToggleButton>
                 ))}
