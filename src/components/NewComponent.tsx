@@ -1114,6 +1114,8 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                 const formattedEarnings = (typeof accruedEarnings === 'number' ? accruedEarnings : 0).toFixed(2);
 
                 return (
+
+                  
                   <Box key={index} sx={{ mb: 2, p: 2, border: '0px solid #e0e0e0', borderRadius: 1, backgroundColor: 'traansparent' }}>
                           {/* Kutu içinde gösterim */}
 
@@ -1273,11 +1275,8 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                 );
               })
             ) : (
-                      <Box sx={{ borderRadius: 2, p: 2, gap: 1, bgcolor: "#282828", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <SentimentVeryDissatisfiedIcon />
-                        <Typography variant="body2" color="error">
-                            You don't have any active process 
-                        </Typography>
+                      <Box sx={{height:'1080px', borderRadius: 2, p: 2, gap: 1, bgcolor: "transparent", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+             
                       </Box>
             
          
