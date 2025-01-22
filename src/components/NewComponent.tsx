@@ -841,7 +841,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
   }, [currentAPYLevel]); // Dependency array to log when currentAPYLevel changes
 
   return (
-    <Box style={{ marginBottom: '76px', backgroundColor: '#3f3f3f', padding: 8 }}>
+    <Box style={{ marginBottom: '76px', backgroundColor: '#1E1E1E', padding: 8 }}>
       {renderStakingData()}
       <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} mb={2} mt={2}>
 <Typography
@@ -1114,7 +1114,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                 const formattedEarnings = (typeof accruedEarnings === 'number' ? accruedEarnings : 0).toFixed(2);
 
                 return (
-                  <Box key={index} sx={{ mb: 2, p: 2, border: '0px solid #e0e0e0', borderRadius: 1, backgroundColor: '#3f3f3f' }}>
+                  <Box key={index} sx={{ mb: 2, p: 2, border: '1px solid #e0e0e0', borderRadius: 1, backgroundColor: '#3f3f3f' }}>
                           {/* Kutu içinde gösterim */}
 
 

@@ -9,7 +9,7 @@ import { CheckCircleOutline } from '@mui/icons-material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';import { useNavigate } from 'react-router-dom';
 import TokenSwap from "./SwapComponent"; // TokenSwap bileşenini eklediğiniz yer
 import logo5 from '../assets/bblip.png';
-import banner from '../assets/banner.gif'; // Import the banner image
+import banner from '../assets/26.gif'; // Import the banner image
 
 import { doc, onSnapshot, getFirestore, getDoc } from "firebase/firestore";
 import { initializeApp } from 'firebase/app';
@@ -551,13 +551,13 @@ ml:1,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 5,
+        borderRadius: 4,
         overflow: 'hidden',
         backgroundColor: 'transparent', // Optional: Set background color if needed
       }}
     >
       <img src={banner} alt="Banner" style={{        borderRadius: 5,
- width: '95%', height: '18vh' }} />
+ width: '95%' }} />
     </Box>
 
       {/* İkinci Kart - Asset List */}
