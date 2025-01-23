@@ -129,29 +129,29 @@ const TokenSwap: React.FC = () => {
 
     // TON -> USDT dönüşümü
     if (fromToken === "TON" && toToken === "USDT") {
-      setToAmount((amount * tonPrice).toFixed(6)); // TON miktarını USDT'ye çevir
+      setToAmount((amount * tonPrice).toFixed(2)); // TON miktarını USDT'ye çevir
     }
     // USDT -> TON dönüşümü
     else if (fromToken === "USDT" && toToken === "TON") {
-      setToAmount((amount / tonPrice).toFixed(6)); // USDT miktarını TON'a çevir
+      setToAmount((amount / tonPrice).toFixed(2)); // USDT miktarını TON'a çevir
     }
     // TICKET dönüşümleri
     else if (fromToken === "TON" && toToken === "TICKET") {
-      setToAmount((amount / 2.5).toFixed(6)); // 2.5 TON = 1 TICKET
+      setToAmount((amount / 2.5).toFixed(2)); // 2.5 TON = 1 TICKET
     } else if (fromToken === "TICKET" && toToken === "TON") {
-      setToAmount((amount * 2.5).toFixed(6)); // 1 TICKET = 2.5 TON
+      setToAmount((amount * 2.5).toFixed(2)); // 1 TICKET = 2.5 TON
     }
   } else {
     setToAmount(inputValue);
 
     if (fromToken === "TON" && toToken === "USDT") {
-      setFromAmount((amount / tonPrice).toFixed(6));
+      setFromAmount((amount / tonPrice).toFixed(2));
     } else if (fromToken === "USDT" && toToken === "TON") {
-      setFromAmount((amount * tonPrice).toFixed(6));
+      setFromAmount((amount * tonPrice).toFixed(2));
     } else if (fromToken === "TON" && toToken === "TICKET") {
-      setFromAmount((amount * 2.5).toFixed(6));
+      setFromAmount((amount * 2.5).toFixed(2));
     } else if (fromToken === "TICKET" && toToken === "TON") {
-      setFromAmount((amount / 2.5).toFixed(6));
+      setFromAmount((amount / 2.5).toFixed(2));
     }
   }
 };
@@ -304,9 +304,9 @@ const handleSwap = async () => {
     switch (token) {
   
       case "TON":
-        return `  ${tonPrice.toFixed(4)} USDT`;
+        return `  ${tonPrice.toFixed(2)} USDT`;
       case "TICKET":
-        return `  ${TICKET_TON_RATE} TON (${(TICKET_TON_RATE * tonPrice).toFixed(4)} USDT)`;
+        return `  ${TICKET_TON_RATE} TON (${(TICKET_TON_RATE * tonPrice).toFixed(2)} USDT)`;
       default:
         return "";
     }
@@ -314,9 +314,7 @@ const handleSwap = async () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box justifyContent="space-between" alignItems="center" m={2}>
-        
-      </Box>
+    
       
             {/* Add error and success alerts */}
       {error && (
@@ -333,27 +331,27 @@ const handleSwap = async () => {
           </Alert>
         </Box>
       )}
-      <Box sx={{ display: "flex", mt: 8, justifyContent: "center", alignItems: "center" }}>
-        <Card sx={{ boxShadow: 0, borderRadius: 0, width: "100%" }}>
-          <Box display={"flex"} m={1} alignItems={"center"} justifyContent={"space-between"} sx={{ mb: 2 }}>
-            <TuneRoundedIcon fontSize="medium" />
-            <Typography variant="h6" fontWeight={"bold"}>Swap</Typography>
-            <RefreshRoundedIcon fontSize="medium" />
+      <Box  sx={{ display: "flex", mt: 4, justifyContent: "center", alignItems: "center" }}>
+        <Card   sx={{p:1, boxShadow: 0, borderRadius: 4, width: "100%" , bgcolor:'#282828' }}>
+          <Box  display={"flex"}   alignItems={"center"} justifyContent={"space-between"} sx={{ mb: 1 }}>
+            <TuneRoundedIcon  fontSize="medium" sx={{color:'white'}} />
+            <Typography sx={{color:'white'}} variant="h6" fontWeight={"bold"}>Swap</Typography>
+            <RefreshRoundedIcon sx={{color:'white'}} fontSize="medium" />
           </Box>
 
          
-            <Grid container spacing={3} alignItems="center">
+            <Grid container spacing={3} alignItems="center"  bgcolor={'#282828'} >
         <Grid item xs={12}>
-          <Card sx={{ padding: 2, display: "flex", flexDirection: "column", gap: 2, boxShadow: 3, border: "1px solid #ddd", borderRadius: 4, mb: 3, backgroundColor: theme.palette.background.default }}>
+          <Card sx={{ padding: 2, display: "flex", flexDirection: "column", gap: 2, boxShadow: 3,  borderRadius: 2, mb: 3, backgroundColor: '#3f3f3f' }}>
             <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
               <Box sx={{ display: "flex", alignItems: "center", gap: 2, justifyContent: "space-between" }}>
                 <Box sx={{ display: "flex", flexDirection: "column" }}>
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 1, boxShadow: 2, padding: 1, cursor: "pointer", borderRadius: 2, backgroundColor: theme.palette.background.default }} onClick={() => { setSelectedTokenType("from"); setOpenDrawer(true); }}>
+                  <Box sx={{width:'33vw', display: "flex", alignItems: "center", gap: 1, boxShadow: 2, padding: 1, cursor: "pointer", borderRadius: 2, backgroundColor: '#3f3f3f' }} onClick={() => { setSelectedTokenType("from"); setOpenDrawer(true); }}>
                     <Avatar src={tokens.find((t) => t.name === fromToken)?.icon} sx={{ width: 30, height: 30 }} />
-                    <Typography variant="body1">{fromToken}</Typography>
-                    <UnfoldMoreRoundedIcon fontSize="medium" />
+                    <Typography color={'white'} variant="body1">{fromToken}</Typography>
+                  <UnfoldMoreRoundedIcon  fontSize="medium" sx={{color:'white'}} />
                   </Box>
-                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 1, ml: 1 }}>
+                  <Box sx={{width:'47vw', display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 1 }}>
                   <Typography variant="caption" sx={{ color: 'gray' }}>
   Balance: {formatDisplayAmount(getBalanceForToken(fromToken), fromToken)}
 </Typography>
@@ -364,11 +362,12 @@ const handleSwap = async () => {
                   value={fromAmount} 
                   onChange={(e) => handleAmountChange(e, "from")} 
                   fullWidth 
+                  
                   placeholder="0.0" 
                   variant="standard" 
                   InputProps={{ disableUnderline: true }} 
                   inputProps={{ type: "text", inputMode: "decimal", pattern: "[0-9]*" }} 
-                  sx={{ "& .MuiInputBase-input": { padding: 0, textAlign: "right", fontSize: "1.3rem" } }} 
+                  sx={{mb:3, "& .MuiInputBase-input": { padding: 0,color:'white', textAlign: "right", fontSize: "2.2rem" } }} 
                 />
               </Box>
             </Box>
@@ -377,24 +376,24 @@ const handleSwap = async () => {
 
 
             {/* Swap Icon Between */}
-            <Grid item xs={12} mt={-8} textAlign="center">
-              <IconButton color="primary" onClick={handleTokenSwapInline2} sx={{ backgroundColor: "#f5f5f5", border: "2px solid #ddd", borderRadius: "30%", "&:hover": { backgroundColor: "#e0e0e0" } }}>
-                <SwapVertRoundedIcon fontSize="small" />
+            <Grid item xs={12} mt={-7.5} textAlign="center">
+              <IconButton  onClick={handleTokenSwapInline2} sx={{ backgroundColor: "#00c6ff", border: "2px solid #00c6ff", borderRadius: "30%", "&:hover": { backgroundColor: "#e0e0e0" } }}>
+                <SwapVertRoundedIcon  fontSize="small" />
               </IconButton>
             </Grid>
 
             {/* To Token Section */}
             <Grid item xs={12}>
-          <Card sx={{ padding: 2, display: "flex", flexDirection: "column", gap: 2, boxShadow: 4, border: "1px solid #ddd", borderRadius: 4, mb: 3, mt: -5, backgroundColor: theme.palette.background.default }}>
+          <Card sx={{ padding: 2, display: "flex", flexDirection: "column", gap: 2, boxShadow: 3,  borderRadius: 2, mb: 1,mt:-4.5 ,backgroundColor: '#3f3f3f' }}>
             <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
               <Box sx={{ display: "flex", alignItems: "center", gap: 2, justifyContent: "space-between" }}>
                 <Box sx={{ display: "flex", flexDirection: "column" }}>
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 1, cursor: "pointer", padding: 1, boxShadow: 2, borderRadius: 2, backgroundColor: theme.palette.background.default }} onClick={() => { setSelectedTokenType("to"); setOpenDrawer(true); }}>
+                  <Box sx={{width:'33vw', display: "flex", alignItems: "center", gap: 1, boxShadow: 2, padding: 1, cursor: "pointer", borderRadius: 2, backgroundColor: '#3f3f3f' }} onClick={() => { setSelectedTokenType("from"); setOpenDrawer(true); }}>
                     <Avatar src={tokens.find((t) => t.name === toToken)?.icon} sx={{ width: 30, height: 30 }} />
-                    <Typography variant="body1">{toToken}</Typography>
-                    <UnfoldMoreRoundedIcon fontSize="medium" />
+                 <Typography color={'white'} variant="body1">{toToken}</Typography>
+                  <UnfoldMoreRoundedIcon  fontSize="medium" sx={{color:'white'}} />
                   </Box>
-                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 1, ml: 1 }}>
+                  <Box sx={{width:'47vw', display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 1}}>
                     <Typography variant="caption" sx={{ color: 'gray' }}>
   Balance: {formatDisplayAmount(getBalanceForToken(toToken), toToken)}
                     </Typography>
@@ -409,7 +408,7 @@ const handleSwap = async () => {
                   variant="standard" 
                   InputProps={{ disableUnderline: true }} 
                   inputProps={{ type: "text", inputMode: "numeric", pattern: "[0-9]*" }} 
-                  sx={{ "& .MuiInputBase-input": { padding: 0, textAlign: "right", fontSize: "1.3rem" } }} 
+                  sx={{mb:3, "& .MuiInputBase-input": { padding: 0,color:'white', textAlign: "right", fontSize: "2.2rem" } }} 
                 />
               </Box>
             </Box>
@@ -427,7 +426,7 @@ const handleSwap = async () => {
           sx={{
             borderRadius: 2,
             py: 1.5,
-            backgroundColor: '#1976d2',
+            backgroundColor: '#00c6ff',
             '&:hover': {
               backgroundColor: '#1565c0',
             },
@@ -441,9 +440,9 @@ const handleSwap = async () => {
 
 
          {/* Add price information */}
-   <Box sx={{ mt: 2, p: 2, backgroundColor: '#f5f5f5', borderRadius: 2 }}>
+   <Box sx={{  p: 0.5,  borderRadius: 2 }}>
   {tokens.filter(t => t.name !== "USDT").map(token => (
-    <Typography key={token.name} variant="caption" display="flex" justifyContent="space-between" sx={{ mb: 0.5 }}>
+    <Typography key={token.name} variant="caption" display="flex" justifyContent="space-between" sx={{color:'white', mb: 0.5 }}>
       <span>{token.name}</span>
       <span style={{ marginLeft: 'auto' }}>
         {token.name === "BBLIP" ? "Coming Soon ..." : getEquivalentPrice(token.name)}
@@ -466,7 +465,7 @@ const handleSwap = async () => {
   onClose={() => setOpenDrawer(false)}
   onOpen={() => setOpenDrawer(true)}
 >
-  <List sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+  <List sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' ,bgcolor:'#282828'}}>
     {/* Başlık ekleniyor */}
     <ListItem sx={{ justifyContent: 'center', padding: 2 }}>
       <Typography variant="h6">Select Asset</Typography>

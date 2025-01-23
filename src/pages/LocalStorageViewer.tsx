@@ -374,7 +374,7 @@ useEffect(() => {
  
               <Box>
         {/* İlk Kart */}
-        <Box sx={{ borderRadius: 3, mt: 1, mx: 1,p:2, backgroundColor: '#282828' }}>
+        <Box sx={{ borderRadius: 3, mt: 1, mx: 1,p:2, backgroundColor: '#3f3f3f' }}>
             {/* Total Account Equity */}
             <Typography
               variant="subtitle2"
@@ -561,7 +561,7 @@ ml:1,
     </Box>
 
       {/* İkinci Kart - Asset List */}
-<Card sx={{ borderRadius: 3, mt: 1, m:1 }}>
+<Card sx={{ borderRadius: 3, mt: 1, m:1 , bgcolor:'#282828' }}>
   <CardContent>
    
     {/* Başlık ve Arama Kutusu */}
