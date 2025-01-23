@@ -853,7 +853,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
     if (drawerOpen) {
         backButton.show();
         backButton.onClick(() => {
-            navigate("/latest-booba/top");
+            navigate("/latest-booba/stake");
         });
     } else {
         backButton.hide(); // Drawer kapalıysa butonu gizle
@@ -863,7 +863,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
     return () => {
         backButton.hide();
         backButton.offClick(() => {
-            navigate("/latest-booba/top"); // Buraya tekrar aynı callback sağlanmalıdır.
+            navigate("/latest-booba/stake"); // Buraya tekrar aynı callback sağlanmalıdır.
         });
     };
   }, [navigate, drawerOpen]); // drawerOpen'i bağımlılıklar listesine ekleyin
