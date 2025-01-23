@@ -505,23 +505,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
 
 
 
-   useEffect(() => {
-         const backButton = WebApp.BackButton;
-     
-         // BackButton'u görünür yap ve tıklanma işlevi ekle
-         backButton.show();
-         backButton.onClick(() => {
-           navigate("/latest-booba/top");
-         });
-     
-         // Cleanup: Bileşen unmount olduğunda butonu gizle ve event handler'ı kaldır
-         return () => {
-           backButton.hide();
-           backButton.offClick(() => {
-             navigate("/latest-booba/top"); // Buraya tekrar aynı callback sağlanmalıdır.
-           });
-         };
-       }, [navigate]);
+   
    
   // Kazancı güncellemek için useEffect
   useEffect(() => {
@@ -861,6 +845,28 @@ const NewComponent: React.FC<NewComponentProps> = () => {
   useEffect(() => {
     console.log(`Current APY Level: ${currentAPYLevel}`);
   }, [currentAPYLevel]); // Dependency array to log when currentAPYLevel changes
+
+  useEffect(() => {
+    const backButton = WebApp.BackButton;
+
+    // Sadece drawer açıkken geri butonunu göster
+    if (drawerOpen) {
+        backButton.show();
+        backButton.onClick(() => {
+            navigate("/latest-booba/top");
+        });
+    } else {
+        backButton.hide(); // Drawer kapalıysa butonu gizle
+    }
+
+    // Cleanup: Bileşen unmount olduğunda butonu gizle ve event handler'ı kaldır
+    return () => {
+        backButton.hide();
+        backButton.offClick(() => {
+            navigate("/latest-booba/top"); // Buraya tekrar aynı callback sağlanmalıdır.
+        });
+    };
+  }, [navigate, drawerOpen]); // drawerOpen'i bağımlılıklar listesine ekleyin
 
   return (
     <Box style={{ marginBottom: '76px', backgroundColor: '#1E1E1E', padding: 8 }}>
@@ -1364,6 +1370,9 @@ const NewComponent: React.FC<NewComponentProps> = () => {
         </Accordion>
       ))}
 
+
+      
+
       {/* Drawer bileşeni eklendi */}
       <Drawer
         anchor="bottom"
@@ -1372,6 +1381,8 @@ const NewComponent: React.FC<NewComponentProps> = () => {
         sx={{ backgroundColor: '#1E1E1E', transition: 'transform 0.3s ease-in-out' }} // Smooth transition
       >
         <Box sx={{ p: 3, display: 'flex', flexDirection: 'column', gap: 2,backgroundColor:"#1E1E1E" }}>
+
+          
       
 
           {selectedStaking && (
