@@ -24,6 +24,8 @@ import { doc, onSnapshot, getFirestore, updateDoc } from "firebase/firestore";
 import { initializeApp } from 'firebase/app';
 
 import { firebaseConfig } from './firebaseConfig';
+import { useNavigate } from "react-router-dom";
+import WebApp from "@twa-dev/sdk";
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -43,7 +45,8 @@ const TokenSwap: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [isSwapping, setIsSwapping] = useState(false);
-  
+     const navigate = useNavigate();
+
   const [balances, setBalances] = useState({
     bblip: 0,
     usdt: 0,
@@ -77,6 +80,25 @@ const TokenSwap: React.FC = () => {
       console.error("Error fetching TON price:", error);
     }
   };
+
+  useEffect(() => {
+          const backButton = WebApp.BackButton;
+      
+          // BackButton'u görünür yap ve tıklanma işlevi ekle
+          backButton.show();
+          backButton.onClick(() => {
+            navigate("/latest-booba/spin");
+          });
+      
+          // Cleanup: Bileşen unmount olduğunda butonu gizle ve event handler'ı kaldır
+          return () => {
+            backButton.hide();
+            backButton.offClick(() => {
+              navigate("/latest-booba/spin"); // Buraya tekrar aynı callback sağlanmalıdır.
+            });
+          };
+        }, [navigate]);
+    
 
   useEffect(() => {
     fetchTonPrice();
