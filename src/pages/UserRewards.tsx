@@ -36,6 +36,8 @@ const UserRewards = () => {
         // Kullanıcı verisi yoksa, yeni kullanıcıyı oluştur
         const newUserData = {
           rewardShown: false,
+                    lastLogin: new Date().toISOString(),
+
          
         };
         await setDoc(docRef, newUserData);
@@ -56,11 +58,16 @@ const UserRewards = () => {
       const lastLogin = new Date(userData.lastLogin).getTime();
       const timeDifference = currentTime - lastLogin;
 
-      if (timeDifference >= 24 * 60 * 60 * 1000 && !userData.rewardShown) {
+     if (timeDifference >= 24 * 60 * 60 * 1000) {
+        const docRef = doc(db, "users", telegramUserId);
+        await updateDoc(docRef, { rewardShown: false });
+        setUserData((prevData: any) => ({ ...prevData, rewardShown: false }));
+      }
+
+      if (!userData.rewardShown) {
         setShowModal(true);
       }
     };
-
     if (userData) {
       handleReward();
     }
@@ -77,6 +84,7 @@ const UserRewards = () => {
       rewardShown: true
     });
 
+ setUserData((prevData: any) => ({ ...prevData, rewardShown: true, lastLogin: currentTime }));
     setShowModal(false);
   };
 
