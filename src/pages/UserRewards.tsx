@@ -53,7 +53,7 @@ const UserRewards = () => {
       if (!userData) return;
 
       const currentTime = new Date().getTime();
-      const lastLogin = userData.lastLogin || 0;
+      const lastLogin = new Date(userData.lastLogin).getTime();
       const timeDifference = currentTime - lastLogin;
 
       if (timeDifference >= 24 * 60 * 60 * 1000 && !userData.rewardShown) {
@@ -69,7 +69,7 @@ const UserRewards = () => {
   const claimReward = async () => {
     if (!userData) return;
 
-    const currentTime = new Date().getTime();
+    const currentTime = new Date().toISOString();
     const docRef = doc(db, "users", telegramUserId);
     await updateDoc(docRef, {
       bblip: userData.bblip + 5000,

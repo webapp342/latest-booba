@@ -1590,7 +1590,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
                       (totalBalance !== null && selectedStaking.data.amount > totalBalance)
                       ? 'blur(2px)' // Blur effect when disabled
                       : 'none', // No blur when enabled
-                  }}
+                  }} 
                   onClick={handleStartStaking}
                   disabled={
                     selectedStaking === null ||
