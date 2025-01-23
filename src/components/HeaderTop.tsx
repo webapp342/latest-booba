@@ -14,12 +14,29 @@ import DataSaverOnOutlinedIcon from '@mui/icons-material/DataSaverOnOutlined';
 import WebApp from "@twa-dev/sdk";
 import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
-import { Avatar, Menu, Drawer, Badge } from '@mui/material';
+import { Avatar,  Badge } from '@mui/material';
+import { v4 as uuidv4 } from 'uuid';
+import NotificationDrawer from './NotificationDrawer';
+
+
+
+
 
 // Import images
 import bblipLogo from '../assets/bblip.png'; // Image for BBLIP
 import totalLogo from '../assets/ton_symbol.png'; // Image for Total
 import UserAvatar from '../pages/UserAvatar';
+
+
+interface Notification {
+  id: string;
+  amount: number;
+    balanceType: 'bblip' | 'total' | 'lbTON';  
+
+  read: boolean;
+  userId: string;
+  timestamp: string;
+}
 
 function ResponsiveAppBar() {
   const telegramUser = WebApp.initDataUnsafe.user;
@@ -31,7 +48,6 @@ function ResponsiveAppBar() {
   const [telegramUserId, setTelegramUserId] = useState<string | null>(null);
   const [selectedBalance, setSelectedBalance] = useState<string>('bblip'); // Default selected balance
   const [menuOpen, setMenuOpen] = useState<boolean>(false); // Track if the menu is open
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null); // State for dropdown anchor
   const [notifications, setNotifications] = useState<any[]>([]); // Bildirimleri saklamak için state
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false); // Drawer durumu
 
@@ -67,33 +83,86 @@ function ResponsiveAppBar() {
     fetchBalances();
   }, [telegramUserId]);
 
+   const cleanOldNotifications = (notifications: Notification[]) => {
+    return notifications
+      .filter(n => n.timestamp) // Keep only notifications with timestamps
+      .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+      .slice(0, 15); // Keep only the latest 15
+  };
+
   useEffect(() => {
+    if (!telegramUserId) return;
+
     const db = getFirestore();
     const userDoc = doc(db, 'users', String(telegramUserId));
 
-    // Firestore'da onSnapshot ile dinleme
     const unsubscribe = onSnapshot(userDoc, (doc) => {
       const data = doc.data();
-      if (data && data.bblip) {
-        const newBalance = data.bblip; // Yeni bakiye
-        const previousBalance = bblip; // Önceki bakiye
+      
+      // Check BBLIP changes
+      if (data?.bblip) {
+        const newBalance = data.bblip;
+        const previousBalance = bblip;
 
         if (previousBalance !== null && newBalance > previousBalance) {
-          const increaseAmount = newBalance - previousBalance; // Artış miktarı
-          const newNotification = { amount: increaseAmount, read: false }; // Yeni bildirim nesnesi
+          const newNotification: Notification = {
+            id: uuidv4(),
+            amount: newBalance - previousBalance,
+            balanceType: 'bblip', // Add balance type
+            read: false,
+            userId: telegramUserId,
+            timestamp: new Date().toISOString()
+          };
 
-          // LocalStorage'da bildirimleri güncelle
-          const existingNotifications = JSON.parse(localStorage.getItem('notifications') || '[]');
-          existingNotifications.push(newNotification);
-          localStorage.setItem('notifications', JSON.stringify(existingNotifications));
-          setNotifications(existingNotifications);
+          const existingNotifications: Notification[] = JSON.parse(localStorage.getItem('notifications') || '[]');
+          const validNotifications = existingNotifications.filter(n => n.timestamp);
+          validNotifications.push(newNotification);
+
+          const latestNotifications = validNotifications
+            .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+            .slice(0, 15);
+
+          localStorage.setItem('notifications', JSON.stringify(latestNotifications));
+          setNotifications(latestNotifications);
         }
-        setBblip(newBalance); // Yeni bakiyeyi state'e ayarla
+        setBblip(newBalance);
       }
+
+      // Add Total balance check
+      if (data?.total) {
+        const newBalance = data.total;
+        const previousBalance = total;
+
+        if (previousBalance !== null && newBalance > previousBalance) {
+          const newNotification: Notification = {
+            id: uuidv4(),
+            amount: newBalance - previousBalance,
+            balanceType: 'total', // Add balance type
+            read: false,
+            userId: telegramUserId,
+            timestamp: new Date().toISOString()
+          };
+
+          const existingNotifications: Notification[] = JSON.parse(localStorage.getItem('notifications') || '[]');
+          const validNotifications = existingNotifications.filter(n => n.timestamp);
+          validNotifications.push(newNotification);
+
+          const latestNotifications = validNotifications
+            .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+            .slice(0, 15);
+
+          localStorage.setItem('notifications', JSON.stringify(latestNotifications));
+          setNotifications(latestNotifications);
+        }
+        setTotal(newBalance);
+      }
+
+    
     });
 
-    return () => unsubscribe(); // Cleanup
-  }, [telegramUserId, bblip]);
+    return () => unsubscribe();
+  }, [telegramUserId, bblip, total]);
+
 
   const handleBalanceChange = (event: SelectChangeEvent<string>) => {
     setSelectedBalance(event.target.value as string); // Update selected balance
@@ -108,15 +177,20 @@ function ResponsiveAppBar() {
   };
 
  
-  const handleClose = () => {
-    setAnchorEl(null); // Close the dropdown
-  };
+  
 
   const handleDrawerOpen = () => {
     setDrawerOpen(true);
-    // Drawer açıldığında tüm bildirimleri read: true olarak güncelle
-    const existingNotifications = JSON.parse(localStorage.getItem('notifications') || '[]');
-    const updatedNotifications = existingNotifications.map((notification: any) => ({ ...notification, read: true }));
+    const existingNotifications: Notification[] = JSON.parse(localStorage.getItem('notifications') || '[]');
+    const validUserNotifications = cleanOldNotifications(
+      existingNotifications.filter(n => n.userId === telegramUserId)
+    );
+
+    // Update localStorage with cleaned notifications
+    localStorage.setItem('notifications', JSON.stringify(validUserNotifications));
+    
+    // Mark all as read
+    const updatedNotifications = validUserNotifications.map(n => ({ ...n, read: true }));
     localStorage.setItem('notifications', JSON.stringify(updatedNotifications));
     setNotifications(updatedNotifications);
   };
@@ -125,7 +199,7 @@ function ResponsiveAppBar() {
     setDrawerOpen(false);
   };
 
-  const unreadCount = notifications.filter(notification => !notification.read).length; // Okunmamış bildirim sayısı
+  const unreadCount = notifications.filter(n => !n.read).length;
 
   const displayedBalance = selectedBalance === 'bblip' 
     ? (bblip !== null ? (bblip / 1000).toFixed(2) : 'Loading...') 
@@ -135,13 +209,7 @@ function ResponsiveAppBar() {
                       ? { width: "8vw", height: "auto" } // BBLIP için stil
                       : { width: "8vw", height: "auto" }; // Total için stil
 
-  // Sample notifications data
-  const notificationsData = [
-    { id: 1, message: "New message from user" },
-    { id: 2, message: "Your balance has been updated" },
-    { id: 3, message: "New transaction completed" },
-  ];
-
+ 
   return (
     <AppBar position="fixed" sx={{ backgroundColor: '#282828', borderBottomLeftRadius: '16px', borderBottomRightRadius: '16px' }}>
       <Container  maxWidth="xl">
@@ -280,27 +348,12 @@ function ResponsiveAppBar() {
           </Box>
         </Toolbar>
       </Container>
-      <Menu
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
-        {notificationsData.map(notification => (
-          <MenuItem key={notification.id} onClick={handleClose}>
-            {notification.message}
-          </MenuItem>
-        ))}
-      </Menu>
-      <Drawer anchor="right" open={drawerOpen} onClose={handleDrawerClose}>
-        <Box sx={{ width: 250 }}>
-          <Typography variant="h6" sx={{ padding: 2 }}>Bildirimler</Typography>
-          {notifications.map((notification, index) => (
-            <Typography key={index} sx={{ padding: 1 }}>
-              {`Yeni artış: ${notification.amount} BBLIP`}
-            </Typography>
-          ))}
-        </Box>
-      </Drawer>
+    
+    <NotificationDrawer 
+      open={drawerOpen}
+      onClose={handleDrawerClose}
+      notifications={notifications}
+    />
     </AppBar>
   );
 }
