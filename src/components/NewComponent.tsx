@@ -15,6 +15,7 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { styled } from '@mui/material/styles';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import SlotCounter from 'react-slot-counter'; // Kütüphaneyi içe aktar
+import WebApp from '@twa-dev/sdk';
 
 interface NewComponentProps {}
 
@@ -501,6 +502,27 @@ const NewComponent: React.FC<NewComponentProps> = () => {
   const [earlyUnstakeDrawerOpen, setEarlyUnstakeDrawerOpen] = useState(false);
   const [selectedEarlyUnstake, setSelectedEarlyUnstake] = useState<any | null>(null); // State to hold the selected stake for early unstaking
 
+
+
+
+   useEffect(() => {
+         const backButton = WebApp.BackButton;
+     
+         // BackButton'u görünür yap ve tıklanma işlevi ekle
+         backButton.show();
+         backButton.onClick(() => {
+           navigate("/latest-booba/top");
+         });
+     
+         // Cleanup: Bileşen unmount olduğunda butonu gizle ve event handler'ı kaldır
+         return () => {
+           backButton.hide();
+           backButton.offClick(() => {
+             navigate("/latest-booba/top"); // Buraya tekrar aynı callback sağlanmalıdır.
+           });
+         };
+       }, [navigate]);
+   
   // Kazancı güncellemek için useEffect
   useEffect(() => {
     const interval = setInterval(() => {
