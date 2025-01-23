@@ -35,9 +35,8 @@ const UserRewards = () => {
       } else {
         // Kullanıcı verisi yoksa, yeni kullanıcıyı oluştur
         const newUserData = {
-          lastLogin: new Date().getTime(),
           rewardShown: false,
-          bblip: 0,  // Başlangıçta 0
+         
         };
         await setDoc(docRef, newUserData);
         setUserData(newUserData);
@@ -57,26 +56,27 @@ const UserRewards = () => {
       const lastLogin = userData.lastLogin || 0;
       const timeDifference = currentTime - lastLogin;
 
-      // Eğer 24 saatten fazla geçmişse ve ödül daha önce gösterilmediyse, ödül ver
       if (timeDifference >= 24 * 60 * 60 * 1000 && !userData.rewardShown) {
-        // Firestore'da kullanıcı verisini güncelle
-        const docRef = doc(db, "users", telegramUserId);
-        await updateDoc(docRef, {
-          bblip: userData.bblip + 5000,  // BBilp ödülünü artır
-          lastLogin: currentTime,        // Son giriş zamanını güncelle
-          rewardShown: true               // Ödülün gösterildiğini işaretle
-        });
-
-        setShowModal(true);  // Modal'ı göster
+        setShowModal(true);
       }
     };
 
     if (userData) {
-      handleReward(); // Kullanıcı verisi yüklendikten sonra ödül kontrolü yapılır
+      handleReward();
     }
   }, [userData]);
 
-  const closeModal = () => {
+  const claimReward = async () => {
+    if (!userData) return;
+
+    const currentTime = new Date().getTime();
+    const docRef = doc(db, "users", telegramUserId);
+    await updateDoc(docRef, {
+      bblip: userData.bblip + 5000,
+      lastLogin: currentTime,
+      rewardShown: true
+    });
+
     setShowModal(false);
   };
 
@@ -93,7 +93,7 @@ const UserRewards = () => {
       {/* Modal */}
       <Modal
         open={showModal}
-        onClose={closeModal}
+        onClose={() => setShowModal(false)}
         aria-labelledby="modal-title"
         aria-describedby="modal-description"
       >
@@ -113,7 +113,7 @@ const UserRewards = () => {
           <Typography id="modal-description" sx={{ mt: 2 }}>
             Bugün günlük ödülünüzü kazandınız. +5000 BBLIP hesabınıza eklendi!
           </Typography>
-          <Button onClick={closeModal} sx={{ mt: 2 }} variant="contained">Tamam</Button>
+          <Button onClick={claimReward} sx={{ mt: 2 }} variant="contained">Claim</Button>
         </Box>
       </Modal>
     </Box>
