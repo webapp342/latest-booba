@@ -6,16 +6,15 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Tooltip from '@mui/material/Tooltip';
 import { useEffect, useState } from 'react';
-import { getFirestore, doc, getDoc } from 'firebase/firestore';
-import LanguageIcon from '@mui/icons-material/Language'; // Import a language icon
-import { Select, MenuItem, FormControl,  SelectChangeEvent } from '@mui/material'; // Import Select components
-import ChangeCircleOutlinedIcon from '@mui/icons-material/ChangeCircleOutlined'; // Yeni ikon import edildi
+import { getFirestore, doc, getDoc, onSnapshot } from 'firebase/firestore';
+import CircleNotificationsRoundedIcon from '@mui/icons-material/CircleNotificationsRounded';
+import { Select, MenuItem, FormControl, SelectChangeEvent } from '@mui/material';
+import ChangeCircleOutlinedIcon from '@mui/icons-material/ChangeCircleOutlined';
 import DataSaverOnOutlinedIcon from '@mui/icons-material/DataSaverOnOutlined';
 import WebApp from "@twa-dev/sdk";
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
-import { useTheme } from '@mui/material/styles'; // Import useTheme
-import { Avatar } from '@mui/material';
-
+import { Link } from 'react-router-dom';
+import { useTheme } from '@mui/material/styles';
+import { Avatar, Menu, Drawer, Badge } from '@mui/material';
 
 // Import images
 import bblipLogo from '../assets/bblip.png'; // Image for BBLIP
@@ -30,9 +29,11 @@ function ResponsiveAppBar() {
   const [bblip, setBblip] = useState<number | null>(null);
   const [total, setTotal] = useState<number | null>(null);
   const [telegramUserId, setTelegramUserId] = useState<string | null>(null);
-  const [, setLanguage] = useState<string>('en'); // Default language
   const [selectedBalance, setSelectedBalance] = useState<string>('bblip'); // Default selected balance
   const [menuOpen, setMenuOpen] = useState<boolean>(false); // Track if the menu is open
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null); // State for dropdown anchor
+  const [notifications, setNotifications] = useState<any[]>([]); // Bildirimleri saklamak için state
+  const [drawerOpen, setDrawerOpen] = useState<boolean>(false); // Drawer durumu
 
   useEffect(() => {
     const id = localStorage.getItem("telegramUserId");
@@ -66,9 +67,33 @@ function ResponsiveAppBar() {
     fetchBalances();
   }, [telegramUserId]);
 
-  const handleLanguageChange = () => {
-    setLanguage((prev) => (prev === 'en' ? 'tr' : 'en')); // Toggle between English and Turkish
-  };
+  useEffect(() => {
+    const db = getFirestore();
+    const userDoc = doc(db, 'users', String(telegramUserId));
+
+    // Firestore'da onSnapshot ile dinleme
+    const unsubscribe = onSnapshot(userDoc, (doc) => {
+      const data = doc.data();
+      if (data && data.bblip) {
+        const newBalance = data.bblip; // Yeni bakiye
+        const previousBalance = bblip; // Önceki bakiye
+
+        if (previousBalance !== null && newBalance > previousBalance) {
+          const increaseAmount = newBalance - previousBalance; // Artış miktarı
+          const newNotification = { amount: increaseAmount, read: false }; // Yeni bildirim nesnesi
+
+          // LocalStorage'da bildirimleri güncelle
+          const existingNotifications = JSON.parse(localStorage.getItem('notifications') || '[]');
+          existingNotifications.push(newNotification);
+          localStorage.setItem('notifications', JSON.stringify(existingNotifications));
+          setNotifications(existingNotifications);
+        }
+        setBblip(newBalance); // Yeni bakiyeyi state'e ayarla
+      }
+    });
+
+    return () => unsubscribe(); // Cleanup
+  }, [telegramUserId, bblip]);
 
   const handleBalanceChange = (event: SelectChangeEvent<string>) => {
     setSelectedBalance(event.target.value as string); // Update selected balance
@@ -82,6 +107,26 @@ function ResponsiveAppBar() {
     setMenuOpen(false);
   };
 
+ 
+  const handleClose = () => {
+    setAnchorEl(null); // Close the dropdown
+  };
+
+  const handleDrawerOpen = () => {
+    setDrawerOpen(true);
+    // Drawer açıldığında tüm bildirimleri read: true olarak güncelle
+    const existingNotifications = JSON.parse(localStorage.getItem('notifications') || '[]');
+    const updatedNotifications = existingNotifications.map((notification: any) => ({ ...notification, read: true }));
+    localStorage.setItem('notifications', JSON.stringify(updatedNotifications));
+    setNotifications(updatedNotifications);
+  };
+
+  const handleDrawerClose = () => {
+    setDrawerOpen(false);
+  };
+
+  const unreadCount = notifications.filter(notification => !notification.read).length; // Okunmamış bildirim sayısı
+
   const displayedBalance = selectedBalance === 'bblip' 
     ? (bblip !== null ? (bblip / 1000).toFixed(2) : 'Loading...') 
     : (total !== null ? (total / 1000).toFixed(2) : 'Loading...');
@@ -89,6 +134,13 @@ function ResponsiveAppBar() {
        const avatarStyles = selectedBalance === 'bblip' 
                       ? { width: "8vw", height: "auto" } // BBLIP için stil
                       : { width: "8vw", height: "auto" }; // Total için stil
+
+  // Sample notifications data
+  const notificationsData = [
+    { id: 1, message: "New message from user" },
+    { id: 2, message: "Your balance has been updated" },
+    { id: 3, message: "New transaction completed" },
+  ];
 
   return (
     <AppBar position="fixed" sx={{ backgroundColor: '#282828', borderBottomLeftRadius: '16px', borderBottomRightRadius: '16px' }}>
@@ -214,8 +266,9 @@ function ResponsiveAppBar() {
 
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Tooltip title="Change Language">
-                  <IconButton onClick={handleLanguageChange}>
-                    <LanguageIcon sx={{ color: '#FFFFFF', width: 28, height: 28 }} />
+                  <IconButton onClick={handleDrawerOpen}>
+                    <CircleNotificationsRoundedIcon sx={{ color: '#FFFFFF', width: 28, height: 28 }} />
+                    {unreadCount > 0 && <Badge badgeContent={unreadCount} color="error" />}
                   </IconButton>
                 </Tooltip>
                 <UserAvatar 
@@ -227,6 +280,27 @@ function ResponsiveAppBar() {
           </Box>
         </Toolbar>
       </Container>
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        {notificationsData.map(notification => (
+          <MenuItem key={notification.id} onClick={handleClose}>
+            {notification.message}
+          </MenuItem>
+        ))}
+      </Menu>
+      <Drawer anchor="right" open={drawerOpen} onClose={handleDrawerClose}>
+        <Box sx={{ width: 250 }}>
+          <Typography variant="h6" sx={{ padding: 2 }}>Bildirimler</Typography>
+          {notifications.map((notification, index) => (
+            <Typography key={index} sx={{ padding: 1 }}>
+              {`Yeni artış: ${notification.amount} BBLIP`}
+            </Typography>
+          ))}
+        </Box>
+      </Drawer>
     </AppBar>
   );
 }
