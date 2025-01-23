@@ -122,7 +122,7 @@ const AllUsersProcesses: React.FC = () => {
   };
 
   if (loading) {
-    return <Typography variant="h6" color="textSecondary">Loading...</Typography>;
+    return <Typography variant="h6" color="textSecondary"></Typography>;
   }
 
   // Sadece userId '7046348699' olan kullanıcıya göster

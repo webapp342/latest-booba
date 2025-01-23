@@ -409,11 +409,10 @@ useEffect(() => {
               
                  sx={{
                   flexDirection: 'column', // Stack icon and text vertically
-                  textTransform: "none",
-                  backgroundColor: "transparent",
-              color:'white',
+                  textTransform: "none", 
+         border:"1px solid #575757",
+                  backgroundColor: "transparent",              color:'white',
                   fontSize: '0.7rem',
-                  border:"1px solid #717171",
                   width:"25%",
                   mr:1,
                   borderRadius: 2,
@@ -434,7 +433,7 @@ useEffect(() => {
                 color:'white',
                   fontSize: '0.7rem',
                   border:"1px solid #575757",
-                                    backgroundColor: "#282828",
+                  backgroundColor: "transparent",
 
                   borderRadius: 2,
                 }}
@@ -470,7 +469,7 @@ useEffect(() => {
                   flexDirection: 'column', // Stack icon and text vertically
                   textTransform: "none",
                 border:"1px solid #575757",
-                                    backgroundColor: "#282828",
+                  backgroundColor: "transparent",
                                     width:"25%",
 color:'white',
                   fontSize: '0.7rem',
@@ -489,7 +488,7 @@ color:'white',
                   flexDirection: 'column', // Stack icon and text vertically
                   textTransform: "none",
                 border:"1px solid #575757",
-                                    backgroundColor: "#282828",
+                  backgroundColor: "transparent",
                                     width:"25%",
 ml:1,
                   color:'white',
