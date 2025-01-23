@@ -87,14 +87,14 @@ const TokenSwap: React.FC = () => {
           // BackButton'u görünür yap ve tıklanma işlevi ekle
           backButton.show();
           backButton.onClick(() => {
-            navigate("/latest-booba/spin");
+            navigate("/latest-booba/stake");
           });
       
           // Cleanup: Bileşen unmount olduğunda butonu gizle ve event handler'ı kaldır
           return () => {
             backButton.hide();
             backButton.offClick(() => {
-              navigate("/latest-booba/spin"); // Buraya tekrar aynı callback sağlanmalıdır.
+              navigate("/latest-booba/stake"); // Buraya tekrar aynı callback sağlanmalıdır.
             });
           };
         }, [navigate]);
