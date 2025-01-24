@@ -59,8 +59,8 @@ const theme = createTheme({
 // Tasks metadata
 const tasksMetadata = [
 
-  { title: 'Follow Booba on X', description: '+5 BBLIP', link: 'twitter://user?screen_name=boobablip', reward: 5000 },
-  { title: 'Follow Booba on Instagram', description: '+5 BBLIP', link: 'https://www.instagram.com/boobablip/profilecard/?igsh=MXUwMWQxNmJ1bzZhYg==', reward: 5000 },
+  { title: 'Follow Booba on X', description: '+5 BBLIP', link: 'https://x.com/intent/follow?screen_name=boobablip', reward: 5000 },
+  { title: 'Follow Booba on Instagram', description: '+5 BBLIP', link: 'https://www.instagram.com/boobablip', reward: 5000 },
   { title: 'Follow Booba on Tiktok', description: '+5 BBLIP', link: 'https://www.tiktok.com/@boobablip?_t=8scYCPf4zaQ&_r=1', reward: 5000 },
   { title: 'Join Booba Community', description: '+5 BBLIP', link: 'https://t.me/BoobaBlipCommunity', reward: 5000 },
   { title: 'Invite 1 fren', description: '+5 BBLIP', link: '', reward: 5000 },
@@ -100,6 +100,9 @@ const categories = [
   { id: 6, name: 'Farming', tasks: [11] },
 
 ];
+
+
+
 
 // Kategori seçici stilini güncelliyorum
 const CategorySelector = ({ category, isSelected, hasBadge, onClick }: {
@@ -162,7 +165,10 @@ const CategorySelector = ({ category, isSelected, hasBadge, onClick }: {
 
 // Task kartı stilini güncelliyorum
 const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount, requiredCount }: any) => (
+  
   <Box
+
+  
     sx={{
       backgroundColor: '#282828',
       boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
@@ -290,7 +296,9 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
       index <= 2 ? (
         <a
           href={task.link}
+          
           target="_blank"
+          
           rel="noopener noreferrer"
           style={{
             textDecoration: 'none',
@@ -299,6 +307,8 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
           <Button
             variant="contained"
             size="small"
+                      onClick={onStart}
+
             sx={{
               textTransform: 'none',
               borderRadius: '12px',
@@ -323,7 +333,7 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
           onClick={onStart}
           disabled={index >= 4 && index <= 9 && invitedCount < requiredCount}
           sx={{
-            textTransform: 'none',
+            textTransform: 'none', 
             borderRadius: '12px',
             color: 'black',
             backgroundColor: '#b4e6ff',
@@ -445,8 +455,7 @@ const DealsComponent: React.FC = () => {
         [`tasks.${taskIndex}.completed`]: true,
       });
 
-      // Redirect the user immediately
-window.open(tasksMetadata[taskIndex].link, "_blank", "noopener,noreferrer");
+
 
       // Wait for 5 seconds before hiding the loading spinner
       setTimeout(() => {
