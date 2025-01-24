@@ -110,7 +110,7 @@ const CategorySelector = ({ category, isSelected, hasBadge, onClick }: {
 }) => (
   <Badge
     color="success"
-    badgeContent=" "
+    badgeContent=" " 
     invisible={!hasBadge}
     anchorOrigin={{
       vertical: 'top',
@@ -286,40 +286,71 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
       )}
     </Button>
   )
-) : (
-  <Button
-    variant="contained"
-    size="small"
-    onClick={onStart}
-    disabled={index >= 4 && index <= 9 && invitedCount < requiredCount}
-    sx={{
-      textTransform: 'none',
-      borderRadius: '12px',
-      color:'black',
-      backgroundColor: '#b4e6ff',
-      fontSize: { xs: '0.8rem', sm: '0.85rem' },
-      fontWeight: 600,
-      px: { xs: 2, sm: 3 },
-      py: { xs: 0.5, sm: 0.75 },
-      '&:hover': {
-        backgroundColor: '#0072ff'
-      },
-      '&:disabled': {
-        backgroundColor: '#2f363a',
-        color: '#8b8b8b'
-      }
-    }}
-  >
-    {loading ? (
-      <CircularProgress size={16} color="inherit" />
-    ) : (
-      'Start'
+)  : (
+      index <= 2 ? (
+        <a
+          href={task.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            textDecoration: 'none',
+          }}
+        >
+          <Button
+            variant="contained"
+            size="small"
+            sx={{
+              textTransform: 'none',
+              borderRadius: '12px',
+              color: 'black',
+              backgroundColor: '#b4e6ff',
+              fontSize: { xs: '0.8rem', sm: '0.85rem' },
+              fontWeight: 600,
+              px: { xs: 2, sm: 3 },
+              py: { xs: 0.5, sm: 0.75 },
+              '&:hover': {
+                backgroundColor: '#0072ff'
+              },
+            }}
+          >
+            {task.title}
+          </Button>
+        </a>
+      ) : (
+        <Button
+          variant="contained"
+          size="small"
+          onClick={onStart}
+          disabled={index >= 4 && index <= 9 && invitedCount < requiredCount}
+          sx={{
+            textTransform: 'none',
+            borderRadius: '12px',
+            color: 'black',
+            backgroundColor: '#b4e6ff',
+            fontSize: { xs: '0.8rem', sm: '0.85rem' },
+            fontWeight: 600,
+            px: { xs: 2, sm: 3 },
+            py: { xs: 0.5, sm: 0.75 },
+            '&:hover': {
+              backgroundColor: '#0072ff'
+            },
+            '&:disabled': {
+              backgroundColor: '#2f363a',
+              color: '#8b8b8b'
+            }
+          }}
+        >
+          {loading ? (
+            <CircularProgress size={16} color="inherit" />
+          ) : (
+            'Start'
+          )}
+        </Button>
+      )
     )}
-  </Button>
-)}
-
   </Box>
 );
+
 
 // Ana bileşeni güncelliyorum
 const DealsComponent: React.FC = () => {
