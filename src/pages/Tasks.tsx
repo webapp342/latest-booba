@@ -415,7 +415,7 @@ const DealsComponent: React.FC = () => {
       });
 
       // Redirect the user immediately
-      window.location.href = tasksMetadata[taskIndex].link;
+window.open(tasksMetadata[taskIndex].link, "_blank");
 
       // Wait for 5 seconds before hiding the loading spinner
       setTimeout(() => {
