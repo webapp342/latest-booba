@@ -59,7 +59,7 @@ const theme = createTheme({
 // Tasks metadata
 const tasksMetadata = [
 
-  { title: 'Follow Booba on X', description: '+5 BBLIP', link: 'https://twitter.com/intent/follow?screen_name=BoobaBlip', reward: 5000 },
+  { title: 'Follow Booba on X', description: '+5 BBLIP', link: 'https://x.com/intent/follow?screen_name=BoobaBlip', reward: 5000 },
   { title: 'Follow Booba on Instagram', description: '+5 BBLIP', link: 'https://www.instagram.com/boobablip/profilecard/?igsh=MXUwMWQxNmJ1bzZhYg==', reward: 5000 },
   { title: 'Follow Booba on Tiktok', description: '+5 BBLIP', link: 'https://www.tiktok.com/@boobablip?_t=8scYCPf4zaQ&_r=1', reward: 5000 },
   { title: 'Join Booba Community', description: '+5 BBLIP', link: 'https://t.me/BoobaBlipCommunity', reward: 5000 },
