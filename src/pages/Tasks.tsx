@@ -504,7 +504,6 @@ window.open(tasksMetadata[taskIndex].link, "_blank");
 
 
 <Button
-  component="a"
   href="instagram://user?username=boobablip"
   target="_blank"
   rel="noopener noreferrer"
