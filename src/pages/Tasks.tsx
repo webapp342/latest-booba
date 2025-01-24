@@ -503,6 +503,17 @@ const DealsComponent: React.FC = () => {
 </a>
 
 
+<Button
+  component="a"
+  href="instagram://user?username=boobablip"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  Instagram'da Takip Et
+</Button>
+
+
+
         <Box 
           component="img" 
           src={Tasks} 
