@@ -512,6 +512,18 @@ window.open(tasksMetadata[taskIndex].link, "_blank");
 </Button>
 
 
+<Button
+  href="vnd.youtube://channel/UC123456789
+"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  youtube'da Takip Et
+</Button>
+
+
+
+
 
         <Box 
           component="img" 
