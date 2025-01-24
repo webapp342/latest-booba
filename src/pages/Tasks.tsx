@@ -293,7 +293,7 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
     </Button>
   )
 )  : (
-      index <= 2 ? (
+      index <= 3 ? (
         <a
           href={task.link}
           
