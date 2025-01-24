@@ -508,7 +508,7 @@ window.open(tasksMetadata[taskIndex].link, "_blank", "noopener,noreferrer");
   target="_blank"
   rel="noopener noreferrer"
 >
-  Instagram'da Takip Et
+  Instagram'da Takip Et 65
 </Button>
 
 
