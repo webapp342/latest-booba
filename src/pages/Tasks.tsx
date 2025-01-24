@@ -323,7 +323,7 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
               },
             }}
           >
-            {task.title}
+            start
           </Button>
         </a>
       ) : (
@@ -460,7 +460,7 @@ const DealsComponent: React.FC = () => {
       // Wait for 5 seconds before hiding the loading spinner
       setTimeout(() => {
         setLoadingTaskIndex(null); // Hide the spinner after 5 seconds
-      }, 5000); // Wait for 5 seconds before hiding the spinner
+      }, 15000); // Wait for 5 seconds before hiding the spinner
     } catch (err) {
       console.error('Error completing task:', err);
       setError('An error occurred. Please try again.');
