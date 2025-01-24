@@ -393,59 +393,40 @@ const DealsComponent: React.FC = () => {
     fetchUserTasks();
   }, []);
 
-const openAppOrWeb = (appLink: string, webLink: string) => {
-    const now = new Date().getTime();
-    window.location.href = appLink;
-
-    // 2 saniye bekleyip eğer app açılmazsa web sitesine yönlendir
-    setTimeout(() => {
-        const later = new Date().getTime();
-        if (later - now < 2000) {
-            window.open(webLink, "_blank");
-        }
-    }, 1500);
-};
-
-
-
- const handleTaskCompletion = async (taskIndex: number) => {
+  const handleTaskCompletion = async (taskIndex: number) => {
     try {
-        const telegramUserId = localStorage.getItem('telegramUserId');
-        if (!telegramUserId) throw new Error('User ID not found.');
+      const telegramUserId = localStorage.getItem('telegramUserId');
+      if (!telegramUserId) throw new Error('User ID not found.');
 
-        setLoadingTaskIndex(taskIndex); // Show loading spinner for the task
+      setLoadingTaskIndex(taskIndex); // Show loading spinner for the task
 
-        // Firestore'da görevi tamamlandı olarak işaretleme
-        const userDocRef = doc(db, 'users', telegramUserId);
-        await updateDoc(userDocRef, {
-            [`tasks.${taskIndex}.completed`]: true,
-        });
+      // Immediately update task status before redirection (Only set completed to true)
+      const updatedTasks = {
+        ...taskStatus,
+        [taskIndex]: { ...taskStatus[taskIndex], completed: true },
+      };
 
-        // Deep link ve fallback URL'ler
-        const deepLinks: Record<number, { app: string; web: string }> = {
-            0: { app: 'twitter://user?screen_name=BoobaBlip', web: 'https://x.com/BoobaBlip' },  // X (Twitter)
-            1: { app: 'instagram://user?username=boobablip', web: 'https://www.instagram.com/boobablip/' }, // Instagram
-            2: { app: 'tiktok://user/profile/boobablip', web: 'https://www.tiktok.com/@boobablip' }, // TikTok
-        };
+      setTaskStatus(updatedTasks);
 
-        if (deepLinks[taskIndex]) {
-            openAppOrWeb(deepLinks[taskIndex].app, deepLinks[taskIndex].web);
-        } else {
-            // Eğer deep link yoksa, normal linki aç
-            window.open(tasksMetadata[taskIndex].link, "_blank");
-        }
+      // Update Firestore with only the completed field
+      const userDocRef = doc(db, 'users', telegramUserId);
+      await updateDoc(userDocRef, {
+        [`tasks.${taskIndex}.completed`]: true,
+      });
 
-        // Spinner'ı kaldır
-        setTimeout(() => {
-            setLoadingTaskIndex(null);
-        }, 5000);
+      // Redirect the user immediately
+      window.location.href = tasksMetadata[taskIndex].link;
+
+      // Wait for 5 seconds before hiding the loading spinner
+      setTimeout(() => {
+        setLoadingTaskIndex(null); // Hide the spinner after 5 seconds
+      }, 5000); // Wait for 5 seconds before hiding the spinner
     } catch (err) {
-        console.error('Error completing task:', err);
-        setError('An error occurred. Please try again.');
-        setLoadingTaskIndex(null);
+      console.error('Error completing task:', err);
+      setError('An error occurred. Please try again.');
+      setLoadingTaskIndex(null); // Hide the spinner in case of error
     }
-};
-
+  };
 
   const handleClaimTask = async (taskIndex: number) => {
     try {
