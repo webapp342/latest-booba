@@ -415,7 +415,7 @@ const DealsComponent: React.FC = () => {
       });
 
       // Redirect the user immediately
-window.open(tasksMetadata[taskIndex].link, "_blank");
+window.open(tasksMetadata[taskIndex].link, "_blank", "noopener,noreferrer");
 
       // Wait for 5 seconds before hiding the loading spinner
       setTimeout(() => {
@@ -498,7 +498,7 @@ window.open(tasksMetadata[taskIndex].link, "_blank");
         </Box>
 
 
-        <a href="twitter://user?screen_name=boobablip" target="_blank" rel="noopener noreferrer">
+        <a href="https://twitter.com/boobablip" target="_blank" rel="noopener noreferrer">
   Twitter'da Takip Et
 </a>
 
