@@ -393,13 +393,19 @@ const DealsComponent: React.FC = () => {
     fetchUserTasks();
   }, []);
 
-  const openAppOrWeb = (appLink: string, webLink: string) => {
+const openAppOrWeb = (appLink: string, webLink: string) => {
+    const now = new Date().getTime();
     window.location.href = appLink;
 
+    // 2 saniye bekleyip eğer app açılmazsa web sitesine yönlendir
     setTimeout(() => {
-        window.location.href = webLink;
-    }, 3000); // Fallback to web after 3 seconds if the app is not installed
+        const later = new Date().getTime();
+        if (later - now < 2000) {
+            window.open(webLink, "_blank");
+        }
+    }, 1500);
 };
+
 
 
  const handleTaskCompletion = async (taskIndex: number) => {
@@ -409,34 +415,27 @@ const DealsComponent: React.FC = () => {
 
         setLoadingTaskIndex(taskIndex); // Show loading spinner for the task
 
-        // Update task status in local state
-        const updatedTasks = {
-            ...taskStatus,
-            [taskIndex]: { ...taskStatus[taskIndex], completed: true },
-        };
-        setTaskStatus(updatedTasks);
-
-        // Update Firestore with task completion
+        // Firestore'da görevi tamamlandı olarak işaretleme
         const userDocRef = doc(db, 'users', telegramUserId);
         await updateDoc(userDocRef, {
             [`tasks.${taskIndex}.completed`]: true,
         });
 
-        // Define deep links and fallback web URLs
+        // Deep link ve fallback URL'ler
         const deepLinks: Record<number, { app: string; web: string }> = {
             0: { app: 'twitter://user?screen_name=BoobaBlip', web: 'https://x.com/BoobaBlip' },  // X (Twitter)
             1: { app: 'instagram://user?username=boobablip', web: 'https://www.instagram.com/boobablip/' }, // Instagram
-            2: { app: 'snssdk1233://user/profile/boobablip', web: 'https://www.tiktok.com/@boobablip' }, // TikTok
+            2: { app: 'tiktok://user/profile/boobablip', web: 'https://www.tiktok.com/@boobablip' }, // TikTok
         };
 
         if (deepLinks[taskIndex]) {
             openAppOrWeb(deepLinks[taskIndex].app, deepLinks[taskIndex].web);
         } else {
-            // For tasks without deep links, open the regular link
-            window.location.href = tasksMetadata[taskIndex].link;
+            // Eğer deep link yoksa, normal linki aç
+            window.open(tasksMetadata[taskIndex].link, "_blank");
         }
 
-        // Hide loading spinner after delay
+        // Spinner'ı kaldır
         setTimeout(() => {
             setLoadingTaskIndex(null);
         }, 5000);
@@ -446,6 +445,7 @@ const DealsComponent: React.FC = () => {
         setLoadingTaskIndex(null);
     }
 };
+
 
   const handleClaimTask = async (taskIndex: number) => {
     try {
