@@ -108,7 +108,7 @@ const UserRewards = () => {
         <Box sx={{
           width: 300,
           margin: 'auto',
-          backgroundColor: 'white',
+          backgroundColor: '#282828',
           padding: 2,
           borderRadius: 2,
           textAlign: 'center',
