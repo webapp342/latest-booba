@@ -1015,30 +1015,10 @@ const handleUnstake = async (amount: number): Promise<void> => {
   
 
   return (
-    <Box mt={"5vh"} style={{ marginBottom: '76px', backgroundColor: '#1E1E1E', padding: 8 ,}}>
+    <Box mt={"7vh"} style={{ marginBottom: '76px', backgroundColor: '#1E1E1E', padding: 8 ,}}>
       {renderStakingData()}
-      <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} mb={2} mt={2}>
-<Typography
-  sx={{
-    background: "linear-gradient(90deg, #1976d2, #00c6ff)",
-    WebkitBackgroundClip: "text",
-    WebkitTextFillColor: "transparent",
-    fontFamily: "'Press Start 2P', sans-serif", // Pikselleştirilmiş retro font
-    fontWeight: 700,
+      <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} mb={2} >
 
-    fontSize: "20px",
-    letterSpacing: "1px"
-  }}
->
-  Booba
-</Typography>
-
-
-      <Typography fontWeight={'bold'} color={'white'}>
-       Leveraged staking for TON
-
-
-      </Typography>
 
       </Box>
       
