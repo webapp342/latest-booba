@@ -22,7 +22,8 @@ import NewComponent from "./components/NewComponent.tsx";
 
 
     
-  WebApp.expand();
+  WebApp.expand(); 
+  WebApp.requestFullscreen();
 
 
 
