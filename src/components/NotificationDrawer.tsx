@@ -52,6 +52,7 @@ export default function NotificationDrawer({ open, onClose, notifications }: Not
       PaperProps={{
         sx: {
           width: '100%',
+          mt:"18vh",
           maxWidth: { xs: '100%', sm: 360 },
           background: theme.palette.background.paper,
           borderLeft: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
