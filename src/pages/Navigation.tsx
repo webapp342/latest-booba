@@ -23,12 +23,13 @@ export default function SimpleBottomNavigation() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  React.useEffect(() => {
-    const currentIndex = navItems.findIndex((item) => location.pathname.startsWith(item.path));
-    if (currentIndex !== -1) {
-      setValue(currentIndex);
-    }
-  }, [location.pathname]);
+ React.useEffect(() => {
+  const currentIndex = navItems.findIndex((item) => location.pathname === item.path);
+  if (currentIndex !== -1) {
+    setValue(currentIndex);
+  }
+}, [location.pathname]);
+
 
   const handleNavigationChange = (newValue: number) => {
     setValue(newValue);
