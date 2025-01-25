@@ -93,14 +93,14 @@ export default function SimpleBottomNavigation() {
                 '& .MuiSvgIcon-root': {
                   mt: 2,
                   fontSize: '1.5rem',
-                  color: value === index ? '#9fdfff' : '#757575',
+                  color: value === index ? 'linear-gradient(45deg, #00c6ff, #0072ff)' : '#757575',
                   transition: 'none',
                 },
                 '& .MuiBottomNavigationAction-label': {
                   fontSize: '0.8rem',
                   mb: 4,
-                  fontWeight: value === index ? 600 : 400,
-                  color: value === index ? '#9fdfff' : '#757575',
+                  fontWeight: value === index ? 400 : 400,
+                  color: value === index ? 'linear-gradient(45deg, #00c6ff, #0072ff)' : '#757575',
                   transition: 'none',
                 },
               }}
