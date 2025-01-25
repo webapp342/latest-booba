@@ -211,7 +211,7 @@ function ResponsiveAppBar() {
 
  
   return (
-    <AppBar position="fixed" sx={{ backgroundColor: '#282828', borderBottomLeftRadius: '16px', borderBottomRightRadius: '16px' }}>
+    <AppBar position="fixed" sx={{mt:"7vh", backgroundColor: '#1E1E1E', borderRadius:6 ,border:"none",boxShadow:'none' }}>
       <Container  maxWidth="xl">
         <Toolbar disableGutters>
           <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>

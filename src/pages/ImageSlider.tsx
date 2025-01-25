@@ -166,8 +166,8 @@ const images: { src: string, text: string, additionalText1: string, additionalTe
 const Example: React.FC = () => {
     return (
         <ThemeProvider theme={theme}>
-            <Box sx={{                  
-}} m={1} borderRadius={5} overflow="hidden">
+            <Box mt={"7vh"} sx={{                  
+}} mx={1} borderRadius={5} overflow="hidden">
                 <Box>
                 <Slide 
                     nextArrow={

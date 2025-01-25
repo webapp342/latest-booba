@@ -22,8 +22,16 @@ import NewComponent from "./components/NewComponent.tsx";
 
 
     
-  WebApp.expand(); 
-  WebApp.requestFullscreen();
+if (WebApp.isVersionAtLeast('8.0') && 
+    WebApp.platform !== 'tdesktop' && 
+    WebApp.platform !== 'weba') {
+    
+    WebApp.requestFullscreen();
+} else {
+    console.warn('Fullscreen mode is not supported on this platform. Using expand() instead.');
+    WebApp.expand();
+}
+
 
 
 

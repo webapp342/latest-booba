@@ -1015,7 +1015,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
   
 
   return (
-    <Box style={{ marginBottom: '76px', backgroundColor: '#1E1E1E', padding: 8 }}>
+    <Box mt={"5vh"} style={{ marginBottom: '76px', backgroundColor: '#1E1E1E', padding: 8 ,}}>
       {renderStakingData()}
       <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} mb={2} mt={2}>
 <Typography
