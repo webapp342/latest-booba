@@ -340,20 +340,20 @@ const handleSwap = async () => {
       
             {/* Add error and success alerts */}
       {error && (
-        <Box sx={{ mt: 2 }}>
+        <Box sx={{ mt: "12vh", mb:'-10vh' }}>
           <Alert severity="error" onClose={() => setError(null)}>
             {error}
           </Alert>
         </Box>
       )}
       {success && (
-        <Box sx={{ mt: 2 }}>
+        <Box sx={{mt: "12vh", mb:'-10vh' }}>
           <Alert severity="success" onClose={() => setSuccess(null)}>
             {success}
           </Alert>
         </Box>
       )}
-      <Box  sx={{ display: "flex", mt: 4, justifyContent: "center", alignItems: "center" }}>
+      <Box  sx={{ display: "flex", mt: "12vh", justifyContent: "center", alignItems: "center" }}>
         <Card   sx={{p:1, boxShadow: 0, borderRadius: 4, width: "100%" , bgcolor:'#282828' }}>
           <Box  display={"flex"}   alignItems={"center"} justifyContent={"space-between"} sx={{ mb: 1 }}>
             <TuneRoundedIcon  fontSize="medium" sx={{color:'white'}} />

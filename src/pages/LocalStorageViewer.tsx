@@ -474,7 +474,7 @@ useEffect(() => {
 color:'white',
                   fontSize: '0.7rem',
                   boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
-                  borderRadius: 2,
+                  borderRadius: 2, 
                 }}
 >
   <SwapHorizontalCircleIcon sx={{ fontSize: '1.5rem', color:"#89d9ff" }} />

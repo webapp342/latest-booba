@@ -34,7 +34,7 @@ const theme = createTheme({
 
 
 export const SlotMachine: FC = () => {
-  const [numbers, setNumbers] = useState<string>('000000');
+  const [numbers, setNumbers] = useState<string>('999999');
   const [total, setTotal] = useState<number>(0); // Default value
   const [tickets, setTickets] = useState<number>(5); // Default value
   const [bblip, setBblip] = useState<number>(10000); // Default value
@@ -498,58 +498,15 @@ const [showConfetti, setShowConfetti] = useState(false);
            
 
        {/* Jackpot Section */}
-    <Box
-          sx={{
-           
-            
-            borderRadius: 1,
-            mb:2,
-   
-          }}
-        >
-       
-          <Typography
-            variant="h4"
-            sx={{color:'#FFC107', fontWeight: "bold", mt:3 }}
-          >
-          SPIN  TO WIN !
-          </Typography>
 
-         
-
-        </Box>
-        <Box>
-      
-  Up To
-   
-     
-                 {/* Buttons */}
-                 <Button
-          variant="contained"
-          sx={{
-            background: "#6f0101",
-            borderRadius: 3,
-            px: 2,
-            ml:1,
-            mt: -2,
-            border: '2px dotted #FFC107 ',
-            fontSize: "1.1rem",
-            marginBottom: "10px",
-            color:'#FFC107',
-            fontWeight: "bold",
-          }}
-        >
-         999.999 TON
-        </Button>
-        </Box>
-     
+  
 
           {/* Jackpot Section */}
           <Box
           sx={{
-            backgroundImage: 'radial-gradient( circle farthest-corner at 10% 20%,  rgba(237,3,32,0.87) 20.8%, rgba(242,121,1,0.84) 74.4% )',
-           
-            padding: 0.5,
+           mt:"14vh",
+           width:"95%",
+            mx:1,
             borderRadius: 1,
           }}
         >
@@ -782,7 +739,7 @@ const [showConfetti, setShowConfetti] = useState(false);
           position: "relative",
         }}
       >
-        Pick Your Power
+        Pick Your Spin Power
         <IconButton
           sx={{
             position: "absolute",
