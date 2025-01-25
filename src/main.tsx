@@ -85,11 +85,7 @@ path:"/latest-booba/stake",        element: <NewComponent />,
                 element: <SlotMachine />,
 
       },
-        {
-        path: "/latest-booba/top", 
-                element: <TopComponent />,
-
-      },
+      
       {
         path: "/latest-booba/", 
                 element: <TopComponent />,
