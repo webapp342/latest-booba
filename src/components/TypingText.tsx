@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Typography } from "@mui/material";
 
-const words = ["BOOBA", "FUN.", "FREEDOM.", "FUTURE."];
+const words = ["BOOBA", "Fun.", "Freedom.", "Future."];
 
 const TypingText = () => {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
