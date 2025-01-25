@@ -385,14 +385,14 @@ const DealsComponent: React.FC = () => {
     // BackButton'u görünür yap ve tıklanma işlevi ekle
     backButton.show();
     backButton.onClick(() => {
-      navigate("/latest-booba/");
+      navigate("/latest-booba/top");
     });
 
     // Cleanup: Bileşen unmount olduğunda butonu gizle ve event handler'ı kaldır
     return () => {
       backButton.hide();
       backButton.offClick(() => {
-        navigate("/latest-booba/"); // Buraya tekrar aynı callback sağlanmalıdır.
+        navigate("/latest-booba/top"); // Buraya tekrar aynı callback sağlanmalıdır.
       });
     };
   }, [navigate]);
