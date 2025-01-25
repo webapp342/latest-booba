@@ -50,14 +50,17 @@ const BalanceSelector: React.FC<BalanceSelectorProps> = ({ selectedBalance, onCh
           '& .MuiTab-root': {
             backgroundColor: 'transparent',
             color: 'white',
-            transition: 'all 0.3s',
-            padding: '12px 50px',
-            fontWeight: 'bold',
-            border: '2px dotted #FFC107 ',
+            padding: '0px 50px',
+            
+            fontSize:'0.8rem'
+,            border: '2px dotted #FFC107 ',
           },
           '& .MuiTab-root.Mui-selected': {
             backgroundColor: '#6f0101',
             color: '#FFC107',
+                        fontWeight: 'bold',
+
+            fontSize:'1rem'
           },
           '& .MuiTab-root:first-of-type': {
             borderTopLeftRadius: '16px',

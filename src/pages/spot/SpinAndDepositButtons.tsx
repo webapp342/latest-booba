@@ -173,7 +173,7 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
     },
     '& .MuiTab-root.Mui-selected': {
       backgroundColor: '#f7cf6d', // Seçili sekme için daha belirgin bir renk
-
+      boxShadow:'0px 0px 32px rgba(255, 215, 0, 0.8)',
       borderRadius: 1,
 
     },
