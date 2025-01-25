@@ -1,4 +1,4 @@
-import React, { FC, useState, useRef, useEffect, useMemo } from 'react';
+import React, { FC, useState, useRef, useEffect } from 'react';
 import { generateRandomNumber } from './utils/random';
 import SlotDisplay from './SlotDisplay';
 import BalanceSelector from './BalanceSelector';
@@ -12,8 +12,7 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import SnackbarComponent from './SnackbarComponent';
 import {IconButton, Box, Button,  Modal, Typography, List, ListItem, ListItemText, } from '@mui/material';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import modalImage from '../../assets/modal.webp'; // Resmi import edin
-import Confetti from 'react-confetti';
+import { motion } from "framer-motion";
 import spinSound from '../../assets/spin.mp3';
 import { doc, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
@@ -55,7 +54,6 @@ export const SlotMachine: FC = () => {
 
   const [, setHistory] = useState<{ spinType: string; balanceType: string; amount: string }[]>([]);
   
-const [imageCache, setImageCache] = useState<string | null>(null);
 const navigate = useNavigate();
 
 
@@ -77,16 +75,7 @@ const navigate = useNavigate();
       };
     }, [navigate]);
 
-  // Cache the image to avoid reloading it on every modal open
-  const cachedImage = useMemo(() => {
-    if (!imageCache && modalImage) {
-      const img = new Image();
-      img.src = modalImage;
-      setImageCache(img.src); // Now works as imageCache is string | null
-      return img.src;
-    }
-    return imageCache; // Return cached image
-  }, [modalImage, imageCache]);
+
 
   const counterRefs = Array(6)
     .fill(null)
@@ -430,7 +419,7 @@ const bounceAnimation = keyframes`
 `;
 
 const [animatedValue, setAnimatedValue] = useState(0);
-const [showConfetti, setShowConfetti] = useState(false);
+const [, setShowConfetti] = useState(false);
   useWindowSize(); // Pencere boyutlarını almak için
 
   useEffect(() => {
@@ -1013,58 +1002,75 @@ color:'#FFC107',
       
     
 
-     
-      <Modal
-      open={winModalOpen}
-      onClose={() => setWinModalOpen(false)}
-      aria-labelledby="win-modal"
-      aria-describedby="win-description"
-    >
-      <Box
-        sx={{
-
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: { xs: '90%', sm: '80%', md: '60%' }, // Modal genişliği cihaz boyutuna göre
-          maxWidth: '600px', // Maksimum genişlik
-          maxHeight: '90vh', // Görüntü yüksekliğini viewport'a göre sınırla
-          bgcolor: 'background.paper',
-          boxShadow: 24,
+ <Modal open={winModalOpen} onClose={() => setWinModalOpen(false)} aria-labelledby="win-modal" aria-describedby="win-description">
+ <Box
+  component={motion.div}
+  initial={{ opacity: 0, scale: 0.8 }}
+  animate={{ opacity: 1, scale: 1 }}
+  exit={{ opacity: 0, scale: 0.8 }}
+  transition={{ duration: 0.4, ease: "easeOut" }}
+  sx={{
+    mt: "35vh",
+    mx: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.6)", // Şeffaf arka plan
+    backdropFilter: "blur(2px)", // Glass efekti
+    borderRadius: "10px", // Border radius ekledim
+    textAlign: "center",
+    p: 3,
+      boxShadow: "10px 10px 60px rgba(255, 215, 0, 0.9), inset 5px 5px 15px rgba(255, 215, 0, 0.6)", // Hoverda daha derin gölge efekti
+    border: "3px solid linear-gradient(45deg, rgba(255, 215, 0, 0.7), rgba(255, 255, 255, 0.7))", 
+      transform: "perspective(1000px) rotateX(5deg) rotateY(5deg) scale(1.05)", // Hoverda biraz büyütme
    
-          borderRadius: '8px',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-                {showConfetti && <Confetti  />}
-
-        {/* PNG'yi modal içinde boyutlandırılmış şekilde göster */}
-        <Box
-          component="img"
-    src={cachedImage || undefined} // Ensure that null is not passed to `src`
-              alt="Background"
+  }}
+>
+        <Typography
+          id="win-description"
+          variant="h5"
           sx={{
-            maxWidth: '100%', // Modal genişliğine uyum sağlar
-            maxHeight: '100%', // Modal yüksekliğine uyum sağlar
-            objectFit: 'contain', // Görüntüyü sığdır ama kırpma yapma
-            borderRadius: '8px',
+            color: "#FFD700",
+            fontWeight: "bold",
+            textShadow: "0px 0px 10px rgba(255, 215, 0, 0.8)", // Parlayan yazı efekti
+            mb: 2,
           }}
-        />
-
-        <Box>
-      <Typography id="win-description" variant="h5" sx={{ my: -30, color: 'white' }}>
-        {formatWinAmount(animatedValue)} {selectedBalance === 'total' ? '$TON' : '$BBLIP'}!
-      </Typography>
-        </Box>
-      
-     
+        >
+          YOU WIN
+        </Typography>
+        <Typography
+          variant="h4"
+          sx={{
+            color: "white",
+            fontWeight: "bold",
+            textShadow: "0px 0px 5px rgba(255, 255, 255, 0.7)",
+          }}
+        >
+          {formatWinAmount(animatedValue)} {selectedBalance === "total" ? "TON" : "BBLIP"}
+        </Typography>
+        <Button
+          onClick={() => setWinModalOpen(false)}
+          variant="contained"
+          sx={{
+            mt: 3,
+            backgroundColor: "#FFD700",
+            color: "black",
+            fontWeight: "bold",
+            fontSize: "1.2rem",
+            textTransform: "uppercase",
+            boxShadow: "0px 0px 15px rgba(255, 215, 0, 0.8)", // Neon buton efekti
+            "&:hover": {
+              backgroundColor: "#FFC107",
+              boxShadow: "0px 0px 20px rgba(255, 193, 7, 1)",
+            },
+            width: "100%",
+            borderRadius: "12px",
+          }}
+        >
+          Play Again 🚀
+        </Button>
       </Box>
     </Modal>
 
+
+    
 
       <DepositDrawer drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} setSnackbarOpen={setSnackbarOpen} />
       <SnackbarComponent snackbarOpen={snackbarOpen} setSnackbarOpen={setSnackbarOpen} />
