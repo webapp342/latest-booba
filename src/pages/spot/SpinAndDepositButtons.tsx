@@ -3,7 +3,7 @@ import { Button, Tabs, Tab, AppBar, Typography, Box } from '@mui/material';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import { useNavigate } from 'react-router-dom';
-import logo5 from '../../assets/logo5.png'
+import logo5 from '../../assets/logo5.jpg'
 
 
 const theme = createTheme({
@@ -139,7 +139,7 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
 
 
 
-      <AppBar position="static" color="default" sx={{backgroundColor: 'white',   borderRadius: 3 ,     boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)', // Hafif gölge
+      <AppBar position="static" color="default" sx={{backgroundColor: '#282828',   borderRadius: 3 ,     boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)', // Hafif gölge
 }}>
       <Tabs
   value={selectedSpinType}
@@ -207,7 +207,7 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
       <img
         src={logo5}
         alt="TON Logo"
-        style={{ width: '30px', height: '30px' }}
+        style={{borderRadius:'50%', width: '30px', height: '30px' }}
       />
     }
     aria-label="BBlip"
