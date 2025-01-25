@@ -537,18 +537,6 @@ const DealsComponent: React.FC = () => {
           <UserDataTable />
         </Box>
 
-
-        <a href="twitter://user?screen_name=BoobaBlip" target="_blank" rel="noopener noreferrer">
-  Twitter'da Takip Et
-</a>
-
-
-
-
-
-
-
-
         <Box 
           component="img" 
           src={Tasks} 
