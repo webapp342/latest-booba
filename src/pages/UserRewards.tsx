@@ -4,6 +4,8 @@ import { firebaseConfig } from './firebaseConfig'; // Firebase yapılandırması
 import { initializeApp } from 'firebase/app';  // Firebase uygulaması başlatmak için
 import { getFirestore } from 'firebase/firestore';  // Firestore veritabanına bağlanmak için
 import { Box, Typography, CircularProgress, Modal, Button } from '@mui/material';
+import gift from '../assets/dailygift.png';
+
 
 // Firebase'i Başlatma
 const app = initializeApp(firebaseConfig);  // Firebase'i başlat
@@ -73,20 +75,30 @@ const UserRewards = () => {
     }
   }, [userData]);
 
-  const claimReward = async () => {
-    if (!userData) return;
+ const claimReward = async () => {
+  if (!userData) return;
 
-    const currentTime = new Date().toISOString();
-    const docRef = doc(db, "users", telegramUserId);
-    await updateDoc(docRef, {
-      bblip: userData.bblip + 5000,
-      lastLogin: currentTime,
-      rewardShown: true
-    });
+  const currentTime = new Date().toISOString();
+  const newBblip = (userData.bblip || 0) + 2500; // Eğer `bblip` undefined ise varsayılan olarak 0 al
 
- setUserData((prevData: any) => ({ ...prevData, rewardShown: true, lastLogin: currentTime }));
-    setShowModal(false);
-  };
+  const docRef = doc(db, "users", telegramUserId);
+
+  // Firestore'da tüm verileri TEK SEFERDE güncelle
+  await updateDoc(docRef, {
+    bblip: newBblip,
+    lastLogin: currentTime,
+    rewardShown: true
+  });
+
+  // Firestore'dan güncel veriyi al ve durumu güncelle
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    setUserData(docSnap.data());
+  }
+
+  setShowModal(false);
+};
+
 
   if (loading) {
     return (
@@ -97,31 +109,49 @@ const UserRewards = () => {
   }
 
   return (
-    <Box sx={{ padding: 2, textAlign: 'center' }}>
+    <Box  sx={{ }}>
       {/* Modal */}
       <Modal
         open={showModal}
         onClose={() => setShowModal(false)}
-        aria-labelledby="modal-title"
-        aria-describedby="modal-description"
+       
+      
       >
         <Box sx={{
-          width: 300,
-          margin: 'auto',
-          backgroundColor: '#282828',
-          padding: 2,
-          borderRadius: 2,
-          textAlign: 'center',
-          marginTop: '20%',
-          boxShadow: 24,
+          
+      position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: { xs: 320, sm: 400 },
+  bgcolor: '#282828',
+  boxShadow: 24,
+  p: 1,
+  borderRadius: '8px',
+  textAlign: 'center' as 'center',
         }}>
-          <Typography id="modal-title" variant="h6" component="h2">
-            Tebrikler!
+          <Typography id="welcome-bonus-title" variant="h6" component="h2" sx={{ mb: 0 }}>
+            Congratulations!
           </Typography>
-          <Typography id="modal-description" sx={{ mt: 2 }}>
-            Bugün günlük ödülünüzü kazandınız. +5000 BBLIP hesabınıza eklendi!
-          </Typography>
-          <Button onClick={claimReward} sx={{ mt: 2 }} variant="contained">Claim</Button>
+          <Typography >
+Come back every day to get surprises!     </Typography>
+
+
+           <Box display={'flexbox'} justifyContent={'space-between'} >
+
+              <Box textAlign={'right'} >
+          <Button onClick={claimReward} variant="contained" sx={{border:'1px solid white', width:'50%', mb:-18}} >Claim</Button>
+
+                </Box>
+
+                <Box     textAlign={'left'}>
+              
+                 <img src={gift} alt="" width={'40%'} height={'50%'} style={{marginRight:"70%", marginBottom:'-15%'}} />
+
+                </Box>
+                
+              </Box>
+
         </Box>
       </Modal>
     </Box>

@@ -4,6 +4,8 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, getDoc, setDoc, updateDoc, increment } from 'firebase/firestore';
 import { firebaseConfig } from './firebaseConfig';
 import { useNavigate } from 'react-router-dom';
+import gift from '../assets/gift.png';
+
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -92,18 +94,26 @@ const WelcomeBonus: React.FC = () => {
         aria-describedby="welcome-bonus-description"
       >
         <Box sx={style}>
-          <Typography id="welcome-bonus-title" variant="h6" component="h2" sx={{ mb: 2 }}>
-            Hoşgeldiniz!
-          </Typography>
-          <Typography id="welcome-bonus-description" sx={{ mb: 3 }}>
-            Hoşgeldin Bonusunuz Hesabınıza Eklendi
-          </Typography>
-          <Typography  sx={{ mb: 3 }}>
-            check your wallet below
-          </Typography>
-          <Button variant="contained" onClick={handleNavigate}>
+          
+          <Typography id="welcome-bonus-title" variant="h6" component="h2" sx={{ mb: 0 }}>
+
+          Welcome to Booba Blip!          </Typography>
+        
+          <Typography id="welcome-bonus-description" sx={{ }}>
+          You have received welcome bonus.          </Typography>
+        
+  <Box display={'table-row' } justifyContent={'space-between'} >
+    <Box textAlign={'right'} >
+       <img src={gift} alt="" width={'50%'} height={'50%'} style={{marginLeft:"60%", marginBottom:'-50%'}} />
+    </Box>
+    <Box textAlign={'left'}>
+  <Button  variant="contained" onClick={handleNavigate} sx={{border:'1px solid white', width:'55%'}}>
             Wallet
           </Button>
+    </Box>
+          </Box>
+        
+
         </Box>
       </Modal>
       {error && (
