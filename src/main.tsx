@@ -27,6 +27,7 @@ if (WebApp.isVersionAtLeast('8.0') &&
     WebApp.platform !== 'weba') {
     WebApp.expand();
     WebApp.requestFullscreen();
+        WebApp.disableClosingConfirmation();
 } else {
     console.warn('Fullscreen mode is not supported on this platform. Using expand() instead.');
     WebApp.expand();

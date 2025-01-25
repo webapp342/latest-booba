@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState } from 'react';
 
 import { Box, Typography, Button, Avatar ,ThemeProvider, createTheme} from '@mui/material';
 
@@ -19,7 +19,6 @@ import Avatar8 from '../assets/toncoin-ton-logo.png';
 
 import UserRewards from './UserRewards';
 import WelcomeBonus from './WelcomeBonus';
-
 
 
 
@@ -134,6 +133,8 @@ const TopComponent: React.FC = () => {
   };
 
 
+  
+
 
  
 
@@ -141,7 +142,8 @@ const TopComponent: React.FC = () => {
             <ThemeProvider theme={theme}>
 <WelcomeBonus />
                     <UserRewards />  {/* Kullanıcı ödül kontrol bileşenini buraya ekleyin */}
-                    
+
+     
 
 
     <Box sx={{          backgroundColor:  '#1E1E1E',
