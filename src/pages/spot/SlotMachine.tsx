@@ -460,7 +460,7 @@ const [, setShowConfetti] = useState(false);
     <Box
     sx={{
       mt:-2,
-      backgroundColor: "red",
+      backgroundColor: "#1E1E1E",
       backgroundmage: 'radial-gradient( circle 780px at 37.8% 100.3%,  rgba(19,55,115,1) 2.2%, rgba(32,7,80,1) 20.2%, rgba(27,88,111,1) 58.6%, rgba(115,88,44,1) 75%, rgba(99,19,90,1) 89.6%, rgba(12,51,76,1) 96.1% )',      color: "white",
       textAlign: "center",
       backgroundImage: `url(${backgroundImage})`, // PNG yolu
