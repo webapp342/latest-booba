@@ -13,7 +13,7 @@ import { Paper } from '@mui/material';
 const navItems = [
   { label: 'Games', icon: <SportsEsportsTwoToneIcon />, path: '/latest-booba/games' },
   { label: 'Earn', icon: <AssistantTwoToneIcon />, path: '/latest-booba/stake' },
-  { label: 'Top', icon: <EmojiEventsTwoToneIcon />, path: '/latest-booba/top' },
+  { label: 'Top', icon: <EmojiEventsTwoToneIcon />, path: '/latest-booba/' },
   { label: 'Tasks', icon: <InventoryTwoToneIcon />, path: '/latest-booba/tasks' },
   { label: 'Wallet', icon: <AccountBalanceWalletTwoToneIcon />, path: '/latest-booba/spin' },
 ];
@@ -23,13 +23,13 @@ export default function SimpleBottomNavigation() {
   const navigate = useNavigate();
   const location = useLocation();
 
- React.useEffect(() => {
-  const currentIndex = navItems.findIndex((item) => location.pathname === item.path);
-  if (currentIndex !== -1) {
-    setValue(currentIndex);
-  }
-}, [location.pathname]);
-
+  // Uygulama ilk açıldığında doğru sekmeyi seçmek için useEffect
+  React.useEffect(() => {
+    const currentIndex = navItems.findIndex((item) => location.pathname === item.path);
+    if (currentIndex !== -1) {
+      setValue(currentIndex);
+    }
+  }, [location.pathname]);
 
   const handleNavigationChange = (newValue: number) => {
     setValue(newValue);
