@@ -523,7 +523,7 @@ const DealsComponent: React.FC = () => {
           src={Tasks} 
           alt="Tasks" 
           sx={{ 
-            mt: 4, 
+            mt: "12vh", 
             width: { xs: '70px', sm: '80px' },
             filter: 'drop-shadow(0 4px 12px rgba(0, 198, 255, 0.2))'
           }} 
