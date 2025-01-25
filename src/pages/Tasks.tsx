@@ -29,13 +29,11 @@ import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './firebaseConfig';
 import Tasks from '../assets/tasks.png';
 import task1Logo from '../assets/task1logo.png';
-import { useNavigate } from 'react-router-dom'; // React Router'ın navigate fonksiyonu
 import task2Logo from '../assets/instagram.png';
 import task4Logo from '../assets/tik-tok.png';
 import task5Logo from '../assets/telegram.png';
 import task7Logo from '../assets/bblip.png';
 import task8Logo from '../assets/bblip.png';
-import WebApp from "@twa-dev/sdk";
 
 import watchad from '../assets/ad.png';
 
@@ -367,7 +365,6 @@ const DealsComponent: React.FC = () => {
   const [taskStatus, setTaskStatus] = useState<Record<number, { completed: boolean; disabled: boolean }>>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-     const navigate = useNavigate(); // Navigate fonksiyonunu tanımlayın
 
   const [selectedCategory, setSelectedCategory] = useState<number>(1);
   const [loadingTaskIndex, setLoadingTaskIndex] = useState<number | null>(null); // Track the task being processed
@@ -379,23 +376,7 @@ const DealsComponent: React.FC = () => {
   const [invitedUsersCount, setInvitedUsersCount] = useState(0); // Davet edilen kullanıcı sayısı
 
   
-  useEffect(() => {
-    const backButton = WebApp.BackButton;
-
-    // BackButton'u görünür yap ve tıklanma işlevi ekle
-    backButton.show();
-    backButton.onClick(() => {
-      navigate("/latest-booba/top");
-    });
-
-    // Cleanup: Bileşen unmount olduğunda butonu gizle ve event handler'ı kaldır
-    return () => {
-      backButton.hide();
-      backButton.offClick(() => {
-        navigate("/latest-booba/top"); // Buraya tekrar aynı callback sağlanmalıdır.
-      });
-    };
-  }, [navigate]);
+  
 
   useEffect(() => {
     const fetchUserTasks = async () => {
