@@ -4,9 +4,7 @@ import { X as CloseIcon, Bell, BellOff } from 'lucide-react';
 import { format } from 'date-fns';
 import bblipLogo from '../assets/logo5.jpg';
 import tonLogo from '../assets/kucukTON.png';
-import WebApp from '@twa-dev/sdk';
-import { useEffect } from 'react';
-import {  useNavigate } from 'react-router-dom';
+
 
 interface Notification {
   id: string;
@@ -23,25 +21,7 @@ interface NotificationDrawerProps {
 
 export default function NotificationDrawer({ open, onClose, notifications }: NotificationDrawerProps) {
   const theme = useTheme();
-     const navigate = useNavigate();
 
-  useEffect(() => {
-        const backButton = WebApp.BackButton;
-    
-        // BackButton'u görünür yap ve tıklanma işlevi ekle
-        backButton.show();
-        backButton.onClick(() => {
-          navigate("/latest-booba/spin");
-        });
-    
-        // Cleanup: Bileşen unmount olduğunda butonu gizle ve event handler'ı kaldır
-        return () => {
-          backButton.hide();
-          backButton.offClick(() => {
-            navigate("/latest-booba/spin"); // Buraya tekrar aynı callback sağlanmalıdır.
-          });
-        };
-      }, [navigate]);
   
 
   return (
