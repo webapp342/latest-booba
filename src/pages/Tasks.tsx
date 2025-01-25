@@ -59,7 +59,7 @@ const theme = createTheme({
 // Tasks metadata
 const tasksMetadata = [
 
-  { title: 'Follow Booba on X', description: '+5 BBLIP', link: 'https://twitter.com/boobablip', reward: 5000 },
+  { title: 'Follow Booba on X', description: '+5 BBLIP', link: 'twitter://user?screen_name=BoobaBlip', reward: 5000 },
   { title: 'Follow Booba on Instagram', description: '+5 BBLIP', link: 'https://www.instagram.com/boobablip', reward: 5000 },
   { title: 'Follow Booba on Tiktok', description: '+5 BBLIP', link: 'https://www.tiktok.com/@boobablip?_t=8scYCPf4zaQ&_r=1', reward: 5000 },
   { title: 'Join Booba Community', description: '+5 BBLIP', link: 'https://t.me/BoobaBlipCommunity', reward: 5000 },
@@ -538,28 +538,12 @@ const DealsComponent: React.FC = () => {
         </Box>
 
 
-        <a href="https://twitter.com/boobablip" target="_blank" rel="noopener noreferrer">
+        <a href="twitter://user?screen_name=BoobaBlip" target="_blank" rel="noopener noreferrer">
   Twitter'da Takip Et
 </a>
 
 
-<Button
-  href="instagram://user?username=boobablip"
-  target="_blank"
-  rel="noopener noreferrer"
->
-  Instagram'da Takip Et 65
-</Button>
 
-
-<Button
-  href="vnd.youtube://channel/UC123456789
-"
-  target="_blank"
-  rel="noopener noreferrer"
->
-  youtube'da Takip Et
-</Button>
 
 
 
