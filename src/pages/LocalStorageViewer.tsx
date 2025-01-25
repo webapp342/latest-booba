@@ -372,7 +372,7 @@ useEffect(() => {
     <ThemeProvider theme={theme}>
   
  
-              <Box mt={"8vh"}>
+              <Box mt={"10vh"}>
         {/* İlk Kart */}
         <Box sx={{ borderRadius: 3, mt: 1, mx: 1,p:2, backgroundColor: '#3f3f3f' }}>
             {/* Total Account Equity */}
