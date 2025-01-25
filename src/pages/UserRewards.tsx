@@ -6,7 +6,6 @@ import { getFirestore } from 'firebase/firestore';  // Firestore veritabanına b
 import { Box, Typography, CircularProgress, Modal, Button } from '@mui/material';
 import gift from '../assets/dailygift.png';
 
-
 // Firebase'i Başlatma
 const app = initializeApp(firebaseConfig);  // Firebase'i başlat
 const db = getFirestore(app);  // Firestore'a bağlan
@@ -38,9 +37,7 @@ const UserRewards = () => {
         // Kullanıcı verisi yoksa, yeni kullanıcıyı oluştur
         const newUserData = {
           rewardShown: false,
-                    lastLogin: new Date().toISOString(),
-
-         
+          lastLogin: new Date().toISOString(),
         };
         await setDoc(docRef, newUserData);
         setUserData(newUserData);
@@ -60,45 +57,43 @@ const UserRewards = () => {
       const lastLogin = new Date(userData.lastLogin).getTime();
       const timeDifference = currentTime - lastLogin;
 
-     if (timeDifference >= 24 * 60 * 60 * 1000) {
+      // Eğer 24 saat geçmişse, rewardShown'ı false yap
+      if (timeDifference >= 24 * 60 * 60 * 1000) {
         const docRef = doc(db, "users", telegramUserId);
         await updateDoc(docRef, { rewardShown: false });
         setUserData((prevData: any) => ({ ...prevData, rewardShown: false }));
-      }
-
-      if (!userData.rewardShown) {
-        setShowModal(true);
+        
+        // 3 saniye bekle ve flag'ı kontrol et
+        setTimeout(() => {
+          if (!userData.rewardShown) {
+            setShowModal(true);  // Modal'ı göster
+          }
+        }, 3000); // 3 saniye bekleme
       }
     };
+
     if (userData) {
       handleReward();
     }
   }, [userData]);
 
- const claimReward = async () => {
-  if (!userData) return;
+  const claimReward = async () => {
+    if (!userData) return;
 
-  const currentTime = new Date().toISOString();
-  const newBblip = (userData.bblip || 0) + 2500; // Eğer `bblip` undefined ise varsayılan olarak 0 al
+    const currentTime = new Date().toISOString();
+    const docRef = doc(db, "users", telegramUserId);
+    
+    // Firestore'da güncelleme yap
+    await updateDoc(docRef, {
+      bblip: userData.bblip + 5000,
+      lastLogin: currentTime,
+      rewardShown: true
+    });
 
-  const docRef = doc(db, "users", telegramUserId);
-
-  // Firestore'da tüm verileri TEK SEFERDE güncelle
-  await updateDoc(docRef, {
-    bblip: newBblip,
-    lastLogin: currentTime,
-    rewardShown: true
-  });
-
-  // Firestore'dan güncel veriyi al ve durumu güncelle
-  const docSnap = await getDoc(docRef);
-  if (docSnap.exists()) {
-    setUserData(docSnap.data());
-  }
-
-  setShowModal(false);
-};
-
+    // State'i güncelle
+    setUserData((prevData: any) => ({ ...prevData, rewardShown: true, lastLogin: currentTime }));
+    setShowModal(false);  // Modal'ı kapat
+  };
 
   if (loading) {
     return (
@@ -109,49 +104,42 @@ const UserRewards = () => {
   }
 
   return (
-    <Box  sx={{ }}>
+    <Box sx={{}}>
       {/* Modal */}
       <Modal
         open={showModal}
         onClose={() => setShowModal(false)}
-       
-      
       >
         <Box sx={{
-          
-      position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: { xs: 320, sm: 400 },
-  bgcolor: '#282828',
-  boxShadow: 24,
-  p: 1,
-  borderRadius: '8px',
-  textAlign: 'center' as 'center',
+          position: 'absolute' as 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: { xs: 320, sm: 400 },
+          bgcolor: '#282828',
+          boxShadow: 24,
+          p: 1,
+          borderRadius: '8px',
+          textAlign: 'center' as 'center',
         }}>
           <Typography id="welcome-bonus-title" variant="h6" component="h2" sx={{ mb: 0 }}>
             Congratulations!
           </Typography>
-          <Typography >
-Come back every day to get surprises!     </Typography>
+          <Typography>
+            Come back every day to get surprises!
+          </Typography>
 
+          <Box display={'flexbox'} justifyContent={'space-between'}>
+            <Box textAlign={'right'}>
+              <Button onClick={claimReward} variant="contained" sx={{ border: '1px solid white', width: '50%', mb: -18 }}>
+                Claim
+              </Button>
+            </Box>
 
-           <Box display={'flexbox'} justifyContent={'space-between'} >
-
-              <Box textAlign={'right'} >
-          <Button onClick={claimReward} variant="contained" sx={{border:'1px solid white', width:'50%', mb:-18}} >Claim</Button>
-
-                </Box>
-
-                <Box     textAlign={'left'}>
-              
-                 <img src={gift} alt="" width={'40%'} height={'50%'} style={{marginRight:"70%", marginBottom:'-15%'}} />
-
-                </Box>
-                
-              </Box>
-
+            <Box textAlign={'left'}>
+              <img src={gift} alt="" width={'40%'} height={'50%'} style={{ marginRight: "70%", marginBottom: '-15%' }} />
+            </Box>
+          </Box>
         </Box>
       </Modal>
     </Box>
