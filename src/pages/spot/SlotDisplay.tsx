@@ -58,23 +58,29 @@ const SlotDisplay: React.FC<SlotDisplayProps> = ({ numbers, counterRefs, selecte
             <Box
               className={`slot-row ${getColorClass(index)}`}
               sx={{
-                width: { xs: 45, sm: 55, md: 65, lg: 75 },
-                height: { xs: 45, sm: 55, md: 65, lg: 75 },
+                width: { xs: 43, sm: 55, md: 65, lg: 75 },
+                height: { xs: 43, sm: 55, md: 65, lg: 75 },
                 display: 'flex',
-                
+                   filter: 'blur (15px)'     ,
+            boxShadow: getColorClass(index) === 'red-slot' 
+            ?"0px 0px 0px rgba(255, 0, 0, 0.8) "
+            : "0px 0px 32px rgba(255, 215, 0, 0.8)",
+
                 justifyContent: 'center',
                     zIndex: 1000, // Üst üste binen diğer elemanları engellemek için
                 alignItems: 'center',
                  transform: 'translateZ(0)', // GPU hızlandırma için bu özellik eklendi
     willChange: 'transform',   // Animasyon performansı için optimize edilir
                 borderRadius: "50%",
+
                 backgroundImage: getColorClass(index) === 'red-slot' 
                   ? 'radial-gradient( circle farthest-corner at 3.1% 6.8%,  rgba(199,0,59,1) 0%, rgba(255,88,53,1) 97.7% )' 
                   : 'linear-gradient( 110.3deg,  rgba(255,222,122,1) 5.2%, rgba(255,230,153,1) 51.5%, rgba(255,225,133,1) 95.9% )',
               }}
             >
               {getColorClass(index) === 'red-slot' ? (
-                <Box className="static-number" sx={{ fontWeight: 'bold' }}>
+                <Box className="static-number" sx={{ fontWeight: 'bold',                    opacity: 0.4,
+ }}>
                   0
                 </Box>
               ) : (
