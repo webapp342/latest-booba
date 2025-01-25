@@ -16,7 +16,6 @@ const navItems = [
   { label: 'Top', icon: <EmojiEventsTwoToneIcon />, path: '/latest-booba/' },
   { label: 'Tasks', icon: <InventoryTwoToneIcon />, path: '/latest-booba/tasks' },
   { label: 'Wallet', icon: <AccountBalanceWalletTwoToneIcon />, path: '/latest-booba/spin' },
-
 ];
 
 export default function SimpleBottomNavigation() {
@@ -25,7 +24,7 @@ export default function SimpleBottomNavigation() {
   const location = useLocation();
 
   React.useEffect(() => {
-    const currentIndex = navItems.findIndex((item) => item.path === location.pathname);
+    const currentIndex = navItems.findIndex((item) => location.pathname.startsWith(item.path));
     if (currentIndex !== -1) {
       setValue(currentIndex);
     }
@@ -77,12 +76,10 @@ export default function SimpleBottomNavigation() {
             '& .MuiBottomNavigationAction-root': {
               minWidth: 'auto',
               padding: '0',
-                          transition: 'none',
-
+              transition: 'none',
               '&.Mui-selected': {
                 padding: '0',
-                            transition: 'none',
-
+                transition: 'none',
               },
             },
           }}
@@ -95,10 +92,8 @@ export default function SimpleBottomNavigation() {
               sx={{
                 '& .MuiSvgIcon-root': {
                   mt: 2,
-                                    fontSize: '1.5rem',
-
+                  fontSize: '1.5rem',
                   color: value === index ? '#9fdfff' : '#757575',
-                  
                   transition: 'none',
                 },
                 '& .MuiBottomNavigationAction-label': {
