@@ -12,9 +12,11 @@ import { Select, MenuItem, FormControl, SelectChangeEvent } from '@mui/material'
 import ChangeCircleOutlinedIcon from '@mui/icons-material/ChangeCircleOutlined';
 import DataSaverOnOutlinedIcon from '@mui/icons-material/DataSaverOnOutlined';
 import WebApp from "@twa-dev/sdk";
+import Badge, { BadgeProps } from '@mui/material/Badge';
+import { styled } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
-import { Avatar,  Badge } from '@mui/material';
+import { Avatar} from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
 import NotificationDrawer from './NotificationDrawer';
 
@@ -37,6 +39,9 @@ interface Notification {
   userId: string;
   timestamp: string;
 }
+
+
+
 
 function ResponsiveAppBar() {
   const telegramUser = WebApp.initDataUnsafe.user;
@@ -175,6 +180,15 @@ function ResponsiveAppBar() {
   const handleMenuClose = () => {
     setMenuOpen(false);
   };
+
+  const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
+  '& .MuiBadge-badge': {
+    left: 5,
+    top: -9,
+    border: `2px solid ${theme.palette.background.paper}`,
+    padding: '0 4px',
+  },
+}));
 
  
   
@@ -335,9 +349,12 @@ function ResponsiveAppBar() {
 
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Tooltip title="Change Language">
+                  
                   <IconButton onClick={handleDrawerOpen}>
-                    <CircleNotificationsRoundedIcon sx={{ color: '#FFFFFF', width: 28, height: 28 }} />
-                    {unreadCount > 0 && <Badge badgeContent={unreadCount} color="error" />}
+                    
+                                        {unreadCount > 0 && <StyledBadge badgeContent={unreadCount} color="error" />}
+
+                    <CircleNotificationsRoundedIcon sx={{ color: '#FFFFFF', width: 32, height: 32 }} />
                   </IconButton>
                 </Tooltip>
                 <UserAvatar 
