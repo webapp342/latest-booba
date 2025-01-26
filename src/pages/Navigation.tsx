@@ -23,7 +23,9 @@ export default function SimpleBottomNavigation() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Uygulama ilk açıldığında doğru sekmeyi seçmek için useEffect
+ 
+
+  // ✅ Seçili sekmeyi güncelle
   React.useEffect(() => {
     const currentIndex = navItems.findIndex((item) => location.pathname === item.path);
     if (currentIndex !== -1) {

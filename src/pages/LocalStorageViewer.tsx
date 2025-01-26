@@ -8,7 +8,6 @@ import OutboundIcon from '@mui/icons-material/Outbound';import TransactionHashes
 import { CheckCircleOutline } from '@mui/icons-material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';import { useNavigate } from 'react-router-dom';
 import TokenSwap from "./SwapComponent"; // TokenSwap bileşenini eklediğiniz yer
-import Joyride, { CallBackProps } from "react-joyride";
 import logo5 from '../assets/bblip.png';
 import banner from '../assets/26.gif'; // Import the banner image
 
@@ -129,101 +128,6 @@ const initialData: Asset[] = [
 ];
 
 const AccountEquityCard: React.FC = () => {
-   const [runTour, setRunTour] = useState(false);
-
-const steps = [
-  {
-    target: ".total-equity",
-    content: "This is your total account equity.",
-    placement: "bottom" as const,
-        styles: {
-      tooltip: {
-        maxWidth: "300px", // ✅ History tooltip küçük olacak
-      },
-    },
-  },
-  {
-    target: ".deposit-button",
-    content: "Click here to deposit TON.",
-    placement: "top" as const,
-     styles: {
-      tooltip: {
-        maxWidth: "300px", // ✅ History tooltip küçük olacak
-      },
-    },
-  },
-  {
-    target: ".withdraw-button",
-    content: "Click here to withdraw your funds.",
-    placement: "top" as const,
-     styles: {
-      tooltip: {
-        maxWidth: "300px", // ✅ History tooltip küçük olacak
-      },
-    },
-  },
-  {
-    target: ".swap-button",
-    content: "Use this button to swap your assets.",
-    placement: "top" as const,
-     styles: {
-      tooltip: {
-        maxWidth: "300px", // ✅ History tooltip küçük olacak
-        transform: "translateX(-10%)", // ✅ Hafif sağa kaydır
-      },
-    },
-  },
-  {
-    target: ".history-button",
-    content: "Check your transaction history here.",
-    placement: "top" as const, // ✅ Tooltip SOLDA olacak
-    styles: {
-      tooltip: {
-        maxWidth: "300px", // ✅ History tooltip küçük olacak
-        transform: "translateX(-40%)", // ✅ Hafif sağa kaydır
-      },
-    },
-  },
-];
-
-   useEffect(() => {
-
-        // Check if the tour has been completed
-
-        const isTourCompleted = localStorage.getItem('tourCompleted');
-
-        
-
-        // Start the tour if it is not completed or not found
-
-        if (isTourCompleted !== 'true') {
-
-            setRunTour(true);
-
-        }
-
-    }, []);
-   const handleJoyrideCallback = (data: CallBackProps) => {
-
-        const { status } = data;
-
-        if (status === 'finished') {
-
-            console.log('Tour Finished');
-
-            setRunTour(false);
-
-            localStorage.setItem('tourCompleted', 'true'); // Mark tour as completed
-
-        } else if (status === 'running') {
-
-            console.log('Tour Running');
-                        localStorage.setItem('tourCompleted', 'false'); // Mark tour as completed
-
-
-        }
-
-    };
 
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -471,40 +375,7 @@ useEffect(() => {
               <Box mt={"10vh"}>
 
    
-        {/* Joyride Guide */}
-        <Joyride
-  steps={steps}
-  run={runTour}
-  callback={handleJoyrideCallback}
-  showSkipButton
-  continuous
-  disableOverlayClose
-  styles={{
-    options: {
-      zIndex: 1000,
-      width: "100%",
-    },
-    tooltip: {
-      fontSize: "0.8rem",
-      maxWidth: "220px", // ✅ Tooltip çok geniş olmasın
-      whiteSpace: "normal",
-      borderRadius: "8px",
-
-    },
-    buttonNext: {
-      backgroundColor: "#1976D2",
-      fontSize: "1rem",
-      borderRadius: "10px",
-    },
-    buttonBack: {
-      fontSize: "1rem",
-    },
-    buttonSkip: {
-      color: "#f44336",
-      fontSize: "1rem",
-    },
-  }}
-/>
+  
                 
         {/* İlk Kart */}
       <Box  sx={{ borderRadius: 3, mt: 1, mx: 1, p: 2, backgroundColor: '#3f3f3f' }}>            {/* Total Account Equity */}

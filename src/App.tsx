@@ -53,6 +53,7 @@ function App() {
                                 <Brand /> {/* Add the ResponsiveAppBar here */}
 
                 <ResponsiveAppBar /> {/* Add the ResponsiveAppBar here */}
+                                       
                 <Outlet />
                 
             </div>

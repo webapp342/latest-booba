@@ -22,6 +22,8 @@
 }
 
 
+
+
 .main-content::-webkit-scrollbar {
   display: none; /* WebKit-based browsers */
 }

@@ -15,87 +15,12 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { styled } from '@mui/material/styles';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import SlotCounter from 'react-slot-counter'; // Kütüphaneyi içe aktar
-import Joyride, { CallBackProps } from "react-joyride";
 
 import WebApp from '@twa-dev/sdk';
 
 interface NewComponentProps {}
 
 const db = getFirestore(app); // Define the Firestore database instance
-
-
-const steps = [
-  {
-    target: ".stake",
-    content: "This is your total account equity.",
-    placement: "bottom" as const,
-
-        styles: {
-      tooltip: {
-        maxWidth: "300px", // ✅ History tooltip küçük olacak
-
-      },
-    },
-  },
-  {
-    target: ".unstake",
-    content: "Click here to deposit TON.",
-    placement: "bottom" as const,
-     styles: {
-      tooltip: {
-        maxWidth: "300px", // ✅ History tooltip küçük olacak
-                transform: "translateX(-20%)", // ✅ Hafif sağa kaydır
-
-      },
-    },
-  },
-  {
-    target: ".slider",
-    content: "Click here to withdraw your funds.",
-    placement: "top" as const,
-     styles: {
-      tooltip: {
-        maxWidth: "300px", // ✅ History tooltip küçük olacak
-      },
-    },
-  },
-  {
-    target: ".choose-duration",
-    content: "Use this button to swap your assets.",
-    placement: "top" as const,
-     styles: {
-      tooltip: {
-        maxWidth: "300px", // ✅ History tooltip küçük olacak
-        transform: "translateX(-25%)", // ✅ Hafif sağa kaydır
-        
-      },
-    },
-  },  
-  {
-    target: ".estimated-earnings",
-    content: "Check your transaction history here.",
-    placement: "left" as const, // ✅ Tooltip SOLDA olacak
-    styles: {
-      tooltip: {
-        maxWidth: "300px", // ✅ History tooltip küçük olacak
-                transform: "translateX(-5%)", // ✅ Hafif sağa kaydır
-
-      },
-    },
-  },
-   {
-    target: ".stake-now",
-    content: "Check your transaction history here.",
-    placement: "left" as const, // ✅ Tooltip SOLDA olacak
-    styles: {
-      tooltip: {
-        maxWidth: "300px", // ✅ History tooltip küçük olacak
-                transform: "translateX(-5%)", // ✅ Hafif sağa kaydır
-
-      },
-    },
-  },
-];
 
 // Function to calculate APY based on the amount staked
 const calculateAPY = (amount: number, period: string): number => {
@@ -355,7 +280,7 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
                   Min
                 </Typography>
               </Box>
-              <CustomSlider  className="slider"
+              <CustomSlider
                 value={stakingData[index].amount}
                 onChange={(_e, newValue) => handleAmountChange(index, newValue as number)}
                 aria-labelledby="amount-slider"
@@ -516,48 +441,9 @@ function CircularProgressWithLabel(
 
 const NewComponent: React.FC<NewComponentProps> = () => {
   const navigate = useNavigate(); // Initialize useNavigate()
-    const [runTour, setRunTour] = useState(false);
+  
 
-
-
-   useEffect(() => {
-
-        // Check if the tour has been completed
-
-        const isTourCompleted = localStorage.getItem('staketourCompleted');
-
-        
-
-        // Start the tour if it is not completed or not found
-
-        if (isTourCompleted !== 'true') {
-
-            setRunTour(true);
-
-        }
-
-    }, []);
-   const handleJoyrideCallback = (data: CallBackProps) => {
-
-        const { status } = data;
-
-        if (status === 'finished') {
-
-            console.log('Tour Finished');
-
-            setRunTour(false);
-
-            localStorage.setItem('staketourCompleted', 'true'); // Mark tour as completed
-
-        } else if (status === 'running') {
-
-            console.log('Tour Running');
-                        localStorage.setItem('staketourCompleted', 'false'); // Mark tour as completed
-
-
-        }
-
-    };
+   
 
   // Staking verilerini tutan state
   const [stakingData, setStakingData] = useState(
@@ -1136,48 +1022,15 @@ const handleUnstake = async (amount: number): Promise<void> => {
     <Box mt={"7vh"} style={{ marginBottom: '76px', backgroundColor: '#1E1E1E', padding: 8 ,}}>
       {renderStakingData()}
       <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} mb={2} >
-          {/* Joyride Guide */}
-        <Joyride
-  steps={steps}
-  run={runTour}
-  callback={handleJoyrideCallback}
-  showSkipButton
-  continuous
-  disableOverlayClose
-  styles={{
-    options: {
-      zIndex: 1000,
-      width: "100%",
-    },
-    tooltip: {
-      fontSize: "0.8rem",
-      maxWidth: "220px", // ✅ Tooltip çok geniş olmasın
-      borderRadius: "8px",
-
-    },
-    buttonNext: {
-      backgroundColor: "#1976D2",
-      fontSize: "1rem",
-      borderRadius: "10px",
-    },
-    buttonBack: {
-      fontSize: "1rem",
-    },
-    buttonSkip: {
-      color: "#f44336",
-      fontSize: "1rem",
-    },
-  }}
-/>
-                
+      
 
 
       </Box>
       
       {/* Button Group for Stake and Unstake */}
-      <Box  display={'flex'} justifyContent="space-between" mb={2}>
+      <Box className="total-equity" display={'flex'} justifyContent="space-between" mb={2}>
       
-        <Button   className="stake "
+        <Button  
           variant="contained" 
           color="primary" 
           onClick={(e) => handleActionChange(e, 'stake')} 
@@ -1191,7 +1044,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
           <AddCircleIcon sx={{ mr: 1 }} />
           Stake
         </Button>
-        <Button className="unstake"
+        <Button 
           variant="contained" 
           color="secondary" 
           onClick={(e) => handleActionChange(e, 'unstake')} 
@@ -1291,9 +1144,9 @@ const handleUnstake = async (amount: number): Promise<void> => {
               display: 'flex', 
               flexDirection: 'column', 
             }}>
-              <Box  sx={{display:'flex', justifyContent:'space-between'}}>
+              <Box sx={{display:'flex', justifyContent:'space-between'}}>
                                             <Box   display={'flex'} alignItems={'center'}>
-                                              <Box className="estimated-earnings">
+                                              <Box>
 
               <Typography textAlign={'left'} variant="h4" component="div" sx={{  fontWeight: 'bold', color: 'white', fontSize: '1rem' }}>
                   <span style={{color: '#90EE90',marginRight:'5px', fontSize:'1.2rem'}}>
@@ -1319,7 +1172,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
 
             
   </Box>
-                <ToggleButtonGroup  className="choose-duration"
+                <ToggleButtonGroup
                 color="primary" 
                 value={selectedOptionIndex}
                 exclusive
@@ -1375,7 +1228,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
                     )) * 0.84).toFixed(2))}  
                   </span>
                                      <span style={{color: '#6ed3ff',marginLeft:'5px'}}>
- TON</span> -  <span  style={{fontSize:'0.8rem'}}>DeFi extra yield</span>             
+ TON</span> -  <span style={{fontSize:'0.8rem'}}>DeFi extra yield</span>             
 
                 
 
@@ -1531,7 +1384,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
       }}>
       {/* Conditionally render the Stake Now button based on unstaking mode */}
       {!isUnstaking && (
-        <Button className="stake-now" variant="contained"  sx={{backgroundColor:'#b4e6ff', borderRadius: 2, width: '100%', mt: 1, fontSize: '1rem',color:"black" }} onClick={() => handleOpenDrawer(selectedOptionIndex)}>
+        <Button variant="contained"  sx={{backgroundColor:'#b4e6ff', borderRadius: 2, width: '100%', mt: 1, fontSize: '1rem',color:"black" }} onClick={() => handleOpenDrawer(selectedOptionIndex)}>
           Stake Now 
         </Button>
       )}
