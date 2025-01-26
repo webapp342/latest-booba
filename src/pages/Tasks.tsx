@@ -6,7 +6,7 @@ import {
   CircularProgress,
   Snackbar,
   Alert,
-  Badge,
+  Badge,Slide
 } from '@mui/material';
 import WalletIcon from '@mui/icons-material/Wallet';
 import './slide.css'
@@ -22,7 +22,6 @@ import {
   updateDoc,
   increment,
 } from 'firebase/firestore'; 
-import AlertTitle from '@mui/material/AlertTitle';
 
 import TestComponent from '../pages/TestComponent';
 import { initializeApp } from 'firebase/app';
@@ -57,16 +56,16 @@ const theme = createTheme({
 // Tasks metadata
 const tasksMetadata = [
 
-  { title: 'Follow Booba on X', description: '+5 BBLIP', link: 'twitter://user?screen_name=BoobaBlip', reward: 5000 },
-  { title: 'Follow Booba on Instagram', description: '+5 BBLIP', link: 'https://www.instagram.com/boobablip', reward: 5000 },
-  { title: 'Follow Booba on Tiktok', description: '+5 BBLIP', link: 'https://www.tiktok.com/@boobablip?_t=8scYCPf4zaQ&_r=1', reward: 5000 },
-  { title: 'Join Booba Community', description: '+5 BBLIP', link: 'https://t.me/BoobaBlipCommunity', reward: 5000 },
-  { title: 'Invite 1 fren', description: '+5 BBLIP', link: '', reward: 5000 },
-  { title: 'Invite 10 fren', description: '+25 BBLIP', link: '', reward: 25000 },
-  { title: 'Invite 25 fren', description: '+2.5 TON', link: '', reward: 2500 },
-  { title: 'Invite 50 fren', description: '+5 TON', link: '', reward: 5000 },
-  { title: 'Invite 100 fren', description: '+10 TON', link: '', reward: 10000 },
-    { title: 'Watch a Video', description: '+10 BBLIP', link: 'https://example.com/watch-video', reward: 1000 },
+  { title: 'Follow Booba on X', description: '5 BBLIP', link: 'twitter://user?screen_name=BoobaBlip', reward: 5000 },
+  { title: 'Follow Booba on Instagram', description: '5 BBLIP', link: 'https://www.instagram.com/boobablip', reward: 5000 },
+  { title: 'Follow Booba on Tiktok', description: '5 BBLIP', link: 'https://www.tiktok.com/@boobablip?_t=8scYCPf4zaQ&_r=1', reward: 5000 },
+  { title: 'Join Booba Community', description: '5 BBLIP', link: 'https://t.me/BoobaBlipCommunity', reward: 5000 },
+  { title: 'Invite 1 fren', description: '5 BBLIP', link: '', reward: 5000 },
+  { title: 'Invite 10 fren', description: '25 BBLIP', link: '', reward: 25000 },
+  { title: 'Invite 25 fren', description: '2.5 TON', link: '', reward: 2500 },
+  { title: 'Invite 50 fren', description: '5 TON', link: '', reward: 5000 },
+  { title: 'Invite 100 fren', description: '10 TON', link: '', reward: 10000 },
+    { title: 'Watch a Video', description: '10 BBLIP', link: 'https://example.com/watch-video', reward: 1000 },
 
 
 
@@ -483,9 +482,9 @@ const DealsComponent: React.FC = () => {
       setTaskStatus(updatedTasks);
 
       // Set the reward message for the snackbar
-      setRewardMessage(`You have claimed ${description} for completing the task: "${tasksMetadata[taskIndex].title}"`);
+      setRewardMessage(`${description} claimed succesfully`);
 
-      // Show success message
+      // Show success message  
       setOpenSnackbar(true);
       setLoadingTaskIndex(null);
     } catch (err) {
@@ -809,28 +808,38 @@ const DealsComponent: React.FC = () => {
           </Box>
         )}
 
-        <Snackbar
-          open={openSnackbar}
-          autoHideDuration={3000}
-          onClose={() => setOpenSnackbar(false)}
-          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        >
-          <Alert 
-            severity="success"
-            sx={{
-              backgroundColor: '#4caf50',
-              color: '#fff',
-              '& .MuiAlert-icon': {
-                color: '#fff'
-              }
-            }}
-          >
-            <AlertTitle sx={{ fontWeight: 600 }}>Success</AlertTitle>
-            {rewardMessage}
-          </Alert>
-        </Snackbar>
+     <Snackbar
+      open={openSnackbar}
+      autoHideDuration={3000}
+      onClose={() => setOpenSnackbar(false)}
+      anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      TransitionComponent={(props) => <Slide {...props} direction="right" />} // Animasyon
+    >
+      <Alert
+        severity="success"
+        variant="filled"
+        sx={{
+          background: "linear-gradient(135deg, #43A047 30%, #66BB6A 100%)", // Yumuşak geçişli yeşil tonları
+          color: "#fff",
+          borderRadius: "14px",
+          boxShadow: "0px 6px 14px rgba(0, 0, 0, 0.15)",
+          minWidth: "300px",
+          display: "flex",
+          alignItems: "center",
+          padding: "6px 8px",
+          fontSize: "1rem",
+          "& .MuiAlert-icon": {
+            color: "#fff",
+            fontSize: "1.8rem",
+          },
+        }}
+      >
+     
+        {rewardMessage}
+      </Alert>
+    </Snackbar>
       </Box>
-    </ThemeProvider>
+    </ThemeProvider>  
   );
 };
 

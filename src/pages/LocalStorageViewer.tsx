@@ -8,6 +8,7 @@ import OutboundIcon from '@mui/icons-material/Outbound';import TransactionHashes
 import { CheckCircleOutline } from '@mui/icons-material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';import { useNavigate } from 'react-router-dom';
 import TokenSwap from "./SwapComponent"; // TokenSwap bileşenini eklediğiniz yer
+import Joyride, { CallBackProps } from "react-joyride";
 import logo5 from '../assets/bblip.png';
 import banner from '../assets/26.gif'; // Import the banner image
 
@@ -128,6 +129,102 @@ const initialData: Asset[] = [
 ];
 
 const AccountEquityCard: React.FC = () => {
+   const [runTour, setRunTour] = useState(false);
+
+const steps = [
+  {
+    target: ".total-equity",
+    content: "This is your total account equity.",
+    placement: "bottom" as const,
+        styles: {
+      tooltip: {
+        maxWidth: "300px", // ✅ History tooltip küçük olacak
+      },
+    },
+  },
+  {
+    target: ".deposit-button",
+    content: "Click here to deposit TON.",
+    placement: "top" as const,
+     styles: {
+      tooltip: {
+        maxWidth: "300px", // ✅ History tooltip küçük olacak
+      },
+    },
+  },
+  {
+    target: ".withdraw-button",
+    content: "Click here to withdraw your funds.",
+    placement: "top" as const,
+     styles: {
+      tooltip: {
+        maxWidth: "300px", // ✅ History tooltip küçük olacak
+      },
+    },
+  },
+  {
+    target: ".swap-button",
+    content: "Use this button to swap your assets.",
+    placement: "top" as const,
+     styles: {
+      tooltip: {
+        maxWidth: "300px", // ✅ History tooltip küçük olacak
+        transform: "translateX(-10%)", // ✅ Hafif sağa kaydır
+      },
+    },
+  },
+  {
+    target: ".history-button",
+    content: "Check your transaction history here.",
+    placement: "top" as const, // ✅ Tooltip SOLDA olacak
+    styles: {
+      tooltip: {
+        maxWidth: "300px", // ✅ History tooltip küçük olacak
+        transform: "translateX(-40%)", // ✅ Hafif sağa kaydır
+      },
+    },
+  },
+];
+
+   useEffect(() => {
+
+        // Check if the tour has been completed
+
+        const isTourCompleted = localStorage.getItem('tourCompleted');
+
+        
+
+        // Start the tour if it is not completed or not found
+
+        if (isTourCompleted !== 'true') {
+
+            setRunTour(true);
+
+        }
+
+    }, []);
+   const handleJoyrideCallback = (data: CallBackProps) => {
+
+        const { status } = data;
+
+        if (status === 'finished') {
+
+            console.log('Tour Finished');
+
+            setRunTour(false);
+
+            localStorage.setItem('tourCompleted', 'true'); // Mark tour as completed
+
+        } else if (status === 'running') {
+
+            console.log('Tour Running');
+                        localStorage.setItem('tourCompleted', 'false'); // Mark tour as completed
+
+
+        }
+
+    };
+
 
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false); // Arama moduna girildi mi?
@@ -362,8 +459,7 @@ useEffect(() => {
     const toggleDrawer = (state: boolean) => () => {
     setOpen1(state);
   };
-
-  
+ 
 
 
 
@@ -373,10 +469,46 @@ useEffect(() => {
   
  
               <Box mt={"10vh"}>
+
+   
+        {/* Joyride Guide */}
+        <Joyride
+  steps={steps}
+  run={runTour}
+  callback={handleJoyrideCallback}
+  showSkipButton
+  continuous
+  disableOverlayClose
+  styles={{
+    options: {
+      zIndex: 1000,
+      width: "100%",
+    },
+    tooltip: {
+      fontSize: "0.8rem",
+      maxWidth: "220px", // ✅ Tooltip çok geniş olmasın
+      whiteSpace: "normal",
+      borderRadius: "8px",
+
+    },
+    buttonNext: {
+      backgroundColor: "#1976D2",
+      fontSize: "1rem",
+      borderRadius: "10px",
+    },
+    buttonBack: {
+      fontSize: "1rem",
+    },
+    buttonSkip: {
+      color: "#f44336",
+      fontSize: "1rem",
+    },
+  }}
+/>
+                
         {/* İlk Kart */}
-        <Box sx={{ borderRadius: 3, mt: 1, mx: 1,p:2, backgroundColor: '#3f3f3f' }}>
-            {/* Total Account Equity */}
-            <Typography
+      <Box  sx={{ borderRadius: 3, mt: 1, mx: 1, p: 2, backgroundColor: '#3f3f3f' }}>            {/* Total Account Equity */}
+            <Typography className="total-equity"
               variant="subtitle2"
               sx={{ color: "white" }}
               align="center"
@@ -384,7 +516,7 @@ useEffect(() => {
             >
               Total Account Equity
             </Typography>
-            <Typography mt={-1} variant="subtitle1" align="center" gutterBottom>
+            <Typography  mt={-1} variant="subtitle1" align="center" gutterBottom>
               <span style={{ fontSize: "2.5rem" ,color:"grey"}}>$</span>
               <span style={{ fontSize: "2.5rem", fontWeight:"bold" }}>{totalEquity.split('.')[0]}</span>
               <span style={{ fontSize: "1.6rem" }}>.{totalEquity.split('.')[1]}</span>
@@ -396,6 +528,7 @@ useEffect(() => {
            
             {/* Buttons */}
             <Box
+                    
               sx={{
                 display: "flex",
                 width:"100%",
@@ -406,6 +539,7 @@ useEffect(() => {
               }}
             >
              <Button
+          className="deposit-button"
               
                  sx={{
                   flexDirection: 'column', // Stack icon and text vertically
@@ -423,7 +557,7 @@ useEffect(() => {
                 Deposit
               </Button>
       <Button
-   
+               className="withdraw-button"
       sx={{
                   flexDirection: 'column', // Stack icon and text vertically
                   textTransform: "none",
@@ -463,7 +597,7 @@ useEffect(() => {
 
     
               <Button
-  
+              className="swap-button"
   onClick={() => setShowTokenSwap(true)} // TokenSwap'ı göster
     sx={{
                   flexDirection: 'column', // Stack icon and text vertically
@@ -483,6 +617,7 @@ color:'white',
 
   <>
       <Button
+                  className="history-button"
         onClick={toggleDrawer(true)}
        sx={{
                   flexDirection: 'column', // Stack icon and text vertically
@@ -699,8 +834,8 @@ ml:1,
       }}
     >
       {/* Typography Header */}
-      <Typography  sx={{ textAlign: 'center', flexGrow: 1 , fontSize: '1.5rem', }}>
-        Deposit 
+      <Typography  sx={{ textAlign: 'left', flexGrow: 1 , fontSize: '1.5rem', }}>
+        Deposit TON
       </Typography>
 
       {/* Close Icon Button */}
@@ -723,21 +858,24 @@ ml:1,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 4,
+        marginTop: 2,
+        bgcolor:'white',
+        width:'75%',
+        ml:'15%',
+                  borderRadius:4,
+
       }}
     >
      <Box
         sx={{
-          width: '80%',
-          height: '200px',
-       
+          width: '90%',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
         }}
       >
         {qrCodeUrl ? (
-          <img src={qrCodeUrl} alt="QR Code" style={{ maxWidth: '100%', maxHeight: '100%' }} />
+          <img src={qrCodeUrl} alt="QR Code" style={{minWidth:'100%',minHeight:'100%',}} />
         ) : (
           <span>Loading QR Code...</span>
         )}
@@ -759,7 +897,7 @@ ml:1,
       }}
     >
 <span style={{ color: "grey", fontSize: "0.9rem"  }}>
-    Address: <span style={{ color: "black" , marginLeft: 12 , fontSize: "1rem"  , fontWeight: 'bolder'}}>UQDp...BNn2</span>
+    Address: <span style={{ color: "white" , marginLeft: 12 , fontSize: "1rem"  , fontWeight: 'bolder'}}>UQDppAs...BNn2</span>
   </span>       <Button
         onClick={() => {
           navigator.clipboard.writeText("UQDppAsjyioMu23LIEaFBm5g5o5oNjRft99oe4gfv-c9BNn2");
@@ -784,7 +922,7 @@ ml:1,
       }}
     >
 <span style={{ color: "grey", fontSize: "0.9rem" }}>
-  Comment: <span style={{ color: "black", marginLeft: 12, fontSize: "1rem", fontWeight: 'bolder' }}>{comment}</span>
+  Comment: <span style={{ color: "white", marginLeft: 12, fontSize: "1rem", fontWeight: 'bolder' }}>{comment}</span>
 </span>
 
       <Button
@@ -799,18 +937,18 @@ ml:1,
 
     <Box
       sx={{
-        mt:1,
+      
         display: 'relative',
-        mx:1,
+
         textAlign: "center",
         alignItems: "center",
         color: 'grey',
                 fontFamily: 'monospace',
-
-        marginBottom: 4,
+         mt:-2,
+        marginBottom: 1,
       }}
     >
-      <h3>Please carefully send your $TON to these exact addresses</h3>
+      <h6>Please carefully send your $TON to these exact addresses</h6>
      
     </Box>
 

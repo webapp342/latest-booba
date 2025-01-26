@@ -147,7 +147,7 @@ const TopComponent: React.FC = () => {
 
 
     <Box sx={{          backgroundColor:  '#1E1E1E',
- display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', p: 2, mt:12, mb:5 }}>
+ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', p: 2, mt:15, mb:5 }}>
 
       <Box>
  

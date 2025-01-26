@@ -105,14 +105,33 @@ const TwoFieldsComponent: React.FC = () => {
         padding: 3, 
         borderRadius: 2, 
         boxShadow: 3,
-        backgroundColor: '#fff'
+        backgroundColor: '#3f3f3f'
       }}
     >
-      {/* Title Section */}
-      <Typography variant="h6" align="center" sx={{ marginBottom: 2, fontWeight: 'bold' }}>
-        Withdraw TON
-      </Typography>
-
+    <Box
+         sx={{
+           display: 'flex',
+           justifyContent: 'space-between',
+           alignItems: 'center',
+           position: 'relative',
+         }}
+       >
+         {/* Typography Header */}
+         <Typography   sx={{ textAlign: 'left', flexGrow: 1 , fontSize: '1.5rem', }}>
+           withdraw TON
+         </Typography>
+   
+         {/* Close Icon Button */}
+         <Button
+           sx={{
+             fontSize: '1.5rem',
+             position: 'absolute',
+             right: -12,
+           }}
+         >
+           ✖
+         </Button>
+       </Box>
       {/* Input Fields */}
       <TextField
         label="TON Address"

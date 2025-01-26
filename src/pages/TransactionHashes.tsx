@@ -87,7 +87,7 @@ const TransactionHashes: React.FC = () => {
   return (
     <Box sx={{ padding: 1 }}>
       <Typography fontWeight={"bold"} variant="body1" gutterBottom textAlign={'center'}>
-        Latest Deposits
+        Last transactions
       </Typography>
       {transactionHashes.length > 0 ? (
         transactionHashes
@@ -119,7 +119,7 @@ const TransactionHashes: React.FC = () => {
             </CardContainer>
           ))
       ) : (
-        <Typography textAlign={"center"} variant="body1">You don't have any transactions yet.</Typography>
+        <Typography textAlign={"center"} variant="body1" sx={{color:'gray'}}>You don't have any transactions yet</Typography>
       )}
     </Box>
   );

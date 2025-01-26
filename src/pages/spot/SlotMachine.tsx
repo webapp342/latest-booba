@@ -13,12 +13,10 @@ import SnackbarComponent from './SnackbarComponent';
 import {IconButton, Box, Button,  Modal, Typography, List, ListItem, ListItemText, } from '@mui/material';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { motion } from "framer-motion";
-import spinSound from '../../assets/spin.mp3';
 import { doc, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 import WebApp from '@twa-dev/sdk'; // Telegram WebApp SDK
 
-import winSound from '../../assets/win.mp3';
 import { useWindowSize } from 'react-use';
 import { useNavigate } from 'react-router-dom';
 
@@ -81,9 +79,7 @@ const navigate = useNavigate();
     .fill(null)
     .map(() => useRef<any>(null));
 
-    const spinAudio = useRef(new Audio(spinSound));
-    const winAudio = useRef(new Audio(winSound));
-
+ 
     useEffect(() => {
       const initTelegramUserId = () => {
         const user = WebApp.initDataUnsafe?.user;
@@ -156,10 +152,6 @@ const navigate = useNavigate();
     
 
     
-  useEffect(() => {
-    spinAudio.current.preload = 'auto';
-    winAudio.current.preload = 'auto';
-  }, []);
 
 
 
@@ -192,8 +184,7 @@ const navigate = useNavigate();
     console.log(`Spin initiated with type: ${selectedSpinType}`);
 
     try {
-      spinAudio.current.currentTime = 0;
-      spinAudio.current.play();
+     
       console.log('Spin sound played.');
     } catch (error) {
       console.error('Audio play error:', error);
@@ -389,7 +380,7 @@ const navigate = useNavigate();
       }
 
       if (newNumberValue > 0) {
-        winAudio.current.play();
+     
         console.log('Win sound played.');
         setWinAmount(newNumberString);
         setWinModalOpen(true);
