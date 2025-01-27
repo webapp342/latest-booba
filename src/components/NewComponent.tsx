@@ -1173,7 +1173,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
           
   </Box>
       <Typography fontSize={'0.8rem'} color={"gray"} textAlign={'left'} mb={1} >
- How many days do you want to invest for ?
+Choose your staking duration 
           </Typography>
                 
 
@@ -1437,7 +1437,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
  </span>
 <span className='text-gradient'> TON</span> 
  
-  <span style={{color:'gray', fontWeight:'lighter',fontSize:'0.8rem', marginLeft:5}}>
+  <span style={{color:'gray', fontWeight:'lighter',fontSize:'0.6rem', marginLeft:5}}>
           ~ ({ (parseFloat(calculateEarnings(
                       stakingData[selectedOptionIndex].amount, 
                       stakingData[selectedOptionIndex].duration, 
