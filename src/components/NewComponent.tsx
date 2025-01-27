@@ -1047,27 +1047,23 @@ const handleUnstake = async (amount: number): Promise<void> => {
 
   
       </Box>
-      <Box textAlign={'center'} display={'flex'} gap={0.5} alignItems={'center'} justifyContent={'center'} >
+      <Box textAlign={'center'} display={'flex'} justifyContent={'center'} >
 
         <Typography
   mb={1}
   
   fontFamily="'Press Start 2P', sans-serif"
-  fontSize="0.8rem"
-  
+  fontSize="1rem"
   sx={{
     backgroundImage: 'linear-gradient(45deg, #9fdfff 0%, #89d9ff 25%, #6ed3ff 50%, #4dccff 75%, #00c6ff 100%)',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
 
   }}
->      Leveraged Staking 
+>      Leveraged Staking     
       </Typography>
 
-      <Typography   fontSize="0.6rem"
->
-        Powered by BOOBA
-      </Typography>
+     <span style={{ color: '#fff', fontSize: '0.4rem', marginTop:12,marginLeft:5, }}>by BOOBA</span>
 
       </Box>
 
