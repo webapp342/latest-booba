@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Card, CardContent, Typography, Grid,  Slider, Box, Button, Drawer, Accordion, AccordionSummary, AccordionDetails, TextField, Modal, LinearProgress, InputAdornment, Divider, ToggleButton, ToggleButtonGroup, Chip, CircularProgress, CircularProgressProps } from '@mui/material';
-import { AccessTime, MonetizationOn } from '@mui/icons-material';
+import { Card,IconButton, CardContent, Typography,MenuItem, Grid,  Slider, Box, Button, Drawer, Accordion, AccordionSummary, AccordionDetails, TextField, Modal, LinearProgress, InputAdornment, Divider, ToggleButton, ToggleButtonGroup,  CircularProgress, CircularProgressProps, Menu } from '@mui/material';
+import { AccessTime,  MonetizationOn } from '@mui/icons-material';
 import SpeedIcon from '@mui/icons-material/Speed';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { doc,  getFirestore, setDoc, updateDoc, increment, arrayUnion, onSnapshot, getDoc } from 'firebase/firestore'; // Import Firestore functions
@@ -8,19 +8,23 @@ import { app } from '../pages/firebaseConfig'; // Import your Firebase app
 import { v4 as uuidv4 } from 'uuid'; // Import UUID for generating unique IDs
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import tonLogo from '../assets/toncoin-ton-logo.png'; // Logo dosyasını import et
-import SwitchAccessShortcutAddIcon from '@mui/icons-material/SwitchAccessShortcutAdd';
 import OutboundIcon from '@mui/icons-material/Outbound';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { styled } from '@mui/material/styles';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import SlotCounter from 'react-slot-counter'; // Kütüphaneyi içe aktar
-
+import RecommendIcon from '@mui/icons-material/Recommend';
 import WebApp from '@twa-dev/sdk';
+import SpaIcon from '@mui/icons-material/Spa'; 
+import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
+import TimelapseIcon from '@mui/icons-material/Timelapse';
+
+
 
 interface NewComponentProps {}
 
-const db = getFirestore(app); // Define the Firestore database instance
 
 // Function to calculate APY based on the amount staked
 const calculateAPY = (amount: number, period: string): number => {
@@ -149,29 +153,30 @@ interface StakingCardProps {
   handleLeverageChange: (index: number, newLeverage: number) => void;
   calculateEarnings: (amount: number, duration: number, leverage: number, apy: number) => string;
   children?: React.ReactNode;
+    totalBalance: number | null; 
 }
 
 // Create a custom styled slider
 const CustomSlider = styled(Slider)(({  }) => ({
   color: '#00c6ff', // Change the color to match the design
-  height: 42,
+  height:6,
   '& .MuiSlider-track': {
     border: 'none',
     borderRadius: 4, // Rounded corners for the track
     backgroundColor: '#00c6ff', // Track color
   },
   '& .MuiSlider-thumb': {
-    height: 24,
-    width: 24,
+    height: 18,
+    width: 18,
     border: 'none', // Remove the border
-    backgroundColor: 'transparent', // Make the background transparent
+    backgroundColor: '#b0bec5', // Make the background transparent
     // Use the arrows_14999158.png as a background image
     backgroundImage: 'url(../assets/arrows_14999158.png)', // Path to your icon
     backgroundSize: 'cover', // Ensure the icon covers the thumb area
     cursor: 'pointer', // Change cursor to pointer
   },
   '& .MuiSlider-rail': {
-    height: 42,
+    height: 6,
     borderRadius: 4, // Rounded corners for the rail
     backgroundColor: '#b0bec5', // Rail color
   },
@@ -244,12 +249,13 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
                             <OutboundIcon  sx={{color:"#90EE90",marginRight:'5px', width: '26px', height: '26px'  }}/>
 
               <Typography textAlign={'left'} variant="h4" component="div" sx={{  fontWeight: 'bold', color: 'white', fontSize: '1rem' }}>
-             You stake
+            Stake Amount
             </Typography>
+            
   </Box>
           
             </Box>
-          
+           
                         <Box justifyContent={'space-between'} display={'flex'}>
                             <Box  display={'flex'} alignItems={'center'}>
 
@@ -258,15 +264,10 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
             </Typography>
   </Box>
             <Box   >
-              <Chip  
-              icon={<SwitchAccessShortcutAddIcon sx={{color:'#b4e6ff ' }} />}
-                label={`${calculateAPY(stakingData[index].amount, option.period)}% APY`} 
-                variant="outlined" 
-                color='primary'
-                sx={{color:"#b4e6ff ", fontSize: '0.9rem' }}
-              />
+                            <img src={tonLogo} alt="TON Logo" style={{ width: '32px', height: '32px' }} />
       
             </Box>
+            
 
           
         
@@ -274,12 +275,8 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
                
                         </Box>
 
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Box>
-                <Typography variant="body2" color="#B0BEC5" sx={{ mr: 2 }}>
-                  Min
-                </Typography>
-              </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center' , mt:-1 }}>
+             
               <CustomSlider
                 value={stakingData[index].amount}
                 onChange={(_e, newValue) => handleAmountChange(index, newValue as number)}
@@ -289,27 +286,20 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
                 min={tonRange.min}
                 max={tonRange.max}
               />
+              
             
-              <Typography variant="body2" color="#B0BEC5" sx={{ ml: 2 }}>
-                Max
-              </Typography>
+            
             </Box>
+               <Typography textAlign={'center'} variant="h4" component="div" mt={-1} mb={-2} sx={{  color: 'gray', fontSize: '0.7rem' }}>
+APY's varies based on amount and duration !!!         </Typography>
 
           </Box>
-                                          <Divider sx={{backgroundColor:'gray'  }} />
+            
+       
 
 
         
-          {/* Leverage Seçici */}
-         <Box sx={{mb:-2, mt: 0, display: 'flex', justifyContent: 'space-between' }}>
-            <Typography variant="body2" color="#B0BEC5" sx={{ fontSize:'0.8rem' }}>
-          Duration:   <span style={{color:'#FFFFFF', fontWeight:'bold'}}>  {stakingData[index].duration} {stakingData[index].duration > 1 ? 'Day' : 'Day'}</span> 
-            </Typography>
-            <Typography variant="body2" color="#B0BEC5" sx={{fontSize: '0.8rem'  }}>
-              Leverage:  <span style={{color:'#FFFFFF', fontWeight:'bold'}}>{displayedLeverage}x</span>
-            
- </Typography>
-          </Box>
+        
        
 
           {/* Buton yerleştirme */}
@@ -443,8 +433,34 @@ const NewComponent: React.FC<NewComponentProps> = () => {
   const navigate = useNavigate(); // Initialize useNavigate()
   
 
-   
+   const db = getFirestore(app); // Define the Firestore database instance
+  const [totalBalance, setTotalBalance] = useState<number | null>(null);
 
+// Fetch total balance and staking history from Firestore when the component mounts
+  useEffect(() => {
+    const telegramUserId = localStorage.getItem("telegramUserId");
+    if (!telegramUserId) {
+      console.error("Telegram User ID not found!");
+      return;
+    }
+
+    const userDocRef = doc(db, 'users', telegramUserId); // Adjust the path as necessary
+
+    // Set up a real-time listener
+    const unsubscribe = onSnapshot(userDocRef, (userDoc) => {
+      if (userDoc.exists()) {
+        const data = userDoc.data();
+        setTotalBalance(data.total / 1000); // Divide the total by 1000 before setting
+        setlbBalance(data.lbTON ); // Divide the total by 1000 before setting
+        setStakingHistory(data.stakingHistory || []); // Set staking history
+      } else {
+        console.error("No such document!");
+      }
+    });
+
+    // Cleanup function to unsubscribe from the listener
+    return () => unsubscribe();
+  }, []);
   // Staking verilerini tutan state
   const [stakingData, setStakingData] = useState(
     stakingOptions.map(option => ({
@@ -474,7 +490,6 @@ const NewComponent: React.FC<NewComponentProps> = () => {
   } | null>(null);
 
   // Add a new state to hold the total balance
-  const [totalBalance, setTotalBalance] = useState<number | null>(null);
   const [lbBalance, setlbBalance] = useState<number | null>(null);
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null); // New state for error message
@@ -523,31 +538,7 @@ const NewComponent: React.FC<NewComponentProps> = () => {
     return () => clearInterval(interval); // Cleanup on unmount
   }, [stakingData, selectedOptionIndex]);
 
-  // Fetch total balance and staking history from Firestore when the component mounts
-  useEffect(() => {
-    const telegramUserId = localStorage.getItem("telegramUserId");
-    if (!telegramUserId) {
-      console.error("Telegram User ID not found!");
-      return;
-    }
-
-    const userDocRef = doc(db, 'users', telegramUserId); // Adjust the path as necessary
-
-    // Set up a real-time listener
-    const unsubscribe = onSnapshot(userDocRef, (userDoc) => {
-      if (userDoc.exists()) {
-        const data = userDoc.data();
-        setTotalBalance(data.total / 1000); // Divide the total by 1000 before setting
-        setlbBalance(data.lbTON ); // Divide the total by 1000 before setting
-        setStakingHistory(data.stakingHistory || []); // Set staking history
-      } else {
-        console.error("No such document!");
-      }
-    });
-
-    // Cleanup function to unsubscribe from the listener
-    return () => unsubscribe();
-  }, []);
+  
 
   // Event handler fonksiyonlarını useCallback ile memoize et
   const handleAmountChange = useCallback((index: number, newAmount: number) => {
@@ -635,6 +626,18 @@ const NewComponent: React.FC<NewComponentProps> = () => {
   const handleCloseDrawer = () => {
     setDrawerOpen(false);
     setSelectedStaking(null);
+  };
+
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [open2, setOpen] = useState(false);
+
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   // Update the FAQ items to include details about the staking system, leverage, and duration
@@ -874,7 +877,7 @@ const handleEarlyUnstake = async (amount: number): Promise<void> => {
 };
 
 
-const handleUnstake = async (amount: number): Promise<void> => {
+const handleUnstake = async (amount: number): Promise<void> => { 
     const telegramUserId = localStorage.getItem("telegramUserId");
 
     const penalty2 = parseFloat(selectedUnstake.earnings) * 0.055;
@@ -1024,7 +1027,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
       <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} mb={2} >
       
 
-
+  
       </Box>
       
       {/* Button Group for Stake and Unstake */}
@@ -1117,8 +1120,9 @@ const handleUnstake = async (amount: number): Promise<void> => {
               <StakingCard
                 key={selectedOptionIndex}
                 option={stakingOptions[selectedOptionIndex]}
-                index={selectedOptionIndex}
+                index={selectedOptionIndex} 
                 stakingData={stakingData}
+                        totalBalance={totalBalance} 
                 handleAmountChange={handleAmountChange}
                 handleDurationChange={handleDurationChange}
                 handleLeverageChange={handleLeverageChange}
@@ -1126,11 +1130,8 @@ const handleUnstake = async (amount: number): Promise<void> => {
               />
             </Grid>
          
-   <Typography mt={2}>
-             <span style={{marginRight:'5px', fontSize:'1.2rem'}}>
- You could earn 
-                </span>
-          </Typography>
+  
+          
           {/* Earnings Display Outside of StakingCard */}
           <Box sx={{   
               minWidth: 275, 
@@ -1140,16 +1141,232 @@ const handleUnstake = async (amount: number): Promise<void> => {
               borderRadius: 2,
               transition: 'transform 0.3s, box-shadow 0.3s',
               backgroundColor:  '#282828',
-              p: 2,   
+              p: 2,   mt:2,
               display: 'flex', 
               flexDirection: 'column', 
             }}>
-              <Box sx={{display:'flex', justifyContent:'space-between'}}>
-                                            <Box   display={'flex'} alignItems={'center'}>
-                                              <Box>
+              <Box >
+                      <Box   display={'flex'} alignItems={'center'}>
+                            <TimelapseIcon  sx={{color:"#90EE90",marginRight:'5px', width: '26px', height: '26px'  }}/>
 
               <Typography textAlign={'left'} variant="h4" component="div" sx={{  fontWeight: 'bold', color: 'white', fontSize: '1rem' }}>
-                  <span style={{color: '#90EE90',marginRight:'5px', fontSize:'1.2rem'}}>
+            Duration 
+            </Typography>
+          
+  </Box>
+      <Typography fontSize={'0.8rem'} color={"gray"} textAlign={'left'} mb={1} >
+ How many days do you want to invest for ?
+          </Typography>
+                
+
+                
+           <Box borderRadius={2} border={'1px solid white'} display="flex" alignItems="center" justifyContent="space-between">
+      {/* Sağda ikon */}
+   <Box p={1}>
+   
+<Box display="flex" alignItems="center">
+  <Typography fontWeight={'bold'} textAlign={'left'} onClick={handleClick}>
+    {stakingData[selectedOptionIndex].duration} day
+  </Typography>
+  {stakingData[selectedOptionIndex].duration === 30 && (
+    <Box
+      component="span"
+      sx={{
+        display: 'flex', // Flex kullanarak yatayda hizalama
+        alignItems: 'center', // İkon ve yazıyı dikeyde ortalamak için
+        backgroundColor: '#282828', // Kutu arka plan rengi
+        borderRadius: 1, // Köşe yuvarlama
+        padding: '1px 3px', // İç boşluk
+        marginLeft: 1, // Sol taraf boşluğu
+        fontSize: '0.6rem', // Yazı boyutu
+        color: 'white', // Yazı rengi
+        border:' 1px solid #4dccff'
+      }}
+    >
+      <RecommendIcon sx={{   color:'#4dccff'   ,     fontSize: '1rem', // Yazı boyutu
+ marginRight: '4px' }} /> {/* İkon */}
+      Recommended
+    </Box>
+    
+  )}
+    {stakingData[selectedOptionIndex].duration === 30 && (
+    <Box
+      component="span"
+      sx={{
+        display: 'flex', // Flex kullanarak yatayda hizalama
+        alignItems: 'center', // İkon ve yazıyı dikeyde ortalamak için
+        backgroundColor: '#282828', // Kutu arka plan rengi
+        borderRadius: 1, // Köşe yuvarlama
+        padding: '1px 3px', // İç boşluk
+        marginLeft: 1, // Sol taraf boşluğu
+        fontSize: '0.6rem', // Yazı boyutu
+        color: 'white', // Yazı rengi
+                border:' 1px solid #98d974'
+
+      }}
+    >
+      <SpaIcon sx={{ color:'#98d974',    fontSize: '1rem', // Yazı boyutu
+ marginRight: '4px' }} /> {/* İkon */}
+    ~ %78.53 APY
+    </Box>
+    
+  )}
+   {stakingData[selectedOptionIndex].duration === 1 && (
+    <Box
+      component="span"
+      sx={{
+        display: 'flex', // Flex kullanarak yatayda hizalama
+        alignItems: 'center', // İkon ve yazıyı dikeyde ortalamak için
+        backgroundColor: '#282828', // Kutu arka plan rengi
+        borderRadius: 1, // Köşe yuvarlama
+        padding: '1px 3px', // İç boşluk
+        marginLeft: 1, // Sol taraf boşluğu
+        fontSize: '0.6rem', // Yazı boyutu
+        color: 'white', // Yazı rengi
+                border:' 1px solid  #FF5A00'
+
+      }}
+    >
+      <LocalFireDepartmentIcon sx={{ color:' #FF5A00'   ,       fontSize: '1rem', // Yazı boyutu
+ marginRight: '4px' }} /> {/* İkon */}
+     ~ 175x Leverage
+    </Box>
+    
+  )}
+    {stakingData[selectedOptionIndex].duration === 1 && (
+    <Box
+      component="span"
+      sx={{
+        display: 'flex', // Flex kullanarak yatayda hizalama
+        alignItems: 'center', // İkon ve yazıyı dikeyde ortalamak için
+        backgroundColor: '#282828', // Kutu arka plan rengi
+        borderRadius: 1, // Köşe yuvarlama
+        padding: '1px 3px', // İç boşluk
+        marginLeft: 1, // Sol taraf boşluğu
+        fontSize: '0.6rem', // Yazı boyutu
+        color: 'white', // Yazı rengi
+        border:' 1px solid #98d974'
+      }}
+    >
+      <SpaIcon sx={{color:'#98d974'  ,   fontSize: '1rem', // Yazı boyutu
+ marginRight: '4px' }} /> {/* İkon */}
+     ~ % 43.14 APY
+    </Box>
+    
+  )}
+  {stakingData[selectedOptionIndex].duration === 14 && (
+    <Box
+      component="span"
+      sx={{
+        display: 'flex', // Flex kullanarak yatayda hizalama
+        alignItems: 'center', // İkon ve yazıyı dikeyde ortalamak için
+        backgroundColor: '#282828', // Kutu arka plan rengi
+        borderRadius: 1, // Köşe yuvarlama
+        padding: '1px 3px', // İç boşluk
+        marginLeft: 1, // Sol taraf boşluğu
+        fontSize: '0.6rem', // Yazı boyutu
+        color: 'white', // Yazı rengi
+                border:' 1px solid #FF5A00'
+
+      }}
+    >
+      <LocalFireDepartmentIcon sx={{ color:'#FF5A00'   ,       fontSize: '1rem', // Yazı boyutu
+ marginRight: '4px' }} /> {/* İkon */}
+      ~ 250x
+    </Box>
+    
+  )}
+    {stakingData[selectedOptionIndex].duration === 14 && (
+    <Box
+      component="span"
+      sx={{
+        display: 'flex', // Flex kullanarak yatayda hizalama
+        alignItems: 'center', // İkon ve yazıyı dikeyde ortalamak için
+        backgroundColor: '#282828', // Kutu arka plan rengi
+        borderRadius: 1, // Köşe yuvarlama
+        padding: '1px 3px', // İç boşluk
+        marginLeft: 1, // Sol taraf boşluğu
+        fontSize: '0.6rem', // Yazı boyutu
+        color: 'white', // Yazı rengi
+        border:' 1px solid #98d974'
+      }}
+    >
+      <SpaIcon sx={{ color:'#98d974',    fontSize: '1rem', // Yazı boyutu
+ marginRight: '4px' }} /> {/* İkon */}
+     ~ % 52.86 APY
+    </Box>
+    
+  )}
+</Box>
+ 
+  <Typography color={'gray'} fontSize={'0.8rem'} textAlign={'left'} onClick={handleClick}>
+    {
+      stakingData[selectedOptionIndex].duration === 1 ? 'You will earn over the next 24 Hours' :
+      stakingData[selectedOptionIndex].duration === 14 ? 'You will earn over the next 14 Day' :
+      stakingData[selectedOptionIndex].duration === 30 ? 'You will earn over the next 30 Day' :
+      stakingData[selectedOptionIndex].duration === 90 ? 'You will earn over the next 90 Day' :
+      'default description'
+    }
+  </Typography>
+</Box>
+
+ <Box borderRadius={2} mr={1} bgcolor={'white'}>
+      <IconButton onClick={handleClick} color="primary">
+        {/* Menü açıldığında veya kapandığında ikon değiştirme */}
+        {open2 ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+      </IconButton>
+    </Box>
+    
+   <Menu
+    anchorEl={anchorEl}
+    open={open2}
+    onClose={handleClose}
+    sx={{
+      '& .MuiPaper-root': {
+        boxShadow: 'none', // Gölgeyi kaldırıyoruz
+      },
+    }}
+    PaperProps={{
+      style: {
+        backgroundColor: 'transparent', // Menü arka planını şeffaf yapıyoruz
+        boxShadow: 'none', // Gölgeyi de kaldırmak isterseniz
+        width: '100%',
+      },
+    }}
+  >
+  <MenuItem sx={{ backgroundColor: 'transparent' }}>
+                  <ToggleButtonGroup
+                fullWidth
+                color='primary'
+                value={selectedOptionIndex} 
+                exclusive
+                onChange={(_e, newValue) => handleSelectionChange(newValue as number)}
+                sx={{backgroundColor:'black', fontSize:'2rem',borderRadius:2}} 
+              >
+                {stakingOptions.map((option, index) => (
+                    <ToggleButton key={index} value={index} sx={{border:"1px solid #575757",p:1, color: 'whitesmoke', bgcolor: '#3f3f3f', borderRadius: 2, fontWeight: 'bolder' , fontSize:'0.8rem'}}>
+                        {option.period}
+                    </ToggleButton>
+                ))}
+              </ToggleButtonGroup> 
+               </MenuItem>
+      </Menu>
+      
+    </Box>
+    
+              </Box>
+         
+              <Box sx={{display:'flex', justifyContent:'space-between'}}>
+                                            <Box   display={'flex'} alignItems={'center'}>
+                                              
+                                              <Box mt={2.5} mb={-2} >
+                                                <Typography sx={{color:'gray', fontWeight:'lighter', textAlign:'left'}}>
+ Total Earnings :
+                                                </Typography>
+
+              <Typography textAlign={'left'} variant="h4" component="div" sx={{  fontWeight: 'bold', color: 'white', fontSize: '1rem' }}>
+              
+                <span style={{color: '#90EE90',marginRight:'5px', fontSize:'1.2rem'}}> + 
  {(parseFloat(calculateEarnings(
                       stakingData[selectedOptionIndex].amount, 
                       stakingData[selectedOptionIndex].duration,
@@ -1157,34 +1374,23 @@ const handleUnstake = async (amount: number): Promise<void> => {
                       stakingOptions[selectedOptionIndex].apy
                     ))).toFixed(2)} TON 
                 </span>
-               in 
-            </Typography>
-            
-              <Typography textAlign={'left'}  sx={{  fontWeight: 'bold', color: 'gray', fontSize: '0.8rem' }}>
-                 ~ ({ (parseFloat(calculateEarnings(
+  in {stakingData[selectedOptionIndex].duration} day        
+  <span style={{color:'gray', fontWeight:'lighter',fontSize:'0.8rem', marginLeft:5}}>
+          ~ ({ (parseFloat(calculateEarnings(
                       stakingData[selectedOptionIndex].amount, 
                       stakingData[selectedOptionIndex].duration, 
                       stakingData[selectedOptionIndex].leverage,
                       stakingOptions[selectedOptionIndex].apy
                     )) * 5.20).toFixed(2)} USDT)
+    </span>   
+            
+           
             </Typography>
                                               </Box>
 
             
   </Box>
-                <ToggleButtonGroup
-                color="primary" 
-                value={selectedOptionIndex}
-                exclusive
-                onChange={(_e, newValue) => handleSelectionChange(newValue as number)}
-                sx={{minWidth: '45%', maxWidth: '45%', fontSize:'1.8rem' }} 
-              >
-                {stakingOptions.map((option, index) => (
-                    <ToggleButton key={index} value={index} sx={{border:"1px solid #575757",p:1, color: 'whitesmoke', bgcolor: '#3f3f3f', borderRadius: 2, fontWeight: 'bolder' , fontSize:'0.6rem'}}>
-                        {option.period}
-                    </ToggleButton>
-                ))}
-              </ToggleButtonGroup> 
+              
               </Box>
           
             <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'} sx={{ width: '100%', mt: 1 }}>
@@ -1194,50 +1400,10 @@ const handleUnstake = async (amount: number): Promise<void> => {
             </Box>
 
  
-                              <Divider sx={{backgroundColor:'gray'  }} />
 
 
-            <Box flexDirection={'column'} display={'flex'} mb={-1} justifyContent={'space-between'} sx={{ width: '100%' }}>
-              
-              <Box>
-                <Typography textAlign={'left'} variant="h6" sx={{color:'gray', fontWeight: 'bold' }}> 
-                  
-                  
-                   <span style={{color: 'white',}}>
-                    {((parseFloat(calculateEarnings(
-                      stakingData[selectedOptionIndex].amount,
-                      stakingData[selectedOptionIndex].duration,
-                      stakingData[selectedOptionIndex].leverage,
-                      stakingOptions[selectedOptionIndex].apy
-                    )) * 0.16).toFixed(2))} 
-                  </span> 
-                   <span style={{color: '#6ed3ff',marginLeft:'5px'}}>
-                   TON   </span> -  <span style={{fontSize:'0.8rem'}}>Booba Staking</span>              
-
-                </Typography>
-              </Box>
-
-              <Box>
-                <Typography textAlign={'left'} variant="h6" sx={{color:'grey', fontWeight: 'bold' }}> 
-                   <span style={{color: 'white',}}>
-                    {((parseFloat(calculateEarnings(
-                      stakingData[selectedOptionIndex].amount,
-                      stakingData[selectedOptionIndex].duration,
-                      stakingData[selectedOptionIndex].leverage,
-                      stakingOptions[selectedOptionIndex].apy
-                    )) * 0.84).toFixed(2))}  
-                  </span>
-                                     <span style={{color: '#6ed3ff',marginLeft:'5px'}}>
- TON</span> -  <span style={{fontSize:'0.8rem'}}>DeFi extra yield</span>             
-
-                
-
-                  
-             
-
-                </Typography>
-              </Box>
-            </Box>
+           
+          
           </Box>
 
           
@@ -1543,7 +1709,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
                             variant="outlined"
                             color="primary"
                             sx={{ ml: 1, fontSize: '1rem' }}
-                            onClick={() => {
+                            onClick={() => { 
                               if (totalBalance !== null) {
                                 handleAmountChange(selectedOptionIndex, totalBalance);
                               }
