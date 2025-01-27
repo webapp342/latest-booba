@@ -196,7 +196,6 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
   const [displayedLeverage, setDisplayedLeverage] = useState(calculateLeverage(stakingData[index].amount, option.period));
   
   // New state for animation
-  const [fadeIn, setFadeIn] = useState(false);
 
   useEffect(() => {
     // Animate the leverage value change
@@ -221,11 +220,6 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
   }, [stakingData[index].amount, option.period]); // Re-run effect when amount or period changes
 
   // Effect to trigger fade-in animation when amount changes
-  useEffect(() => {
-    setFadeIn(true);
-    const timer = setTimeout(() => setFadeIn(false), 500); // Reset fade-in after 500ms
-    return () => clearTimeout(timer);
-  }, [stakingData[index].amount]); // Trigger on amount change
 
   return (
     <Grid item xs={12} sm={6} md={4} key={index}>
@@ -259,8 +253,8 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
                         <Box justifyContent={'space-between'} display={'flex'}>
                             <Box  display={'flex'} alignItems={'center'}>
 
-              <Typography textAlign={'left'} variant="h4" component="div" sx={{  fontWeight: 'bold', color: 'white', fontSize: '2rem', transition: 'opacity 0.5s', opacity: fadeIn ? 1 : 0.5 }}>
-              {stakingData[index].amount} <span style={{color:'grey'}}> TON</span> 
+              <Typography textAlign={'left'} variant="h4" component="div" sx={{  fontWeight: 'bold', color: 'white', fontSize: '2rem', transition: 'opacity 0.5s' }}>
+              {stakingData[index].amount} <span style={{color:'#6ed3ff'}}> TON</span> 
             </Typography>
   </Box>
             <Box   >
@@ -1019,7 +1013,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
   }, [navigate, drawerOpen]); // drawerOpen'i bağımlılıklar listesine ekleyin
 
 
-  
+
 
   return (
     <Box mt={"17%"} style={{ marginBottom: '76px', backgroundColor: '#1E1E1E', padding: 8 ,}}>
@@ -1207,7 +1201,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
     >
       <SpaIcon sx={{ color:'#98d974',    fontSize: '1rem', // Yazı boyutu
  marginRight: '4px' }} /> {/* İkon */}
-    ~ %78.53 
+    %78.53 
     </Box>
     
   )}
@@ -1229,10 +1223,10 @@ const handleUnstake = async (amount: number): Promise<void> => {
     >
       <LocalFireDepartmentIcon sx={{ color:' #FF5A00'   ,       fontSize: '1rem', // Yazı boyutu
  marginRight: '4px' }} /> {/* İkon */}
-     ~ 175x Leverage
+     175x Leverage
     </Box>
     
-  )}
+  )} 
     {stakingData[selectedOptionIndex].duration === 1 && (
     <Box
       component="span"
@@ -1250,7 +1244,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
     >
       <SpaIcon sx={{color:'#98d974'  ,   fontSize: '1rem', // Yazı boyutu
  marginRight: '4px' }} /> {/* İkon */}
-     ~ % 43.14 APY
+     % 43.14
     </Box>
     
   )}
@@ -1272,7 +1266,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
     >
       <LocalFireDepartmentIcon sx={{ color:'#FF5A00'   ,       fontSize: '1rem', // Yazı boyutu
  marginRight: '4px' }} /> {/* İkon */}
-      ~ 250x
+      250x Leverage
     </Box>
     
   )}
@@ -1293,7 +1287,50 @@ const handleUnstake = async (amount: number): Promise<void> => {
     >
       <SpaIcon sx={{ color:'#98d974',    fontSize: '1rem', // Yazı boyutu
  marginRight: '4px' }} /> {/* İkon */}
-     ~ % 52.86 APY
+     % 52.86
+    </Box>
+    
+  )}
+  {stakingData[selectedOptionIndex].duration === 90 && (
+    <Box
+      component="span"
+      sx={{
+        display: 'flex', // Flex kullanarak yatayda hizalama
+        alignItems: 'center', // İkon ve yazıyı dikeyde ortalamak için
+        backgroundColor: '#282828', // Kutu arka plan rengi
+        borderRadius: 1, // Köşe yuvarlama
+        padding: '1px 3px', // İç boşluk
+        marginLeft: 1, // Sol taraf boşluğu
+        fontSize: '0.6rem', // Yazı boyutu
+        color: 'white', // Yazı rengi
+                border:' 1px solid #FF5A00'
+
+      }}
+    >
+      <LocalFireDepartmentIcon sx={{ color:'#FF5A00'   ,       fontSize: '1rem', // Yazı boyutu
+ marginRight: '4px' }} /> {/* İkon */}
+      +320x Leverage
+    </Box>
+    
+  )}
+    {stakingData[selectedOptionIndex].duration === 90 && (
+    <Box
+      component="span"
+      sx={{
+        display: 'flex', // Flex kullanarak yatayda hizalama
+        alignItems: 'center', // İkon ve yazıyı dikeyde ortalamak için
+        backgroundColor: '#282828', // Kutu arka plan rengi
+        borderRadius: 1, // Köşe yuvarlama
+        padding: '1px 3px', // İç boşluk
+        marginLeft: 1, // Sol taraf boşluğu
+        fontSize: '0.6rem', // Yazı boyutu
+        color: 'white', // Yazı rengi
+        border:' 1px solid #98d974'
+      }}
+    >
+      <SpaIcon sx={{ color:'#98d974',    fontSize: '1rem', // Yazı boyutu
+ marginRight: '4px' }} /> {/* İkon */}
+     %102.86
     </Box>
     
   )}
@@ -1353,28 +1390,28 @@ const handleUnstake = async (amount: number): Promise<void> => {
       </Menu>
       
     </Box>
-    
+     
               </Box>
          
               <Box sx={{display:'flex', justifyContent:'space-between'}}>
                                             <Box   display={'flex'} alignItems={'center'}>
                                               
                                               <Box mt={2.5} mb={-2} >
-                                                <Typography sx={{color:'gray', fontWeight:'lighter', textAlign:'left'}}>
+                                                <Typography sx={{color:'gray', fontWeight:'lighter', textAlign:'left', fontSize:'0.8rem' }}>
  Total Earnings in <span style={{color:'white', fontWeight:'bold'}}> {stakingData[selectedOptionIndex].duration} day
   </span>  :       
                                                 </Typography>
 
-              <Typography textAlign={'left'} variant="h4" component="div" sx={{  fontWeight: 'bold', color: 'white', fontSize: '1rem' }}>
               
-                <span style={{color: '#90EE90',marginRight:'5px', fontSize:'1.2rem'}}> + 
- {(parseFloat(calculateEarnings(
+              <Typography textAlign={'left'} variant="h4" component="div" sx={{  fontWeight: 'bold', color: 'white', fontSize: '1.8rem', transition: 'opacity 0.5s' }}>
+ +<span style={{color:'white'}}>{(parseFloat(calculateEarnings(
                       stakingData[selectedOptionIndex].amount, 
                       stakingData[selectedOptionIndex].duration,
                       stakingData[selectedOptionIndex].leverage,
                       stakingOptions[selectedOptionIndex].apy
-                    ))).toFixed(2)} TON 
-                </span>
+                    ))).toFixed(2)}
+ </span>
+ <span style={{color:'#6ed3ff'}}> TON</span> 
  
   <span style={{color:'gray', fontWeight:'lighter',fontSize:'0.8rem', marginLeft:5}}>
           ~ ({ (parseFloat(calculateEarnings(
