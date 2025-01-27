@@ -1060,7 +1060,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
     WebkitTextFillColor: 'transparent',
 
   }}
->      Leveraged Staking     
+>      Smart Earnings     
       </Typography>
 
      <span style={{ color: '#fff', fontSize: '0.4rem', marginTop:12,marginLeft:5, }}>by BOOBA</span>
