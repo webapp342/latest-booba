@@ -1053,7 +1053,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
   mb={1}
   
   fontFamily="'Press Start 2P', sans-serif"
-  fontSize="1rem"
+  fontSize="0.8rem"
   
   sx={{
     backgroundImage: 'linear-gradient(45deg, #9fdfff 0%, #89d9ff 25%, #6ed3ff 50%, #4dccff 75%, #00c6ff 100%)',
