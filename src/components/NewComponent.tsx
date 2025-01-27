@@ -1207,7 +1207,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
     >
       <SpaIcon sx={{ color:'#98d974',    fontSize: '1rem', // Yazı boyutu
  marginRight: '4px' }} /> {/* İkon */}
-    ~ %78.53 APY
+    ~ %78.53 
     </Box>
     
   )}
@@ -1299,7 +1299,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
   )}
 </Box>
  
-  <Typography color={'gray'} fontSize={'0.8rem'} textAlign={'left'} onClick={handleClick}>
+  <Typography color={'gray'} fontSize={'0.6rem'} textAlign={'left'} onClick={handleClick}>
     {
       stakingData[selectedOptionIndex].duration === 1 ? 'You will earn over the next 24 Hours' :
       stakingData[selectedOptionIndex].duration === 14 ? 'You will earn over the next 14 Day' :
@@ -1361,7 +1361,8 @@ const handleUnstake = async (amount: number): Promise<void> => {
                                               
                                               <Box mt={2.5} mb={-2} >
                                                 <Typography sx={{color:'gray', fontWeight:'lighter', textAlign:'left'}}>
- Total Earnings :
+ Total Earnings in <span style={{color:'white', fontWeight:'bold'}}> {stakingData[selectedOptionIndex].duration} day
+  </span>  :       
                                                 </Typography>
 
               <Typography textAlign={'left'} variant="h4" component="div" sx={{  fontWeight: 'bold', color: 'white', fontSize: '1rem' }}>
@@ -1374,7 +1375,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
                       stakingOptions[selectedOptionIndex].apy
                     ))).toFixed(2)} TON 
                 </span>
-  in {stakingData[selectedOptionIndex].duration} day        
+ 
   <span style={{color:'gray', fontWeight:'lighter',fontSize:'0.8rem', marginLeft:5}}>
           ~ ({ (parseFloat(calculateEarnings(
                       stakingData[selectedOptionIndex].amount, 
