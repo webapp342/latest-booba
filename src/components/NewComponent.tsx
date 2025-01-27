@@ -2032,7 +2032,6 @@ Choose your staking duration
                     <span style={{color:'red', marginLeft:'5px'}}>
                     -{(selectedEarlyUnstake.earnings)} TON </span> 
                 </Typography>
-                                                    <span style={{ fontWeight: 'bold' }}>{selectedEarlyUnstake.id} </span> 
 
                     <Typography variant="body1" sx={{ color: 'white' }}>
                     Fee: 
