@@ -67,6 +67,12 @@ const TwoFieldsComponent: React.FC = () => {
       return;
     }
 
+
+    if (5100 > enteredAmount) {
+      setErrorMessage('Min degerin altinda!'); // Yetersiz Bakiye
+      return;
+    }
+
     // Girilen miktarı toplam bakiyeden çıkar
     const newTotal = userData.total - enteredAmount;
 
@@ -105,7 +111,7 @@ const TwoFieldsComponent: React.FC = () => {
         padding: 3, 
         borderRadius: 2, 
         boxShadow: 3,
-        backgroundColor: '#3f3f3f'
+        backgroundColor: '#1a2126'
       }}
     >
     <Box

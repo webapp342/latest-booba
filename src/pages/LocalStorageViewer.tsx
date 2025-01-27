@@ -30,8 +30,8 @@ const theme = createTheme({
   palette: {
     mode: 'dark',
     background: {
-      default: '#121212',
-      paper: '#1E1E1E',
+      default: '#2f363a',
+      paper: '#2f363a',
     },
     text: {
       primary: '#FFFFFF',
@@ -378,7 +378,7 @@ useEffect(() => {
   
                 
         {/* İlk Kart */}
-      <Box  sx={{ borderRadius: 3, mt: 1, mx: 1, p: 2, backgroundColor: '#3f3f3f' }}>            {/* Total Account Equity */}
+      <Box  sx={{ borderRadius: 3, mt: 1, mx: 1, p: 2, border:'1px solid #5d6367' }}>            {/* Total Account Equity */}
             <Typography className="total-equity"
               variant="subtitle2"
               sx={{ color: "white" }}
@@ -422,7 +422,7 @@ useEffect(() => {
                   mr:1,
                   borderRadius: 2,
                 }}
-                onClick={handleDepositClick}
+                onClick={handleDepositClick} 
               >
                 <AddCircleIcon sx={{ fontSize: '1.5rem', color:"#89d9ff" }} />
                 Deposit
@@ -566,7 +566,7 @@ ml:1,
     </Box>
 
       {/* İkinci Kart - Asset List */}
-<Card sx={{ borderRadius: 3, mt: 1, m:1 , bgcolor:'#282828' }}>
+<Card sx={{ borderRadius: 3, mt: 1, m:1 , bgcolor:'#2f363a' }}>
   <CardContent>
    
     {/* Başlık ve Arama Kutusu */}

@@ -74,7 +74,8 @@ export default function SimpleBottomNavigation() {
           showLabels
           sx={{
             height: '65px',
-            bgcolor: '#282828',
+            bgcolor: '#1e2625',
+            boxShadow:5,
             transition: 'none',
             '& .MuiBottomNavigationAction-root': {
               minWidth: 'auto',

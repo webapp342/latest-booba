@@ -15,9 +15,8 @@ html, body, #root {
 
 
   height: 100%;
-  color-scheme: light dark;
   color: white;
-  background: #1E1E1E;
+  background: #1a2126;
 }
 
 a {
@@ -61,7 +60,7 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1E1E1E;
+  background-color: #1a2126;
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -70,7 +69,7 @@ button {
 @media (prefers-color-scheme: light) {
   :root {
     color: white;
-    background-color: #1E1E1E;
+    background-color: #1a2126;
   }
  
   button {

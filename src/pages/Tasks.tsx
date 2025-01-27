@@ -167,7 +167,7 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
 
   
     sx={{
-      backgroundColor: '#282828',
+      backgroundColor: '#2f363a',
       boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
       borderRadius: '16px',
        p: { xs: 1, sm: 2.5 },
@@ -297,7 +297,7 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
           target="_blank"
           
           rel="noopener noreferrer"
-          style={{
+          style={{ 
             textDecoration: 'none',
           }}
         >
@@ -615,7 +615,7 @@ const DealsComponent: React.FC = () => {
                   <Box
                     key={taskIndex}
               sx={{
-      backgroundColor: '#282828',
+      backgroundColor: '#2f363a',
       boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
       borderRadius: '16px',
        p: { xs: 1, sm: 2.5 },
@@ -742,7 +742,7 @@ const DealsComponent: React.FC = () => {
             {(selectedCategory === 1 || selectedCategory === 2) && (
               <Box
                 sx={{
-                  backgroundColor: '#282828',
+                  backgroundColor: '#2f363a',
                   boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
                   borderRadius: '16px',
                   p: { xs: 1, sm: 2.5 },

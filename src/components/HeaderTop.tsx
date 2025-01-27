@@ -19,6 +19,8 @@ import { useTheme } from '@mui/material/styles';
 import { Avatar} from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
 import NotificationDrawer from './NotificationDrawer';
+import "./text.css";
+
 
 
 
@@ -225,7 +227,7 @@ function ResponsiveAppBar() {
 
  
   return (
-    <AppBar position="fixed" sx={{mt:"10vh", backgroundColor: '#1E1E1E',border:"none",boxShadow:'none' }}>
+    <AppBar position="fixed" sx={{mt:"10vh", backgroundColor: '#1a2126',border:"none",boxShadow:'none' }}>
       <Container  maxWidth="xl">
         
         <Toolbar disableGutters>

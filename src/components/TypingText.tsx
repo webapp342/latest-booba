@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Typography } from "@mui/material";
+import "./text.css";
+
 
 const words = ["BOOBA", "Fun.", "Freedom.", "Future."];
 
@@ -38,12 +40,11 @@ const TypingText = () => {
 
   return (
     <Typography
+    className="text-gradient"
       sx={{
         mt: "7vh",
         textAlign: "center",
-        background: "linear-gradient(45deg, #00c6ff, #0072ff)",
-        WebkitBackgroundClip: "text",
-        WebkitTextFillColor: "transparent",
+     
         fontFamily: "'Press Start 2P', sans-serif",
         fontWeight: 700,
         fontSize: "1.2rem",

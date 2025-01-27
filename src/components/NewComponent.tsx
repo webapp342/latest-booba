@@ -20,6 +20,7 @@ import WebApp from '@twa-dev/sdk';
 import SpaIcon from '@mui/icons-material/Spa'; 
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import TimelapseIcon from '@mui/icons-material/Timelapse';
+import "./text.css";
 
 
 
@@ -229,7 +230,7 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
           textAlign: 'center', 
           
           borderRadius: 2,
-          backgroundColor:  '#3f3f3f',
+          backgroundColor:  '#2f363a',
         }}
       >
         <CardContent>
@@ -254,7 +255,7 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
                             <Box  display={'flex'} alignItems={'center'}>
 
               <Typography textAlign={'left'} variant="h4" component="div" sx={{  fontWeight: 'bold', color: 'white', fontSize: '2rem', transition: 'opacity 0.5s' }}>
-              {stakingData[index].amount} <span style={{color:'#6ed3ff'}}> TON</span> 
+              {stakingData[index].amount} <span className='text-gradient'> TON</span> 
             </Typography>
   </Box>
             <Box   >
@@ -308,20 +309,57 @@ APY's varies based on amount and duration !!!         </Typography>
 const InfoCard: React.FC = () => {
   return (
     
-    <Box sx={{ mt: 2, p: 2, border: '1px solid #575757', borderRadius: 2, backgroundColor: '#282828' }}>
+    <Box sx={{ mt: 2, p: 2,  borderRadius: 2, backgroundColor: '#2f363a' }}>
         
       <Grid container spacing={2}>
         <Grid item xs={4} display="flex" flexDirection="column" alignItems="center">
-          <AccessTime sx={{ fontSize: 40, color: '#1976d2' }} />
-          <Typography textAlign={'center'} variant="body2" fontSize={'0.8rem'}>Withdraw at any time</Typography>
+          <AccessTime sx={{ fontSize: 40, color: '#89d9ff' }} />
+          <Typography textAlign={'center'} variant="body2" fontSize={'0.8rem'}>Withdraw</Typography>
+                    <Typography textAlign={'center'} variant="body2" fontSize={'0.8rem'}>at any time</Typography>
+
         </Grid>
         <Grid item xs={4} display="flex" flexDirection="column" alignItems="center">
-          <SpeedIcon sx={{ fontSize: 40, color: '#1976d2' }} />
-          <Typography textAlign={'center'} variant="body2" fontSize={'0.8rem'}>Rewards every 18h</Typography>
+          <SpeedIcon sx={{ fontSize: 40, color: '#89d9ff' }} />
+          <Typography textAlign={'center'} variant="body2" fontSize={'0.8rem'}>Rewards</Typography>
+                    <Typography textAlign={'center'} variant="body2" fontSize={'0.8rem'}>every 18h</Typography>
+
         </Grid>
         <Grid item xs={4} display="flex" flexDirection="column" alignItems="center">
-          <MonetizationOn sx={{ fontSize: 40, color: '#1976d2' }} />
-          <Typography textAlign={'center'} variant="body2" fontSize={'0.8rem'}>Min stake of 1 TON</Typography>
+          <MonetizationOn sx={{ fontSize: 40, color: '#89d9ff' }} />
+          <Typography textAlign={'center'} variant="body2" fontSize={'0.8rem'}>Min stake</Typography>
+                    <Typography textAlign={'center'} variant="body2" fontSize={'0.8rem'}>of 1 TON</Typography>
+
+          
+        </Grid>
+      </Grid>
+    </Box>
+  );
+};
+
+
+const DetailsCard: React.FC = () => { 
+  return (
+    
+    <Box sx={{ mt: 2, p: 2,  borderRadius: 2, backgroundColor: '#2f363a' }}>
+        
+      <Grid container spacing={2}>
+        <Grid item xs={4} display="flex" flexDirection="column" alignItems="center">
+                    <Typography color={'#b4e6ff'} fontWeight={'bold'}  textAlign={'center'} variant="body2" fontSize={'1.2rem'}>$275.9M</Typography>
+                              <Typography textAlign={'center'} variant="body2" fontSize={'0.8rem'}>TVL</Typography>
+
+
+        </Grid>
+        <Grid item xs={4} display="flex" flexDirection="column" alignItems="center">
+                    <Typography color={'#b4e6ff'} fontWeight={'bold'}  textAlign={'center'} variant="body2" fontSize={'1.2rem'}>76822</Typography>
+                              <Typography textAlign={'center'} variant="body2" fontSize={'0.8rem'}>Stakers now</Typography>
+
+
+        </Grid>
+        <Grid item xs={4} display="flex" flexDirection="column" alignItems="center">
+          <Typography color={'#b4e6ff'} fontWeight={'bold'} textAlign={'center'} variant="body2" fontSize={'1.2rem'}>~ 320x</Typography>
+                    <Typography textAlign={'center'} variant="body2" fontSize={'0.8rem'}>Leverage</Typography>
+
+          
         </Grid>
       </Grid>
     </Box>
@@ -669,23 +707,9 @@ const NewComponent: React.FC<NewComponentProps> = () => {
  
   ];
 
-   const leveragedItems = [
-    {
-      question: "About Our Staking System",
-      answer: "Our staking system allows users to earn rewards by locking their TON coins for a specified duration. You can choose from various staking periods, ranging from 7 days to 365 days, each offering different Annual Percentage Yields (APY)"
-    },
-    {
-      question: "**Leverage**",
-      answer: "By using leverage, you can increase your staking amount beyond what you own. For instance, if you have 100 TON and choose to leverage 2x, you can stake 200 TON. This amplifies your potential rewards but also increases your risk"
-    },
-  
-    {
-      question: "**Duration**",
-      answer: "The duration you select for staking affects your rewards. Longer durations typically offer higher APYs, but they also lock your funds for a longer period. Make sure to choose a duration that aligns with your investment strategy"
-    },
  
  
-  ];
+
 
   const handleStartStaking = async () => {
     if (selectedStaking) {
@@ -864,7 +888,7 @@ const handleEarlyUnstake = async (amount: number): Promise<void> => {
             }
         } catch (error) {
             console.error("Error updating user total or removing stake:", error);
-        }
+        } 
     } else {
         console.error("User  ID not found!");
     }
@@ -1016,7 +1040,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
 
 
   return (
-    <Box mt={"17%"} style={{ marginBottom: '76px', backgroundColor: '#1E1E1E', padding: 8 ,}}>
+    <Box mt={"17%"} style={{ marginBottom: '76px', backgroundColor: '#1a2126', padding: 8 ,}}>
       {renderStakingData()}
       <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} mb={2} >
       
@@ -1132,9 +1156,9 @@ const handleUnstake = async (amount: number): Promise<void> => {
               textAlign: 'center', 
               padding: 0.5, 
               boxShadow: 6,
+              border:'1px solid #5d6367 ',
               borderRadius: 2,
               transition: 'transform 0.3s, box-shadow 0.3s',
-              backgroundColor:  '#282828',
               p: 2,   mt:2,
               display: 'flex', 
               flexDirection: 'column', 
@@ -1154,7 +1178,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
                 
 
                 
-           <Box borderRadius={2} border={'1px solid white'} display="flex" alignItems="center" justifyContent="space-between">
+           <Box bgcolor={"#2f363a"} borderRadius={2}  display="flex" alignItems="center" justifyContent="space-between">
       {/* Sağda ikon */}
    <Box p={1}>
    
@@ -1217,11 +1241,11 @@ const handleUnstake = async (amount: number): Promise<void> => {
         marginLeft: 1, // Sol taraf boşluğu
         fontSize: '0.6rem', // Yazı boyutu
         color: 'white', // Yazı rengi
-                border:' 1px solid  #FF5A00'
+                border:' 1px solid  #d13207'
 
       }}
     >
-      <LocalFireDepartmentIcon sx={{ color:' #FF5A00'   ,       fontSize: '1rem', // Yazı boyutu
+      <LocalFireDepartmentIcon sx={{ color:' #d13207'   ,       fontSize: '1rem', // Yazı boyutu
  marginRight: '4px' }} /> {/* İkon */}
      175x Leverage
     </Box>
@@ -1260,11 +1284,11 @@ const handleUnstake = async (amount: number): Promise<void> => {
         marginLeft: 1, // Sol taraf boşluğu
         fontSize: '0.6rem', // Yazı boyutu
         color: 'white', // Yazı rengi
-                border:' 1px solid #FF5A00'
+                border:' 1px solid #d13207'
 
       }}
     >
-      <LocalFireDepartmentIcon sx={{ color:'#FF5A00'   ,       fontSize: '1rem', // Yazı boyutu
+      <LocalFireDepartmentIcon sx={{ color:'#d13207'   ,       fontSize: '1rem', // Yazı boyutu
  marginRight: '4px' }} /> {/* İkon */}
       250x Leverage
     </Box>
@@ -1282,7 +1306,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
         marginLeft: 1, // Sol taraf boşluğu
         fontSize: '0.6rem', // Yazı boyutu
         color: 'white', // Yazı rengi
-        border:' 1px solid #98d974'
+        border:' 1px solid #98d974' 
       }}
     >
       <SpaIcon sx={{ color:'#98d974',    fontSize: '1rem', // Yazı boyutu
@@ -1347,16 +1371,16 @@ const handleUnstake = async (amount: number): Promise<void> => {
   </Typography>
 </Box>
 
- <Box borderRadius={2} mr={1} bgcolor={'white'}>
+ <Box borderRadius={1} mr={1} bgcolor={'#1a2126'}>
       <IconButton onClick={handleClick} color="primary">
         {/* Menü açıldığında veya kapandığında ikon değiştirme */}
-        {open2 ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+        {open2 ? <ExpandLessIcon sx={{color:'#89d9ff'}} /> : <ExpandMoreIcon sx={{color:'#89d9ff'}} />}
       </IconButton>
     </Box>
     
    <Menu
     anchorEl={anchorEl}
-    open={open2}
+    open={open2} 
     onClose={handleClose}
     sx={{
       '& .MuiPaper-root': {
@@ -1411,7 +1435,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
                       stakingOptions[selectedOptionIndex].apy
                     ))).toFixed(2)}
  </span>
- <span style={{color:'#6ed3ff'}}> TON</span> 
+<span className='text-gradient'> TON</span> 
  
   <span style={{color:'gray', fontWeight:'lighter',fontSize:'0.8rem', marginLeft:5}}>
           ~ ({ (parseFloat(calculateEarnings(
@@ -1443,7 +1467,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
            
           
           </Box>
-
+ 
           
         </>
       )}
@@ -1588,7 +1612,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
       }}>
       {/* Conditionally render the Stake Now button based on unstaking mode */}
       {!isUnstaking && (
-        <Button variant="contained"  sx={{backgroundColor:'#b4e6ff', borderRadius: 2, width: '100%', mt: 1, fontSize: '1rem',color:"black" }} onClick={() => handleOpenDrawer(selectedOptionIndex)}>
+        <Button variant="contained"  sx={{backgroundColor:'#6ed3ff', borderRadius: 2, width: '100%', mt: 1, fontSize: '1rem',color:"#121212", fontWeight:'bold' }} onClick={() => handleOpenDrawer(selectedOptionIndex)}>
           Stake Now 
         </Button>
       )}
@@ -1601,16 +1625,8 @@ const handleUnstake = async (amount: number): Promise<void> => {
       
           with our Terms of Service.
         </Typography>
-        {leveragedItems.map((item, index) => (
-        <Accordion sx={{backgroundColor:'#282828',color:'whitesmoke', border:"1px solid #575757"}} key={index}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon sx={{color:"#575757"}} />}>
-              <Typography variant="h6">{item.question}</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography>{item.answer}</Typography>
-            </AccordionDetails>
-          </Accordion>
-        ))}
+      
+       
       </Box>
 
 
@@ -1625,6 +1641,16 @@ const handleUnstake = async (amount: number): Promise<void> => {
         Overview
       </Typography>
 
+      <DetailsCard />
+
+      <Typography 
+        variant="h3" 
+        component="h3" 
+        align="left" 
+        sx={{ mb: 1,mt:4,textAlign:'left', fontWeight: 'bold', textTransform: 'uppercase' , fontSize:'1.1rem'}}
+      >
+        Protocol details
+      </Typography>
 
       <InfoCard />
 
@@ -1639,7 +1665,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
       </Typography>
 
       {leveragedStakingItems.map((item, index) => (
-        <Accordion sx={{backgroundColor:'#282828',color:'whitesmoke', border:"1px solid #575757"}} key={index}>
+        <Accordion sx={{backgroundColor:'#2f363a',color:'whitesmoke'}} key={index}>
           <AccordionSummary expandIcon={<ExpandMoreIcon sx={{color:"#575757"}} />}>
             <Typography variant="h6">{item.question}</Typography>
           </AccordionSummary>
@@ -2163,4 +2189,4 @@ The fees vary depending on the system's load !!!     </span>
   );
 };
 
-export default NewComponent; 
+export default NewComponent;  

@@ -11,8 +11,8 @@ function Brand() {
 
  
   return (
-            <AppBar position="fixed" sx={{minHeight:"10vh", backgroundColor: '#1E1E1E',border:"none",boxShadow:'none' }}>
-                   <Box  alignItems={"center"}  sx={{backgroundColor: '#1E1E1E' }}>
+            <AppBar position="fixed" sx={{minHeight:"10vh", backgroundColor: '#1a2126',border:"none",boxShadow:'none' }}>
+                   <Box  alignItems={"center"}  sx={{backgroundColor: '#1a2126' }}>
           <TypingText />
     
           
