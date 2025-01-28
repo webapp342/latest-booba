@@ -27,7 +27,7 @@ import "./text.css";
 
 
 // Import images
-import bblipLogo from '../assets/bblip.png'; // Image for BBLIP
+import bblipLogo from '../assets/darkLogo.png'; // Image for BBLIP
 import totalLogo from '../assets/ton_symbol.png'; // Image for Total
 import UserAvatar from '../pages/UserAvatar';
 
@@ -292,7 +292,7 @@ function ResponsiveAppBar() {
 
 
 <Box display={'flex'}>
-   <img src={bblipLogo} alt="BBLIP" style={{ height: '20px', marginRight: '8px' }} />
+   <img src={bblipLogo} alt="BBLIP" style={{ height: '20px', marginRight: '8px', borderRadius:'50%' }} />
 
                         {menuOpen && <Typography variant="body2" sx={{ color: theme.palette.text.primary }}>BBLIP</Typography>}
 </Box>

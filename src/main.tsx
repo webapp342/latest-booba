@@ -17,6 +17,7 @@ import ImageSlider from "./pages/ImageSlider.tsx";
 import MatchesList from "./pages/MatchesList.tsx";
 import AdminPanel from "./pages/AdminPanel.tsx";
 import NewComponent from "./components/NewComponent.tsx";
+import Stats from "./components/Stats.tsx";
 
 
 
@@ -87,9 +88,21 @@ path:"/latest-booba/stake",        element: <NewComponent />,
       },
       
       {
-        path: "/latest-booba/", 
+        path: "/latest-booba/top",
                 element: <TopComponent />,
 
+      },
+      
+       {
+        path: "/latest-booba/",
+        element: (
+          <Stats
+            totalLockedTon={55320000}  // Sabit değer olarak örnek
+            totalEarningsDistributed={5532000}
+            totalPools={3}
+            performanceData={[11193, 40083, 90056, 100622, 124722, 132191,177181,]}  // Sabit performans verisi
+          />
+        ),
       },
     ],
   },

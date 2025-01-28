@@ -21,6 +21,7 @@ import SpaIcon from '@mui/icons-material/Spa';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import TimelapseIcon from '@mui/icons-material/Timelapse';
 import "./text.css";
+import Brand from './AiYield';
 
 
 
@@ -265,7 +266,7 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
             
 
           
-        
+         
               
                
                         </Box>
@@ -1042,6 +1043,8 @@ const handleUnstake = async (amount: number): Promise<void> => {
   return (
     <Box mt={"17%"} style={{ marginBottom: '76px', backgroundColor: '#1a2126', padding: 8 ,}}>
       {renderStakingData()}
+    
+      <Brand/>
       <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} mb={2} >
       
 
@@ -1049,21 +1052,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
       </Box>
       <Box textAlign={'center'} display={'flex'} justifyContent={'center'} >
 
-        <Typography
-  mb={1}
-  
-  fontFamily="'Press Start 2P', sans-serif"
-  fontSize="1rem"
-  sx={{
-    backgroundImage: 'linear-gradient(45deg, #9fdfff 0%, #89d9ff 25%, #6ed3ff 50%, #4dccff 75%, #00c6ff 100%)',
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-
-  }}
->      Smart Earnings     
-      </Typography>
-
-     <span style={{ color: '#fff', fontSize: '0.4rem', marginTop:12,marginLeft:5, }}>by BOOBA</span>
+       
 
       </Box>
 

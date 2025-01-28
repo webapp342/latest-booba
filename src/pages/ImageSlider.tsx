@@ -61,6 +61,7 @@ import image43 from '../assets/jackpots/softswiss.quickfire-MGS_queenOfAlexandri
 import image44 from '../assets/jackpots/softswiss.yggdrasil-Holmes.jpg';
 import image45 from  '../assets/jackpots/softswiss.yggdrasil-OzwinsJackpots.jpg';
 import ImageRow from './ImageRow';
+import Brand from '../components/brand';
 
 
 const theme = createTheme({
@@ -166,6 +167,8 @@ const images: { src: string, text: string, additionalText1: string, additionalTe
 const Example: React.FC = () => {
     return (
         <ThemeProvider theme={theme}>
+                <Brand/>
+
             <Box mt={"7vh"} sx={{                  
 }} mx={1} borderRadius={5} overflow="hidden">
                 <Box>

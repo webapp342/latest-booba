@@ -8,7 +8,7 @@ import OutboundIcon from '@mui/icons-material/Outbound';import TransactionHashes
 import { CheckCircleOutline } from '@mui/icons-material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';import { useNavigate } from 'react-router-dom';
 import TokenSwap from "./SwapComponent"; // TokenSwap bileşenini eklediğiniz yer
-import logo5 from '../assets/bblip.png';
+import logo5 from '../assets/darkLogo.png';
 import banner from '../assets/26.gif'; // Import the banner image
 
 import { doc, onSnapshot, getFirestore, getDoc } from "firebase/firestore";
@@ -16,6 +16,7 @@ import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './firebaseConfig';
 import WebApp from "@twa-dev/sdk";
 import TwoFieldsComponent from "./TwoFieldsComponent";
+import Brand from "../components/brand";
 
 
 const app = initializeApp(firebaseConfig);
@@ -371,7 +372,8 @@ useEffect(() => {
   return (
     <ThemeProvider theme={theme}>
   
- 
+       <Brand/>
+
               <Box mt={"10vh"}>
 
    

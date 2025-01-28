@@ -11,7 +11,6 @@ import { ThemeProvider } from '@mui/material/styles';
 import ResponsiveAppBar from './components/HeaderTop'; // Import the ResponsiveAppBar
 
 import theme from './pages/theme'; // Yukarıda oluşturduğunuz tema
-import Brand from "./components/brand";
 
 
 
@@ -50,7 +49,6 @@ function App() {
             {/* Ana içerik */}
             <div className={`main-content ${loading ? "hidden" : ""}`} style={{ paddingTop: '64px' }}>
         
-                                <Brand /> {/* Add the ResponsiveAppBar here */}
 
                 <ResponsiveAppBar /> {/* Add the ResponsiveAppBar here */}
                                        
