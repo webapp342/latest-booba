@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Box,  CircularProgress, Button, Snackbar, Alert ,ThemeProvider, createTheme } from '@mui/material';
+import { Box,  CircularProgress, Button, Snackbar, Alert ,ThemeProvider, createTheme, Typography } from '@mui/material';
 import { getFirestore, doc, getDoc } from 'firebase/firestore'; // Firestore metodları
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './firebaseConfig'; // Firebase yapılandırma
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 
 // Firebase App başlat
@@ -105,6 +106,66 @@ const invitedUsersArray = userData.invitedUsers || [];          console.log('Dav
 
   return (
             <ThemeProvider theme={theme}>
+  <Box   borderRadius={2} mb={1} mt={2}>
+
+    <Box textAlign={'left'} mb={1}>
+<Typography fontWeight={'bold'} fontSize={'1rem'} >
+Invite friends to earn rewards  </Typography>
+  <Typography  fontSize={'0.8rem'} color={'gray'} >
+   + earn % of their earnings.
+
+  </Typography>
+  
+    </Box>
+
+
+     <Box gap={1}  display={'flex'} justifyContent={'space-between'}>
+
+<Box borderRadius={2} border={'1px solid'} sx={{flexGrow: 1,}}>
+<Typography ml={1}  fontWeight={'bold'} mt={1} fontSize={'0.9rem'} color={'gray'}>
+  Earn
+</Typography>
+<Typography  ml={1} mb={-1} mt={-2}  fontWeight={'bold'} fontSize={'3.3rem'} color={'white'}>
+  14%
+</Typography>
+<Typography ml={1} mb={1} fontWeight={'bold'} fontSize={'0.9rem'} color={'#89d9ff'}>
+  of earned by frens
+
+</Typography>
+</Box>
+
+
+<Box borderRadius={2} border={'1px solid'} sx={{flexGrow: 1,}}>
+<Typography ml={1}  fontWeight={'bold'} mt={1} fontSize={'0.9rem'} color={'gray'}>
+  Earn
+</Typography>
+<Typography letterSpacing={-2} ml={1} mb={-1} mt={-2}  fontWeight={'bold'} fontSize={'3.3rem'} color={'white'}>
+  2.5%
+</Typography>
+<Typography ml={1} mb={1} fontWeight={'bold'} fontSize={'0.9rem'} color={'#89d9ff'}>
+from their refs
+
+</Typography>
+</Box>
+
+  
+    </Box>
+
+    
+
+
+
+        
+
+   
+
+
+
+    
+
+  
+</Box>
+               
     
     <Box
       sx={{
@@ -112,7 +173,7 @@ const invitedUsersArray = userData.invitedUsers || [];          console.log('Dav
         alignItems: 'center',
         justifyContent: 'center',
         textAlign: 'center',
-       
+       mb:-1,
               overflow: "hidden",
           width: '100%',
       }}
@@ -123,29 +184,36 @@ const invitedUsersArray = userData.invitedUsers || [];          console.log('Dav
     
     
 
-    
+
 
       {/* Link Kopyalama ve Paylaşma Butonları */}
       <Box sx={{ display: 'flex', gap: 1,  width: '100%' }}>
+
+       
         {/* Copy Link Butonu */}
+
+
+
+          <Button 
+          onClick={handleShareLink}
+          disabled={loading}
+          
+          sx={{ flexGrow: 1, width:'70%' , bgcolor:'#89d9ff', color:'black' , textTransform:'none'}}
+        >
+          {loading ? <CircularProgress size={24} /> : 'Invite Friends'}
+        </Button>
         <Button 
-          variant="contained" 
           onClick={handleCopyLink}
           disabled={loading}
-          sx={{ flexGrow: 1 }}
+          sx={{ flexGrow: 1 , width:'30%', border:'1px solid #89d9ff'}}
         >
-          {loading ? <CircularProgress size={24} /> : 'Copy Link'}
+
+          
+          {loading ? <CircularProgress size={24} /> : <ContentCopyIcon sx={{color:'#89d9ff'}} />}
         </Button>
 
         {/* Share Link Butonu */}
-        <Button 
-          variant="contained" 
-          onClick={handleShareLink}
-          disabled={loading}
-          sx={{ flexGrow: 1 }}
-        >
-          {loading ? <CircularProgress size={24} /> : 'Share Link'}
-        </Button>
+     
       </Box>
 
       {/* İçerik 

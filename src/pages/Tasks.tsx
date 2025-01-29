@@ -22,7 +22,7 @@ import {
   updateDoc,
   increment,
 } from 'firebase/firestore'; 
-
+import money from '../assets/money.png';
 import TestComponent from '../pages/TestComponent';
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './firebaseConfig';
@@ -517,14 +517,57 @@ const DealsComponent: React.FC = () => {
           <UserDataTable />
         </Box>
 
+        <Box       border={'1px solid #2f363a'} mt={5} width={'100%'} display={'flex'}
+        borderRadius={2} justifyContent={'space-between'} color={'white'} alignItems={'center'} gap={1}>
+         
+         <Box ml={2}>
+          <Typography fontSize={'1.2rem'} fontWeight={'bold'}>
+            Complete tasks
+          </Typography>
+          <Typography fontSize={'0.9rem'} color={'gray'}>
+            & Earn massive rewards
+          </Typography>
+
+         <Box mt={0.5} display={'flex'} alignItems={'center'} >
+          
+      <Box alignItems={'center'} display={'flex'} >
+  <img src={task8Logo} alt="" width={20} style={{borderRadius:'50%'}}  /> 
+
+   <Typography textAlign={'center'}  ml={1}>
+   125.000 <span style={{color:'gray'}}>+</span>
+          </Typography>
+
+</Box>
+
+<Box alignItems={'center'} display={'flex'} ml={1}>
+  <img src={task9Logo} alt="" width={20}  /> 
+
+   <Typography textAlign={'center'}  ml={1}>
+   50 
+          </Typography>
+
+</Box>
+           
+        
+              
+
+
+         </Box>
+         </Box>
+
+         <Box display={'flex'} justifyContent={'flex-start'} mr={2} my={1}>
+          <img src={money} alt="" width={80}  />
+         </Box>
+        </Box>
+
        
         <Box
           sx={{
             display: 'flex',
             overflowX: 'auto',
-            mt: 4,
-         
-            py: 2,
+      
+            mt:2,
+            py: 1,
                 
 
             width: '100%',
@@ -563,13 +606,13 @@ const DealsComponent: React.FC = () => {
         ) : error ? (
           <Typography color="error" sx={{ mt: 4 }}>{error}</Typography>
         ) : (
-          <Box sx={{ width: '100%', mt: 4 }}>
+          <Box sx={{ width: '100%', mt: 1 }}>
             {categories
               .find((category) => category.id === selectedCategory)
               ?.tasks.map((taskIndex) => {
                    if (taskIndex === 9) { // "Watch a Video" görevi
                 return (
-
+  
                   // "Watch a Video" görevi
               
  
@@ -637,6 +680,7 @@ const DealsComponent: React.FC = () => {
                    if (selectedCategory === 3 && taskIndex === 4) {
                   return (
                     <Box key="test-component" sx={{ mb: 2  }}>
+                 
                       <TestComponent />
                     </Box>
                   );
