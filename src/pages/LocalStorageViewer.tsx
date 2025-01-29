@@ -593,9 +593,8 @@ ml:1,
             mb: 1,
             borderBottom: index < filteredData.length - 1 ? "" : "none",
             px: 1,
-            py:1.5,
-
-            backgroundColor: !item.active ? "grey.100" : "#2f363a",
+            py:1.2,
+            border:'1px solid #5d6367',
             backgroundImage: !item.active
               ? "linear-gradient(45deg, #f3f3f3 25%, #eaeaea 25%, #eaeaea 50%, #f3f3f3 50%, #f3f3f3 75%, #eaeaea 75%, #eaeaea)"
               : "none",
