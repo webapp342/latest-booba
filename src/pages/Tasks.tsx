@@ -26,7 +26,6 @@ import {
 import TestComponent from '../pages/TestComponent';
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './firebaseConfig';
-import Tasks from '../assets/tasks.png';
 import task1Logo from '../assets/task1logo.png';
 import task2Logo from '../assets/instagram.png';
 import task4Logo from '../assets/tik-tok.png';
