@@ -1064,11 +1064,9 @@ const handleUnstake = async (amount: number): Promise<void> => {
       filter: 'blur(40px)',
     }}
   />
-<Typography mt={-28} mb={-1}  fontSize={'2.2rem'} fontWeight={'bold'}>
-    Ai Powered
-  </Typography>
+
   {/* Başlık */}
-  <Typography  className="text-gradient" fontSize={'1.8rem'} >
+  <Typography mt={-28}   className="text-gradient" fontSize={'1.9rem'} fontWeight={'bold'}>
     Smart Liquidity Pool
   </Typography>
 
