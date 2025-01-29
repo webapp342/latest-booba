@@ -125,7 +125,7 @@ Invite friends to earn rewards  </Typography>
 <Typography ml={1}  fontWeight={'bold'} mt={1} fontSize={'0.9rem'} color={'gray'}>
   Earn
 </Typography>
-<Typography  ml={1} mb={-1} mt={-2}  fontWeight={'bold'} fontSize={'3.3rem'} color={'white'}>
+<Typography  ml={1} mb={-1} mt={-2}  fontWeight={'bold'} fontSize={'2.8rem'} color={'white'}>
   14%
 </Typography>
 <Typography ml={1} mb={1} fontWeight={'bold'} fontSize={'0.9rem'} color={'#89d9ff'}>
@@ -139,7 +139,7 @@ Invite friends to earn rewards  </Typography>
 <Typography ml={1}  fontWeight={'bold'} mt={1} fontSize={'0.9rem'} color={'gray'}>
   Earn
 </Typography>
-<Typography letterSpacing={-2} ml={1} mb={-1} mt={-2}  fontWeight={'bold'} fontSize={'3.3rem'} color={'white'}>
+<Typography letterSpacing={-2} ml={1} mb={-1} mt={-2}  fontWeight={'bold'} fontSize={'2.8rem'} color={'white'}>
   2.5%
 </Typography>
 <Typography ml={1} mb={1} fontWeight={'bold'} fontSize={'0.9rem'} color={'#89d9ff'}>

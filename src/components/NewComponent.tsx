@@ -8,7 +8,6 @@ import { app } from '../pages/firebaseConfig'; // Import your Firebase app
 import { v4 as uuidv4 } from 'uuid'; // Import UUID for generating unique IDs
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import tonLogo from '../assets/toncoin-ton-logo.png'; // Logo dosyasını import et
-import OutboundIcon from '@mui/icons-material/Outbound';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
@@ -17,9 +16,9 @@ import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDiss
 import SlotCounter from 'react-slot-counter'; // Kütüphaneyi içe aktar
 import RecommendIcon from '@mui/icons-material/Recommend';
 import WebApp from '@twa-dev/sdk';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import SpaIcon from '@mui/icons-material/Spa'; 
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
-import TimelapseIcon from '@mui/icons-material/Timelapse';
 import "./text.css";
 import Brand from './AiYield';
 
@@ -242,10 +241,9 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
             <Box justifyContent={'space-between'} display={'flex'}>
               
                           <Box   display={'flex'} alignItems={'center'}>
-                            <OutboundIcon  sx={{color:"#90EE90",marginRight:'5px', width: '26px', height: '26px'  }}/>
 
-              <Typography textAlign={'left'} variant="h4" component="div" sx={{  fontWeight: 'bold', color: 'white', fontSize: '1rem' }}>
-            Stake Amount
+              <Typography textAlign={'left'} variant="h4" component="div" sx={{   color: 'gray', fontSize: '1rem' }}>
+            Amount
             </Typography>
             
   </Box>
@@ -271,9 +269,10 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
                
                         </Box>
 
-            <Box sx={{ display: 'flex', alignItems: 'center' , mt:-1 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' , mt:-1, mb:-4}}>
              
               <CustomSlider
+              
                 value={stakingData[index].amount}
                 onChange={(_e, newValue) => handleAmountChange(index, newValue as number)}
                 aria-labelledby="amount-slider"
@@ -286,10 +285,10 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
             
             
             </Box>
-               <Typography textAlign={'center'} variant="h4" component="div" mt={-1} mb={-2} sx={{  color: 'gray', fontSize: '0.7rem' }}>
-APY's varies based on amount and duration !!!         </Typography>
+            
 
           </Box>
+          
             
        
 
@@ -1037,7 +1036,9 @@ const handleUnstake = async (amount: number): Promise<void> => {
     };
   }, [navigate, drawerOpen]); // drawerOpen'i bağımlılıklar listesine ekleyin
 
-
+    const handleNavigate = () => {
+    navigate('/latest-booba/spin');
+  };
 
 
   return (
@@ -1045,16 +1046,37 @@ const handleUnstake = async (amount: number): Promise<void> => {
       {renderStakingData()}
     
       <Brand/>
-      <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} mb={2} >
-      
+     
+<Box textAlign={'center'} justifyContent={'center'} fontFamily={'monospace'} position="relative">
+  {/* Yuvarlak Gradient Arka Plan */}
+  <Box
+    top="50%"
+    left="50%"
+    width="200px"
+    height="200px"
+    borderRadius="50%"
+    zIndex={-1} // Arka plana almak için
+    sx={{
+      background: 'radial-gradient(circle, rgba(159,223,255,0.5) 0%, rgba(0,198,255,0) 80%)',
+      transform: 'translate(-50%, -50%)',
+      filter: 'blur(40px)',
+    }}
+  />
+<Typography mt={-28} mb={-1}  fontSize={'2.2rem'} fontWeight={'bold'}>
+    Ai Powered
+  </Typography>
+  {/* Başlık */}
+  <Typography  className="text-gradient" fontSize={'1.8rem'} >
+    Smart Liquidity Pool
+  </Typography>
 
-  
-      </Box>
-      <Box textAlign={'center'} display={'flex'} justifyContent={'center'} >
+  {/* Açıklama Metni */}
+  <Typography mb={2} fontSize={'0.7rem'}>
+    Join the ranks of liquidity providers to earn higher returns with{' '}
+    <span className="text-gradient">lower risks</span>
+  </Typography>
+</Box>
 
-       
-
-      </Box>
 
       
       
@@ -1073,7 +1095,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
           }}
         >
           <AddCircleIcon sx={{ mr: 1 }} />
-          Stake
+          Subscribe
         </Button>
         <Button 
           variant="contained" 
@@ -1087,7 +1109,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
           }}
         >
           <RemoveCircleIcon sx={{ mr: 1 }} />
-          Unstake
+          Redeem
         </Button>
       </Box>
       
@@ -1116,7 +1138,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
                   <Divider sx={{  }} />
                   <Box mt={1} sx={{display:'flex', justifyContent:'space-between' }}>
                        <Typography variant="body1" sx={{  }}>
-                    Staking in progress 
+                    Locked Balance 
                   </Typography>
                      <Typography variant="body1" sx={{ }}>
                  {calculateTotalStakedAmount(stakingHistory).toFixed(2)} TON
@@ -1157,34 +1179,63 @@ const handleUnstake = async (amount: number): Promise<void> => {
                 calculateEarnings={calculateEarnings}
               />
             </Grid>
+
+            
+
+<Box mt={1} display={'flex'}>
+     <Typography  variant="body1" sx={{ color: 'white' }}>
+               <span style={{color:"gray "  , fontSize: ' 0.8rem'}}>
+                Available : </span> {totalBalance !== null ? `${totalBalance.toFixed(2)} TON` : 'Loading...'}
+                        </Typography>
+                          <AddCircleOutlineIcon       onClick={handleNavigate}         
+ fontSize='small' sx={{ ml: 1, color:'#89d9ff' }} />
+
+            
+
+</Box>
+            
+
+
+               <Typography  variant="body1" sx={{ color: 'gray'  , fontSize: ' 0.8rem'}}>
+               Min Investment Size:    {stakingOptions[selectedOptionIndex].tonRange.min } TON ~ {stakingOptions[selectedOptionIndex].tonRange.min * 5.20} USDT
+
+                    </Typography>
+
+                     <Box display={'flex'} justifyContent={'space-between'}>
+               <Typography   sx={{ color: 'gray' , fontSize: ' 0.8rem'}}>
+                        Est Position Size
+                      </Typography>
+
+               <Typography   sx={{ color: 'white' , fontSize: ' 0.8rem'}}>
+                                                            {parseFloat(String(stakingData[selectedOptionIndex].amount * stakingData[selectedOptionIndex].leverage || '0')).toFixed(2)} lbTON
+
+                      </Typography>
+                    </Box>
+
+                    <Box display={'flex'} justifyContent={'space-between'}>
+               <Typography   sx={{ color: 'gray' , fontSize: ' 0.8rem'}}>
+                        Recommended min holding period
+                      </Typography>
+
+               <Typography   sx={{ color: 'white' , fontSize: ' 0.8rem'}}>
+                        30 Days
+                      </Typography>
+                    </Box>
          
-  
+
+
           
           {/* Earnings Display Outside of StakingCard */}
           <Box sx={{   
-              minWidth: 275, 
               textAlign: 'center', 
-              padding: 0.5, 
-              boxShadow: 6,
-              border:'1px solid #5d6367 ',
               borderRadius: 2,
               transition: 'transform 0.3s, box-shadow 0.3s',
-              p: 2,   mt:2,
+               mt:2,
               display: 'flex', 
               flexDirection: 'column', 
             }}>
               <Box >
-                      <Box   display={'flex'} alignItems={'center'}>
-                            <TimelapseIcon  sx={{color:"#90EE90",marginRight:'5px', width: '26px', height: '26px'  }}/>
-
-              <Typography textAlign={'left'} variant="h4" component="div" sx={{  fontWeight: 'bold', color: 'white', fontSize: '1rem' }}>
-            Duration 
-            </Typography>
-          
-  </Box>
-      <Typography fontSize={'0.8rem'} color={"gray"} textAlign={'left'} mb={1} >
-Choose your staking duration 
-          </Typography>
+                 
                 
 
                 
@@ -1432,7 +1483,7 @@ Choose your staking duration
                                               
                                               <Box mt={2.5} mb={-2} >
                                                 <Typography sx={{color:'gray', fontWeight:'lighter', textAlign:'left', fontSize:'0.8rem' }}>
- Total Earnings in <span style={{color:'white', fontWeight:'bold'}}> {stakingData[selectedOptionIndex].duration} day
+ Estimated earnings in <span style={{color:'white', fontWeight:'bold'}}> {stakingData[selectedOptionIndex].duration} Days
   </span>  :       
                                                 </Typography>
 
@@ -1623,7 +1674,7 @@ Choose your staking duration
       {/* Conditionally render the Stake Now button based on unstaking mode */}
       {!isUnstaking && (
         <Button variant="contained"  sx={{backgroundColor:'#6ed3ff', borderRadius: 2, width: '100%', mt: 1, fontSize: '1rem',color:"#121212", fontWeight:'bold' }} onClick={() => handleOpenDrawer(selectedOptionIndex)}>
-          Stake Now 
+          Subscribe
         </Button>
       )}
         <Typography 
@@ -1813,7 +1864,12 @@ Choose your staking duration
                   Staking Power:
                 </Typography>
                 <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
+
+                 
                   {parseFloat(String(selectedStaking.data.amount * selectedStaking.data.leverage || '0')).toFixed(2)} lbTON
+
+
+
                 </Typography>
               </Box>
 

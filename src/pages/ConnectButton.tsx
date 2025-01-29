@@ -106,8 +106,8 @@ export const Header = () => {
       {/* If user is not connected, show the TonConnectButton */}
       {!isConnected ? (
         <div >
-          <Button size='small' sx={{    borderRadius: 2,
-    textTransform: 'none', color:'black', bgcolor:'#89d9ff',
+          <Button size='small' sx={{    borderRadius: 3,
+    textTransform: 'none', color:'black', bgcolor:'#89d9ff',fontWeight:'bold',
 }}    onClick={() => tonConnectUI.openModal()}>
             Connect Wallet
           </Button>

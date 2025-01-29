@@ -467,7 +467,7 @@ useEffect(() => {
       >
         {/* Alttan kayan drawer içerisinde TwoFieldsComponent */}
         <TwoFieldsComponent  />
-      </Drawer>
+      </Drawer> 
 
     
               <Button

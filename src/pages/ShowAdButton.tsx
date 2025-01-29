@@ -96,7 +96,7 @@ export function ShowAdButton(): ReactElement {
       textTransform: 'none',
       borderRadius: '12px',
       color:'black',
-      backgroundColor: '#b4e6ff',
+      backgroundColor: '#89d9ff',
       fontSize: { xs: '0.8rem', sm: '0.85rem' },
       fontWeight: 600,
       px: { xs: 2, sm: 3 },

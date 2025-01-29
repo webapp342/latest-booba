@@ -101,8 +101,9 @@ const currencyLogo = [
 
 const categories = [
 
-  { id: 1, name: 'Hot', tasks: [9,0, 1,2,3] },
+  { id: 1, name: 'New', tasks: [9,0, 1,2,3] },
 
+  { id: 2, name: 'Socials', tasks: [0,1,2, 3] },
 
   { id: 3, name: 'Frens', tasks: [4,5,6,7,8] },
 
@@ -240,14 +241,33 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
           
       <Box alignItems={'center'} display={'flex'} >
           <img src={currencyLogo[index]} alt="" width={18} style={{borderRadius:'50%', marginRight:3}}  />
+                     {index >= 0 && index <= 5 && (
+
            <Typography 
             variant="body2" 
             sx={{ 
-              color: '#89d9ff',              fontSize: { xs: '0.75rem', sm: '0.8rem' }
+              color: '#98d974',              fontSize: { xs: '0.75rem', sm: '0.8rem' }
             }}
           >
           {task.label}
           </Typography>
+           )}
+
+           {index >= 6 && index <= 9 && (
+            <Typography
+              variant="body2"
+              sx={{
+                fontSize: { xs: '0.75rem', sm: '0.8rem' },
+                fontWeight: 600,
+                color:'#89d9ff',
+                borderRadius: '12px',
+                display: 'inline-flex',
+                alignItems: 'center'
+              }}
+            >
+          {task.label}
+            </Typography>
+          )}
       </Box>
        </Box>
          
@@ -329,13 +349,13 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
               textTransform: 'none',
               borderRadius: '12px',
               color: 'black',
-              backgroundColor: '#b4e6ff',
+              backgroundColor: '#89d9ff',
               fontSize: { xs: '0.8rem', sm: '0.85rem' },
               fontWeight: 600,
               px: { xs: 2, sm: 3 },
               py: { xs: 0.5, sm: 0.75 },
               '&:hover': {
-                backgroundColor: '#0072ff'
+                backgroundColor: '#89d9ff'
               },
             }}
           >
@@ -352,7 +372,7 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
             textTransform: 'none', 
             borderRadius: '12px',
             color: 'black',
-            backgroundColor: '#b4e6ff',
+            backgroundColor: '#0072ff',
             fontSize: { xs: '0.8rem', sm: '0.85rem' },
             fontWeight: 600,
             px: { xs: 2, sm: 3 },
@@ -538,11 +558,11 @@ const DealsComponent: React.FC = () => {
           <UserDataTable />
         </Box>
 
-        <Box       border={'1px solid #2f363a'} mt={5} width={'100%'} display={'flex'}
+        <Box       border={'1px solid #575757'} mt={5} width={'100%'} display={'flex'}
         borderRadius={2} justifyContent={'space-between'} color={'white'} alignItems={'center'} gap={1}>
          
          <Box ml={2}>
-          <Typography fontSize={'1.2rem'} fontWeight={'bold'}>
+          <Typography fontSize={'1.2rem'} >
             Complete tasks
           </Typography>
           <Typography fontSize={'0.9rem'} color={'gray'}>
@@ -614,7 +634,7 @@ const DealsComponent: React.FC = () => {
               key={category.id}
               category={category}
               isSelected={selectedCategory === category.id}
-              hasBadge={[1, 2, 3,4].includes(category.id)}
+              hasBadge={[3].includes(category.id)}
               onClick={() => setSelectedCategory(category.id)}
             />
           ))}
@@ -688,7 +708,7 @@ const DealsComponent: React.FC = () => {
            <Typography 
             variant="body2" 
             sx={{ 
-              color: '#89d9ff',              fontSize: { xs: '0.75rem', sm: '0.8rem' }
+              color: '#98d974',              fontSize: { xs: '0.75rem', sm: '0.8rem' }
             }}
           >
           +5 BBLIP
@@ -770,7 +790,7 @@ const DealsComponent: React.FC = () => {
 
             
 
-            {(selectedCategory === 1 || selectedCategory === 2) && (
+            {(selectedCategory === 1 ) && (
               <Box
                 sx={{
                   backgroundColor: '#2f363a',
@@ -826,7 +846,7 @@ const DealsComponent: React.FC = () => {
            <Typography 
             variant="body2" 
             sx={{ 
-              color: '#89d9ff', fontWeight:'bold',             fontSize: { xs: '0.75rem', sm: '0.8rem' }
+              color: '#98d974',            fontSize: { xs: '0.75rem', sm: '0.8rem' }
             }}
           >
           +5 BBLIP
