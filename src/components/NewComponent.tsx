@@ -1050,7 +1050,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
     
       <Brand/>
      
-<Box textAlign={'center'} justifyContent={'center'} fontFamily={'monospace'} position="relative">
+<Box textAlign={'center'} justifyContent={'center'} fontFamily={'Montserrat'} position="relative">
   {/* Yuvarlak Gradient Arka Plan */}
   <Box
     top="80%"
@@ -1066,7 +1066,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
   />
 
   {/* Başlık */}
-  <Typography mt={-28}   className="text-gradient" fontSize={'1.9rem'} fontWeight={'bold'}>
+  <Typography mt={-28}   className="text-gradient" fontFamily={'Montserrat'} fontSize={'28px'} fontWeight={'bold'}>
     Smart Liquidity Pool
   </Typography>
 
