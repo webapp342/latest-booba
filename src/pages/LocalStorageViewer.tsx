@@ -51,6 +51,7 @@ interface Asset {
   amount: number;
   view:string;
   usdValue: number;
+  price:number;
   active: boolean;
 }
 
@@ -63,6 +64,7 @@ const initialData: Asset[] = [
     name: "BBLIP",
     amount: 0, // Placeholder, updated dynamically
     usdValue: 0,
+    price:0.07,
     active: true
   },
   {
@@ -73,6 +75,8 @@ const initialData: Asset[] = [
 
     amount: 10000,
     usdValue: 0,
+        price:5.23,
+
     active: true
   },
   {
@@ -80,6 +84,7 @@ const initialData: Asset[] = [
     symbol: "USDT",
     name: "USDT",
         view:"Booba Blip",
+    price:1.000,
 
     amount: 0,
     usdValue: 0,
@@ -90,6 +95,7 @@ const initialData: Asset[] = [
     symbol: "TICKET",
     name: "Ticket",
         view:"Booba Blip",
+    price:10.46,
 
     amount: 0,
     usdValue: 0,
@@ -100,6 +106,7 @@ const initialData: Asset[] = [
     symbol: "ETH",
     name: "Ethereum",
         view:"Booba Blip",
+    price:3320.33,
 
     amount: 0,
     usdValue: 0,
@@ -110,6 +117,7 @@ const initialData: Asset[] = [
     symbol: "BNB",
     name: "Binance Coin",
         view:"Booba Blip",
+    price:720.81,
 
     amount: 0,
     usdValue: 0,
@@ -120,6 +128,7 @@ const initialData: Asset[] = [
     symbol: "ADA",
     name: "Cardano",
         view:"Booba Blip",
+    price:2.25,
 
     amount: 0,
     usdValue: 0,
@@ -620,7 +629,7 @@ ml:1,
                 )}
               </Typography>
             <Typography variant="subtitle2" fontSize={"0.8rem"} color="gray">
-              $5.45
+              ${item.price}
             </Typography>
              
             </Box>
