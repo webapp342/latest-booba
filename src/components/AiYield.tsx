@@ -15,22 +15,22 @@ function Brand() {
                    <Box  alignItems={"center"}  sx={{backgroundColor: 'transparent' }}>
                     <Box
     top="50%"
-    left="50%"
-    width="200px"
+    left="40%"
+    width="250px"
     height="10vh"
-    borderRadius="50%"
+    borderRadius="40%"
     zIndex={-1} // Arka plana almak için
     sx={{
-      background: 'radial-gradient(circle, rgba(159,223,255,0.5) 0%, rgba(0,198,255,0) 80%)',
-      transform: 'translate(80%, 50%)',
+      background: 'radial-gradient(circle, rgba(159,223,255,0.5) 0%, rgba(0,198,255,0) 70%)',
+      transform: 'translate(60%, 90%)',
       filter: 'blur(40px)',
     }}
   />
           <Typography     sx={{
       
         textAlign: "center",
-     
-        fontFamily: "'Press Start 2P', sans-serif",
+        mt:-5,
+        fontFamily: "monospace",
         fontWeight: 700,
         fontSize: "1.2rem",
         letterSpacing: "1px",

@@ -1053,14 +1053,13 @@ const handleUnstake = async (amount: number): Promise<void> => {
 <Box textAlign={'center'} justifyContent={'center'} fontFamily={'monospace'} position="relative">
   {/* Yuvarlak Gradient Arka Plan */}
   <Box
-    top="50%"
+    top="80%"
     left="50%"
     width="200px"
     height="200px"
     borderRadius="50%"
     zIndex={-1} // Arka plana almak için
     sx={{
-      background: 'radial-gradient(circle, rgba(159,223,255,0.5) 0%, rgba(0,198,255,0) 80%)',
       transform: 'translate(-50%, -50%)',
       filter: 'blur(40px)',
     }}
