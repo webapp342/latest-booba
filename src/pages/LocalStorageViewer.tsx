@@ -593,7 +593,7 @@ ml:1,
             mb: 1,
             borderBottom: index < filteredData.length - 1 ? "" : "none",
             px: 1,
-            py:1,
+            py:1.5,
 
             backgroundColor: !item.active ? "grey.100" : "#2f363a",
             backgroundImage: !item.active
@@ -612,7 +612,7 @@ ml:1,
               sx={{ width: 40, height: 40, mr: 2 ,color:"black"}}
             />
             <Box>
-              <Typography variant="body2">
+              <Typography variant="body2" fontSize={'1.1rem' } fontWeight={'bold'}>
                 {item.symbol}
                 {!item.active && (
                   <span style={{ marginLeft: "10px", color: "gray" }}>
@@ -620,8 +620,8 @@ ml:1,
                   </span>
                 )}
               </Typography>
-               <Typography variant="subtitle2" color={"gray"}>
-              {formatDisplayAmount(item.amount, item.symbol)}  {item.name}
+            <Typography variant="subtitle2" fontSize={"0.8rem"} color="gray">
+              $5.45
             </Typography>
              
             </Box>
@@ -629,8 +629,11 @@ ml:1,
 
           {/* Sağ Kısım: Rakamlar */}
           <Box sx={{ textAlign: "right" }}>
+              <Typography variant="body2" fontSize={'1.1rem' } fontWeight={'bold'}>
+               {formatDisplayAmount(item.amount, item.symbol)}
+            </Typography>
            
-            <Typography variant="subtitle2" fontSize={"1rem"} color="white">
+            <Typography variant="subtitle2" fontSize={"0.8rem"} color="gray">
                 ${item.usdValue.toFixed(2)}
             </Typography>
           </Box>
