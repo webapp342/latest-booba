@@ -2,20 +2,18 @@ import * as React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import SportsEsportsTwoToneIcon from '@mui/icons-material/SportsEsportsTwoTone';
-import AccountBalanceWalletTwoToneIcon from '@mui/icons-material/AccountBalanceWalletTwoTone';
+import CasinoIcon from '@mui/icons-material/Casino';import WalletIcon from '@mui/icons-material/Wallet';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import AnalyticsTwoToneIcon from '@mui/icons-material/AnalyticsTwoTone';
-import AssistantTwoToneIcon from '@mui/icons-material/AssistantTwoTone';
-import InventoryTwoToneIcon from '@mui/icons-material/InventoryTwoTone';
-import { Paper } from '@mui/material';
+import AnalyticsIcon from '@mui/icons-material/Analytics';
+import PaymentsIcon from '@mui/icons-material/Payments';
+import ChecklistRtlIcon from '@mui/icons-material/ChecklistRtl';import { Paper } from '@mui/material';
 
 const navItems = [
-  { label: 'Games', icon: <SportsEsportsTwoToneIcon />, path: '/latest-booba/games' },
-  { label: 'Earn', icon: <AssistantTwoToneIcon />, path: '/latest-booba/stake' },
-  { label: 'Stats', icon: <AnalyticsTwoToneIcon />, path: '/latest-booba/' },
-  { label: 'Tasks', icon: <InventoryTwoToneIcon />, path: '/latest-booba/tasks' },
-  { label: 'Wallet', icon: <AccountBalanceWalletTwoToneIcon />, path: '/latest-booba/spin' },
+  { label: 'Play', icon: <CasinoIcon />, path: '/latest-booba/games' },
+  { label: 'Invest', icon: <PaymentsIcon />, path: '/latest-booba/stake' },
+  { label: 'Stats', icon: <AnalyticsIcon />, path: '/latest-booba/' },
+  { label: 'Tasks', icon: <ChecklistRtlIcon />, path: '/latest-booba/tasks' },
+  { label: 'Wallet', icon: <WalletIcon />, path: '/latest-booba/spin' },
 ];
 
 export default function SimpleBottomNavigation() {
@@ -40,11 +38,11 @@ export default function SimpleBottomNavigation() {
 
   const theme = createTheme({
     typography: {
-      fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
+      fontFamily:'Montserrat',
     },
     palette: {
       primary: {
-        main: '#00c6ff',
+        main: '#6ed3ff',
       },
     },
   });
@@ -57,15 +55,14 @@ export default function SimpleBottomNavigation() {
   return (
     <ThemeProvider theme={theme}>
       <Paper 
-        elevation={1}
         sx={{
           position: 'fixed',
           bottom: 0,
           left: 0,
           right: 0,
           zIndex: 1000,
-          borderTopLeftRadius: '55px',
-          borderTopRightRadius: '16px',
+          borderTopLeftRadius: 4,
+          borderTopRightRadius: 4,
         }}
       >
         <BottomNavigation
@@ -73,9 +70,8 @@ export default function SimpleBottomNavigation() {
           onChange={(_, newValue) => handleNavigationChange(newValue)}
           showLabels
           sx={{
-            height: '65px',
-            bgcolor: '#1e2625',
-            boxShadow:5,
+            height: '75px',
+            bgcolor: '#2f363a',
             transition: 'none',
             '& .MuiBottomNavigationAction-root': {
               minWidth: 'auto',
@@ -96,14 +92,14 @@ export default function SimpleBottomNavigation() {
               sx={{
                 '& .MuiSvgIcon-root': {
                   mt: 2,
-                  fontSize: '1.5rem',
+                  fontSize: '1.2rem',
                   color: value === index ? 'linear-gradient(45deg, #00c6ff, #0072ff)' : '#757575',
                   transition: 'none',
                 },
                 '& .MuiBottomNavigationAction-label': {
-                  fontSize: '0.8rem',
+                  fontSize: '0.6rem',
                   mb: 4,
-                  fontWeight: value === index ? 400 : 400,
+                  fontWeight: value === index ? 0 : 20,
                   color: value === index ? 'linear-gradient(45deg, #00c6ff, #0072ff)' : '#757575',
                   transition: 'none',
                 },
