@@ -99,7 +99,6 @@ export default function SimpleBottomNavigation() {
                 '& .MuiBottomNavigationAction-label': {
                   fontSize: '0.6rem',
                   mb: 4,
-                  fontWeight: value === index ? 0 : 20,
                   color: value === index ? 'linear-gradient(45deg, #00c6ff, #0072ff)' : '#757575',
                   transition: 'none',
                 },
