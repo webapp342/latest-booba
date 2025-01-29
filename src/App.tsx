@@ -8,7 +8,6 @@ import "slick-carousel/slick/slick.css"; // Basic styles for the slider
 import "slick-carousel/slick/slick-theme.css"; // Theme styles for the slider
 import { TonConnectUIProvider} from "@tonconnect/ui-react";
 import { ThemeProvider } from '@mui/material/styles';
-import ResponsiveAppBar from './components/HeaderTop'; // Import the ResponsiveAppBar
 
 import theme from './pages/theme'; // Yukarıda oluşturduğunuz tema
 
@@ -50,7 +49,6 @@ function App() {
             <div className={`main-content ${loading ? "hidden" : ""}`} style={{ paddingTop: '64px' }}>
         
 
-                <ResponsiveAppBar /> {/* Add the ResponsiveAppBar here */}
                                        
                 <Outlet />
                 

@@ -1,22 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { ThemeProvider, createTheme, Tooltip } from "@mui/material";
 import QRCode from 'qrcode';
-import { Box, Card, CardContent, Typography, Button, Avatar, TextField, InputAdornment, Drawer, Snackbar, SnackbarContent } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
+import { Box, Typography, Button, Avatar, Drawer, Snackbar, SnackbarContent } from "@mui/material";
 import SwapHorizontalCircleIcon from '@mui/icons-material/SwapHorizontalCircle';import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import OutboundIcon from '@mui/icons-material/Outbound';import TransactionHashes from "./TransactionHashes"; // Bileşeninizin yolu
 import { CheckCircleOutline } from '@mui/icons-material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';import { useNavigate } from 'react-router-dom';
 import TokenSwap from "./SwapComponent"; // TokenSwap bileşenini eklediğiniz yer
 import logo5 from '../assets/darkLogo.png';
-import banner from '../assets/26.gif'; // Import the banner image
-
+import SettingsIcon from '@mui/icons-material/Settings';
 import { doc, onSnapshot, getFirestore, getDoc } from "firebase/firestore";
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './firebaseConfig';
 import WebApp from "@twa-dev/sdk";
 import TwoFieldsComponent from "./TwoFieldsComponent";
-import Brand from "../components/brand";
+import Brand from "../components/AiYield";
+import UserAvatar from "./UserAvatar";
 
 
 const app = initializeApp(firebaseConfig);
@@ -32,7 +31,7 @@ const theme = createTheme({
     mode: 'dark',
     background: {
       default: '#2f363a',
-      paper: '#2f363a',
+      paper: 'transparent',
     },
     text: {
       primary: '#FFFFFF',
@@ -131,8 +130,8 @@ const initialData: Asset[] = [
 const AccountEquityCard: React.FC = () => {
 
 
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isSearching, setIsSearching] = useState(false); // Arama moduna girildi mi?
+  const [searchQuery] = useState("");
+  const [] = useState(false); // Arama moduna girildi mi?
   const [showTokenSwap, setShowTokenSwap] = useState(false);
   const [openDepositDrawer, setOpenDepositDrawer] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -289,14 +288,7 @@ useEffect(() => {
       item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handleSearchFocus = () => {
-    setIsSearching(true); // Arama kutusuna tıklanması ile arama moduna geç
-  };
 
-  const handleCancelSearch = () => {
-    setSearchQuery(""); // Arama kutusunu sıfırla
-    setIsSearching(false); // Arama modunu kapat
-  };
 
    // Handle deposit drawer toggle
    const handleDepositClick = () => {
@@ -349,6 +341,7 @@ useEffect(() => {
   generateQRCode();
 }, []);
 
+  const telegramUser = WebApp.initDataUnsafe.user;
 
   // Helper function to format display amount
   const formatDisplayAmount = (amount: number, symbol: string) => {
@@ -374,20 +367,28 @@ useEffect(() => {
   
        <Brand/>
 
-              <Box mt={"10vh"}>
+              <Box mt={"5vh"}>
 
    
   
-                
+                <Box px={2} display={'flex'} justifyContent={'space-between'}>
+                                  <SettingsIcon sx={{ fontSize: '1.5rem', color:"white",       p:0.5,          
+ }} />
+                 <UserAvatar 
+                  telegramUserId={telegramUser?.id?.toString() ?? ''}
+                  displayName={telegramUser?.first_name ?? 'User'}
+                />
+
+                </Box>
         {/* İlk Kart */}
-      <Box  sx={{ borderRadius: 3, mt: 1, mx: 1, p: 2, border:'1px solid #5d6367' }}>            {/* Total Account Equity */}
+      <Box  sx={{ borderRadius: 3,   px: 2 }}>            {/* Total Account Equity */}
             <Typography className="total-equity"
               variant="subtitle2"
               sx={{ color: "white" }}
               align="center"
               gutterBottom
             >
-              Total Account Equity
+              My Balance
             </Typography>
             <Typography  mt={-1} variant="subtitle1" align="center" gutterBottom>
               <span style={{ fontSize: "2.5rem" ,color:"grey"}}>$</span>
@@ -550,26 +551,10 @@ ml:1,
             </Box>
         </Box>
 
-           {/* New Box for the Banner */}
-    <Box
-      sx={{
-        mb: 1,
-        mt: 1, // Margin top for spacing
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 4,
-        overflow: 'hidden',
-        backgroundColor: 'transparent', // Optional: Set background color if needed
-      }}
-    >
-      <img src={banner} alt="Banner" style={{        borderRadius: 5,
- width: '95%' }} />
-    </Box>
+         
 
       {/* İkinci Kart - Asset List */}
-<Card sx={{ borderRadius: 3, mt: 1, m:1 , bgcolor:'#2f363a' }}>
-  <CardContent>
+<Box sx={{ borderRadius: 3, mt: 1, m:2 }}>
    
     {/* Başlık ve Arama Kutusu */}
     <Box
@@ -577,46 +562,15 @@ ml:1,
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        mb: 2,
+        mb: 1,
         
       }}
     >
       {/* Arama Kutusunun Görünümü */}
-      {!isSearching && (
-        <Typography variant="subtitle1">Assets List</Typography>
-      )}
-      <TextField
-        size="small"
-        variant="outlined"
-        placeholder="Search"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        onFocus={handleSearchFocus} // Arama kutusuna tıklanınca genişler
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchIcon sx={{ color: "grey.600" }} />
-            </InputAdornment>
-          ),
-        }}
-        sx={{
-          width: isSearching ? "100%" : 150, // Arama kutusu genişlemesi
-          transition: "width 0.3s ease",
-        }}
-      />
-      {isSearching && (
-        <Button
-          onClick={handleCancelSearch}
-          sx={{
-            textTransform: "none",
-            fontSize: "0.875rem",
-            color: "primary.main",
-            marginLeft: 2,
-          }}
-        >
-          Cancel
-        </Button>
-      )}
+        <Typography variant="subtitle1" fontSize={'1.3em'}>My Assets</Typography>
+                <Typography variant="subtitle1" fontSize={'1em'} color={'gray'}>see all</Typography>
+
+     
     </Box>
 
     {/* Dinamik Item Listesi */}
@@ -638,12 +592,14 @@ ml:1,
             alignItems: "center",
             mb: 1,
             borderBottom: index < filteredData.length - 1 ? "" : "none",
-            p: 1,
-            backgroundColor: !item.active ? "grey.100" : "transparent",
+            px: 1,
+            py:1,
+
+            backgroundColor: !item.active ? "grey.100" : "#2f363a",
             backgroundImage: !item.active
               ? "linear-gradient(45deg, #f3f3f3 25%, #eaeaea 25%, #eaeaea 50%, #f3f3f3 50%, #f3f3f3 75%, #eaeaea 75%, #eaeaea)"
               : "none",
-            borderRadius: 1,
+            borderRadius: 2,
             pointerEvents: !item.active ? "none" : "auto",
             opacity: item.active ? 1 : 0.6,
           }}
@@ -683,8 +639,7 @@ ml:1,
     ))}
 
   
-  </CardContent>
-</Card>
+</Box>
 </Box>
 
 

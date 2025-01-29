@@ -94,8 +94,7 @@ const categories = [
 
   { id: 3, name: 'Frens', tasks: [9,4,5,6,7,8] },
   { id: 4, name: 'Academy', tasks: [11] },
-  { id: 5, name: 'On Chain', tasks: [11] },
-  { id: 6, name: 'Farming', tasks: [11] },
+
 
 ];
 

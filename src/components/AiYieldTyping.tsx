@@ -3,7 +3,7 @@ import { Typography } from "@mui/material";
 import "./text.css";
 
 
-const words = ["AiYield"];
+const words = ["Wallet"];
 
 const TypingText = () => {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
