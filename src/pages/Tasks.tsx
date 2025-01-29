@@ -30,8 +30,8 @@ import task1Logo from '../assets/task1logo.png';
 import task2Logo from '../assets/instagram.png';
 import task4Logo from '../assets/tik-tok.png';
 import task5Logo from '../assets/telegram.png';
-import task7Logo from '../assets/bblip.png';
-import task8Logo from '../assets/bblip.png';
+import task7Logo from '../assets/darkLogo.png';
+import task8Logo from '../assets/darkLogo.png';
 
 import watchad from '../assets/ad.png';
 
@@ -56,16 +56,16 @@ const theme = createTheme({
 // Tasks metadata
 const tasksMetadata = [
 
-  { title: 'Follow Booba on X', description: '5 BBLIP', link: 'twitter://user?screen_name=BoobaBlip', reward: 5000 },
-  { title: 'Follow Booba on Instagram', description: '5 BBLIP', link: 'https://www.instagram.com/boobablip', reward: 5000 },
-  { title: 'Follow Booba on Tiktok', description: '5 BBLIP', link: 'https://www.tiktok.com/@boobablip?_t=8scYCPf4zaQ&_r=1', reward: 5000 },
-  { title: 'Join Booba Community', description: '5 BBLIP', link: 'https://t.me/BoobaBlipCommunity', reward: 5000 },
-  { title: 'Invite 1 fren', description: '5 BBLIP', link: '', reward: 5000 },
-  { title: 'Invite 10 fren', description: '25 BBLIP', link: '', reward: 25000 },
-  { title: 'Invite 25 fren', description: '2.5 TON', link: '', reward: 2500 },
-  { title: 'Invite 50 fren', description: '5 TON', link: '', reward: 5000 },
-  { title: 'Invite 100 fren', description: '10 TON', link: '', reward: 10000 },
-    { title: 'Watch a Video', description: '10 BBLIP', link: 'https://example.com/watch-video', reward: 1000 },
+  { title: 'Follow Booba on X',label:'+5 BBLIP', description: '5 BBLIP', link: 'twitter://user?screen_name=BoobaBlip', reward: 5000 },
+  { title: 'Follow Booba on Instagram',label:'+5 BBLIP', description: '5 BBLIP', link: 'https://www.instagram.com/boobablip', reward: 5000 },
+  { title: 'Follow Booba on Tiktok',label:'+5 BBLIP', description: '5 BBLIP', link: 'https://www.tiktok.com/@boobablip?_t=8scYCPf4zaQ&_r=1', reward: 5000 },
+  { title: 'Join Booba Community',label:'+5 BBLIP', description: '5 BBLIP', link: 'https://t.me/BoobaBlipCommunity', reward: 5000 },
+  { title: 'Invite 1 fren',label:'+5 BBLIP', description: '5 BBLIP', link: '', reward: 5000 },
+  { title: 'Invite 10 fren',label:'+25 BBLIP', description: '25 BBLIP', link: '', reward: 25000 },
+  { title: 'Invite 25 fren',label:'+2.5 TON', description: '2.5 TON', link: '', reward: 2500 },
+  { title: 'Invite 50 fren',label:'+5 TON', description: '5 TON', link: '', reward: 5000 },
+  { title: 'Invite 100 fren',label:'+10 TON', description: '10 TON', link: '', reward: 10000 },
+    { title: 'Watch a Video',label:'+10 BBLIP', description: '10 BBLIP', link: 'https://example.com/watch-video', reward: 1000 },
 
 
 
@@ -85,13 +85,27 @@ const taskLogos = [
   comingSoonLogo,
 ];
 
+const currencyLogo = [
+  task8Logo,
+  task8Logo,
+  task8Logo,
+  task8Logo,
+  task8Logo,
+  task8Logo,
+  task9Logo,
+  task10Logo,
+  task11Logo,
+  comingSoonLogo,
+];
+
+
 const categories = [
 
   { id: 1, name: 'New', tasks: [9,0, 1,2,3] },
 
   { id: 2, name: 'Socials', tasks: [9,0,1,2, 3] },
 
-  { id: 3, name: 'Frens', tasks: [9,4,5,6,7,8] },
+  { id: 3, name: 'Frens', tasks: [4,5,6,7,8] },
 
 
 ];
@@ -222,14 +236,22 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
               {invitedCount}/{requiredCount}
             </Typography>
           )}
-          <Typography 
+
+            <Box mt={0.5} display={'flex'} alignItems={'center'} >
+          
+      <Box alignItems={'center'} display={'flex'} >
+          <img src={currencyLogo[index]} alt="" width={18} style={{borderRadius:'50%', marginRight:3}}  />
+           <Typography 
             variant="body2" 
             sx={{ 
-              color: '#FFFFFF',              fontSize: { xs: '0.75rem', sm: '0.8rem' }
+              color: '#89d9ff',              fontSize: { xs: '0.75rem', sm: '0.8rem' }
             }}
           >
-            {task.description}
+          {task.label}
           </Typography>
+      </Box>
+       </Box>
+         
         </Box>
       </Box>
     </Box>
@@ -660,17 +682,20 @@ const DealsComponent: React.FC = () => {
         >
       Watch Ad
         </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-         
-          <Typography 
+          <Box mt={0.5} display={'flex'} alignItems={'center'} >
+          
+      <Box alignItems={'center'} display={'flex'} >
+          <img src={task8Logo} alt="" width={18} style={{borderRadius:'50%', marginRight:3}}  />
+           <Typography 
             variant="body2" 
             sx={{ 
-              color: '#FFFFFF',              fontSize: { xs: '0.75rem', sm: '0.8rem' }
+              color: '#89d9ff',              fontSize: { xs: '0.75rem', sm: '0.8rem' }
             }}
           >
-         +5 BBLIP
+          +5 BBLIP
           </Typography>
-        </Box>
+      </Box>
+       </Box>
       </Box>
     </Box>
                     <ShowAdButton /> {/* ShowAdButton bileşenini buraya ekleyin */}
@@ -797,14 +822,17 @@ const DealsComponent: React.FC = () => {
                     >
                       Connect Wallet
                     </Typography>
-                    <Typography 
-                      variant="body2" 
-                      sx={{ 
-                        color: '#FFFFFF',                        fontSize: { xs: '0.75rem', sm: '0.8rem' }
-                      }}
-                    >
-                      +5 BBLIP
-                    </Typography>
+                 <Box alignItems={'center'} display={'flex'} >
+          <img src={task8Logo} alt="" width={18} style={{borderRadius:'50%', marginRight:3}}  />
+           <Typography 
+            variant="body2" 
+            sx={{ 
+              color: '#89d9ff', fontWeight:'bold',             fontSize: { xs: '0.75rem', sm: '0.8rem' }
+            }}
+          >
+          +5 BBLIP
+          </Typography>
+      </Box>
                   </Box>
                 </Box>
                 <Header />

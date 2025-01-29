@@ -102,7 +102,7 @@ export function ShowAdButton(): ReactElement {
       px: { xs: 2, sm: 3 },
       py: { xs: 0.5, sm: 0.75 },
      
-    }}>Watch Now</Button>
+    }}>Watch</Button>
       )}
     </>
   );
