@@ -612,7 +612,7 @@ ml:1,
               sx={{ width: 40, height: 40, mr: 2 ,color:"black"}}
             />
             <Box>
-              <Typography variant="body2" fontSize={'1.1rem' } fontWeight={'bold'}>
+              <Typography variant="body2" fontSize={'1rem' } >
                 {item.symbol}
                 {!item.active && (
                   <span style={{ marginLeft: "10px", color: "gray" }}>
@@ -629,7 +629,7 @@ ml:1,
 
           {/* Sağ Kısım: Rakamlar */}
           <Box sx={{ textAlign: "right" }}>
-              <Typography variant="body2" fontSize={'1.1rem' } fontWeight={'bold'}>
+              <Typography variant="body2" fontSize={'1rem' } >
                {formatDisplayAmount(item.amount, item.symbol)}
             </Typography>
            

@@ -43,7 +43,7 @@ import task11Logo from '../assets/ton_logo_dark_background.svg';
 import comingSoonLogo from '../assets/task1logo.png';
 import UserDataTable from './UserDataTable';
 import { ShowAdButton } from './ShowAdButton';
-import Brand from '../components/brand';
+import Brand from '../components/TasksHeader';
 
 // Firebase App initialization
 const app = initializeApp(firebaseConfig);
@@ -93,7 +93,6 @@ const categories = [
   { id: 2, name: 'Socials', tasks: [9,0,1,2, 3] },
 
   { id: 3, name: 'Frens', tasks: [9,4,5,6,7,8] },
-  { id: 4, name: 'Academy', tasks: [11] },
 
 
 ];
@@ -169,9 +168,9 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
     sx={{
       backgroundColor: '#2f363a',
       boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
-      borderRadius: '16px',
+      borderRadius: 2,
        p: { xs: 1, sm: 2.5 },
-                  mb: 2,
+                  mb: 1,
                   width: '95%',
       display: 'flex',
       justifyContent: 'space-between',
@@ -519,51 +518,14 @@ const DealsComponent: React.FC = () => {
           <UserDataTable />
         </Box>
 
-        <Box 
-          component="img" 
-          src={Tasks} 
-          alt="Tasks" 
-          sx={{ 
-            mt: "12vh", 
-            width: { xs: '70px', sm: '80px' },
-            filter: 'drop-shadow(0 4px 12px rgba(0, 198, 255, 0.2))'
-          }} 
-        />
-
-        <Typography 
-          variant="h4" 
-          sx={{ 
-            mt: 3,
-            fontWeight: 800,
-            color: '#FFFFFF',
-            fontSize: { xs: '1.75rem', sm: '2rem' },
-            textAlign: 'center',
-            background: 'linear-gradient(45deg, #00c6ff, #0072ff)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent'
-          }}
-        >
-          Tasks
-        </Typography>
-
-        <Typography 
-          variant="body1" 
-          sx={{ 
-            mt: 1,
-            color: '#FFFFFF',            textAlign: 'center',
-            maxWidth: '600px',
-            fontSize: { xs: '0.9rem', sm: '1rem' }
-          }}
-        >
-          Get rewards for completing tasks.
-        </Typography>
-
+       
         <Box
           sx={{
             display: 'flex',
             overflowX: 'auto',
             mt: 4,
-            p: 2,
+         
+            py: 2,
                 
 
             width: '100%',
@@ -619,9 +581,9 @@ const DealsComponent: React.FC = () => {
               sx={{
       backgroundColor: '#2f363a',
       boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
-      borderRadius: '16px',
+      borderRadius: 2,
        p: { xs: 1, sm: 2.5 },
-                  mb: 2,
+                  mb: 1,
                   width: '95%',
       display: 'flex',
       justifyContent: 'space-between',
@@ -654,7 +616,7 @@ const DealsComponent: React.FC = () => {
             mb: 0.5
           }}
         >
-       Hourly Task
+      Watch Ad
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
          
@@ -746,7 +708,7 @@ const DealsComponent: React.FC = () => {
                 sx={{
                   backgroundColor: '#2f363a',
                   boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
-                  borderRadius: '16px',
+                  borderRadius: 2,
                   p: { xs: 1, sm: 2.5 },
                   mb: 2,
                   width: '95%',
@@ -761,23 +723,22 @@ const DealsComponent: React.FC = () => {
                   }
                 }}
               >
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <Box
                     sx={{
                       width: { xs: '32px', sm: '36px' },
                       height: { xs: '32px', sm: '36px' },
-                      borderRadius: '10px',
                       backgroundColor: 'rgba(0, 198, 255, 0.05)',
                       border: '1px solid rgba(0, 198, 255, 0.1)',
                       display: 'flex',
-                                padding: '6px',
+                                padding: '4px',
+          borderRadius: '50%',
 
                       alignItems: 'center',
                       justifyContent: 'center'
                     }}
                   >
                     <WalletIcon sx={{ 
-                      fontSize: { xs: '1.89rem', sm: '1.89rem' },
                       color: '#00c6ff'
                     }}/>
                   </Box>
