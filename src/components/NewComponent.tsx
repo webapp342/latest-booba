@@ -242,7 +242,7 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
               
                           <Box   display={'flex'} alignItems={'center'}>
 
-              <Typography textAlign={'left'} variant="h4" component="div" sx={{   color: 'gray', fontSize: '1rem' }}>
+              <Typography textAlign={'left'}  sx={{  mt:-1, color: 'gray', fontSize: '1.2rem' }}>
             Amount
             </Typography>
             
@@ -1041,6 +1041,9 @@ const handleUnstake = async (amount: number): Promise<void> => {
   };
 
 
+
+    const [open3, setOpen3] = useState(false);
+
   return (
     <Box mt={"17%"} style={{ marginBottom: '76px', backgroundColor: '#1a2126', padding: 8 ,}}>
       {renderStakingData()}
@@ -1202,9 +1205,52 @@ const handleUnstake = async (amount: number): Promise<void> => {
                     </Typography>
 
                      <Box display={'flex'} justifyContent={'space-between'}>
-               <Typography   sx={{ color: 'gray' , fontSize: ' 0.8rem'}}>
-                        Est Position Size
-                      </Typography>
+                 <Typography
+        sx={{
+          color: "gray",
+          fontSize: "0.8rem",
+          cursor: "pointer",
+textDecoration: "underline dotted", // NOKTALI ALT ÇİZGİ
+          textUnderlineOffset: "3px", // Çizgiyi biraz aşağı kaydır
+                  }}
+        onClick={() => setOpen3(true)} // Tıklandığında drawer aç
+      >
+        Est. Position Size:
+      </Typography>
+
+      {/* Alttan Açılan Drawer */}
+      <Drawer
+        anchor="bottom" // Alttan açılmasını sağlar
+        open={open3}
+        onClose={() => setOpen3(false)} // Drawer dışına tıklayınca kapanır
+        PaperProps={{
+          sx: {
+            borderTopLeftRadius: "16px", // Sol üst köşe yuvarlak
+            borderTopRightRadius: "16px", // Sağ üst köşe yuvarlak
+            overflow: "hidden", // Köşelerin düzgün görünmesi için
+          },
+        }}
+      >
+        <Box
+          sx={{
+            p: 3,
+            height: "200px", // Yüksekliği ihtiyaca göre ayarla
+            display: "flex",
+
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Typography fontSize="1.2rem" fontWeight="bold">
+            Minimum Holding Period
+          </Typography>
+          <Typography fontSize="0.9rem" mt={1} textAlign="center">
+            We recommend holding your assets for at least 30 days to maximize
+            returns and minimize risks.
+          </Typography>
+        </Box>
+      </Drawer>
 
                <Typography   sx={{ color: 'white' , fontSize: ' 0.8rem'}}>
                                                             {parseFloat(String(stakingData[selectedOptionIndex].amount * stakingData[selectedOptionIndex].leverage || '0')).toFixed(2)} lbTON
@@ -1213,9 +1259,52 @@ const handleUnstake = async (amount: number): Promise<void> => {
                     </Box>
 
                     <Box display={'flex'} justifyContent={'space-between'}>
-               <Typography   sx={{ color: 'gray' , fontSize: ' 0.8rem'}}>
-                        Recommended min holding period
-                      </Typography>
+           <Typography
+        sx={{
+          color: "gray",
+          fontSize: "0.8rem",
+          cursor: "pointer",
+textDecoration: "underline dotted", // NOKTALI ALT ÇİZGİ
+          textUnderlineOffset: "3px", // Çizgiyi biraz aşağı kaydır
+                  }}
+        onClick={() => setOpen3(true)} // Tıklandığında drawer aç
+      >
+        Recommended min holding period:
+      </Typography>
+
+      {/* Alttan Açılan Drawer */}
+      <Drawer
+        anchor="bottom" // Alttan açılmasını sağlar
+        open={open3}
+        onClose={() => setOpen3(false)} // Drawer dışına tıklayınca kapanır
+        PaperProps={{
+          sx: {
+            borderTopLeftRadius: "16px", // Sol üst köşe yuvarlak
+            borderTopRightRadius: "16px", // Sağ üst köşe yuvarlak
+            overflow: "hidden", // Köşelerin düzgün görünmesi için
+          },
+        }}
+      >
+        <Box
+          sx={{
+            p: 3,
+            height: "200px", // Yüksekliği ihtiyaca göre ayarla
+            display: "flex",
+
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Typography fontSize="1.2rem" fontWeight="bold">
+            Minimum Holding Period
+          </Typography>
+          <Typography fontSize="0.9rem" mt={1} textAlign="center">
+            We recommend holding your assets for at least 30 days to maximize
+            returns and minimize risks.
+          </Typography>
+        </Box>
+      </Drawer>
 
                <Typography   sx={{ color: 'white' , fontSize: ' 0.8rem'}}>
                         30 Days
@@ -1482,7 +1571,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
                                             <Box   display={'flex'} alignItems={'center'}>
                                               
                                               <Box mt={2.5} mb={-2} >
-                                                <Typography sx={{color:'gray', fontWeight:'lighter', textAlign:'left', fontSize:'0.8rem' }}>
+                                                <Typography sx={{color:'gray', fontWeight:'lighter', textAlign:'left', fontSize:'0.9rem' }}>
  Estimated earnings in <span style={{color:'white', fontWeight:'bold'}}> {stakingData[selectedOptionIndex].duration} Days
   </span>  :       
                                                 </Typography>
@@ -1861,7 +1950,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
                 backgroundColor: '#1E1E1E' 
               }}>
                 <Typography variant="body1" sx={{ fontWeight: 'bold', color: 'gray' }}>
-                  Staking Power:
+                  Est. Position Size:
                 </Typography>
                 <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
 
