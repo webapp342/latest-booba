@@ -12,7 +12,7 @@ function Brand() {
  
   return (
             <AppBar position="fixed" sx={{minHeight:"10vh", backgroundColor: '#1a2126',border:"none",boxShadow:'none' }}>
-                   <Box  alignItems={"center"}  sx={{backgroundColor: 'transparent' }}>
+                   <Box  alignItems={"center"}  sx={{backgroundColor: '#1a2126' }}>
                     <Box
     top="50%"
     left="40%"
@@ -29,10 +29,10 @@ function Brand() {
           <Typography     sx={{
       
         textAlign: "center",
-        mt:-5,
+        mt: "-3vh",
         fontFamily: "monospace",
         fontWeight: 700,
-        fontSize: "1.2rem",
+        fontSize: "1.4rem",
         letterSpacing: "1px",
       }}>
             Wallet
