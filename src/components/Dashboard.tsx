@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { Box, Grid, Typography, ToggleButtonGroup, ToggleButton } from '@mui/material';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 import ShowChartIcon from '@mui/icons-material/ShowChart';
 import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
 import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
@@ -31,17 +29,17 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
     <Box
       sx={{
         borderRadius: 1.5,
-        p: 1.5,
+        p: 1,
         backgroundColor: '#2f363a',
         border: '1px solid rgba(255, 255, 255, 0.1)',
         display: 'flex',
         alignItems: 'center',
-        gap: 1.5,
+        gap: 1,
       }}
     >
       <Box
         sx={{
-          p: 1,
+          p: 0.7,
           borderRadius: 1,
           backgroundColor: 'rgba(54, 162, 235, 0.1)',
           display: 'flex',
@@ -55,53 +53,42 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
       </Box>
 
       <Box sx={{ flex: 1 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 0.5 }}>
+        <Typography
+          sx={{
+            color: '#6B7280',
+            fontSize: '0.75rem',
+            fontWeight: 500,
+      
+          }}
+        >
+          {title}
+        </Typography>
+        
+        <Box sx={{ 
+          display: 'flex', 
+          alignItems: 'baseline',
+          gap: 1
+        }}>
           <Typography
             sx={{
-              color: '#6B7280',
+              color: '#ffffff',
+              fontWeight: 600,
+              fontSize: '1rem',
+            }}
+          >
+            {value}
+          </Typography>
+          
+          <Typography
+            sx={{
+              color: change >= 0 ? '#34D399' : '#F87171',
               fontSize: '0.75rem',
               fontWeight: 500,
             }}
           >
-            {title}
+            {change >= 0 ? '+' : ''}{change.toFixed(2)}%
           </Typography>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 0.3,
-              backgroundColor: change >= 0 ? 'rgba(52, 211, 153, 0.1)' : 'rgba(248, 113, 113, 0.1)',
-              borderRadius: 0.7,
-              px: 0.8,
-              py: 0.2,
-            }}
-          >
-            {change >= 0 ? (
-              <TrendingUpIcon sx={{ fontSize: '0.7rem', color: '#34D399' }} />
-            ) : (
-              <TrendingDownIcon sx={{ fontSize: '0.7rem', color: '#F87171' }} />
-            )}
-            <Typography
-              sx={{
-                color: change >= 0 ? '#34D399' : '#F87171',
-                fontSize: '0.7rem',
-                fontWeight: 600,
-              }}
-            >
-              {Math.abs(change).toFixed(2)}%
-            </Typography>
-          </Box>
         </Box>
-        
-        <Typography
-          sx={{
-            color: '#ffffff',
-            fontWeight: 600,
-            fontSize: '1rem',
-          }}
-        >
-          {value}
-        </Typography>
       </Box>
     </Box>
   );
@@ -196,15 +183,15 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
             title="Interest"
             value={data.openInterest.value}
             change={data.openInterest.change}
-            icon={<TimelineIcon />}
+            icon={<MonetizationOnOutlinedIcon />}
           />
         </Grid>
         <Grid item xs={6}>
           <StatCard
-            title="Earning"
+            title="24H Earnings"
             value={data.totalEarning.value}
             change={data.totalEarning.change}
-            icon={<MonetizationOnOutlinedIcon />}
+            icon={<TimelineIcon />}
           />
         </Grid>
       </Grid>

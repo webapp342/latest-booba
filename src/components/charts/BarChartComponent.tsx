@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {  } from 'react';
 import { Box, useTheme, useMediaQuery } from '@mui/material';
 import { BarChart, Bar, XAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
@@ -75,7 +75,7 @@ const BarChartComponent: React.FC<BarChartComponentProps> = ({ data, title, valu
             radius={[4, 4, 0, 0]}
             maxBarSize={timeRange === 'w' ? 50 : Math.max(40 / data.data.length, 5)}
           >
-            {data.data.map((entry, index) => (
+            {data.data.map((_entry, index) => (
               <Cell
                 key={`cell-${index}`}
                 fill={index === data.activeDotIndex ? '#36A2EB' : '#64B5F6'}

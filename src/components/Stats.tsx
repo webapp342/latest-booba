@@ -140,16 +140,16 @@ const Stats: React.FC<StatsProps> = ({
       change: 2.53,
     },
     volume: {
-      value: '$ 51.16B',
-      change: -18.90,
+      value: '51.16B',
+      change: 11.90,
     },
     openInterest: {
-      value: '$ 1.76M',
-      change: -41.89,
+      value: '1.76M',
+      change: 0.1,
     },
     totalEarning: {
-      value: '$ 18.82M',
-      change: 0.14,
+      value: '324.7K',
+      change: 6.4,
     },
     users: {
       value: '162K',
