@@ -97,11 +97,11 @@ path:"/latest-booba/stake",        element: <NewComponent />,
         path: "/latest-booba/",
         element: (
           <Stats
-            totalLockedTon={55320000}  // Sabit değer olarak örnek
+            totalLockedTon={55320000} // Sabit değer olarak örnek
             totalEarningsDistributed={5532000}
             totalPools={3}
-            performanceData={[11193, 40083, 90056, 100622, 124722, 132191,177181,]}  // Sabit performans verisi
-          />
+            performanceData={[11193, 40083, 90056, 100622, 124722, 132191, 177181,]} // Sabit performans verisi
+              />
         ),
       },
     ],

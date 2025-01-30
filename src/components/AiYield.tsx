@@ -11,7 +11,7 @@ function Brand() {
 
  
   return (
-            <AppBar position="fixed" sx={{minHeight:"10vh", backgroundColor: '#1a2126',border:"none",boxShadow:'none' }}>
+            <AppBar  sx={{minHeight:"10vh", backgroundColor: '#1a2126',border:"none",boxShadow:'none' }}>
                    <Box  alignItems={"center"}  sx={{backgroundColor: '#1a2126' }}>
                     <Box
     top="50%"
@@ -19,14 +19,14 @@ function Brand() {
     width="250px"
     height="10vh"
     borderRadius="40%"
-    zIndex={-1} // Arka plana almak için
     sx={{
       background: 'radial-gradient(circle, rgba(159,223,255,0.5) 0%, rgba(0,198,255,0) 70%)',
       transform: 'translate(60%, 90%)',
       filter: 'blur(40px)',
     }}
   />
-          <Typography     sx={{
+          <Typography           variant="h1"
+    sx={{
       
         textAlign: "center",
         mt: "-3vh",

@@ -74,7 +74,6 @@ export default function SimpleBottomNavigation() {
             bgcolor: '#2f363a',
             transition: 'none',
             '& .MuiBottomNavigationAction-root': {
-              minWidth: 'auto',
               padding: '0',
               transition: 'none',
               '&.Mui-selected': {
@@ -101,6 +100,7 @@ export default function SimpleBottomNavigation() {
                   mb: 4,
                   color: value === index ? 'linear-gradient(45deg, #00c6ff, #0072ff)' : '#757575',
                   transition: 'none',
+                  textTransform:'none',
                 },
               }}
             />

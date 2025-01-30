@@ -11,7 +11,7 @@ function Brand() {
 
  
   return (
-            <AppBar position="fixed" sx={{minHeight:"10vh", backgroundColor: '#1a2126',border:"none",boxShadow:'none' }}>
+            <AppBar  sx={{minHeight:"10vh", backgroundColor: '#1a2126',border:"none",boxShadow:'none' }}>
                    <Box  alignItems={"center"}  sx={{backgroundColor: '#1a2126' }}>
           <Typography     sx={{
         mt: "7vh",
