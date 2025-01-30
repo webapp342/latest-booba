@@ -1,6 +1,7 @@
 import React from 'react';
-import { Box, useTheme, useMediaQuery } from '@mui/material';
+import { Box, useTheme, useMediaQuery, Typography } from '@mui/material';
 import { AreaChart, Area, XAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import tonLogo from '../../assets/kucukTON.png';
 
 interface ChartData {
   name: string;
@@ -22,21 +23,72 @@ const AreaChartComponent: React.FC<AreaChartComponentProps> = ({ data, title, va
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
+  // Format values
+  const formatValue = (value: number) => {
+    if (value >= 1000000000) {
+      return `${(value / 1000000000).toFixed(2)}B`;
+    } else if (value >= 1000000) {
+      return `${(value / 1000000).toFixed(2)}M`;
+    } else if (value >= 1000) {
+      return `${(value / 1000).toFixed(1)}K`;
+    }
+    return value.toString();
+  };
+
+  // Get current day's value
+  const currentDayValue = data.data[data.activeDotIndex]?.value || 0;
+  const formattedValue = formatValue(currentDayValue);
+
   return (
     <Box 
-   sx={{ 
+      sx={{ 
         width: '100%', 
         height: isMobile ? 300 : 400,
-
         backgroundColor: '#2f363a',
         borderRadius: 2,
         position: 'relative',
       }}
     >
+      {/* Overlay Text */}
+      <Box
+        sx={{
+          position: 'absolute',
+          top: 16,
+          left: 16,
+          zIndex: 1,
+          pointerEvents: 'none',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 1,
+        }}
+      >
+        <Box
+          component="img"
+          src={tonLogo}
+          alt="TON"
+          sx={{
+            width: 20,
+            height: 20,
+            objectFit: 'contain',
+          }}
+        />
+        <Typography
+          sx={{
+            color: '#ffffff',
+            fontSize: '1.1rem',
+            fontWeight: 600,
+            opacity: 0.9,
+            textShadow: '0px 1px 2px rgba(0,0,0,0.2)',
+          }}
+        >
+          {formattedValue} {valueLabel}
+        </Typography>
+      </Box>
+
       <ResponsiveContainer>
         <AreaChart
           data={data.data}
-        margin={{
+          margin={{
             top: 20,
             right:8,
             left: 8,
@@ -70,7 +122,7 @@ const AreaChartComponent: React.FC<AreaChartComponentProps> = ({ data, title, va
             }}
             labelStyle={{ color: '#ffffff' }}
             formatter={(value: number) => [
-              `${value.toLocaleString('en-US', { maximumFractionDigits: 0 })} ${valueLabel}`,
+              `${formatValue(value)} ${valueLabel}`,
               title
             ]}
           />
