@@ -561,7 +561,7 @@ ml:1,
          
 
       {/* İkinci Kart - Asset List */}
-<Box sx={{ borderRadius: 3, mt: 1, m:1 }}>
+<Box sx={{ borderRadius: 3, mt: 1, mx:1 }}>
    
     {/* Başlık ve Arama Kutusu */}
     <Box
@@ -574,8 +574,8 @@ ml:1,
       }}
     >
       {/* Arama Kutusunun Görünümü */}
-        <Typography variant="subtitle1" fontSize={'1.3em'}>My Assets</Typography>
-                <Typography variant="subtitle1" fontSize={'1em'} color={'gray'}>see all</Typography>
+        <Typography variant="subtitle1" mx={1} fontSize={'1.3em'}>My Assets</Typography>
+                <Typography mx={1} variant="subtitle1" fontSize={'1em'} color={'gray'}>see all</Typography>
 
      
     </Box>
