@@ -18,102 +18,96 @@ import MatchesList from "./pages/MatchesList.tsx";
 import AdminPanel from "./pages/AdminPanel.tsx";
 import NewComponent from "./components/NewComponent.tsx";
 import Stats from "./components/Stats.tsx";
+import Statistics from "./components/Statistics.tsx";
+import Layout from "./layouts/StatsLayout.tsx";
 
-
-
-
-    
 if (WebApp.isVersionAtLeast('8.0') && 
     WebApp.platform !== 'tdesktop' && 
     WebApp.platform !== 'weba') {
     WebApp.expand();
     WebApp.requestFullscreen();
-        WebApp.enableClosingConfirmation();
+    WebApp.enableClosingConfirmation();
 } else {
     console.warn('Fullscreen mode is not supported on this platform. Using expand() instead.');
     WebApp.expand();
 }
 
-
-
-
-
 const router = createBrowserRouter([
   {
-    path: "/latest-booba/",
+    path: "/latest-booba",
     element: <App />,
     children: [
-  
-     
-   
       {
-        path: "/latest-booba/swap",
-        element:     <TokenSwap />,
-      },
-         {
-        path: "/latest-booba/spin",
-        element:     <LocalStorageViewer />,
-      },
-     
-      {
-path:"/latest-booba/stake",        element: <NewComponent />,
-      },
-      {
-        path: "/latest-booba/test",
-        element: <TestComponent />,
-      },
-      {
-        path: "/latest-booba/tasks",
-        element:          <DealsComponent />
-        ,
-      },
-      {
-        path: "/latest-booba/games",
-        element: <ImageSlider />,
-      },
-      {
-        path: "/latest-booba/matches",
-        element: <MatchesList />,
-      },
-   {
-        path: "/latest-booba/admin",
-        element: <AdminPanel />,
-      },
-  
-
-      {
-        path: "/latest-booba/slot",
-                element: <SlotMachine />,
-
-      },
-      
-      {
-        path: "/latest-booba/top",
-                element: <TopComponent />,
-
-      },
-      
-       {
-        path: "/latest-booba/",
-        element: (
+        path: "",
+        element: <Layout>
           <Stats
-            totalLockedTon={55320000} // Sabit değer olarak örnek
+            totalLockedTon={55320000}
             totalEarningsDistributed={5532000}
             totalPools={3}
-            performanceData={[11193, 40083, 90056, 100622, 124722, 132191, 177181,]} // Sabit performans verisi
-              />
-        ),
+            performanceData={[11193, 40083, 90056, 100622, 124722, 132191, 177181,]}
+          />
+        </Layout>
       },
-    ],
-  },
+      {
+        path: "stats",
+        element: <Layout />,
+        children: [
+          {
+            path: "",
+            element: <Stats totalLockedTon={0} totalEarningsDistributed={0} totalPools={0} performanceData={[]} />
+          },
+          {
+            path: "statistics",
+            element: <Statistics />
+          }
+        ]
+      },
+      {
+        path: "swap",
+        element: <TokenSwap />
+      },
+      {
+        path: "spin",
+        element: <LocalStorageViewer />
+      },
+      {
+        path: "stake",
+        element: <NewComponent />
+      },
+      {
+        path: "test",
+        element: <TestComponent />
+      },
+      {
+        path: "tasks",
+        element: <DealsComponent />
+      },
+      {
+        path: "games",
+        element: <ImageSlider />
+      },
+      {
+        path: "matches",
+        element: <MatchesList />
+      },
+      {
+        path: "admin",
+        element: <AdminPanel />
+      },
+      {
+        path: "slot",
+        element: <SlotMachine />
+      },
+      {
+        path: "top",
+        element: <TopComponent />
+      }
+    ]
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-   <React.StrictMode>
-  
- 
-  <RouterProvider
-      router={router}
-    />    
-   </React.StrictMode>
+  <React.StrictMode>
+    <RouterProvider router={router} />
+  </React.StrictMode>
 );

@@ -14,7 +14,6 @@ import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './firebaseConfig';
 import WebApp from "@twa-dev/sdk";
 import TwoFieldsComponent from "./TwoFieldsComponent";
-import Brand from "../components/AiYield";
 import UserAvatar from "./UserAvatar";
 
 
@@ -374,7 +373,7 @@ useEffect(() => {
   return (
     <ThemeProvider theme={theme}>
   
-       <Brand/>
+
 
               <Box mt={"5vh"}>
 

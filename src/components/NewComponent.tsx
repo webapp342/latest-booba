@@ -20,7 +20,6 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import SpaIcon from '@mui/icons-material/Spa'; 
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import "./text.css";
-import Brand from './AiYield';
 
 
 
@@ -1049,25 +1048,13 @@ const handleUnstake = async (amount: number): Promise<void> => {
     <Box mt={"17%"} style={{ marginBottom: '76px', backgroundColor: '#1a2126', padding: 8 ,}}>
       {renderStakingData()}
     
-      <Brand/>
      
 <Box textAlign={'center'} justifyContent={'center'} fontFamily={'Montserrat'} position="relative">
   {/* Yuvarlak Gradient Arka Plan */}
-  <Box
-    top="80%"
-    left="50%"
-    width="200px"
-    height="200px"
-    borderRadius="50%"
-    zIndex={-1} // Arka plana almak için
-    sx={{
-      transform: 'translate(-50%, -50%)',
-      filter: 'blur(40px)',
-    }}
-  />
+ 
 
   {/* Başlık */}
-  <Typography mt={-28}   className="text-gradient" fontFamily={'Montserrat'} fontSize={'28px'} fontWeight={'bold'}>
+  <Typography    className="text-gradient" fontFamily={'Montserrat'} fontSize={'28px'} fontWeight={'bold'}>
     Smart Liquidity Pool
   </Typography>
 

@@ -186,7 +186,7 @@ const CryptoCard = ({
 
 const Statistics: React.FC = () => {
   return (
-    <Box>
+    <Box mb={10}>
       {/* Dashboard Card */}
       <Box>
         {/* Header */}

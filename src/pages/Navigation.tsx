@@ -2,11 +2,13 @@ import * as React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import CasinoIcon from '@mui/icons-material/Casino';import WalletIcon from '@mui/icons-material/Wallet';
+import CasinoIcon from '@mui/icons-material/Casino';
+import WalletIcon from '@mui/icons-material/Wallet';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import AnalyticsIcon from '@mui/icons-material/Analytics';
 import PaymentsIcon from '@mui/icons-material/Payments';
-import ChecklistRtlIcon from '@mui/icons-material/ChecklistRtl';import { Paper } from '@mui/material';
+import ChecklistRtlIcon from '@mui/icons-material/ChecklistRtl';
+import { Paper } from '@mui/material';
 
 const navItems = [
   { label: 'Play', icon: <CasinoIcon />, path: '/latest-booba/games' },
@@ -21,9 +23,6 @@ export default function SimpleBottomNavigation() {
   const navigate = useNavigate();
   const location = useLocation();
 
- 
-
-  // ✅ Seçili sekmeyi güncelle
   React.useEffect(() => {
     const currentIndex = navItems.findIndex((item) => location.pathname === item.path);
     if (currentIndex !== -1) {
@@ -31,9 +30,19 @@ export default function SimpleBottomNavigation() {
     }
   }, [location.pathname]);
 
-  const handleNavigationChange = (newValue: number) => {
-    setValue(newValue);
-    navigate(navItems[newValue].path);
+  const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
+    const mainContent = document.querySelector('.main-content');
+    if (mainContent) {
+      mainContent.scrollTop = 0;
+    }
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+    window.scrollTo(0, 0);
+    
+    // Use setTimeout to ensure scroll happens before navigation
+    setTimeout(() => {
+      navigate(navItems[newValue].path);
+    }, 0);
   };
 
   const theme = createTheme({
@@ -67,7 +76,7 @@ export default function SimpleBottomNavigation() {
       >
         <BottomNavigation
           value={value}
-          onChange={(_, newValue) => handleNavigationChange(newValue)}
+          onChange={handleChange}
           showLabels
           sx={{
             height: '75px',
@@ -88,6 +97,7 @@ export default function SimpleBottomNavigation() {
               key={item.label}
               icon={item.icon}
               label={item.label}
+              value={index}
               sx={{
                 '& .MuiSvgIcon-root': {
                   mt: 2,
