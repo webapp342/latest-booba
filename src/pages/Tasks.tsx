@@ -42,7 +42,6 @@ import task11Logo from '../assets/ton_logo_dark_background.svg';
 import comingSoonLogo from '../assets/task1logo.png';
 import UserDataTable from './UserDataTable';
 import { ShowAdButton } from './ShowAdButton';
-import Brand from '../components/TasksHeader';
 
 // Firebase App initialization
 const app = initializeApp(firebaseConfig);
@@ -539,7 +538,7 @@ const DealsComponent: React.FC = () => {
 
   return (
     <ThemeProvider theme={theme}>
-            <Brand/>
+    
 
       <Box
         sx={{

@@ -2,20 +2,70 @@ import * as React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import CasinoIcon from '@mui/icons-material/Casino';
-import WalletIcon from '@mui/icons-material/Wallet';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import AnalyticsIcon from '@mui/icons-material/Analytics';
-import PaymentsIcon from '@mui/icons-material/Payments';
-import ChecklistRtlIcon from '@mui/icons-material/ChecklistRtl';
-import { Paper } from '@mui/material';
+import { Paper, keyframes, Box } from '@mui/material';
+import { 
+  Gamepad2,
+  Wallet,
+  BarChart2,
+  ListTodo,
+  BadgeDollarSign
+} from 'lucide-react';
+
+// Animasyon keyframes'i
+const coinAnimation = keyframes`
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+`;
 
 const navItems = [
-  { label: 'Play', icon: <CasinoIcon />, path: '/latest-booba/games' },
-  { label: 'Invest', icon: <PaymentsIcon />, path: '/latest-booba/stake' },
-  { label: 'Stats', icon: <AnalyticsIcon />, path: '/latest-booba/' },
-  { label: 'Tasks', icon: <ChecklistRtlIcon />, path: '/latest-booba/tasks' },
-  { label: 'Wallet', icon: <WalletIcon />, path: '/latest-booba/spin' },
+  { 
+    label: 'Play', 
+    icon: <Gamepad2 size={24} strokeWidth={1.5} />, 
+    path: '/latest-booba/games' 
+  },
+  
+  { 
+    label: 'Stats', 
+    icon: <BarChart2 size={24} strokeWidth={1.5} />, 
+    path: '/latest-booba/' 
+  },
+  { 
+    label: 'Earn', 
+    icon: (isSelected: boolean) => (
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          perspective: '1000px',
+          '& svg': {
+            color: isSelected ? '#6ed3ff' : 'rgba(255, 255, 255, 0.4)',
+            animation: `${coinAnimation} 3s linear infinite`,
+            transformOrigin: 'center center',
+            transformStyle: 'preserve-3d',
+            fontSize: '26px'
+          }
+        }}
+      >
+<BadgeDollarSign />     </Box>
+    ),
+    path: '/latest-booba/stake'
+  },
+  { 
+    label: 'Tasks', 
+    icon: <ListTodo size={24} strokeWidth={1.5} />, 
+    path: '/latest-booba/tasks' 
+  },
+  { 
+    label: 'Wallet', 
+    icon: <Wallet size={24} strokeWidth={1.5} />, 
+    path: '/latest-booba/spin' 
+  },
 ];
 
 export default function SimpleBottomNavigation() {
@@ -39,7 +89,6 @@ export default function SimpleBottomNavigation() {
     document.documentElement.scrollTop = 0;
     window.scrollTo(0, 0);
     
-    // Use setTimeout to ensure scroll happens before navigation
     setTimeout(() => {
       navigate(navItems[newValue].path);
     }, 0);
@@ -64,14 +113,19 @@ export default function SimpleBottomNavigation() {
   return (
     <ThemeProvider theme={theme}>
       <Paper 
+        elevation={0}
         sx={{
           position: 'fixed',
           bottom: 0,
           left: 0,
           right: 0,
           zIndex: 1000,
-          borderTopLeftRadius: 4,
-          borderTopRightRadius: 4,
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+          overflow: 'visible',
+          background: '#1a2126',
+          borderTop: '1px solid rgba(110, 211, 255, 0.1)',
+          paddingBottom: 'calc(env(safe-area-inset-bottom) + 15px)',
         }}
       >
         <BottomNavigation
@@ -80,14 +134,15 @@ export default function SimpleBottomNavigation() {
           showLabels
           sx={{
             height: '75px',
-            bgcolor: '#2f363a',
-            transition: 'none',
+            background: 'transparent',
+            paddingBottom: { xs: '12px', sm: '12px', md: '12px' },
             '& .MuiBottomNavigationAction-root': {
-              padding: '0',
-              transition: 'none',
+              padding: '6px 0',
+              minWidth: 'auto',
+              transition: 'all 0.2s ease',
+              position: 'relative',
               '&.Mui-selected': {
-                padding: '0',
-                transition: 'none',
+                padding: '6px 0',
               },
             },
           }}
@@ -95,23 +150,41 @@ export default function SimpleBottomNavigation() {
           {navItems.map((item, index) => (
             <BottomNavigationAction
               key={item.label}
-              icon={item.icon}
+              icon={typeof item.icon === 'function' ? item.icon(value === index) : item.icon}
               label={item.label}
               value={index}
               sx={{
-                '& .MuiSvgIcon-root': {
-                  mt: 2,
-                  fontSize: '1.2rem',
-                  color: value === index ? 'linear-gradient(45deg, #00c6ff, #0072ff)' : '#757575',
-                  transition: 'none',
+                '& .MuiSvgIcon-root, & svg:not(.special-icon)': {
+                  mt: 1,
+                  color: value === index ? '#6ed3ff' : 'rgba(255, 255, 255, 0.4)',
+                  transition: 'all 0.2s ease',
+                  transform: value === index ? 'scale(1.1)' : 'scale(1)',
+                  stroke: value === index ? '#6ed3ff' : 'rgba(255, 255, 255, 0.4)',
+                  strokeWidth: value === index ? 2 : 1.5,
                 },
                 '& .MuiBottomNavigationAction-label': {
-                  fontSize: '0.6rem',
-                  mb: 4,
-                  color: value === index ? 'linear-gradient(45deg, #00c6ff, #0072ff)' : '#757575',
-                  transition: 'none',
-                  textTransform:'none',
+                  fontSize: '0.7rem !important',
+                  mt: 0.5,
+                  mb: { xs: 1, sm: 1, md: 1 },
+                  color: value === index ? '#6ed3ff' : 'rgba(255, 255, 255, 0.4)',
+                  transition: 'all 0.2s ease',
+                  fontWeight: value === index ? 600 : 400,
+                  opacity: 1,
+                  letterSpacing: '0.02em',
+                  fontFamily: 'Montserrat',
+                  '&.Mui-selected': {
+                    fontSize: '0.7rem !important'
+                  }
                 },
+                '&:hover': {
+                  '& .MuiSvgIcon-root, & svg:not(.special-icon)': {
+                    color: '#6ed3ff',
+                    stroke: '#6ed3ff',
+                  },
+                  '& .MuiBottomNavigationAction-label': {
+                    color: '#6ed3ff'
+                  }
+                }
               }}
             />
           ))}

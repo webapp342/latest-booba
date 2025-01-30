@@ -19,7 +19,6 @@ import WebApp from '@twa-dev/sdk'; // Telegram WebApp SDK
 
 import { useWindowSize } from 'react-use';
 import { useNavigate } from 'react-router-dom';
-import Brand from '../../components/brand';
 
 
 
@@ -448,7 +447,7 @@ const [, setShowConfetti] = useState(false);
 
   return (
     <ThemeProvider theme={theme}>
-      <Brand/>
+      
 
     <Box
     sx={{
