@@ -413,7 +413,6 @@ useEffect(() => {
                     
               sx={{
                 display: "flex",
-                width:"100%",
                 justifyContent: "space-between",
                 mt: 1,
                 mb: 0,
@@ -562,7 +561,7 @@ ml:1,
          
 
       {/* İkinci Kart - Asset List */}
-<Box sx={{ borderRadius: 3, mt: 1, m:2 }}>
+<Box sx={{ borderRadius: 3, mt: 1, m:1 }}>
    
     {/* Başlık ve Arama Kutusu */}
     <Box
