@@ -395,7 +395,6 @@ useEffect(() => {
               variant="subtitle2"
               sx={{ color: "white" }}
               align="center"
-              gutterBottom
             >
               My Balance
             </Typography>
@@ -623,7 +622,7 @@ ml:1,
                 {item.symbol}
                 {!item.active && (
                   <span style={{ marginLeft: "10px", color: "gray" }}>
-                    🔒 Coming Soon
+                    🔒 coming soon
                   </span>
                 )}
               </Typography>

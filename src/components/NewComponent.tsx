@@ -242,7 +242,8 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
               
                           <Box   display={'flex'} alignItems={'center'}>
 
-              <Typography textAlign={'left'}  sx={{  mt:-1, color: 'gray', fontSize: '1.2rem' }}>
+              <Typography textAlign={'left'}                variant="subtitle2"
+ sx={{  mt:-1, color: 'gray'}}>
             Amount
             </Typography>
             
