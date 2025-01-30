@@ -561,7 +561,7 @@ ml:1,
          
 
       {/* İkinci Kart - Asset List */}
-<Box sx={{ borderRadius: 3, mt: 1, mx:1 }}>
+<Box sx={{ borderRadius: 3, mt: 4, mx:1 }}>
    
     {/* Başlık ve Arama Kutusu */}
     <Box
