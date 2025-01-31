@@ -10,7 +10,6 @@ import tonLogo from '../assets/toncoin-ton-logo.png'; // Logo dosyasını import
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { styled } from '@mui/material/styles';
-import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import SlotCounter from 'react-slot-counter'; // Kütüphaneyi içe aktar
 import WebApp from '@twa-dev/sdk';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -818,7 +817,7 @@ const GradientBox = styled(Box)(() => ({
 // Add these new styled components at the top
 const TrustBadge = styled(Box)({
   display: 'flex',
-  alignItems: 'center',
+  alignItems: 'center',  
   gap: '8px',
   padding: '6px 12px',
   borderRadius: '16px',
@@ -2015,14 +2014,13 @@ const handleUnstake = async (amount: number): Promise<void> => {
   <Box sx={{ mt: 2 }}>
     {stakingHistory.filter(stake => !stake.claimed).length > 0 ? (
       stakingHistory
-        .filter(stake => !stake.claimed) // claimed: false olanları filtrele
+        .filter(stake => !stake.claimed)
         .map((stake, index) => {
           const currentTime = new Date().getTime();
           const stakeTime = new Date(stake.timestamp).getTime();
           const durationInMillis = stake.duration * 24 * 60 * 60 * 1000; 
           const elapsedTime = Math.min(currentTime - stakeTime, durationInMillis); 
           const accruedEarnings = calculateAccruedEarnings(stake); 
-
           const progress = Math.min((elapsedTime / durationInMillis) * 100, 100);
           const isDurationPassed = currentTime >= (stakeTime + durationInMillis);
           const activationTime = new Date(stakeTime + durationInMillis);
@@ -2030,111 +2028,228 @@ const handleUnstake = async (amount: number): Promise<void> => {
           const formattedEarnings = (typeof accruedEarnings === 'number' ? accruedEarnings : 0).toFixed(2);
 
           return (
-            <Box key={index} sx={{ mb: 2, p: 2, border: '1px solid #e0e0e0', borderRadius: 1, backgroundColor: '#3f3f3f' }}>
-              {/* Stake Info */}
-              <Box mb={1} alignItems={'center'} display={'flex'} justifyContent={'space-between'}>
-                <Typography variant="body1">
-                  <span style={{ fontWeight: 'bold' }}>{stake.duration} Day </span> 
-
-                  <span style={{color:"#b4e6ff"}}>Staking</span>
-                </Typography>
-                <Typography fontSize={'0.7rem'} variant="body1">
-                  <span style={{ fontStyle: 'italic' }}>{new Date(stake.timestamp).toLocaleString()}</span>
-                </Typography>
-              </Box>
-
-              {/* Progress and Earnings */}
-              <Box sx={{ border: '1px solid #1976d2', borderRadius: 2, padding: 2, backgroundColor: '#282828', marginBottom: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                  <Typography variant="h6" sx={{ color: '#b4e6ff', fontWeight: 'bold' }}>
-                    Process <CircularProgress color="success" size="15px" />
-                  </Typography>
-                  <Typography textAlign={'left'} variant="h6" sx={{ fontWeight: 'bold', fontSize: '1rem' }}> 
-                    <span style={{color: '#90EE90'}}> 
-                      <SlotCounter delay={1} sequentialAnimationMode useMonospaceWidth value={parseFloat(formattedEarnings)} /> <span>TON</span>  
-                    </span>
-                    <span style={{marginLeft:'5px', color: 'gray',fontSize:'0.7rem'}}> 
-                      ({(parseFloat(formattedEarnings) * 5.20).toFixed(2)} USD)
-                    </span>
-                  </Typography>
-                </Box>
-                <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-                  <CircularProgressWithLabel value={progress} size={40} sx={{ color: '#00c6ff' }} />
-                </Box>
-              </Box>
-
-              {/* APY & Leverage */}
-              <Box display={'flex'} justifyContent={'space-between'}>
-                <Typography variant="body1">
-                  APY: <span style={{ fontWeight: 'bold' }}>{stake.apy}%</span>
-                </Typography>
-                <Typography variant="body1">
-                  Leverage: <span style={{ fontWeight: 'bold' }}>{stake.leverage}x</span>
-                </Typography>
-              </Box>
-
-              {/* Total Repay */}
-              <Box mb={-1} mt={2} display={'flex'} justifyContent={'center'}>
-                <Typography textAlign={'center'} variant="body1">
-                  <span style={{color:'gray', marginRight:'5px'}}>Total to Repay: </span>
-                  <span style={{color:'#00c6ff'}}>{totalRepay} TON </span>
-                  +
-                  <span style={{color:'#67f177'}}> {(stake.amount * (stake.apy) * (2))} BBLIP</span>
-                </Typography>
-              </Box>
-
-              {/* Unstake Buttons */}
-              {!isDurationPassed && (
-                <Button 
-                  fullWidth
-                  variant="outlined" 
-                  color="warning" 
-                  onClick={() => handleEarlyUnstakeAction(index)}   
-                  sx={{ mt: 2 }}
-                >
-                  Early Unstake
-                </Button>
-              )}
-
-
-              
-
-
-              <Button 
-                fullWidth
-                variant="contained" 
-                color="secondary" 
-                sx={{
-                  mt: 1,
-                  backgroundColor: !isDurationPassed ? 'gray !important' : '#89d9ff !important',
-                  color: !isDurationPassed ? 'white !important' : 'black !important',
-                  opacity: !isDurationPassed ? 0.6 : 1,
-                  filter: !isDurationPassed ? 'blur(1px)' : 'none',
+            <Box 
+              key={index} 
+              sx={{ 
+                mb: 2,
+                background: 'rgba(110, 211, 255, 0.05)',
+                backgroundImage: 'linear-gradient(180deg, rgba(110, 211, 255, 0.05) 0%, rgba(26, 33, 38, 0) 100%)',
+                borderRadius: '16px',
+                border: '1px solid rgba(110, 211, 255, 0.1)',
+                overflow: 'hidden',
+                transition: 'transform 0.2s ease-in-out',
+                '&:hover': {
+                  transform: 'translateY(-2px)'
+                }
+              }}
+            >
+              {/* Header Section */}
+              <Box 
+                sx={{ 
+                  p: 2,
+                  borderBottom: '1px solid rgba(110, 211, 255, 0.1)',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center'
                 }}
-                onClick={() => handleUnstakeAction(index)}
-                disabled={!isDurationPassed}
               >
-                Unstake
-              </Button>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <DatabaseZap style={{ color: '#6ed3ff', fontSize: 18 }} />
+                  <Typography sx={{ color: '#fff', fontWeight: 600 }}>
+                    {stake.duration}D Quantum Stake
+                  </Typography>
+                </Box>
+                <Chip 
+                  label={isDurationPassed ? 'Ready' : 'In Progress'}
+                  sx={{
+                    backgroundColor: isDurationPassed ? 'rgba(76, 175, 80, 0.1)' : 'rgba(110, 211, 255, 0.1)',
+                    color: isDurationPassed ? '#4CAF50' : '#6ed3ff',
+                    fontWeight: 600,
+                    fontSize: '0.75rem'
+                  }}
+                />
+              </Box>
 
-              {/* Unlock Date */}
-              <Box display={'flex'} justifyContent={'space-between'}>
-                <Typography textAlign={'center'} variant="body2" color="gray" sx={{ mt: 1 }}>
-                  Unlock Date 
-                </Typography>
-                <Typography textAlign={'center'} variant="body2" color="PRIMARY" sx={{ mt: 1 }}>
-                  <strong>{activationTime.toLocaleString()}</strong>
+              {/* Main Content */}
+              <Box sx={{ p: 2 }}>
+                {/* Progress Section */}
+                <Box sx={{ 
+                  display: 'flex', 
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  mb: 2
+                }}>
+                  <Box>
+                    <Typography sx={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.75rem', mb: 0.5 }}>
+                      Accrued Earnings
+                    </Typography>
+                    <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1 }}>
+                      <Typography sx={{ fontSize: '1.25rem', fontWeight: 700, color: '#4CAF50' }}>
+                        <SlotCounter 
+                          value={parseFloat(formattedEarnings)} 
+                          duration={1}
+                          useMonospaceWidth 
+                          sequentialAnimationMode
+                        />
+                      </Typography>
+                      <Typography sx={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.6)' }}>
+                        TON
+                      </Typography>
+                    </Box>
+                  </Box>
+                  <CircularProgressWithLabel 
+                    value={progress} 
+                    size={52}
+                    sx={{ 
+                      color: '#6ed3ff',
+                      '& .MuiCircularProgress-circle': {
+                        strokeLinecap: 'round',
+                      }
+                    }} 
+                  />
+                </Box>
+
+                {/* Stats Grid */}
+                <Grid container spacing={1} sx={{ mb: 2 }}>
+                  <Grid item xs={6}>
+                    <Box sx={{ 
+                      p: 1.5,
+                      backgroundColor: 'rgba(110, 211, 255, 0.05)',
+                      borderRadius: '12px',
+                      border: '1px solid rgba(110, 211, 255, 0.1)'
+                    }}>
+                      <Typography sx={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.75rem' }}>
+                        APY
+                      </Typography>
+                      <Typography sx={{ color: '#6ed3ff', fontWeight: 600 }}>
+                        {stake.apy}%
+                      </Typography>
+                    </Box>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Box sx={{ 
+                      p: 1.5,
+                      backgroundColor: 'rgba(110, 211, 255, 0.05)',
+                      borderRadius: '12px',
+                      border: '1px solid rgba(110, 211, 255, 0.1)'
+                    }}>
+                      <Typography sx={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.75rem' }}>
+                        Leverage
+                      </Typography>
+                      <Typography sx={{ color: '#6ed3ff', fontWeight: 600 }}>
+                        {stake.leverage}x
+                      </Typography>
+                    </Box>
+                  </Grid>
+                </Grid>
+
+                {/* Total Repay Section */}
+                <Box sx={{ 
+                  p: 2,
+                  backgroundColor: 'rgba(110, 211, 255, 0.02)',
+                  borderRadius: '12px',
+                  border: '1px solid rgba(110, 211, 255, 0.1)',
+                  mb: 2
+                }}>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                    <Typography sx={{ color: 'rgba(255,255,255,0.6)' }}>
+                      Total to Repay
+                    </Typography>
+                    <Box sx={{ textAlign: 'right' }}>
+                      <Typography sx={{ color: '#fff', fontWeight: 600 }}>
+                        {totalRepay} TON
+                      </Typography>
+                      <Typography sx={{ color: '#4CAF50', fontSize: '0.75rem' }}>
+                        +{(stake.amount * (stake.apy) * (2))} BBLIP
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Box>
+
+                {/* Action Buttons */}
+                <Box sx={{ display: 'flex', gap: 1 }}>
+                  {!isDurationPassed && (
+                    <Button 
+                      fullWidth
+                      variant="outlined" 
+                      onClick={() => handleEarlyUnstakeAction(index)}
+                      sx={{
+                        borderColor: 'rgba(244, 67, 54, 0.5)',
+                        color: '#f44336',
+                        '&:hover': {
+                          borderColor: '#f44336',
+                          backgroundColor: 'rgba(244, 67, 54, 0.08)'
+                        }
+                      }}
+                    >
+                      Early Unstake
+                    </Button>
+                  )}
+                  <Button 
+                    fullWidth
+                    variant="contained"
+                    onClick={() => handleUnstakeAction(index)}
+                    disabled={!isDurationPassed}
+                    sx={{
+                      backgroundColor: isDurationPassed ? '#6ed3ff' : 'rgba(110, 211, 255, 0.1)',
+                      color: isDurationPassed ? '#000' : 'rgba(255,255,255,0.3)',
+                      fontWeight: 600,
+                      '&:hover': {
+                        backgroundColor: isDurationPassed ? '#89d9ff' : 'rgba(110, 211, 255, 0.1)'
+                      }
+                    }}
+                  >
+                    {isDurationPassed ? 'Claim Rewards' : 'Locked'}
+                  </Button>
+                </Box>
+
+                {/* Unlock Date */}
+                <Typography 
+                  sx={{ 
+                    color: 'rgba(255,255,255,0.5)', 
+                    fontSize: '0.75rem',
+                    textAlign: 'center',
+                    mt: 2
+                  }}
+                >
+                  Unlocks at {activationTime.toLocaleString()}
                 </Typography>
               </Box>
             </Box>
           );
         })
     ) : (
-      <Box sx={{ borderRadius: 2, p: 2, gap: 1, bgcolor: "#282828", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <SentimentVeryDissatisfiedIcon />
-        <Typography variant="body2" color="error">
-          You don't have any active process 
+      <Box 
+        sx={{ 
+          borderRadius: '16px',
+          p: 4,
+          textAlign: 'center',
+          background: 'rgba(110, 211, 255, 0.05)',
+          backgroundImage: 'linear-gradient(180deg, rgba(110, 211, 255, 0.05) 0%, rgba(26, 33, 38, 0) 100%)',
+          border: '1px solid rgba(110, 211, 255, 0.1)',
+        }}
+      >
+        <DatabaseZap style={{ fontSize: 48, color: 'rgba(110, 211, 255, 0.2)', marginBottom: '16px' }} />
+        <Typography variant="h6" sx={{ color: '#6ed3ff', mb: 1 }}>
+          No Active Positions
         </Typography>
+        <Typography sx={{ color: 'rgba(255,255,255,0.6)', mb: 3 }}>
+          Start earning by subscribing to our Quantum Staking pools
+        </Typography>
+        <Button
+          variant="contained"
+          onClick={() => setSelectedAction('stake')}
+          sx={{
+            backgroundColor: '#6ed3ff',
+            color: '#000',
+            fontWeight: 600,
+            '&:hover': {
+              backgroundColor: '#89d9ff'
+            }
+          }}
+        >
+          Subscribe Now
+        </Button>
       </Box>
     )}
   </Box>
@@ -2859,104 +2974,222 @@ variant="h6"
         anchor="bottom"
         open={earlyUnstakeDrawerOpen}
         onClose={() => setEarlyUnstakeDrawerOpen(false)}
-        sx={{ backgroundColor: '#1E1E1E', transition: 'transform 0.3s ease-in-out' }} // Smooth transition
+        PaperProps={{
+          sx: {
+            borderTopLeftRadius: '16px',
+            borderTopRightRadius: '16px',
+            backgroundColor: '#1a2126',
+            backgroundImage: 'linear-gradient(180deg, rgba(110, 211, 255, 0.05) 0%, rgba(26, 33, 38, 0) 100%)',
+            maxHeight: '90vh',
+            overflowY: 'auto'
+          }
+        }}
       >
-        <Box sx={{ p: 3, display: 'flex', flexDirection: 'column', gap: 2, backgroundColor: "#1E1E1E" }}>
-          {selectedEarlyUnstake && (
-            <>
-            <Box display={'flex'} justifyContent={'space-between'}>
-
-                  <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#b4e6ff' }}>
-                    Early Unstake Details
-                </Typography>
-
-              {/* Calculate remaining time */}
-                {(() => {
-                    const currentTime = new Date().getTime();
-                    const stakeTime = new Date(selectedEarlyUnstake.timestamp).getTime();
-                    const durationInMillis = selectedEarlyUnstake.duration * 24 * 60 * 60 * 1000; // Convert duration to milliseconds
-                    const remainingTime = stakeTime + durationInMillis - currentTime; // Calculate remaining time
-
-                    if (remainingTime > 0) {
-                        const remainingDays = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
-                        const remainingHours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                        const remainingMinutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
-
-                        if (remainingDays >= 1) {
-                            return (
-                                <Typography variant="body1" sx={{ color: 'white' }}>
-                                  <CircularProgress color="error" size={'15px'} />  {remainingDays} D , {remainingHours} H
-                                </Typography>
-                            );
-                        } else {
-                            return (
-                                <Typography variant="body1" sx={{ color: 'white' }}>
-                                     <CircularProgress color="error" size={'15px'} />  {remainingHours} H ,{remainingMinutes} Min
-                                </Typography>
-                            );
-                        }
-                    } else {
-                        return (
-                            <Typography variant="body1" sx={{ color: 'white' }}>
-                                Staking period has ended.
-                            </Typography>
-                        );
+        {selectedEarlyUnstake && (
+          <Box sx={{ p: 3 }}>
+            {/* Header Section */}
+            <Box sx={{ 
+              mb: 3,
+              textAlign: 'center',
+              position: 'relative'
+            }}>
+              <Box sx={{
+                position: 'absolute',
+                left: 0,
+                top: '50%',
+                transform: 'translateY(-50%)',
+                zIndex: 1
+              }}>
+                <Button
+                  onClick={() => setEarlyUnstakeDrawerOpen(false)}
+                  sx={{
+                    minWidth: 'auto',
+                    p: 1,
+                    color: 'rgba(255,255,255,0.7)',
+                    '&:hover': {
+                      color: '#fff',
+                      backgroundColor: 'transparent'
                     }
-                })()}
-                
-              
-          
+                  }}
+                >
+                  <ArrowBackIosNewIcon sx={{ fontSize: 20 }} />
+                </Button>
+              </Box>
+              <Typography variant="h5" className="text-gradient" sx={{ 
+                fontWeight: 'bold',
+                mb: 1
+              }}>
+                Early Unstake
+              </Typography>
             </Box>
-           
-            <Box border={'1px solid red'} borderRadius={2} bgcolor={'#282828'} p={1} display={'flex'} justifyContent={'space-between'}>
-                <Typography variant="body1" sx={{ color: 'white' }}>
-                    Penalty:  
-                    <span style={{color:'red', marginLeft:'5px'}}>
-                    -{(selectedEarlyUnstake.earnings)} TON </span> 
+
+            {/* Warning Message */}
+            <Box sx={{ 
+              p: 2,
+              mb: 3,
+              backgroundColor: 'rgba(244, 67, 54, 0.1)',
+              borderRadius: '12px',
+              border: '1px solid rgba(244, 67, 54, 0.2)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 2
+            }}>
+              <LocalFireDepartmentIcon sx={{ color: '#f44336', fontSize: 24 }} />
+              <Typography sx={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.9rem' }}>
+                Early unstaking will result in penalties and reduced earnings. Please review the details below carefully.
+              </Typography>
+            </Box>
+
+            {/* Position Details */}
+            <Box sx={{ mb: 3 }}>
+              <Typography variant="subtitle2" className="text-gradient" sx={{ mb: 2 }}>
+                Position Details
+              </Typography>
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <Box sx={{ 
+                    p: 2,
+                    backgroundColor: 'rgba(110, 211, 255, 0.05)',
+                    borderRadius: '12px',
+                    border: '1px solid rgba(110, 211, 255, 0.1)'
+                  }}>
+                    <Typography sx={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.75rem' }}>
+                      Staked Amount
+                    </Typography>
+                    <Typography sx={{ color: '#fff', fontWeight: 600, fontSize: '1.1rem' }}>
+                      {selectedEarlyUnstake.amount.toFixed(2)} TON
+                    </Typography>
+                  </Box>
+                </Grid>
+                <Grid item xs={6}>
+                  <Box sx={{ 
+                    p: 2,
+                    backgroundColor: 'rgba(110, 211, 255, 0.05)',
+                    borderRadius: '12px',
+                    border: '1px solid rgba(110, 211, 255, 0.1)'
+                  }}>
+                    <Typography sx={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.75rem' }}>
+                      Time Remaining
+                    </Typography>
+                    <Typography sx={{ color: '#6ed3ff', fontWeight: 600, fontSize: '1.1rem' }}>
+                      {(() => {
+                        const currentTime = new Date().getTime();
+                        const stakeTime = new Date(selectedEarlyUnstake.timestamp).getTime();
+                        const durationInMillis = selectedEarlyUnstake.duration * 24 * 60 * 60 * 1000;
+                        const remainingTime = (stakeTime + durationInMillis) - currentTime;
+                        const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+                        const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        return `${days}D ${hours}H`;
+                      })()}
+                    </Typography>
+                  </Box>
+                </Grid>
+              </Grid>
+            </Box>
+
+            {/* Penalty Details */}
+            <Box sx={{ mb: 3 }}>
+              <Typography variant="subtitle2" className="text-gradient" sx={{ mb: 2 }}>
+                Penalty Details
+              </Typography>
+              <Box sx={{ 
+                p: 2,
+                backgroundColor: 'rgba(244, 67, 54, 0.05)',
+                borderRadius: '12px',
+                border: '1px solid rgba(244, 67, 54, 0.1)'
+              }}>
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <Typography sx={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.75rem' }}>
+                      Earnings Penalty
+                    </Typography>
+                    <Typography sx={{ color: '#f44336', fontWeight: 600 }}>
+                      -{selectedEarlyUnstake.earnings} TON
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography sx={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.75rem' }}>
+                      Early Exit Fee
+                    </Typography>
+                    <Typography sx={{ color: '#f44336', fontWeight: 600 }}>
+                      -{(selectedEarlyUnstake.amount * 0.04).toFixed(2)} TON
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Box>
+            </Box>
+
+            {/* Total Return */}
+            <Box sx={{ 
+              p: 2,
+              mb: 3,
+              backgroundColor: 'rgba(110, 211, 255, 0.05)',
+              borderRadius: '12px',
+              border: '1px solid rgba(110, 211, 255, 0.1)'
+            }}>
+              <Typography sx={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.75rem', mb: 1 }}>
+                Total Return After Penalties
+              </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1 }}>
+                <Typography sx={{ fontSize: '1.5rem', fontWeight: 700 }} className="text-gradient">
+                  {(selectedEarlyUnstake.amount - selectedEarlyUnstake.amount * 0.04).toFixed(2)} TON
                 </Typography>
-
-                    <Typography variant="body1" sx={{ color: 'white' }}>
-                    Fee: 
-                    <span style={{color:'red', marginLeft:'5px'}}>
-                  -{(selectedEarlyUnstake.amount * 0.04).toFixed(2)} TON   </span> 
-                </Typography> 
-
-            </Box>
-                 <Box display={'flex'} justifyContent={'center'}>
-                        <Typography variant="body1" sx={{ color: 'gray' }}>
-                          Total to Repay:    
-                          <span style={{color:"#b4e6ff", marginLeft:'5px', fontSize:'1.2rem'}}>
-                      {(selectedEarlyUnstake.amount - selectedEarlyUnstake.amount * 0.04).toFixed(2)} TON
-
-                          </span>
+                <Typography sx={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.875rem' }}>
+                  ≈ ${((selectedEarlyUnstake.amount - selectedEarlyUnstake.amount * 0.04) * 5.20).toFixed(2)}
                 </Typography>
-
+              </Box>
             </Box>
-             
-            
-                  
-                
-              
-             
-              
-          
-           
+
+            {/* Action Buttons */}
+            <Box sx={{ display: 'flex', gap: 2 }}>
               <Button
-    variant="contained"
-    color="primary"
-    onClick={() => { 
-        // Call the handleEarlyUnstake function with the selected amount
-        handleEarlyUnstake(selectedEarlyUnstake.amount);
- 
-        // Close the drawer after action
-        setEarlyUnstakeDrawerOpen(false);
-    }}
->
-    Confirm Early Unstake
-</Button>
-            </>
-          )} 
-        </Box>
+                variant="outlined"
+                onClick={() => setEarlyUnstakeDrawerOpen(false)}
+                sx={{
+                  flex: 1,
+                  borderColor: 'rgba(110, 211, 255, 0.2)',
+                  color: '#6ed3ff',
+                  '&:hover': {
+                    borderColor: 'rgba(110, 211, 255, 0.4)',
+                    backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                  }
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  handleEarlyUnstake(selectedEarlyUnstake.amount);
+                  setEarlyUnstakeDrawerOpen(false);
+                }}
+                sx={{
+                  flex: 2,
+                  backgroundColor: '#f44336',
+                  color: '#fff',
+                  fontWeight: 600,
+                  '&:hover': {
+                    backgroundColor: '#d32f2f'
+                  }
+                }}
+              >
+                Confirm Early Unstake
+              </Button>
+            </Box>
+
+            {/* Disclaimer */}
+            <Typography 
+              sx={{ 
+                color: 'rgba(255,255,255,0.5)', 
+                fontSize: '0.75rem',
+                textAlign: 'center',
+                mt: 3
+              }}
+            >
+              Early unstaking penalties are designed to maintain protocol stability
+            </Typography>
+          </Box>
+        )}
       </Drawer>
 
 

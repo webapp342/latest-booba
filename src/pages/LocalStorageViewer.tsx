@@ -15,6 +15,7 @@ import { firebaseConfig } from './firebaseConfig';
 import WebApp from "@twa-dev/sdk";
 import TwoFieldsComponent from "./TwoFieldsComponent";
 import UserAvatar from "./UserAvatar";
+import styled from "styled-components";
 
 
 const app = initializeApp(firebaseConfig);
@@ -367,7 +368,15 @@ useEffect(() => {
   };
  
 
-
+const GradientBox = styled(Box)(() => ({
+  background: 'linear-gradient(180deg, rgba(110, 211, 255, 0.08) 0%, rgba(26, 33, 38, 0) 100%)',
+  borderRadius: '24px',
+  padding: '24px 16px',
+  marginBottom: '24px',
+  
+  border: '1px solid rgba(110, 211, 255, 0.1)',
+  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
+}));
 
 
   return (
@@ -377,9 +386,19 @@ useEffect(() => {
 
               <Box mt={"5vh"}>
 
-   
-  
-                <Box px={2} display={'flex'} justifyContent={'space-between'}>
+                <Box px={2} >
+                   
+ <GradientBox>
+        <Box 
+          sx={{ 
+
+            display: 'flex', 
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: { xs: 2, sm: 3 },
+          }}
+        >
+           <Box width={'100%'}  display={'flex'} justifyContent={'space-between'}>
                                   <SettingsIcon sx={{ fontSize: '1.5rem', color:"white",       p:0.5,          
  }} />
                  <UserAvatar 
@@ -388,27 +407,35 @@ useEffect(() => {
                 />
 
                 </Box>
-        {/* İlk Kart */}
-      <Box  sx={{ borderRadius: 3,   px: 2 }}>            {/* Total Account Equity */}
-            <Typography className="total-equity"
+          {/* Live Stats Badge */}
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>           
+          </Box>
+
+
+          <Typography mb={-2} mt={-2} className="total-equity"
               variant="subtitle2"
               sx={{ color: "white" }}
               align="center"
             >
               My Balance
             </Typography>
-            <Typography  mt={-1} variant="subtitle1" align="center" gutterBottom>
+
+          {/* Main Title */}
+           <Typography  mb={-2} variant="subtitle1" align="center" gutterBottom>
               <span style={{ fontSize: "2.5rem" ,color:"grey"}}>$</span>
               <span style={{ fontSize: "2.5rem", fontWeight:"bold" }}>{totalEquity.split('.')[0]}</span>
               <span style={{ fontSize: "1.6rem" }}>.{totalEquity.split('.')[1]}</span>
             </Typography>
-           
+              {/* İlk Kart */}
+      <Box  sx={{ borderRadius: 3 }}>            {/* Total Account Equity */}
+            
+          
 
         
 
            
             {/* Buttons */}
-            <Box
+            <Box width={'100%'}
                     
               sx={{
                 display: "flex",
@@ -424,11 +451,12 @@ useEffect(() => {
                  sx={{
                   flexDirection: 'column', // Stack icon and text vertically
                   textTransform: "none", 
-         border:"1px solid #575757",
-                  backgroundColor: "transparent",              color:'white',
-                  fontSize: '0.7rem',
-                  width:"25%",
-                  mr:1,
+                backgroundColor: 'rgba(110, 211, 255, 0.05)',
+          color:'white',                   fontSize: '0.7rem',
+          
+                  mr:1,                  boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
+                           px:2,
+
                   borderRadius: 2,
                 }}
                 onClick={handleDepositClick} 
@@ -441,13 +469,13 @@ useEffect(() => {
       sx={{
                   flexDirection: 'column', // Stack icon and text vertically
                   textTransform: "none",
-                                    width:"25%",
+                                  
                   mr:1,
-
+px:2,
                 color:'white',
                   fontSize: '0.7rem',
-                  border:"1px solid #575757",
-                  backgroundColor: "transparent",
+                backgroundColor: 'rgba(110, 211, 255, 0.05)',
+                  boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
 
                   borderRadius: 2,
                 }}
@@ -482,9 +510,8 @@ useEffect(() => {
     sx={{
                   flexDirection: 'column', // Stack icon and text vertically
                   textTransform: "none",
-                border:"1px solid #575757",
-                  backgroundColor: "transparent",
-                                    width:"25%",
+                backgroundColor: 'rgba(110, 211, 255, 0.05)',
+                           px:3,
 color:'white',
                   fontSize: '0.7rem',
                   boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
@@ -502,9 +529,9 @@ color:'white',
        sx={{
                   flexDirection: 'column', // Stack icon and text vertically
                   textTransform: "none",
-                border:"1px solid #575757",
-                  backgroundColor: "transparent",
-                                    width:"25%",
+                backgroundColor: 'rgba(110, 211, 255, 0.05)',
+                                                              px:2,
+
 ml:1,
                   color:'white',
                   fontSize: '0.7rem',
@@ -512,7 +539,8 @@ ml:1,
                   borderRadius: 2,
                 }}
       >
-        <ReceiptLongIcon sx={{ fontSize: '1.5rem', color:"#89d9ff" }} />
+        <ReceiptLongIcon sx={{ fontSize: '1.5rem',                               color: '#6ed3ff',
+ }} />
         History
       </Button>
       <Drawer
@@ -528,9 +556,7 @@ ml:1,
         </Box>
       </Drawer>
     </>
-<Box>
 
-</Box>
 
   
 
@@ -557,6 +583,23 @@ ml:1,
             </Box>
         </Box>
 
+
+          {/* Description */}
+       
+           
+
+         
+
+          {/* Stats Grid */}
+       
+        </Box>
+      </GradientBox>
+                </Box>
+
+     
+  
+              
+     
          
 
       {/* İkinci Kart - Asset List */}

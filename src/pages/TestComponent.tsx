@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box,  CircularProgress, Button, Snackbar, Alert ,ThemeProvider, createTheme, Typography } from '@mui/material';
+import { Box,  CircularProgress, Button, Snackbar, Alert ,ThemeProvider, createTheme } from '@mui/material';
 import { getFirestore, doc, getDoc } from 'firebase/firestore'; // Firestore metodları
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './firebaseConfig'; // Firebase yapılandırma
@@ -106,65 +106,7 @@ const invitedUsersArray = userData.invitedUsers || [];          console.log('Dav
 
   return (
             <ThemeProvider theme={theme}>
-  <Box   borderRadius={2} mb={1} mt={2}>
 
-    <Box textAlign={'left'} mb={1}>
-<Typography fontWeight={'bold'} fontSize={'1rem'} >
-Invite friends to earn rewards  </Typography>
-  <Typography  fontSize={'0.8rem'} color={'gray'} >
-   + earn % of their earnings.
-
-  </Typography>
-  
-    </Box>
-
-
-     <Box gap={1}  display={'flex'} justifyContent={'space-between'}>
-
-<Box borderRadius={2} border={'1px solid'} sx={{flexGrow: 1,}}>
-<Typography ml={1}  fontWeight={'bold'} mt={1} fontSize={'0.9rem'} color={'gray'}>
-  Earn
-</Typography>
-<Typography  ml={1} mb={-1} mt={-2}  fontWeight={'bold'} fontSize={'2.8rem'} color={'white'}>
-  14%
-</Typography>
-<Typography ml={1} mb={1} fontWeight={'bold'} fontSize={'0.9rem'} color={'#89d9ff'}>
-  of earned by frens
-
-</Typography>
-</Box>
-
-
-<Box borderRadius={2} border={'1px solid'} sx={{flexGrow: 1,}}>
-<Typography ml={1}  fontWeight={'bold'} mt={1} fontSize={'0.9rem'} color={'gray'}>
-  Earn
-</Typography>
-<Typography letterSpacing={-2} ml={1} mb={-1} mt={-2}  fontWeight={'bold'} fontSize={'2.8rem'} color={'white'}>
-  2.5%
-</Typography>
-<Typography ml={1} mb={1} fontWeight={'bold'} fontSize={'0.9rem'} color={'#89d9ff'}>
-from their refs
-
-</Typography>
-</Box>
-
-  
-    </Box>
-
-    
-
-
-
-        
-
-   
-
-
-
-    
-
-  
-</Box>
                
     
     <Box

@@ -92,17 +92,16 @@ export function ShowAdButton(): ReactElement {
           <p>{formatTimeLeft(timeLeft)}</p>
         </div>
       ) : (
-        <Button onClick={showAd}  sx={{
-      textTransform: 'none',
-      borderRadius: '12px',
-      color:'black',
-      backgroundColor: '#89d9ff',
-      fontSize: { xs: '0.8rem', sm: '0.85rem' },
-      fontWeight: 600,
-      px: { xs: 2, sm: 3 },
-      py: { xs: 0.5, sm: 0.75 },
-     
-    }}>Watch</Button>
+        <Button onClick={showAd}     sx={{
+              p:1,
+          backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                                      color: '#6ed3ff',
+         
+          '&:disabled': {
+            background: '#2f363a',
+            color: 'rgba(255, 255, 255, 0.3)',
+          },
+        }}>Start</Button>
       )}
     </>
   );
