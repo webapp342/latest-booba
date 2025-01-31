@@ -181,7 +181,7 @@ const Stats: React.FC<StatsProps> = ({
   };
 
   return (
-    <>
+    < Box mx={-1}>
       <Dashboard data={dashboardData} />
 
       {/* Chart Section */}
@@ -419,7 +419,7 @@ const Stats: React.FC<StatsProps> = ({
 />
         </Grid>
       </Grid>
-    </>
+    </Box>
   );
 };
 

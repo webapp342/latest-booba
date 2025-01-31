@@ -477,7 +477,7 @@ const GradientBox = styled(Box)(() => ({
 
   return (
     <ThemeProvider theme={theme}>
-      <Container maxWidth="lg" sx={{ py: 8, mb:8}}>
+      <Container maxWidth="lg" sx={{px:1, py: 8, mb:8}}>
 
 
           <GradientBox>

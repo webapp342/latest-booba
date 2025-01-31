@@ -84,7 +84,7 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
   );
 
   return (
-    <Box>
+    <Box >
       <Box sx={{ 
         borderRadius: 2, 
         border:'1px solid #5d6367',

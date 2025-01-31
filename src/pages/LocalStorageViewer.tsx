@@ -386,7 +386,7 @@ const GradientBox = styled(Box)(() => ({
 
               <Box mt={"5vh"}>
 
-                <Box px={2} >
+                <Box px={1} >
                    
  <GradientBox>
         <Box 
