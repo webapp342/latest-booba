@@ -374,12 +374,12 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
   isCalculating,
   calculationComplete
 }) => {
-  // Add useEffect to reset values when option changes
+  // Add useEffect to set initial values
   useEffect(() => {
-    // Reset to minimum amount and default duration when period changes
-    handleAmountChange(index, option.tonRange.min);
+    // Set to maximum amount and default duration when period changes
+    handleAmountChange(index, option.tonRange.max);
     handleDurationChange(index, option.durations[0]);
-  }, [option.period]); // Only run when period changes
+  }, [option.period, handleAmountChange, handleDurationChange, index, option.tonRange.max, option.durations]); // Dependencies updated
 
   const renderTotalRepayment = () => {
     if (isCalculating) {
@@ -412,14 +412,16 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
     return (
       <Typography 
         variant="h5" 
-        className="text-gradient"
         sx={{ 
           fontWeight: 'bold',
           animation: 'fadeIn 0.3s ease-in'
         }}
       >
+        <span className='text-gradient' style={{fontSize:'1.5rem'}}>
         {totalRepayment.toFixed(2)} TON
-        <span style={{color:'gray', fontWeight:'lighter', fontSize:'0.6rem', marginLeft:5}}>
+
+        </span>
+        <span style={{color:'gray', fontWeight:'lighter', fontSize:'0.8rem', marginLeft:5}}>
           ~ ({(totalRepayment * 5.20).toFixed(2)} USDT)
         </span>
       </Typography>
@@ -482,7 +484,7 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
                       textAlign: 'center',
                       padding: '4px',
                       fontSize: '1.5rem',
-                    }
+                    } 
                   }}
                   InputProps={{
                     disableUnderline: true,
@@ -567,12 +569,85 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
                 {/* Min-Max Range Indicator */}
             
           {/* Available Balance */}
-          <Box mt={1} display={'flex'} alignItems="center">
-            <Typography variant="body1" sx={{ color: 'white' }}>
-              <span style={{color:"gray", fontSize: '0.8rem'}}>
-                Available : </span> {totalBalance !== null ? `${totalBalance.toFixed(2)} TON` : 'Loading...'}
-            </Typography>
-            <AddCircleOutlineIcon onClick={handleNavigate} fontSize='small' sx={{ ml: 1, color:'#89d9ff' }} />
+          <Box mt={1} display={'flex'} justifyContent={'space-between'} alignItems="center">
+            <Box display={'flex'} alignItems="center">
+              <Typography variant="body1" sx={{ color: 'white' }}>
+                <span style={{color:"gray", fontSize: '0.8rem'}}>
+                  Available: </span> {totalBalance !== null ? `${totalBalance.toFixed(2)} TON` : 'Loading...'}
+              </Typography>
+              <AddCircleOutlineIcon onClick={handleNavigate} fontSize='small' sx={{ ml: 1, color:'#89d9ff' }} />
+            </Box>
+            
+            <Box display={'flex'} gap={1}>
+              {totalBalance && totalBalance > 0 ? (
+                <>
+                  <Button
+                    size="small"
+                    onClick={() => handleAmountChange(index, totalBalance * 0.25)}
+                    sx={{
+                      minWidth: 'auto',
+                      padding: '2px 8px',
+                      fontSize: '0.75rem',
+                      color: '#6ed3ff',
+                      backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                      '&:hover': {
+                        backgroundColor: 'rgba(110, 211, 255, 0.2)',
+                      }
+                    }}
+                  >
+                    25%
+                  </Button>
+                  <Button
+                    size="small"
+                    onClick={() => handleAmountChange(index, totalBalance * 0.5)}
+                    sx={{
+                      minWidth: 'auto',
+                      padding: '2px 8px',
+                      fontSize: '0.75rem',
+                      color: '#6ed3ff',
+                      backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                      '&:hover': {
+                        backgroundColor: 'rgba(110, 211, 255, 0.2)',
+                      }
+                    }}
+                  >
+                    50%
+                  </Button>
+                  <Button
+                    size="small"
+                    onClick={() => handleAmountChange(index, totalBalance * 0.75)}
+                    sx={{
+                      minWidth: 'auto',
+                      padding: '2px 8px',
+                      fontSize: '0.75rem',
+                      color: '#6ed3ff',
+                      backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                      '&:hover': {
+                        backgroundColor: 'rgba(110, 211, 255, 0.2)',
+                      }
+                    }}
+                  >
+                    75%
+                  </Button>
+                  <Button
+                    size="small"
+                    onClick={() => handleAmountChange(index, totalBalance)}
+                    sx={{
+                      minWidth: 'auto',
+                      padding: '2px 8px',
+                      fontSize: '0.75rem',
+                      color: '#6ed3ff',
+                      backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                      '&:hover': {
+                        backgroundColor: 'rgba(110, 211, 255, 0.2)',
+                      }
+                    }}
+                  >
+                    MAX
+                  </Button>
+                </>
+              ) : null}
+            </Box>
           </Box>
               </Box>
             </Box>
@@ -622,11 +697,10 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
           <Box sx={{ mt: 2, p: 2, borderRadius: 2, backgroundColor: 'rgba(110, 211, 255, 0.05)' }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
               <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.5)' }}>
-                Total Repayment
+                You will recieve
               </Typography>
               {!isCalculating && calculationComplete && (
                 <Typography 
-                  variant="caption" 
                   sx={{ 
                     color: '#4CAF50',
                     backgroundColor: 'rgba(76, 175, 80, 0.1)',
@@ -2395,12 +2469,85 @@ const handleUnstake = async (amount: number): Promise<void> => {
                   </Box>
                 </Box>
 
-                <Box mt={1} display={'flex'}>
-                  <Typography variant="body1" sx={{ color: 'white' }}>
-                    <span style={{color:"gray", fontSize: '0.8rem'}}>
-                      Available : </span> {totalBalance !== null ? `${totalBalance.toFixed(2)} TON` : 'Loading...'}
-                  </Typography>
-                  <AddCircleOutlineIcon onClick={handleNavigate} fontSize='small' sx={{ ml: 1, color:'#89d9ff' }} />
+                <Box mt={1} display={'flex'} justifyContent={'space-between'} alignItems="center">
+                  <Box display={'flex'} alignItems="center">
+                    <Typography variant="body1" sx={{ color: 'white' }}>
+                      <span style={{color:"gray", fontSize: '0.8rem'}}>
+                        Available: </span> {totalBalance !== null ? `${totalBalance.toFixed(2)} TON` : 'Loading...'}
+                    </Typography>
+                    <AddCircleOutlineIcon onClick={handleNavigate} fontSize='small' sx={{ ml: 1, color:'#89d9ff' }} />
+                  </Box>
+                  
+                  <Box display={'flex'} gap={1}>
+                    {totalBalance && totalBalance > 0 ? (
+                      <>
+                        <Button
+                          size="small"
+                          onClick={() => handleAmountChange(selectedOptionIndex, totalBalance * 0.25)}
+                          sx={{
+                            minWidth: 'auto',
+                            padding: '2px 8px',
+                            fontSize: '0.75rem',
+                            color: '#6ed3ff',
+                            backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                            '&:hover': {
+                              backgroundColor: 'rgba(110, 211, 255, 0.2)',
+                            }
+                          }}
+                        >
+                          25%
+                        </Button>
+                        <Button
+                          size="small"
+                          onClick={() => handleAmountChange(selectedOptionIndex, totalBalance * 0.5)}
+                          sx={{
+                            minWidth: 'auto',
+                            padding: '2px 8px',
+                            fontSize: '0.75rem',
+                            color: '#6ed3ff',
+                            backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                            '&:hover': {
+                              backgroundColor: 'rgba(110, 211, 255, 0.2)',
+                            }
+                          }}
+                        >
+                          50%
+                        </Button>
+                        <Button
+                          size="small"
+                          onClick={() => handleAmountChange(selectedOptionIndex, totalBalance * 0.75)}
+                          sx={{
+                            minWidth: 'auto',
+                            padding: '2px 8px',
+                            fontSize: '0.75rem',
+                            color: '#6ed3ff',
+                            backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                            '&:hover': {
+                              backgroundColor: 'rgba(110, 211, 255, 0.2)',
+                            }
+                          }}
+                        >
+                          75%
+                        </Button>
+                        <Button
+                          size="small"
+                          onClick={() => handleAmountChange(selectedOptionIndex, totalBalance)}
+                          sx={{
+                            minWidth: 'auto',
+                            padding: '2px 8px',
+                            fontSize: '0.75rem',
+                            color: '#6ed3ff',
+                            backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                            '&:hover': {
+                              backgroundColor: 'rgba(110, 211, 255, 0.2)',
+                            }
+                          }}
+                        >
+                          MAX
+                        </Button>
+                      </>
+                    ) : null}
+                  </Box>
                 </Box>
 
                 {/* Yeni kutu ekleniyor */}
