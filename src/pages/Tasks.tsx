@@ -79,7 +79,7 @@ const taskLogos = [
   task7Logo,
   task8Logo,
   task9Logo,
-  task10Logo,
+  task10Logo, 
   task11Logo,
   comingSoonLogo,
 ];
@@ -698,7 +698,7 @@ const DealsComponent: React.FC = () => {
             mb: 0.5
           }}
         >
-      Watch Ad
+      Watch Ads to earn $BBLIP
         </Typography>
           <Box mt={0.5} display={'flex'} alignItems={'center'} >
           
