@@ -468,32 +468,27 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
                   }}
                   type="number"
                   variant="standard"
-                  // Sayısal klavye için inputMode ve pattern ekleyelim
+                  inputMode="decimal"
+                  onFocus={() => {
+                    window.scrollTo({
+                      top: window.scrollY - window.innerHeight * 0.4,
+                      behavior: 'smooth'
+                    });
+                  }}
                   inputProps={{
-                    inputMode: 'decimal', // Sayısal klavye için
-                    pattern: '[0-9]*', // Sadece sayıları kabul et
+                    inputMode: 'decimal',
+                    pattern: '[0-9]*',
                     style: { 
                       textAlign: 'center',
                       padding: '4px',
+                      fontSize: '1.5rem',
                     }
-                  }}
-                  // Klavye açıldığında scroll için onFocus ekleyelim
-                  onFocus={(e) => {
-                    // Klavye açıldığında elementi görünür kılmak için scroll
-                    setTimeout(() => {
-                      e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 300); // Klavyenin açılmasını beklemek için küçük bir gecikme
                   }}
                   InputProps={{
                     disableUnderline: true,
                     startAdornment: (
                       <InputAdornment position="start">
-                        <Box 
-                          sx={{
-                            borderRadius: '50%',
-                          
-                          }}
-                        >
+                        <Box sx={{ borderRadius: '50%' }}>
                           <img 
                             src={tonLogo} 
                             alt="TON" 
