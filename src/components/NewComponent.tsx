@@ -1694,80 +1694,110 @@ const handleUnstake = async (amount: number): Promise<void> => {
   position: 'relative'
 }}>
       <GradientBox>
-        <Box textAlign={'center'} position="relative">
+        <Box 
+          sx={{ 
+            display: 'flex', 
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: { xs: 2, sm: 3 },
+          }}
+        >
           {/* Live Stats Badge */}
-          <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
-            <LiveStats />
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>            <LiveStats />
           </Box>
 
+          {/* Main Title */}
           <Typography 
             className="text-gradient" 
             fontFamily={'Montserrat'} 
-            fontSize={'1.6rem'} 
-            fontWeight={'bold'}
             sx={{
+              fontSize: { xs: '1.4rem', sm: '1.6rem' },
+              fontWeight: 800,
+              letterSpacing: '-0.02em',
+              textAlign: 'center',
+              lineHeight: 1.2,
+              maxWidth: '280px',
               animation: 'fadeIn 0.5s ease-in',
-              mb: 2,
               background: 'linear-gradient(90deg, #6ED3FF 0%, #89D9FF 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
             }}
           >
-            Smart Liquidity Pool
+            Quantum DeFi Protocol™
           </Typography>
 
-          <Typography 
-            mb={3} 
-            fontSize={'0.9rem'}
-            sx={{ 
-              color: 'rgba(255,255,255,0.85)',
-              maxWidth: '320px',
-              margin: '0 auto',
-              fontWeight: 500
-            }}
-          >
-            Join to elite pools of liquidity providers earning 
-            <span className="text-gradient" style={{
-              fontWeight: 'bold',
-              padding: '0 4px'
-            }}>
-               Premium Yields
-            </span> 
-          </Typography>
-<Typography 
-       
-            fontSize={'0.9rem'}
-            sx={{ 
-              color: 'rgba(255,255,255,0.85)',
-              maxWidth: '320px',
-              margin: '0 auto',
-              lineHeight: 1.6,
-              fontWeight: 500
-            }}
-          >                 with institutional-grade protection
-     </Typography>
-
-          {/* Enhanced trust indicators */}
-          <Grid container spacing={2} sx={{ mt: 2 }}>
-            <Grid item xs={4}>
-              <Box sx={{
+          {/* Description */}
+          <Box sx={{ 
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2
+          }}>
+            <Typography 
+              sx={{ 
+                fontSize: { xs: '0.875rem', sm: '0.9rem' },
+                color: 'rgba(255,255,255,0.85)',
                 textAlign: 'center',
-                p: 2,
-                borderRadius: 2,
+                fontWeight: 500,
+                lineHeight: 1.6
+              }}
+            >
+              Experience the next evolution in DeFi with our revolutionary 
+              <span className="text-gradient" style={{
+                fontWeight: 700,
+                padding: '0 4px',
+                whiteSpace: 'nowrap'
+              }}>
+                Quantum AI Engine
+              </span>
+            </Typography>
+
+            {/* Sub Description with Icon */}
+            <Box sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 1,
+              backgroundColor: 'rgba(110, 211, 255, 0.05)',
+              padding: '8px 16px',
+              borderRadius: '12px',
+              border: '1px solid rgba(110, 211, 255, 0.1)'
+            }}>
+              <DatabaseZap style={{ fontSize: 16, color: '#6ed3ff' }} />
+              <Typography 
+                sx={{ 
+                  fontSize: { xs: '0.8rem', sm: '0.875rem' },
+                  color: 'rgba(255,255,255,0.85)',
+                  fontWeight: 500
+                }}
+              >
+                Pioneering quantum-enhanced yield optimization
+              </Typography>
+            </Box>
+          </Box>
+
+          {/* Stats Grid */}
+          <Grid   container spacing={2} sx={{ mt: { xs: -3, sm: -2 } }}>
+            <Grid item xs={6}>
+              <Box sx={{
+                p: { xs: '12px', sm: '16px' },
+                borderRadius: '12px',
                 backgroundColor: 'rgba(110, 211, 255, 0.05)',
+                textAlign: 'center'
               }}>
                 <Typography 
-                  variant="h5" 
                   className="text-gradient"
-                  sx={{ fontWeight: 'bold' }}
+                  sx={{ 
+                    fontSize: { xs: '1.1rem', sm: '1.25rem' },
+                    fontWeight: 700,
+                    lineHeight: 1.2
+                  }}
                 >
                   $275.9M
                 </Typography>
                 <Typography 
-                  variant="caption" 
                   sx={{
-                    color: 'rgba(255,255,255,0.7)',
-                    display: 'block',
+                    fontSize: { xs: '0.7rem', sm: '0.75rem' },
+                    color: 'rgba(255,255,255,0.6)',
                     mt: 0.5
                   }}
                 >
@@ -1775,26 +1805,27 @@ const handleUnstake = async (amount: number): Promise<void> => {
                 </Typography>
               </Box>
             </Grid>
-            
-            <Grid item xs={4}>
+            <Grid item xs={6}>
               <Box sx={{
-                textAlign: 'center',
-                p: 2,
-                borderRadius: 2,
+                p: { xs: '12px', sm: '16px' },
+                borderRadius: '12px',
                 backgroundColor: 'rgba(110, 211, 255, 0.05)',
+                textAlign: 'center'
               }}>
                 <Typography 
-                  variant="h5" 
                   className="text-gradient"
-                  sx={{ fontWeight: 'bold' }}
+                  sx={{ 
+                    fontSize: { xs: '1.1rem', sm: '1.25rem' },
+                    fontWeight: 700,
+                    lineHeight: 1.2
+                  }}
                 >
                   76,822
                 </Typography>
                 <Typography 
-                  variant="caption" 
                   sx={{
-                    color: 'rgba(255,255,255,0.7)',
-                    display: 'block',
+                    fontSize: { xs: '0.7rem', sm: '0.75rem' },
+                    color: 'rgba(255,255,255,0.6)',
                     mt: 0.5
                   }}
                 >
@@ -1802,33 +1833,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
                 </Typography>
               </Box>
             </Grid>
-
-            <Grid item xs={4}>
-              <Box sx={{
-                textAlign: 'center',
-                p: 2,
-                borderRadius: 2,
-                backgroundColor: 'rgba(110, 211, 255, 0.05)',
-              }}>
-                <Typography 
-                  variant="h5" 
-                  className="text-gradient"
-                  sx={{ fontWeight: 'bold' }}
-                >
-                  320x
-                </Typography>
-                <Typography 
-                  variant="caption" 
-                  sx={{
-                    color: 'rgba(255,255,255,0.7)',
-                    display: 'block',
-                    mt: 0.5
-                  }}
-                >
-                  Leverage
-                </Typography>
-              </Box>
-            </Grid>
+        
           </Grid>
         </Box>
       </GradientBox>
@@ -2291,22 +2296,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
       )}
 
         {/* Add a trust message below the CTA */}
-        <Typography 
-          variant="body2" 
-          align="center" 
-          sx={{
-            mt: 2,
-            color: 'rgba(255,255,255,0.5)',
-            fontSize: '0.75rem',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 0.5
-          }}
-        >
-          <Lock sx={{fontSize: 14}} />
-          Secure, audited, and institutional-grade
-        </Typography>
+       
       </Box>
 
 
