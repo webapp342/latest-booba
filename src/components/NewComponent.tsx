@@ -17,8 +17,10 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import "./text.css";
 import { Chip } from '@mui/material';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 import { TrustIndicator } from './TrustIndicator'; // Import TrustIndicator component
+import {  DatabaseZap } from 'lucide-react';
 
 
 
@@ -384,7 +386,7 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
   const renderTotalRepayment = () => {
     if (isCalculating) {
       return (
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
+        <Box sx={{  alignItems: 'center', justifyContent: 'center', gap: 1 }}>
           <CircularProgress size={20} sx={{ color: '#6ed3ff' }} />
           <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.7)' }}>
             Calculating...
@@ -411,19 +413,35 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
 
     return (
       <Typography 
-        variant="h5" 
-        sx={{ 
+        sx={{ textAlign:'left',
           fontWeight: 'bold',
-          animation: 'fadeIn 0.3s ease-in'
+          animation: 'fadeIn 0.3s ease-in',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 1
         }}
       >
-        <span className='text-gradient' style={{fontSize:'1.5rem'}}>
-        {totalRepayment.toFixed(2)} TON
-
-        </span>
-        <span style={{color:'gray', fontWeight:'lighter', fontSize:'0.8rem', marginLeft:5}}>
-          ~ ({(totalRepayment * 5.20).toFixed(2)} USDT)
-        </span>
+        <Box sx={{ 
+          display: 'flex',
+          alignItems: 'center'
+        }}>
+          <img 
+            src={tonLogo} 
+            alt="TON" 
+            style={{ 
+              width: '24px', 
+              height: '24px',
+              filter: 'drop-shadow(0 4px 8px rgba(110,211,255,0.2))',
+              marginRight: '8px'
+            }} 
+          />
+          <span className='text-gradient' style={{fontSize:'1.5rem'}}>
+            {totalRepayment.toFixed(2)}
+          </span>
+          <span style={{color:'gray', fontWeight:'lighter', fontSize:'0.8rem', marginLeft:5}}>
+            ~ ({(totalRepayment * 5.20).toFixed(2)} USDT)
+          </span>
+        </Box>
       </Typography>
     );
   };
@@ -449,7 +467,7 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
           
           {/* Header Section */}
       
-          {/* Amount Display Section */}   
+          {/* Amount Display Section */}    
           <AmountDisplay>
             <Box 
               sx={{
@@ -461,6 +479,7 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
             >
               <Box sx={{ width: '100%' }}>
                 <TextField
+                
                   value={stakingData[index].amount}
                   onChange={(e) => {
                     const newValue = parseFloat(e.target.value);
@@ -481,16 +500,21 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
                     inputMode: 'decimal',
                     pattern: '[0-9]*',
                     style: { 
-                      textAlign: 'center',
+                      textAlign: 'left',
                       padding: '4px',
                       fontSize: '1.5rem',
+                      paddingLeft: '32px'
                     } 
                   }}
                   InputProps={{
                     disableUnderline: true,
                     startAdornment: (
                       <InputAdornment position="start">
-                        <Box sx={{ borderRadius: '50%' }}>
+                        <Box sx={{ 
+                          borderRadius: '50%',
+                          position: 'absolute',
+                          left: '8px'
+                        }}>
                           <img 
                             src={tonLogo} 
                             alt="TON" 
@@ -581,54 +605,7 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
             <Box display={'flex'} gap={1}>
               {totalBalance && totalBalance > 0 ? (
                 <>
-                  <Button
-                    size="small"
-                    onClick={() => handleAmountChange(index, totalBalance * 0.25)}
-                    sx={{
-                      minWidth: 'auto',
-                      padding: '2px 8px',
-                      fontSize: '0.75rem',
-                      color: '#6ed3ff',
-                      backgroundColor: 'rgba(110, 211, 255, 0.1)',
-                      '&:hover': {
-                        backgroundColor: 'rgba(110, 211, 255, 0.2)',
-                      }
-                    }}
-                  >
-                    25%
-                  </Button>
-                  <Button
-                    size="small"
-                    onClick={() => handleAmountChange(index, totalBalance * 0.5)}
-                    sx={{
-                      minWidth: 'auto',
-                      padding: '2px 8px',
-                      fontSize: '0.75rem',
-                      color: '#6ed3ff',
-                      backgroundColor: 'rgba(110, 211, 255, 0.1)',
-                      '&:hover': {
-                        backgroundColor: 'rgba(110, 211, 255, 0.2)',
-                      }
-                    }}
-                  >
-                    50%
-                  </Button>
-                  <Button
-                    size="small"
-                    onClick={() => handleAmountChange(index, totalBalance * 0.75)}
-                    sx={{
-                      minWidth: 'auto',
-                      padding: '2px 8px',
-                      fontSize: '0.75rem',
-                      color: '#6ed3ff',
-                      backgroundColor: 'rgba(110, 211, 255, 0.1)',
-                      '&:hover': {
-                        backgroundColor: 'rgba(110, 211, 255, 0.2)',
-                      }
-                    }}
-                  >
-                    75%
-                  </Button>
+               
                   <Button
                     size="small"
                     onClick={() => handleAmountChange(index, totalBalance)}
@@ -643,7 +620,7 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
                       }
                     }}
                   >
-                    MAX
+                   Use Max
                   </Button>
                 </>
               ) : null}
@@ -653,52 +630,55 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
             </Box>
           </AmountDisplay>
 
-          {/* Stats Section */}
-          <Grid container spacing={2} sx={{ mb: 2 }}>
-            <Grid item xs={6}>
-              <Box sx={{ 
-                p: 1.5, 
-                borderRadius: 2,
-                backgroundColor: 'rgba(110, 211, 255, 0.05)',
-              }}>
-                <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.5)' }}>
-                  APY
-                </Typography>
-                <Typography 
-                  variant="h6" 
-                  className="text-gradient"
-                  sx={{ fontWeight: 'bold' }}
-                >
-                  {calculateAPY(stakingData[index].amount, option.period)}%
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid item xs={6}>
-              <Box sx={{ 
-                p: 1.5, 
-                borderRadius: 2,
-                backgroundColor: 'rgba(110, 211, 255, 0.05)',
-              }}>
-                <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.5)' }}>
-                  Leverage
-                </Typography>
-                <Typography 
-                  variant="h6" 
-                  className="text-gradient"
-                  sx={{ fontWeight: 'bold' }}
-                >
-                  {calculateLeverage(stakingData[index].amount, option.period)}x
-                </Typography>
-              </Box>
-            </Grid>
-          </Grid>
+
+
+
+                  <Box sx={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'space-between',
+                    backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                    padding: '16px',
+                    borderRadius: '12px',
+                    mt: 3
+                  }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <DatabaseZap  style={{ fontSize: 14, color: '#6ed3ff' }}/>
+            <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.7)' }}>
+              Annual percentage yield
+            </Typography>
+          </Box>
+           <Box sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 0.5,
+                  backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                  padding: '2px 8px',
+                  borderRadius: '12px',
+                }}>
+                  <LocalFireDepartmentIcon sx={{ fontSize: 14, color: '#6ed3ff' }} />
+                  <Typography 
+                    variant="caption" 
+                    className="text-gradient"
+                    sx={{ 
+                      fontWeight: 'bold',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                     {calculateAPY(stakingData[index].amount, option.period)}%
+                  </Typography>
+                </Box>
+ 
+        </Box>
 
           {/* Total Repayment Section */}
           <Box sx={{ mt: 2, p: 2, borderRadius: 2, backgroundColor: 'rgba(110, 211, 255, 0.05)' }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
-              <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.5)' }}>
-                You will recieve
-              </Typography>
+             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.7)' }}>
+              Total to Repay
+            </Typography>
+          </Box>
               {!isCalculating && calculationComplete && (
                 <Typography 
                   sx={{ 
@@ -902,7 +882,7 @@ const StatsAndTrust = () => {
      
 
       {/* Güven Göstergeleri */}
-      <Typography variant="h6" className="text-gradient" sx={{ mt: 4, mb: 2 }}>
+      <Typography variant="h6" className="text-gradient" sx={{ mt: 4, mb: 1 }}>
         Security & Trust
       </Typography>
       <Grid container spacing={2}>
@@ -2091,7 +2071,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
               {/* Total Repay */}
               <Box mb={-1} mt={2} display={'flex'} justifyContent={'center'}>
                 <Typography textAlign={'center'} variant="body1">
-                  <span style={{color:'gray', marginRight:'5px'}}>Total Repay: </span>
+                  <span style={{color:'gray', marginRight:'5px'}}>Total to Repay: </span>
                   <span style={{color:'#00c6ff'}}>{totalRepay} TON </span>
                   +
                   <span style={{color:'#67f177'}}> {(stake.amount * (stake.apy) * (2))} BBLIP</span>
@@ -2336,261 +2316,359 @@ const handleUnstake = async (amount: number): Promise<void> => {
        <StatsAndTrust />
 
 
-      {/* FAQ Section */}
-      <Typography 
-        variant="h3" 
-        component="h3" 
-        align="left" 
-        sx={{ mb: 2, mt: 4, textAlign: 'left', fontWeight: 'bold', textTransform: 'uppercase', fontSize: '1.1rem' }}
-      >
-        FAQ
-      </Typography>
+      {/* FAQ Section with improved styling */}
+      <Box sx={{ mt: 4, mb: 4 }}>
+        <Typography 
+variant="h6"         
+          className="text-gradient"
+          sx={{ 
+            mb: 1, 
+          
+       
+            textAlign: 'left'
+          }}
+        >
+          FAQ
+        </Typography>
 
-      {leveragedStakingItems.map((item, index) => (
-        <Accordion sx={{backgroundColor:'#2f363a',color:'whitesmoke'}} key={index}>
-          <AccordionSummary expandIcon={<ExpandMoreIcon sx={{color:"#575757"}} />}>
-            <Typography variant="h6">{item.question}</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>{item.answer}</Typography>
-          </AccordionDetails>
-        </Accordion>
-      ))}
+        <Box sx={{ mt: 1 }}>
+          {leveragedStakingItems.map((item, index) => (
+            <Accordion 
+              key={index} 
+              sx={{
+                backgroundColor: 'rgba(110, 211, 255, 0.05)',
+                backgroundImage: 'linear-gradient(180deg, rgba(110, 211, 255, 0.05) 0%, rgba(26, 33, 38, 0) 100%)',
+                color: 'whitesmoke',
+                mb: 1.5,
+                border: '1px solid rgba(110, 211, 255, 0.1)',
+                borderRadius: '12px !important',
+                '&:before': {
+                  display: 'none',
+                },
+                '&.Mui-expanded': {
+                  margin: '0 0 12px 0',
+                  borderRadius: '12px !important',
+                  backgroundColor: 'rgba(110, 211, 255, 0.08)',
+                },
+                transition: 'all 0.3s ease'
+              }}
+            >
+              <AccordionSummary 
+                expandIcon={
+                  <ExpandMoreIcon 
+                    sx={{
+                      color: '#6ed3ff',
+                      transition: 'transform 0.3s ease',
+                      '&.Mui-expanded': {
+                        transform: 'rotate(180deg)'
+                      }
+                    }}
+                  />
+                }
+                sx={{
+                  borderRadius: '12px',
+                  '&.Mui-expanded': {
+                    borderBottomLeftRadius: 0,
+                    borderBottomRightRadius: 0,
+                  }
+                }}
+              >
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                  <Typography 
+                    variant="h6" 
+                    sx={{ 
+                      fontSize: '1rem',
+                      fontWeight: 600,
+                      color: '#fff'
+                    }}
+                  >
+                    {item.question}
+                  </Typography>
+                </Box>
+              </AccordionSummary>
+              <AccordionDetails
+                sx={{
+                  borderTop: '1px solid rgba(110, 211, 255, 0.1)',
+                  backgroundColor: 'rgba(110, 211, 255, 0.02)',
+                  borderBottomLeftRadius: '12px',
+                  borderBottomRightRadius: '12px',
+                  padding: '16px'
+                }}
+              >
+                <Typography 
+                  sx={{ 
+                    color: 'rgba(255,255,255,0.7)',
+                    lineHeight: 1.6,
+                    fontSize: '0.9rem'
+                  }}
+                >
+                  {item.answer}
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+          ))}
+        </Box>
+      </Box>
 
-
-      
- 
       {/* Drawer bileşeni eklendi */}
       <Drawer
         anchor="bottom"
         open={drawerOpen}
         onClose={handleCloseDrawer}
-        sx={{ backgroundColor: '#1E1E1E', transition: 'transform 0.3s ease-in-out' }} // Smooth transition
+        PaperProps={{
+          sx: {
+            borderTopLeftRadius: '16px',
+            borderTopRightRadius: '16px',
+            backgroundColor: '#1a2126',
+            backgroundImage: 'linear-gradient(180deg, rgba(110, 211, 255, 0.05) 0%, rgba(26, 33, 38, 0) 100%)',
+            maxHeight: '90vh',
+            overflowY: 'auto'
+          }
+        }}
       >
-        <Box sx={{ p: 3, display: 'flex', flexDirection: 'column', gap: 2,backgroundColor:"#1E1E1E" }}>
+        {selectedStaking && (
+          <Box sx={{ p: 3 }}>
+            {/* Header Section */}
+            <Box sx={{ 
+              mb: 3,
+              textAlign: 'center',
+              position: 'relative'
+            }}>
+              <Box sx={{
+                position: 'absolute',
+                left: 0,
+                top: '50%',
+                transform: 'translateY(-50%)',
+                zIndex: 1
+              }}>
+                <Button
+                  onClick={handleCloseDrawer}
+                  sx={{
+                    minWidth: 'auto',
+                    p: 1,
+                    color: 'rgba(255,255,255,0.7)',
+                    '&:hover': {
+                      color: '#fff',
+                      backgroundColor: 'transparent'
+                    }
+                  }}
+                >
+                  <ArrowBackIosNewIcon sx={{ fontSize: 20 }} />
+                </Button>
+              </Box>
+              <Typography variant="h5" className="text-gradient" sx={{ 
+                fontWeight: 'bold',
+                mb: 1
+              }}>
+                Confirm Subscription
+              </Typography>
+            </Box>
 
           
-      
 
-          {selectedStaking && (
-            <>
-              {/* Total Balance Card */}
-              <Card sx={{ p: 2, boxShadow: 1, borderRadius: 2, backgroundColor:"#282828" }}>
-                <Grid container spacing={2}>
-                  <Grid item xs={6}>
-                    <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'grey' }}>
-                      TON Balance
-                    </Typography>
-                    <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
-                      {totalBalance !== null ? `${totalBalance.toFixed(2)} TON` : 'Loading...'}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'grey', textAlign: 'right' }}>
-                      lbTON Balance
-                    </Typography>
-                    <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#1976d2', textAlign: 'right' }}>
-                      {lbBalance !== null ? `${lbBalance.toFixed(2)} TON` : 'Loading...'}
-                    </Typography>
-                  </Grid>
+            {/* Balance Section */}
+            <Box sx={{ 
+              mb: 3,
+              p: 2,
+              borderRadius: 2,
+              backgroundColor: 'rgba(110, 211, 255, 0.05)',
+              border: '1px solid rgba(110, 211, 255, 0.1)'
+            }}>
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.5)' }}>
+                    Available Balance
+                  </Typography>
+                  <Box display={'flex'} > 
+ <Typography variant="h6" className="text-gradient" sx={{ fontWeight: 'bold' }}>
+                    {totalBalance !== null ? `${totalBalance.toFixed(2)} TON` : 'Loading...'}
+                  </Typography>
+                    <AddCircleOutlineIcon 
+                    onClick={handleNavigate} 
+                    sx={{ 
+                      fontSize: 18, 
+                      color: '#6ed3ff',
+                      cursor: 'pointer',
+                      '&:hover': {
+                        color: '#89d9ff'
+                      }
+                    }} 
+                  />
+                  </Box>
+                 
                 </Grid>
-              </Card>
-
-              {/* Staking Details Card */}
-               <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
-                  Details
-                </Typography>
-              <Card sx={{  p: 2,backgroundColor:"#282828", boxShadow: 1, borderRadius: 2 }}>
-             
-              <Grid container  spacing={1}>
-                
-                  <Grid item xs={6}>
-                    <Typography sx={{color:"gray"}}>Duration: <span style={{color:"white",fontWeight: 'bold'}}> {selectedStaking.data.duration} {selectedStaking.data.duration > 30 ? 'Days' : 'Day'}</span> </Typography>
-                   
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Typography sx={{color:"gray"}}>Leverage: <span style={{color:"white",fontWeight: 'bold'}}>{selectedStaking.data.leverage}x</span> </Typography>
-                  </Grid>
+                <Grid item xs={6} sx={{ textAlign: 'right' }}>
+                  <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.5)' }}>
+                    lbTON Balance
+                  </Typography>
+                  <Typography variant="h6" className="text-gradient" sx={{ fontWeight: 'bold' }}>
+                    {lbBalance !== null ? `${lbBalance.toFixed(2)} TON` : 'Loading...'}
+                  </Typography>
                 </Grid>
-              </Card>
+              </Grid>
+            </Box>
 
+            {/* Investment Details */}
+            <Box sx={{ mb: 3 }}>
+              <Typography variant="subtitle2" className="text-gradient" sx={{ mb: 1 }}>
+                Investment Details
+              </Typography>
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <Box sx={{ 
+                    p: 2,
+                    borderRadius: 2,
+                    backgroundColor: 'rgba(110, 211, 255, 0.05)',
+                    border: '1px solid rgba(110, 211, 255, 0.1)'
+                  }}>
+                    <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.5)' }}>
+                      Duration
+                    </Typography>
+                    <Typography variant="h6" sx={{ color: '#fff', fontWeight: 'bold' }}>
+                      {selectedStaking.data.duration} Days
+                    </Typography>
+                  </Box>
+                </Grid>
+                <Grid item xs={6}>
+                  <Box sx={{ 
+                    p: 2,
+                    borderRadius: 2,
+                    backgroundColor: 'rgba(110, 211, 255, 0.05)',
+                    border: '1px solid rgba(110, 211, 255, 0.1)'
+                  }}>
+                    <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.5)' }}>
+                      Leverage
+                    </Typography>
+                    <Typography variant="h6" sx={{ color: '#fff', fontWeight: 'bold' }}>
+                      {selectedStaking.data.leverage}x
+                    </Typography>
+                  </Box>
+                </Grid>
+              </Grid>
+            </Box>
 
-              
-              {/* Input Field Card */}
-                <Typography  sx={{ fontWeight: 'bold', color: '#1976d2', mb:-2 }}>
-                                Adjust Staking Amount</Typography>
-
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <Box sx={{ width: '100%' }}>
-                    <TextField
-                      label=""
-                          value={selectedStaking.data.amount || '0'}
-                      onChange={(e) => {
-                        const newAmount = parseFloat(e.target.value);
-                        handleAmountChange(selectedOptionIndex, newAmount);
-                      }}
-                      sx={{ 
-                        mt: 2, 
-                        width: '100%', 
-                        backgroundColor: '#282828', // Set background color
-                        color: 'white', // Set text color
-                        fontSize: '2rem',
-                        borderRadius: 2,
-                        '& .MuiOutlinedInput-notchedOutline': {
-                          borderColor: 'transparent', // Set border color to transparent
-                        },
-                        '& .MuiInputBase-input': {
-                          color: 'white', // Ensure input text is white
-                        },
-                      }}
-                      error={!!errorMessage}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <img src={tonLogo} alt="TON Logo" style={{ width: '25px', height: '25px' }} />
-                          </InputAdornment>
-                        ),
-                        endAdornment: (
+            {/* Amount Input Section */}
+            <Box >
+              <Typography variant="subtitle2" className="text-gradient" sx={{ mb: 1 }}>
+                Investment Amount
+              </Typography>
+              <TextField
+                value={selectedStaking.data.amount || '0'}
+                onChange={(e) => {
+                  const newAmount = parseFloat(e.target.value);
+                  handleAmountChange(selectedOptionIndex, newAmount);
+                }}
+                fullWidth
+                sx={{ 
+                  backgroundColor: 'rgba(110, 211, 255, 0.05)',
+                  borderRadius: 2,
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: 2,
+                    '& fieldset': {
+                      borderColor: 'rgba(110, 211, 255, 0.1)',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: 'rgba(110, 211, 255, 0.2)',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#6ed3ff',
+                    },
+                  },
+                  '& .MuiInputBase-input': {
+                    color: '#fff',
+                    fontSize: '1.5rem',
+                    textAlign: 'left',
+                    padding: '16px',
+                    paddingLeft: '44px',
+                  }
+                }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Box sx={{ 
+                        position: 'absolute',
+                        left: 12,
+                        display: 'flex',
+                        alignItems: 'center',
+                      }}>
+                        <img src={tonLogo} alt="TON" style={{ width: '24px', height: '24px' }} />
+                      </Box>
+                    </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <Box sx={{ display: 'flex', gap: 0.5 }}>
+                        {[
+                          { value: 0.25, label: '25%' },
+                          { value: 0.5, label: '50%' },
+                          { value: 0.75, label: '75%' },
+                          { value: 1, label: '100%' }
+                        ].map((option) => (
                           <Button
-                            variant="outlined"
-                            color="primary"
-                            sx={{ ml: 1, fontSize: '1rem' }}
-                            onClick={() => { 
+                            key={option.value}
+                            size="small"
+                            onClick={() => {
                               if (totalBalance !== null) {
-                                handleAmountChange(selectedOptionIndex, totalBalance);
+                                handleAmountChange(selectedOptionIndex, totalBalance * option.value);
+                              }
+                            }}
+                            sx={{
+                              minWidth: 'auto',
+                              padding: '4px 8px',
+                              borderRadius: '8px',
+                              backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                              color: '#6ed3ff',
+                              fontSize: '0.75rem',
+                              '&:hover': {
+                                backgroundColor: 'rgba(110, 211, 255, 0.2)',
                               }
                             }}
                           >
-                           Max
+                            {option.label}
                           </Button>
-                        ),
-                      }}
-                    />
-                  </Box>
-                </Box>
+                        ))}
+                      </Box>
+                    </InputAdornment>
+                  )
+                }}
+              />
 
-                <Box mt={1} display={'flex'} justifyContent={'space-between'} alignItems="center">
-                  <Box display={'flex'} alignItems="center">
-                    <Typography variant="body1" sx={{ color: 'white' }}>
-                      <span style={{color:"gray", fontSize: '0.8rem'}}>
-                        Available: </span> {totalBalance !== null ? `${totalBalance.toFixed(2)} TON` : 'Loading...'}
+              {/* Remove Quick Amount Buttons section since we moved them to the input */}
+            </Box>
+
+            {/* Position Size */}
+            <Box sx={{ 
+              p: 1,
+              mb:3,
+              borderRadius: 2,
+            }}>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.5)' }}>
+                  Est. Position Size
+                </Typography>
+                <Typography variant="h6" className="text-gradient" sx={{ fontWeight: 'bold' }}>
+                  {parseFloat(String(selectedStaking.data.amount * selectedStaking.data.leverage || '0')).toFixed(2)} lbTON
+                </Typography>
+              </Box>
+            </Box>
+
+            {/* Earnings Projection */}
+            <Box sx={{ mb: 3 }}>
+              <Typography variant="subtitle2" className="text-gradient" sx={{ mb: 1 }}>
+                Earnings Projection
+              </Typography>
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <Box sx={{ 
+                    p: 2,
+                    borderRadius: 2,
+                    backgroundColor: 'rgba(76, 175, 80, 0.05)',
+                    border: '1px solid rgba(76, 175, 80, 0.1)'
+                  }}>
+                    <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.5)' }}>
+                      Est. Earnings
                     </Typography>
-                    <AddCircleOutlineIcon onClick={handleNavigate} fontSize='small' sx={{ ml: 1, color:'#89d9ff' }} />
-                  </Box>
-                  
-                  <Box display={'flex'} gap={1}>
-                    {totalBalance && totalBalance > 0 ? (
-                      <>
-                        <Button
-                          size="small"
-                          onClick={() => handleAmountChange(selectedOptionIndex, totalBalance * 0.25)}
-                          sx={{
-                            minWidth: 'auto',
-                            padding: '2px 8px',
-                            fontSize: '0.75rem',
-                            color: '#6ed3ff',
-                            backgroundColor: 'rgba(110, 211, 255, 0.1)',
-                            '&:hover': {
-                              backgroundColor: 'rgba(110, 211, 255, 0.2)',
-                            }
-                          }}
-                        >
-                          25%
-                        </Button>
-                        <Button
-                          size="small"
-                          onClick={() => handleAmountChange(selectedOptionIndex, totalBalance * 0.5)}
-                          sx={{
-                            minWidth: 'auto',
-                            padding: '2px 8px',
-                            fontSize: '0.75rem',
-                            color: '#6ed3ff',
-                            backgroundColor: 'rgba(110, 211, 255, 0.1)',
-                            '&:hover': {
-                              backgroundColor: 'rgba(110, 211, 255, 0.2)',
-                            }
-                          }}
-                        >
-                          50%
-                        </Button>
-                        <Button
-                          size="small"
-                          onClick={() => handleAmountChange(selectedOptionIndex, totalBalance * 0.75)}
-                          sx={{
-                            minWidth: 'auto',
-                            padding: '2px 8px',
-                            fontSize: '0.75rem',
-                            color: '#6ed3ff',
-                            backgroundColor: 'rgba(110, 211, 255, 0.1)',
-                            '&:hover': {
-                              backgroundColor: 'rgba(110, 211, 255, 0.2)',
-                            }
-                          }}
-                        >
-                          75%
-                        </Button>
-                        <Button
-                          size="small"
-                          onClick={() => handleAmountChange(selectedOptionIndex, totalBalance)}
-                          sx={{
-                            minWidth: 'auto',
-                            padding: '2px 8px',
-                            fontSize: '0.75rem',
-                            color: '#6ed3ff',
-                            backgroundColor: 'rgba(110, 211, 255, 0.1)',
-                            '&:hover': {
-                              backgroundColor: 'rgba(110, 211, 255, 0.2)',
-                            }
-                          }}
-                        >
-                          MAX
-                        </Button>
-                      </>
-                    ) : null}
-                  </Box>
-                </Box>
-
-                {/* Yeni kutu ekleniyor */}
-                <Box sx={{ 
-                  display: 'flex', 
-                  justifyContent: 'space-between', 
-                  mt: -2, 
-                  borderTop: 0, 
-                  borderRadius: '0 0 4px 4px',
-                  backgroundColor: '#1E1E1E' 
-                }}>
-                  <Typography variant="body1" sx={{ fontWeight: 'bold', color: 'gray' }}>
-                    Est. Position Size:
-                  </Typography>
-                  <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
-
-                   
-                    {parseFloat(String(selectedStaking.data.amount * selectedStaking.data.leverage || '0')).toFixed(2)} lbTON
-
-
-
-                  </Typography>
-                </Box>
-
-                 {/* Add this section to display the error message */}
-                <Box sx={{  }}>
-                  {errorMessage && (
-                    <Typography variant="body2" color="error" sx={{ textAlign: 'center' }}>
-                      {errorMessage}
-                    </Typography>
-                  )}
-                </Box>
-
-                {/* Earnings Breakdown Section */}
-                  <Typography  sx={{ fontWeight: 'bold', color: '#1976d2', mt:-2 }}>
-                    Estimated Earnings
-                  </Typography>
-                  <Box display={'flex'} justifyContent={'space-between'} gap={1}>
-                  <Box sx={{width:'49%', p: 2, border: '1px solid #1976d2', borderRadius: 2 }}>
-                    <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
-                     Earnings:
-                    </Typography>
-                    <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
+                    <Typography variant="h6" sx={{ color: '#4CAF50', fontWeight: 'bold' }}>
                       {calculateEarnings(
                         selectedStaking.data.amount,
                         selectedStaking.data.duration,
@@ -2599,12 +2677,18 @@ const handleUnstake = async (amount: number): Promise<void> => {
                       ).toFixed(2)} TON
                     </Typography>
                   </Box>
-                                      <Box sx={{ width:'49%', p: 2, border: '1px solid #1976d2', borderRadius: 2, backgroundColor: '#e3f2fd'}}>
-
-                    <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-                      Total to Repay:
+                </Grid>
+                <Grid item xs={6}>
+                  <Box sx={{ 
+                    p: 2,
+                    borderRadius: 2,
+                    backgroundColor: 'rgba(110, 211, 255, 0.05)',
+                    border: '1px solid rgba(110, 211, 255, 0.1)'
+                  }}>
+                    <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.5)' }}>
+                      Total Return
                     </Typography>
-                    <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
+                    <Typography variant="h6" className="text-gradient" sx={{ fontWeight: 'bold' }}>
                       {(
                         calculateEarnings(
                           selectedStaking.data.amount,
@@ -2615,86 +2699,129 @@ const handleUnstake = async (amount: number): Promise<void> => {
                       ).toFixed(2)} TON
                     </Typography>
                   </Box>
-                  </Box>
-                
-                
+                </Grid>
+              </Grid>
+            </Box>
 
+            {/* Action Buttons */}
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <Button
+                variant="outlined"
+                onClick={handleCloseDrawer}
+                sx={{
+                  flex: 1,
+                  borderColor: 'rgba(110, 211, 255, 0.2)',
+                  color: '#6ed3ff',
+                  '&:hover': {
+                    borderColor: 'rgba(110, 211, 255, 0.4)',
+                    backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                  }
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                onClick={handleStartStaking}
+                disabled={
+                  selectedStaking === null ||
+                  selectedStaking.data.amount < stakingOptions[selectedOptionIndex].tonRange.min ||
+                  selectedStaking.data.amount > stakingOptions[selectedOptionIndex].tonRange.max ||
+                  (totalBalance !== null && selectedStaking.data.amount > totalBalance)
+                }
+                sx={{
+                  flex: 2,
+                  backgroundColor: '#6ed3ff',
+                  color: '#121212',
+                  fontWeight: 'bold',
+                  '&:hover': {
+                    backgroundColor: '#89d9ff',
+                  },
+                  '&.Mui-disabled': {
+                    backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                    color: 'rgba(255,255,255,0.3)',
+                  }
+                }}
+              >
+                Confirm & Subscribe
+              </Button>
+            </Box>
 
-                {/* Start Staking Button */}
-                <Box sx={{gap:1, display: 'flex', justifyContent: 'space-between', mt: 2 }}>
-                  <Button
-                    variant="outlined"
-                    color="error"
-                    sx={{ width: '25%', borderRadius: 2 }}
-                    onClick={handleCloseDrawer} // Close the drawer on click
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    sx={{
-                      width: '75%',
-                      borderRadius: 2,
-                      backgroundColor: selectedStaking === null ||
-                        selectedStaking.data.amount < stakingOptions[selectedOptionIndex].tonRange.min || 
-                        selectedStaking.data.amount > stakingOptions[selectedOptionIndex].tonRange.max ||
-                        (totalBalance !== null && selectedStaking.data.amount > totalBalance)
-                        ? 'gray !important' // Background color when disabled
-                        : '#89d9ff !important', // Background color when enabled
-                      color: selectedStaking === null ||
-                        selectedStaking.data.amount < stakingOptions[selectedOptionIndex].tonRange.min ||
-                        selectedStaking.data.amount > stakingOptions[selectedOptionIndex].tonRange.max ||
-                        (totalBalance !== null && selectedStaking.data.amount > totalBalance)
-                        ? 'white !important' // Text color when disabled
-                        : 'black !important', // Text color when enabled
-                      opacity: selectedStaking === null ||
-                        selectedStaking.data.amount < stakingOptions[selectedOptionIndex].tonRange.min ||
-                        selectedStaking.data.amount > stakingOptions[selectedOptionIndex].tonRange.max ||
-                        (totalBalance !== null && selectedStaking.data.amount > totalBalance)
-                        ? 0.6 // Reduced opacity when disabled
-                        : 1, // Full opacity when enabled
-                      filter: selectedStaking === null ||
-                        selectedStaking.data.amount < stakingOptions[selectedOptionIndex].tonRange.min ||
-                        selectedStaking.data.amount > stakingOptions[selectedOptionIndex].tonRange.max ||
-                        (totalBalance !== null && selectedStaking.data.amount > totalBalance)
-                        ? 'blur(2px)' // Blur effect when disabled
-                        : 'none', // No blur when enabled
-                    }} 
-                    onClick={handleStartStaking} 
-                    disabled={
-                      selectedStaking === null ||
-                      selectedStaking.data.amount < stakingOptions[selectedOptionIndex].tonRange.min ||
-                      selectedStaking.data.amount > stakingOptions[selectedOptionIndex].tonRange.max ||
-                      (totalBalance !== null && selectedStaking.data.amount > totalBalance)
+            {/* Error Message */}
+            {errorMessage && (
+              <Typography 
+                variant="body2" 
+                sx={{ 
+                  color: '#ff4444',
+                  textAlign: 'center',
+                  mt: 2
+                }}
+              >
+                {errorMessage}
+              </Typography>
+            )}
+
+            {/* Insufficient Balance Message */}
+            {totalBalance !== null && selectedStaking && selectedStaking.data.amount > totalBalance && (
+              <Box sx={{ 
+                mt: 2,
+                p: 2,
+                borderRadius: 2,
+                backgroundColor: 'rgba(244, 67, 54, 0.1)',
+                border: '1px solid rgba(244, 67, 54, 0.2)'
+              }}>
+                <Typography 
+                  sx={{ 
+                    fontSize:'0.8rem',
+                    color: '#f44336',
+                    textAlign: 'center',
+                    mb: 1
+                  }}
+                >
+                  Insufficient balance for this subscription
+                </Typography>
+                <Button
+                  variant="outlined"
+                  fullWidth
+                  onClick={() => navigate("/latest-booba/spin")}
+                  sx={{
+                    borderColor: '#f44336',
+                    color: '#f44336',
+                    '&:hover': {
+                      borderColor: '#d32f2f',
+                      backgroundColor: 'rgba(244, 67, 54, 0.1)',
                     }
-                  >
-                    Confirm & Complete
-                  </Button>
-                </Box>
+                  }}
+                >
+                  Deposit Now
+                </Button>
+              </Box>
+            )}
 
-                {/* Deposit Button and Message */}
-                {totalBalance !== null && selectedStaking && selectedStaking.data.amount > totalBalance && (
-                  <Box sx={{ mt: 1 }}>
-                    <Typography variant="body2" color="error" align="center" sx={{ mb: 1 }}>
-                      You do not have enough balance
-                    </Typography>
-         
-                    <Button
-                      variant="outlined"
-                      color="error"
-                      fullWidth
-                      onClick={() => {
-                        navigate("/latest-booba/spin"); // Redirect to the specified path
-                      }}
-                    >
-                      Deposit
-                    </Button>
-                  </Box>
-                )}
-            </>
-          )}
-        </Box>
+            {/* Trust Footer */}
+            <Box sx={{ 
+              mt: 3,
+              pt: 2,
+              borderTop: '1px solid rgba(255,255,255,0.1)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 1
+            }}>
+              <Lock sx={{ fontSize: 16, color: 'rgba(255,255,255,0.5)' }} />
+              <Typography 
+                variant="caption" 
+                sx={{ 
+                  fontSize:'0.8rem',
+                  color: 'rgba(255,255,255,0.5)',
+                  textAlign: 'center'
+                }}
+              >
+                Protected by institutional-grade security
+              </Typography>
+            </Box>
+          </Box>
+        )}
       </Drawer>
 
       {/* Success Modal */}
@@ -2807,7 +2934,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
             </Box>
                  <Box display={'flex'} justifyContent={'center'}>
                         <Typography variant="body1" sx={{ color: 'gray' }}>
-                          Total Repay:    
+                          Total to Repay:    
                           <span style={{color:"#b4e6ff", marginLeft:'5px', fontSize:'1.2rem'}}>
                       {(selectedEarlyUnstake.amount - selectedEarlyUnstake.amount * 0.04).toFixed(2)} TON
 

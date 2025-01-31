@@ -70,6 +70,7 @@ const router = createBrowserRouter([
         path: "spin",
         element: <LocalStorageViewer />
       },
+       
       {
         path: "stake",
         element: <NewComponent />
