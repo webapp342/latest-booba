@@ -471,7 +471,7 @@ const StakingCard: React.FC<StakingCardProps> = React.memo(({
                   inputMode="decimal"
                   onFocus={() => {
                     window.scrollTo({
-                      top: window.scrollY - window.innerHeight * 0.4,
+                      top: window.scrollY - window.innerHeight * 0.1,
                       behavior: 'smooth'
                     });
                   }}
