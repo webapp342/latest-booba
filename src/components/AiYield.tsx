@@ -18,29 +18,34 @@ function Brand() {
   const currentLabel = navItems.find(item => item.path === location.pathname)?.label || 'Stats';
 
   return (
-    <AppBar sx={{minHeight:"10vh", backgroundColor: '#1a2126',border:"none",boxShadow:'none' }}>
-      <Box alignItems={"center"} sx={{backgroundColor: '#1a2126' }}>
-        <Box
-          top="50%"
-          left="40%"
-          width="250px"
-          height="10vh"
-          borderRadius="40%"
-          sx={{
-            background: 'radial-gradient(circle, rgba(159,223,255,0.5) 0%, rgba(0,198,255,0) 70%)',
-            transform: 'translate(60%, 90%)',
-            filter: 'blur(40px)',
-          }}
-        />
+    <AppBar sx={{
+      backgroundColor: '#1a2126',
+      border:"none",
+      boxShadow:'none',
+      position: 'relative',
+      '&::before': {
+        content: '""',
+        position: 'absolute',
+        bottom: '30%',
+        left: '50%',
+        width: '250px',
+        height: '10vh',
+        transform: 'translate(-10%, 90%)',
+        background: 'radial-gradient(circle, rgba(159,223,255,0.5) 0%, rgba(0,198,255,0) 70%)',
+        filter: 'blur(40px)',
+        pointerEvents: 'none'
+      }
+    }}>
+      <Box alignItems={"center"} sx={{backgroundColor: 'transparent', position: 'relative'}}>
         <Typography 
           variant="h1"
           sx={{
             textAlign: "center",
-            mt: "-3vh",
             fontFamily: "monospace",
             fontWeight: 700,
             fontSize: "1.4rem",
             letterSpacing: "1px",
+            position: 'relative'
           }}
         >
           {currentLabel}
