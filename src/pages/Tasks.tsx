@@ -778,6 +778,8 @@ Earn rewards by completing tasks, invite friends, watching ads, and more in our 
           </Box>
         )}
 
+      
+
         <Snackbar
           open={openSnackbar}
           autoHideDuration={3000}

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { ThemeProvider, createTheme, Tooltip } from "@mui/material";
 import QRCode from 'qrcode';
-import { Box, Typography, Button, Avatar, Drawer, Snackbar, SnackbarContent } from "@mui/material";
+import { Box, Typography, Button, Avatar,  Snackbar, SnackbarContent } from "@mui/material";
 import SwapHorizontalCircleIcon from '@mui/icons-material/SwapHorizontalCircle';import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
-import OutboundIcon from '@mui/icons-material/Outbound';import TransactionHashes from "./TransactionHashes"; // Bileşeninizin yolu
+import OutboundIcon from '@mui/icons-material/Outbound';
 import { CheckCircleOutline } from '@mui/icons-material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';import { useNavigate } from 'react-router-dom';
 import TokenSwap from "./SwapComponent"; // TokenSwap bileşenini eklediğiniz yer
@@ -13,9 +13,12 @@ import { doc, onSnapshot, getFirestore, getDoc } from "firebase/firestore";
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './firebaseConfig';
 import WebApp from "@twa-dev/sdk";
-import TwoFieldsComponent from "./TwoFieldsComponent";
 import UserAvatar from "./UserAvatar";
 import styled from "styled-components";
+import DepositDrawer from '../components/WalletDrawers/DepositDrawer';
+import WithdrawDrawer from '../components/WalletDrawers/WithdrawDrawer';
+import HistoryDrawer from '../components/WalletDrawers/HistoryDrawer';
+import SwapDrawer from '../components/WalletDrawers/SwapDrawer';
 
 
 const app = initializeApp(firebaseConfig);
@@ -143,17 +146,20 @@ const AccountEquityCard: React.FC = () => {
   const [] = useState(false); // Arama moduna girildi mi?
   const [showTokenSwap, setShowTokenSwap] = useState(false);
   const [openDepositDrawer, setOpenDepositDrawer] = useState(false);
+  const [openWithdrawDrawer, setOpenWithdrawDrawer] = useState(false);
+  const [openHistoryDrawer, setOpenHistoryDrawer] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [comment, setComment] = useState("Loading..."); // Default value for comment
+  const [, setComment] = useState("Loading..."); // Default value for comment
   const [tonPrice, setTonPrice] = useState<number | null>(null); // TON price state
-  const [qrCodeUrl, setQrCodeUrl] = useState<string>('');
+  const [, setQrCodeUrl] = useState<string>('');
   const [data, setData] = useState<Asset[]>([]); // Initialize as an empty array
   const [totalEquity, setTotalEquity] = useState<string>("0.00");
    const navigate = useNavigate();
 
-       const [open1, setOpen1] = useState(false);
+       const [] = useState(false);
 
-  const [openDrawer, setOpenDrawer] = useState(false);
+  const [] = useState(false);
+  const [openSwapDrawer, setOpenSwapDrawer] = useState(false);
 
 useEffect(() => {
       const backButton = WebApp.BackButton;
@@ -174,13 +180,7 @@ useEffect(() => {
     }, [navigate]);
 
   // Drawer'ı açma/kapama işlevi
-  const handleClick1 = () => {
-    setOpenDrawer(true);
-  };
 
-  const handleCloseDrawer1 = () => {
-    setOpenDrawer(false);
-  };
 
   
 
@@ -300,13 +300,7 @@ useEffect(() => {
 
 
    // Handle deposit drawer toggle
-   const handleDepositClick = () => {
-    setOpenDepositDrawer(true);
-  };
 
-  const handleCloseDrawer = () => {
-    setOpenDepositDrawer(false);
-  };
 
    // Snackbar for copy confirmation
    const handleSnackbarClose = () => {
@@ -363,9 +357,6 @@ useEffect(() => {
     return amount;
   };
 
-    const toggleDrawer = (state: boolean) => () => {
-    setOpen1(state);
-  };
  
 
 const GradientBox = styled(Box)(() => ({
@@ -459,7 +450,7 @@ const GradientBox = styled(Box)(() => ({
 
                   borderRadius: 2,
                 }}
-                onClick={handleDepositClick} 
+                onClick={() => setOpenDepositDrawer(true)} 
               >
                 <AddCircleIcon sx={{ fontSize: '1.5rem', color:"#89d9ff" }} />
                 Deposit
@@ -479,36 +470,19 @@ px:2,
 
                   borderRadius: 2,
                 }}
-        onClick={handleClick1}
+        onClick={() => setOpenWithdrawDrawer(true)}
       >
         <OutboundIcon sx={{ fontSize: '1.5rem', color:"#89d9ff" }} />
         Withdraw
       </Button>
 
-      {/* Drawer */}
-      <Drawer
-        anchor="bottom"
-        open={openDrawer}
-        onClose={handleCloseDrawer1}
-        sx={{
-          "& .MuiDrawer-paper": {
-            height: "auto", // İstenilen yükseklik
-            maxHeight: "90%", // Drawer'ın maksimum yüksekliği
-            overflow: "auto",
-            borderRadius: "10px 10px 0 0", // Üst köşeleri yuvarlak yapabiliriz
-          },
-        }}
-      >
-        {/* Alttan kayan drawer içerisinde TwoFieldsComponent */}
-        <TwoFieldsComponent  />
-      </Drawer> 
 
     
               <Button
               className="swap-button"
-  onClick={() => setShowTokenSwap(true)} // TokenSwap'ı göster
+  onClick={() => setOpenSwapDrawer(true)}
     sx={{
-                  flexDirection: 'column', // Stack icon and text vertically
+                  flexDirection: 'column',
                   textTransform: "none",
                 backgroundColor: 'rgba(110, 211, 255, 0.05)',
                            px:3,
@@ -525,7 +499,7 @@ color:'white',
   <>
       <Button
                   className="history-button"
-        onClick={toggleDrawer(true)}
+        onClick={() => setOpenHistoryDrawer(true)}
        sx={{
                   flexDirection: 'column', // Stack icon and text vertically
                   textTransform: "none",
@@ -543,18 +517,6 @@ ml:1,
  }} />
         History
       </Button>
-      <Drawer
-        anchor="bottom"
-        open={open1}
-        onClose={toggleDrawer(false)}
-        PaperProps={{
-          sx: { borderRadius: "16px 16px 0 0", padding: 2, maxHeight: "50%" },
-        }}
-      >
-        <Box>
-          <TransactionHashes />
-        </Box>
-      </Drawer>
     </>
 
 
@@ -693,146 +655,27 @@ ml:1,
 </Box>
 
 
-{/* Bottom Drawer for Deposit Information */}
-<Drawer
-  anchor="bottom"
+{/* Add the new drawer components */}
+<DepositDrawer
   open={openDepositDrawer}
-  onClose={handleCloseDrawer}
->
-  <Box sx={{ padding: 2, position: 'relative' }}>
-    {/* Close Icon */}
-    
-    {/* Header Section */}
-    <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        position: 'relative',
-      }}
-    >
-      {/* Typography Header */}
-      <Typography  sx={{ textAlign: 'left', flexGrow: 1 , fontSize: '1.5rem', }}>
-        Deposit TON
-      </Typography>
+  onClose={() => setOpenDepositDrawer(false)}
+/>
 
-      {/* Close Icon Button */}
-      <Button
-        onClick={handleCloseDrawer}
-        sx={{
-          fontSize: '1.5rem',
-          position: 'absolute',
-          right: -12,
-        }}
-      >
-        ✖
-      </Button>
-    </Box>
+<WithdrawDrawer
+  open={openWithdrawDrawer}
+  onClose={() => setOpenWithdrawDrawer(false)}
+/>
 
+<HistoryDrawer
+  open={openHistoryDrawer}
+  onClose={() => setOpenHistoryDrawer(false)}
+/>
 
-        {/* Image Box */}
-        <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 2,
-        bgcolor:'white',
-        width:'75%',
-        ml:'15%',
-                  borderRadius:4,
-
-      }}
-    >
-     <Box
-        sx={{
-          width: '90%',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        {qrCodeUrl ? (
-          <img src={qrCodeUrl} alt="QR Code" style={{minWidth:'100%',minHeight:'100%',}} />
-        ) : (
-          <span>Loading QR Code...</span>
-        )}
-      </Box>
-    </Box>
-
-    
-
-    {/* Account Number */}
-    <Box
-      sx={{
-        mt:4,
-        display: 'flex',
-        mx:1,
-        fontFamily: 'monospace',
-        textAlign: 'center',
-        alignItems: "center",
-        justifyContent: 'space-between',
-      }}
-    >
-<span style={{ color: "grey", fontSize: "0.9rem"  }}>
-    Address: <span style={{ color: "white" , marginLeft: 12 , fontSize: "1rem"  , fontWeight: 'bolder'}}>UQDppAs...BNn2</span>
-  </span>       <Button
-        onClick={() => {
-          navigator.clipboard.writeText("UQDppAsjyioMu23LIEaFBm5g5o5oNjRft99oe4gfv-c9BNn2");
-          setSnackbarOpen(true);
-        }}
-      >
-        Copy
-      </Button>
-    </Box>
-
-    {/* Deposit Amount */}
-    <Box
-      sx={{
-        mt:1,
-        display: 'flex',
-        mx:1,
-                fontFamily: 'monospace',
-
-        alignItems: "center",
-        justifyContent: 'space-between',
-        marginBottom: 4,
-      }}
-    >
-<span style={{ color: "grey", fontSize: "0.9rem" }}>
-  Comment: <span style={{ color: "white", marginLeft: 12, fontSize: "1rem", fontWeight: 'bolder' }}>{comment}</span>
-</span>
-
-      <Button
-        onClick={() => {
-      navigator.clipboard.writeText(comment);          
-      setSnackbarOpen(true);
-        }}
-      >
-        Copy
-      </Button>
-    </Box>
-
-    <Box
-      sx={{
-      
-        display: 'relative',
-
-        textAlign: "center",
-        alignItems: "center",
-        color: 'grey',
-                fontFamily: 'monospace',
-         mt:-2,
-        marginBottom: 1,
-      }}
-    >
-      <h6>Please carefully send your $TON to these exact addresses</h6>
-     
-    </Box>
-
-
-  </Box>
-</Drawer>
+{/* Add the new SwapDrawer component */}
+<SwapDrawer
+  open={openSwapDrawer}
+  onClose={() => setOpenSwapDrawer(false)}
+/>
 
             <Snackbar
         open={snackbarOpen}
