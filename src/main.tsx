@@ -21,7 +21,9 @@ import Stats from "./components/Stats.tsx";
 import Statistics from "./components/Statistics.tsx";
 import Layout from "./layouts/StatsLayout.tsx";
 import { OnboardingProvider } from './components/Onboarding/OnboardingProvider'
-import { GuidedTourProvider } from './components/GuidedTour/GuidedTourProvider'
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import ErrorBoundary from "./components/ErrorBoundary.tsx";
+import { Box, Typography } from '@mui/material';
 
 if (WebApp.isVersionAtLeast('8.0') && 
     WebApp.platform !== 'tdesktop' && 
@@ -34,16 +36,64 @@ if (WebApp.isVersionAtLeast('8.0') &&
     WebApp.expand();
 }
 
+// MUI theme configuration
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#2196F3',
+      light: '#64B5F6',
+      dark: '#1976D2',
+    },
+    secondary: {
+      main: '#f50057',
+    },
+    error: {
+      main: '#f44336',
+    },
+    background: {
+      default: '#fff',
+      paper: '#f5f5f5',
+    },
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+        },
+      },
+    },
+  },
+});
+
+const DefaultErrorElement = () => (
+  <Box
+    sx={{
+      p: 4,
+      textAlign: 'center',
+      color: 'text.secondary',
+    }}
+  >
+    <Typography variant="h5" gutterBottom>
+      Oops! Something went wrong.
+    </Typography>
+    <Typography>
+      Please try refreshing the page or contact support if the problem persists.
+    </Typography>
+  </Box>
+);
+
 const router = createBrowserRouter([
   {
     path: "/latest-booba",
     element: (
-      <OnboardingProvider>
-        <GuidedTourProvider>
-          <App />
-        </GuidedTourProvider>
-      </OnboardingProvider>
+      <ErrorBoundary>
+        <OnboardingProvider>
+            <App />
+        </OnboardingProvider>
+      </ErrorBoundary>
     ),
+    errorElement: <DefaultErrorElement />,
     children: [
       {
         path: "",
@@ -117,6 +167,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <ThemeProvider theme={theme}>
+      <RouterProvider router={router} />
+    </ThemeProvider>
   </React.StrictMode>
 );

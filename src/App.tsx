@@ -6,10 +6,36 @@ import Loading from "./pages/Loading"; // Loading bileşenini import edin
 import "./index.css"; // Global stil dosyasını import edin
 import "slick-carousel/slick/slick.css"; // Basic styles for the slider
 import "slick-carousel/slick/slick-theme.css"; // Theme styles for the slider
-import { TonConnectUIProvider} from "@tonconnect/ui-react";
-import { ThemeProvider } from '@mui/material/styles';
-import theme from './pages/theme'; // Yukarıda oluşturduğunuz tema
+import { TonConnectUIProvider } from "@tonconnect/ui-react";
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Brand from './components/AiYield';
+import { SupportButton } from './components/Support/SupportButton';
+
+// MUI theme configuration
+const muiTheme = createTheme({
+  typography: {
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    h1: {
+      fontSize: '2rem',
+      fontWeight: 500,
+    },
+    h2: {
+      fontSize: '1.75rem',
+      fontWeight: 500,
+    },
+    body1: {
+      fontSize: '1rem',
+    },
+  },
+  palette: {
+    primary: {
+      main: '#2196F3',
+    },
+    secondary: {
+      main: '#f50057',
+    },
+  },
+});
 
 function App() {
     const [loading, setLoading] = useState(true);
@@ -43,7 +69,7 @@ function App() {
     }, [location.pathname]);
 
     return (
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={muiTheme}>
             <TonConnectUIProvider manifestUrl={manifestUrl} actionsConfiguration={{
                 twaReturnUrl: 'https://t.me/BoobaBlipBot'
             }}>
@@ -60,6 +86,7 @@ function App() {
 
                     {/* Alt gezinme */}
                     <SimpleBottomNavigation />
+                    <SupportButton />
                 </div>
             </TonConnectUIProvider>
         </ThemeProvider>
