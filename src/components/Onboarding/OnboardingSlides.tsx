@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, Button, IconButton } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import SwapHorizontalCircleIcon from '@mui/icons-material/SwapHorizontalCircle';
@@ -8,30 +8,193 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import styled from '@emotion/styled';
 
+// Telegram WebApp types
+declare global {
+  interface Window {
+    Telegram?: {
+      WebApp?: {
+        initDataUnsafe?: {
+          user?: {
+            language_code?: string;
+          };
+        };
+      };
+    };
+  }
+}
+
+type SupportedLanguages = 'en' | 'tr' | 'hi' | 'ru' | 'th' | 'es';
+
+interface SlideContent {
+  title: string;
+  description: string;
+  highlight: string;
+}
+
+interface LanguageContent {
+  slides: SlideContent[];
+  getStarted: string;
+}
+
+type ContentType = Record<SupportedLanguages, LanguageContent>;
+
 interface OnboardingSlidesProps {
   onComplete: () => void;
 }
 
-const slides = [
-  {
-    title: "Welcome to Booba Blip",
-    description: "Your gateway to next-level DeFi experience",
-    icon: <WalletIcon sx={{ fontSize: 48, color: '#6ed3ff' }} />,
-    highlight: "Secure • Fast • Rewarding"
+// Multi-language content
+const content: ContentType = {
+  en: {
+    slides: [
+      {
+        title: "Welcome to Booba Blip",
+        description: "Your gateway to the future of DeFi. Join us on this exciting journey of innovation and rewards.",
+        highlight: "Vision • Innovation • Community"
+      },
+      {
+        title: "What is BBLIP?",
+        description: "BBLIP token is coming soon with TGE (Token Generation Event). Pre-launch price is set at $0.07 USDT, allowing early calculation of your earned rewards.",
+        highlight: "Pre-Launch • TGE Coming Soon • $0.07 USDT"
+      },
+      {
+        title: "Earning Methods & Tasks",
+        description: "Complete tasks, participate in activities, and grow your BBLIP holdings. Your rewards are calculated at $0.07 USDT per BBLIP.",
+        highlight: "Daily Tasks • Social Activities • Rewards"
+      },
+      {
+        title: "VIP User Benefits",
+        description: "Unlock exclusive advantages and enhanced rewards as a VIP user. Special access to features and priority benefits await.",
+        highlight: "Exclusive Access • Enhanced Rewards • Priority Benefits"
+      }
+    ],
+    getStarted: "Get Started"
   },
-  {
-    title: "Swap & Earn",
-    description: "Trade tokens seamlessly with our intuitive swap interface",
-    icon: <SwapHorizontalCircleIcon sx={{ fontSize: 48, color: '#6ed3ff' }} />,
-    highlight: "Low fees • Best rates • Instant swaps"
+  tr: {
+    slides: [
+      {
+        title: "Booba Blip'e Hoş Geldiniz",
+        description: "DeFi'nin geleceğine açılan kapınız. Bu heyecan verici inovasyon ve ödül yolculuğuna katılın.",
+        highlight: "Vizyon • İnovasyon • Topluluk"
+      },
+      {
+        title: "BBLIP Nedir?",
+        description: "BBLIP token yakında TGE (Token Üretim Etkinliği) ile geliyor. Ön lansman fiyatı 0.07 USDT olarak belirlenmiş olup, kazanılan ödülleriniz bu değer üzerinden hesaplanmaktadır.",
+        highlight: "Ön Lansman • TGE Yakında • 0.07 USDT"
+      },
+      {
+        title: "Kazanç Yöntemleri ve Görevler",
+        description: "Görevleri tamamlayın, etkinliklere katılın ve BBLIP varlığınızı artırın. Ödülleriniz BBLIP başına 0.07 USDT üzerinden hesaplanır.",
+        highlight: "Günlük Görevler • Sosyal Aktiviteler • Ödüller"
+      },
+      {
+        title: "VIP Kullanıcı Avantajları",
+        description: "VIP kullanıcı olarak özel avantajlar ve geliştirilmiş ödüller kazanın. Özel erişim ve öncelikli faydalar sizi bekliyor.",
+        highlight: "Özel Erişim • Geliştirilmiş Ödüller • Öncelikli Faydalar"
+      }
+    ],
+    getStarted: "Başla"
   },
-  {
-    title: "Complete Tasks",
-    description: "Earn rewards by completing simple tasks and inviting friends",
-    icon: <TaskAltIcon sx={{ fontSize: 48, color: '#6ed3ff' }} />,
-    highlight: "Daily rewards • Social tasks • Referral bonuses"
+  hi: {
+    slides: [
+      {
+        title: "बूबा ब्लिप में आपका स्वागत है",
+        description: "DeFi के भविष्य का आपका गेटवे। इनोवेशन और रिवॉर्ड्स की इस रोमांचक यात्रा में शामिल हों।",
+        highlight: "विजन • इनोवेशन • कम्युनिटी"
+      },
+      {
+        title: "BBLIP क्या है?",
+        description: "BBLIP टोकन जल्द ही TGE (टोकन जनरेशन इवेंट) के साथ आ रहा है। प्री-लॉन्च मूल्य $0.07 USDT निर्धारित है, जिससे आपके अर्जित रिवॉर्ड्स की गणना की जा सकती है।",
+        highlight: "प्री-लॉन्च • TGE जल्द आ रहा है • $0.07 USDT"
+      },
+      {
+        title: "कमाई के तरीके और टास्क",
+        description: "टास्क पूरे करें, गतिविधियों में भाग लें और अपनी BBLIP होल्डिंग्स बढ़ाएं। आपके रिवॉर्ड्स की गणना $0.07 USDT प्रति BBLIP पर की जाती है।",
+        highlight: "दैनिक टास्क • सोशल एक्टिविटीज • रिवॉर्ड्स"
+      },
+      {
+        title: "VIP यूजर बेनिफिट्स",
+        description: "VIP यूजर के रूप में एक्सक्लूसिव एडवांटेज और एन्हांस्ड रिवॉर्ड्स अनलॉक करें। स्पेशल एक्सेस और प्राथमिकता लाभ आपका इंतजार कर रहे हैं।",
+        highlight: "एक्सक्लूसिव एक्सेस • एन्हांस्ड रिवॉर्ड्स • प्राथमिकता लाभ"
+      }
+    ],
+    getStarted: "शुरू करें"
+  },
+  ru: {
+    slides: [
+      {
+        title: "Добро пожаловать в Booba Blip",
+        description: "Ваш путь в будущее DeFi. Присоединяйтесь к нашему захватывающему путешествию инноваций и вознаграждений.",
+        highlight: "Видение • Инновации • Сообщество"
+      },
+      {
+        title: "Что такое BBLIP?",
+        description: "Токен BBLIP скоро появится с TGE (событием генерации токенов). Цена пре-запуска установлена на уровне $0.07 USDT, что позволяет рассчитывать ваши заработанные вознаграждения.",
+        highlight: "Пре-запуск • TGE Скоро • $0.07 USDT"
+      },
+      {
+        title: "Способы Заработка и Задания",
+        description: "Выполняйте задания, участвуйте в активностях и увеличивайте ваши holdings BBLIP. Ваши вознаграждения рассчитываются по курсу $0.07 USDT за BBLIP.",
+        highlight: "Ежедневные Задания • Социальные Активности • Награды"
+      },
+      {
+        title: "Преимущества VIP Пользователей",
+        description: "Разблокируйте эксклюзивные преимущества и повышенные вознаграждения как VIP пользователь. Вас ждут специальный доступ и приоритетные бонусы.",
+        highlight: "Эксклюзивный Доступ • Повышенные Награды • Приоритетные Бонусы"
+      }
+    ],
+    getStarted: "Начать"
+  },
+  th: {
+    slides: [
+      {
+        title: "ยินดีต้อนรับสู่ Booba Blip",
+        description: "ประตูสู่อนาคตของ DeFi เข้าร่วมการเดินทางที่น่าตื่นเต้นของนวัตกรรมและรางวัล",
+        highlight: "วิสัยทัศน์ • นวัตกรรม • ชุมชน"
+      },
+      {
+        title: "BBLIP คืออะไร?",
+        description: "โทเค็น BBLIP กำลังจะมาพร้อมกับ TGE (Token Generation Event) ราคาก่อนเปิดตัวถูกกำหนดไว้ที่ $0.07 USDT ช่วยให้คำนวณรางวัลที่คุณได้รับ",
+        highlight: "ก่อนเปิดตัว • TGE เร็วๆ นี้ • $0.07 USDT"
+      },
+      {
+        title: "วิธีการรับรางวัลและภารกิจ",
+        description: "ทำภารกิจให้สำเร็จ เข้าร่วมกิจกรรม และเพิ่มการถือครอง BBLIP ของคุณ รางวัลของคุณจะถูกคำนวณที่ $0.07 USDT ต่อ BBLIP",
+        highlight: "ภารกิจประจำวัน • กิจกรรมทางสังคม • รางวัล"
+      },
+      {
+        title: "สิทธิประโยชน์ผู้ใช้ VIP",
+        description: "ปลดล็อกสิทธิพิเศษและรางวัลที่เพิ่มขึ้นในฐานะผู้ใช้ VIP การเข้าถึงพิเศษและสิทธิประโยชน์ที่มีความสำคัญกำลังรอคุณอยู่",
+        highlight: "การเข้าถึงพิเศษ • รางวัลที่เพิ่มขึ้น • สิทธิประโยชน์ที่สำคัญ"
+      }
+    ],
+    getStarted: "เริ่มต้น"
+  },
+  es: {
+    slides: [
+      {
+        title: "Bienvenido a Booba Blip",
+        description: "Tu puerta de entrada al futuro de DeFi. Únete a este emocionante viaje de innovación y recompensas.",
+        highlight: "Visión • Innovación • Comunidad"
+      },
+      {
+        title: "¿Qué es BBLIP?",
+        description: "El token BBLIP llegará pronto con TGE (Evento de Generación de Tokens). El precio de pre-lanzamiento está fijado en $0.07 USDT, permitiendo el cálculo temprano de tus recompensas ganadas.",
+        highlight: "Pre-Lanzamiento • TGE Próximamente • $0.07 USDT"
+      },
+      {
+        title: "Métodos de Ganancia y Tareas",
+        description: "Completa tareas, participa en actividades y aumenta tus holdings de BBLIP. Tus recompensas se calculan a $0.07 USDT por BBLIP.",
+        highlight: "Tareas Diarias • Actividades Sociales • Recompensas"
+      },
+      {
+        title: "Beneficios de Usuario VIP",
+        description: "Desbloquea ventajas exclusivas y recompensas mejoradas como usuario VIP. Te esperan acceso especial y beneficios prioritarios.",
+        highlight: "Acceso Exclusivo • Recompensas Mejoradas • Beneficios Prioritarios"
+      }
+    ],
+    getStarted: "Comenzar"
   }
-];
+};
 
 const SlideContainer = styled(Box)({
   height: '100vh',
@@ -48,10 +211,18 @@ interface DotProps {
   active: boolean;
 }
 
+const NavigationContainer = styled(Box)({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: '16px',
+  marginTop: '32px',
+});
+
 const ProgressDots = styled(Box)({
   display: 'flex',
   gap: '8px',
-  marginTop: '32px',
+  alignItems: 'center', // Align dots vertically with arrows
 });
 
 const Dot = styled(Box)<DotProps>(({ active }) => ({
@@ -86,9 +257,25 @@ const GetStartedButton = styled(Button)({
 
 const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({ onComplete }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [language, setLanguage] = useState<SupportedLanguages>('en');
+
+  useEffect(() => {
+    const userLang = window.Telegram?.WebApp?.initDataUnsafe?.user?.language_code as SupportedLanguages | undefined;
+    if (userLang && Object.keys(content).includes(userLang)) {
+      setLanguage(userLang);
+    }
+  }, []);
+
+  const currentContent = content[language];
+  const icons = [
+    <WalletIcon sx={{ fontSize: 48, color: '#6ed3ff' }} />,
+    <SwapHorizontalCircleIcon sx={{ fontSize: 48, color: '#6ed3ff' }} />,
+    <TaskAltIcon sx={{ fontSize: 48, color: '#6ed3ff' }} />,
+    <WalletIcon sx={{ fontSize: 48, color: '#6ed3ff' }} />
+  ];
 
   const handleNext = () => {
-    if (currentSlide === slides.length - 1) {
+    if (currentSlide === currentContent.slides.length - 1) {
       onComplete();
     } else {
       setCurrentSlide(prev => prev + 1);
@@ -140,7 +327,7 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({ onComplete }) => {
         >
           <SlideContainer>
             <Box sx={{ mb: 4 }}>
-              {slides[currentSlide].icon}
+              {icons[currentSlide]}
             </Box>
             
             <Typography 
@@ -153,7 +340,7 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({ onComplete }) => {
                 WebkitTextFillColor: 'transparent'
               }}
             >
-              {slides[currentSlide].title}
+              {currentContent.slides[currentSlide].title}
             </Typography>
             
             <Typography 
@@ -164,7 +351,7 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({ onComplete }) => {
                 maxWidth: '280px'
               }}
             >
-              {slides[currentSlide].description}
+              {currentContent.slides[currentSlide].description}
             </Typography>
             
             <Typography 
@@ -174,7 +361,7 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({ onComplete }) => {
                 opacity: 0.8
               }}
             >
-              {slides[currentSlide].highlight}
+              {currentContent.slides[currentSlide].highlight}
             </Typography>
 
             <Box sx={{ 
@@ -187,12 +374,7 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({ onComplete }) => {
               alignItems: 'center',
               px: 3
             }}>
-              <Box sx={{ 
-                display: 'flex',
-                alignItems: 'center',
-                gap: 2,
-                mb: 3
-              }}>
+              <NavigationContainer>
                 <NavigationButton 
                   onClick={handlePrevious}
                   disabled={currentSlide === 0}
@@ -201,7 +383,7 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({ onComplete }) => {
                 </NavigationButton>
                 
                 <ProgressDots>
-                  {slides.map((_, index) => (
+                  {currentContent.slides.map((_: SlideContent, index: number) => (
                     <Dot key={index} active={currentSlide === index} />
                   ))}
                 </ProgressDots>
@@ -209,15 +391,15 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({ onComplete }) => {
                 <NavigationButton onClick={handleNext}>
                   <ArrowForwardIcon />
                 </NavigationButton>
-              </Box>
+              </NavigationContainer>
 
-              {currentSlide === slides.length - 1 && (
+              {currentSlide === currentContent.slides.length - 1 && (
                 <GetStartedButton
                   fullWidth
                   onClick={onComplete}
                   variant="contained"
                 >
-                  Get Started
+                  {currentContent.getStarted}
                 </GetStartedButton>
               )}
             </Box>
