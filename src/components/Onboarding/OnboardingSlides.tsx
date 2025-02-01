@@ -374,7 +374,7 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({ onComplete }) => {
               alignItems: 'center',
               px: 3
             }}>
-              <NavigationContainer>
+              <NavigationContainer mb={5}>
                 <NavigationButton 
                   onClick={handlePrevious}
                   disabled={currentSlide === 0}
@@ -396,6 +396,7 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({ onComplete }) => {
               {currentSlide === currentContent.slides.length - 1 && (
                 <GetStartedButton
                   fullWidth
+                  sx={{mb:5}}
                   onClick={onComplete}
                   variant="contained"
                 >
