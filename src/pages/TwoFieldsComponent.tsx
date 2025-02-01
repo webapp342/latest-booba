@@ -28,7 +28,7 @@ const KeyboardContainer = styled(Box)({
   bottom: 0,
   left: 0,
   right: 0,
-  paddingBottom: 'env(safe-area-inset-bottom, 35px)',
+  paddingBottom: 'env(safe-area-inset-bottom, 22px)',
 });
 
 
@@ -416,7 +416,7 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
             left: 0, 
             right: 0, 
            px: 1,
-            pb: 'env(safe-area-inset-bottom, 35px)',
+            pb: 'env(safe-area-inset-bottom, 22px)',
             backgroundColor: 'rgba(18, 22, 25, 0.95)',
             backdropFilter: 'blur(20px)',
             borderTop: '1px solid rgba(110, 211, 255, 0.1)',
