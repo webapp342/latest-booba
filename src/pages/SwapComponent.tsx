@@ -178,7 +178,7 @@ const KeyboardContainer = styled(Box)({
   bottom: 0,
   left: 0,
   right: 0,
-  paddingBottom: 'env(safe-area-inset-bottom, 22px)',
+  paddingBottom: 'env(safe-area-inset-bottom, 35px)',
 });
 
 const KeyboardButton = styled(Button)({
