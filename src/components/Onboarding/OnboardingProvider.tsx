@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { Box } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import OnboardingSlides from './OnboardingSlides';
