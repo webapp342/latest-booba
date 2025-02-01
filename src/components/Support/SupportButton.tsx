@@ -40,6 +40,7 @@ export const SupportButton: React.FC = () => {
         variant="contained"
         color={isAdmin ? 'error' : 'primary'}
         onClick={() => setIsOpen(true)}
+        data-support-button="true"
         sx={{
           position: 'fixed',
           bottom: '20px',

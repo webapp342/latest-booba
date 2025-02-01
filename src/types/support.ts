@@ -1,11 +1,13 @@
 export interface SupportMessage {
   id: string;
-  userId: string;
+  senderId: string;
+  receiverId: string;
   userName: string;
   message: string;
   timestamp: Date;
   isAdmin: boolean;
   isRead: boolean;
+  participants: string[];
 }
 
 export interface SupportChat {

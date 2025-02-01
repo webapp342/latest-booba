@@ -12,7 +12,7 @@ import {
   BadgeDollarSign,
   HelpCircle
 } from 'lucide-react';
-import { useOnboarding } from '../components/Onboarding/OnboardingProvider';
+import { SupportButton } from '../components/Support/SupportButton';
 
 // Animasyon keyframes'i
 const coinAnimation = keyframes`
@@ -80,7 +80,6 @@ export default function SimpleBottomNavigation() {
   const [value, setValue] = React.useState<number>(0);
   const navigate = useNavigate();
   const location = useLocation();
-  const { restartTour } = useOnboarding();
 
   React.useEffect(() => {
     const currentIndex = navItems.findIndex((item) => location.pathname === item.path);
@@ -138,9 +137,14 @@ export default function SimpleBottomNavigation() {
         }}
       >
         <Box sx={{ position: 'absolute', top: -40, right: 16 }}>
-          <Tooltip title="Restart Tour">
+          <Tooltip title="Support">
             <IconButton
-              onClick={restartTour}
+              onClick={() => {
+                const supportButton = document.querySelector('button[data-support-button="true"]');
+                if (supportButton) {
+                  (supportButton as HTMLButtonElement).click();
+                }
+              }}
               sx={{
                 backgroundColor: 'rgba(110, 211, 255, 0.1)',
                 color: '#6ed3ff',
@@ -216,6 +220,7 @@ export default function SimpleBottomNavigation() {
           ))}
         </BottomNavigation>
       </Paper>
+      <SupportButton />
     </ThemeProvider>
   );
 }

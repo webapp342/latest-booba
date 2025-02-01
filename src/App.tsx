@@ -9,7 +9,6 @@ import "slick-carousel/slick/slick-theme.css"; // Theme styles for the slider
 import { TonConnectUIProvider } from "@tonconnect/ui-react";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Brand from './components/AiYield';
-import { SupportButton } from './components/Support/SupportButton';
 
 // MUI theme configuration
 const muiTheme = createTheme({
@@ -86,7 +85,7 @@ function App() {
 
                     {/* Alt gezinme */}
                     <SimpleBottomNavigation />
-                    <SupportButton />
+                    
                 </div>
             </TonConnectUIProvider>
         </ThemeProvider>
