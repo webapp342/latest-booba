@@ -19,10 +19,12 @@ export const sendSupportMessage = async (message: string, userId: string, userNa
     console.log('Sending message with:', { userId, userName, message });
     
     const isAdmin = userId === ADMIN_ID;
+    // If admin is sending, extract the actual user ID from userName
     const targetUserId = isAdmin ? 
       (userName.startsWith('User ') ? userName.split('User ')[1] : userName) : 
       userId;
 
+    console.log('Target user ID:', targetUserId);
     const chatDocRef = doc(db, SUPPORT_COLLECTION, targetUserId);
     const now = Timestamp.now();
     
@@ -34,17 +36,31 @@ export const sendSupportMessage = async (message: string, userId: string, userNa
       isRead: false
     };
 
-    // Update or create the chat document
-    await setDoc(chatDocRef, {
-      userId: targetUserId,
-      userName: `User ${targetUserId}`,
-      lastMessage: message,
-      lastMessageTimestamp: now,
-      unreadCount: isAdmin ? 1 : 0,
-      messages: arrayUnion(newMessage),
-      updatedAt: serverTimestamp(),
-      createdAt: serverTimestamp()
-    }, { merge: true });
+    // Get current document
+    const snapshot = await getDoc(chatDocRef);
+    if (snapshot.exists()) {
+      // Update existing document
+      const chatDoc = snapshot.data() as UserChatDocument;
+      await updateDoc(chatDocRef, {
+        lastMessage: message,
+        lastMessageTimestamp: now,
+        unreadCount: isAdmin ? (chatDoc.unreadCount || 0) + 1 : chatDoc.unreadCount,
+        messages: arrayUnion(newMessage),
+        updatedAt: serverTimestamp()
+      });
+    } else {
+      // Create new document
+      await setDoc(chatDocRef, {
+        userId: targetUserId,
+        userName: `User ${targetUserId}`,
+        lastMessage: message,
+        lastMessageTimestamp: now,
+        unreadCount: isAdmin ? 1 : 0,
+        messages: [newMessage],
+        updatedAt: serverTimestamp(),
+        createdAt: serverTimestamp()
+      });
+    }
 
     console.log('Message sent successfully');
 
