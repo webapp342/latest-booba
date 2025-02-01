@@ -12,15 +12,24 @@ export const sendSupportMessage = async (message: string, userId: string, userNa
     const chatRef = collection(db, SUPPORT_COLLECTION);
     
     const isAdmin = userId === ADMIN_ID;
+    let targetUserId = userId;
+    let targetUserName = userName;
+
+    // If admin is sending, we need to extract the user ID from the userName
+    if (isAdmin && userName.startsWith('User ')) {
+      targetUserId = userName.split('User ')[1];
+      targetUserName = userName;
+    }
+
     const newMessage: Omit<SupportMessage, 'id'> = {
       senderId: userId,
-      receiverId: isAdmin ? userName : ADMIN_ID, // If admin, send to user, else send to admin
-      userName,
+      receiverId: isAdmin ? targetUserId : ADMIN_ID,
+      userName: isAdmin ? 'Support Team' : targetUserName,
       message,
       timestamp: new Date(),
       isAdmin,
       isRead: false,
-      participants: isAdmin ? [userName, ADMIN_ID] : [userId, ADMIN_ID] // Include both sender and receiver
+      participants: [targetUserId, ADMIN_ID] // Always use actual user ID
     };
 
     console.log('New message object:', newMessage);
@@ -68,7 +77,7 @@ export const getUserMessages = (userId: string, callback: (messages: SupportMess
     });
 
     console.log('Processed messages:', messages);
-    callback(messages); // No need to sort as we're using orderBy
+    callback(messages);
   }, (error) => {
     console.error('Error in getUserMessages:', error);
   });
@@ -98,12 +107,14 @@ export const getAllChats = (callback: (chats: SupportChat[]) => void) => {
 
     const chatMap = new Map<string, SupportChat>();
     messages.forEach(message => {
+      // Use the non-admin user's ID for grouping
       const userId = message.isAdmin ? message.receiverId : message.senderId;
+      const userName = message.isAdmin ? `User ${message.receiverId}` : message.userName;
       
       if (!chatMap.has(userId)) {
         chatMap.set(userId, {
           userId,
-          userName: message.userName,
+          userName,
           lastMessage: message.message,
           lastMessageTimestamp: message.timestamp,
           unreadCount: message.isAdmin ? 0 : 1,
