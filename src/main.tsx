@@ -20,6 +20,8 @@ import NewComponent from "./components/NewComponent.tsx";
 import Stats from "./components/Stats.tsx";
 import Statistics from "./components/Statistics.tsx";
 import Layout from "./layouts/StatsLayout.tsx";
+import { OnboardingProvider } from './components/Onboarding/OnboardingProvider'
+import { GuidedTourProvider } from './components/GuidedTour/GuidedTourProvider'
 
 if (WebApp.isVersionAtLeast('8.0') && 
     WebApp.platform !== 'tdesktop' && 
@@ -35,7 +37,13 @@ if (WebApp.isVersionAtLeast('8.0') &&
 const router = createBrowserRouter([
   {
     path: "/latest-booba",
-    element: <App />,
+    element: (
+      <OnboardingProvider>
+        <GuidedTourProvider>
+          <App />
+        </GuidedTourProvider>
+      </OnboardingProvider>
+    ),
     children: [
       {
         path: "",

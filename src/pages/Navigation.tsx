@@ -3,14 +3,16 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Paper, keyframes, Box } from '@mui/material';
+import { Paper, keyframes, Box, IconButton, Tooltip } from '@mui/material';
 import { 
   Gamepad2,
   Wallet,
   BarChart2,
   ListTodo,
-  BadgeDollarSign
+  BadgeDollarSign,
+  HelpCircle
 } from 'lucide-react';
+import { useOnboarding } from '../components/Onboarding/OnboardingProvider';
 
 // Animasyon keyframes'i
 const coinAnimation = keyframes`
@@ -26,13 +28,15 @@ const navItems = [
   { 
     label: 'Play', 
     icon: <Gamepad2 size={24} strokeWidth={1.5} />, 
-    path: '/latest-booba/games' 
+    path: '/latest-booba/games',
+    dataTour: 'play-nav'
   },
   
   { 
     label: 'Stats', 
     icon: <BarChart2 size={24} strokeWidth={1.5} />, 
-    path: '/latest-booba/' 
+    path: '/latest-booba/',
+    dataTour: 'stats-nav'
   },
   { 
     label: 'Earn', 
@@ -52,19 +56,23 @@ const navItems = [
           }
         }}
       >
-<BadgeDollarSign />     </Box>
+        <BadgeDollarSign />
+      </Box>
     ),
-    path: '/latest-booba/stake'
+    path: '/latest-booba/stake',
+    dataTour: 'earn-nav'
   },
   { 
     label: 'Tasks', 
     icon: <ListTodo size={24} strokeWidth={1.5} />, 
-    path: '/latest-booba/tasks' 
+    path: '/latest-booba/tasks',
+    dataTour: 'tasks-nav'
   },
   { 
     label: 'Wallet', 
     icon: <Wallet size={24} strokeWidth={1.5} />, 
-    path: '/latest-booba/spin' 
+    path: '/latest-booba/spin',
+    dataTour: 'wallet-nav'
   },
 ];
 
@@ -72,6 +80,7 @@ export default function SimpleBottomNavigation() {
   const [value, setValue] = React.useState<number>(0);
   const navigate = useNavigate();
   const location = useLocation();
+  const { restartTour } = useOnboarding();
 
   React.useEffect(() => {
     const currentIndex = navItems.findIndex((item) => location.pathname === item.path);
@@ -128,6 +137,22 @@ export default function SimpleBottomNavigation() {
           paddingBottom: 'calc(env(safe-area-inset-bottom) + 15px)',
         }}
       >
+        <Box sx={{ position: 'absolute', top: -40, right: 16 }}>
+          <Tooltip title="Restart Tour">
+            <IconButton
+              onClick={restartTour}
+              sx={{
+                backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                color: '#6ed3ff',
+                '&:hover': {
+                  backgroundColor: 'rgba(110, 211, 255, 0.2)',
+                },
+              }}
+            >
+              <HelpCircle size={20} />
+            </IconButton>
+          </Tooltip>
+        </Box>
         <BottomNavigation
           value={value}
           onChange={handleChange}
@@ -153,6 +178,7 @@ export default function SimpleBottomNavigation() {
               icon={typeof item.icon === 'function' ? item.icon(value === index) : item.icon}
               label={item.label}
               value={index}
+              data-tour={item.dataTour}
               sx={{
                 '& .MuiSvgIcon-root, & svg:not(.special-icon)': {
                   mt: 1,

@@ -19,6 +19,7 @@ import DepositDrawer from '../components/WalletDrawers/DepositDrawer';
 import WithdrawDrawer from '../components/WalletDrawers/WithdrawDrawer';
 import HistoryDrawer from '../components/WalletDrawers/HistoryDrawer';
 import SwapDrawer from '../components/WalletDrawers/SwapDrawer';
+import { WithTourSection } from '../components/TourGuide/withTourSection';
 
 
 const app = initializeApp(firebaseConfig);
@@ -371,80 +372,73 @@ const GradientBox = styled(Box)(() => ({
 
 
   return (
-    <ThemeProvider theme={theme}>
-  
-
-
-              <Box mt={"5vh"}>
-
-                <Box px={1} >
-                   
- <GradientBox>
-        <Box 
-          sx={{ 
-
-            display: 'flex', 
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: { xs: 2, sm: 3 },
-          }}
-        >
-           <Box width={'100%'}  display={'flex'} justifyContent={'space-between'}>
-                                  <SettingsIcon sx={{ fontSize: '1.5rem', color:"white",       p:0.5,          
- }} />
-                 <UserAvatar 
-                  telegramUserId={telegramUser?.id?.toString() ?? ''}
-                  displayName={telegramUser?.first_name ?? 'User'}
-                />
-
+    <WithTourSection sectionId="wallet-section">
+      <ThemeProvider theme={theme}>
+        <Box mt={"5vh"}>
+          <Box px={1} >
+            <GradientBox>
+              <Box 
+                sx={{ 
+                  display: 'flex', 
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: { xs: 2, sm: 3 },
+                }}
+              >
+                <Box width={'100%'}  display={'flex'} justifyContent={'space-between'}>
+                  <SettingsIcon sx={{ fontSize: '1.5rem', color:"white",       p:0.5,          
+                  }} />
+                  <UserAvatar 
+                    telegramUserId={telegramUser?.id?.toString() ?? ''}
+                    displayName={telegramUser?.first_name ?? 'User'}
+                  />
                 </Box>
-          {/* Live Stats Badge */}
-          <Box sx={{ display: 'flex', justifyContent: 'center' }}>           
-          </Box>
+                {/* Live Stats Badge */}
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>           
+                </Box>
 
+                <Typography mb={-2} mt={-2} className="total-equity"
+                    variant="subtitle2"
+                    sx={{ color: "white" }}
+                    align="center"
+                  >
+                    My Balance
+                  </Typography>
 
-          <Typography mb={-2} mt={-2} className="total-equity"
-              variant="subtitle2"
-              sx={{ color: "white" }}
-              align="center"
-            >
-              My Balance
-            </Typography>
-
-          {/* Main Title */}
-           <Typography  mb={-2} variant="subtitle1" align="center" gutterBottom>
-              <span style={{ fontSize: "2.5rem" ,color:"grey"}}>$</span>
-              <span style={{ fontSize: "2.5rem", fontWeight:"bold" }}>{totalEquity.split('.')[0]}</span>
-              <span style={{ fontSize: "1.6rem" }}>.{totalEquity.split('.')[1]}</span>
-            </Typography>
-              {/* İlk Kart */}
-      <Box  sx={{ borderRadius: 3 }}>            {/* Total Account Equity */}
-            
-          
-
-        
-
-           
-            {/* Buttons */}
-            <Box width={'100%'}
+                {/* Main Title */}
+                 <Typography  mb={-2} variant="subtitle1" align="center" gutterBottom>
+                    <span style={{ fontSize: "2.5rem" ,color:"grey"}}>$</span>
+                    <span style={{ fontSize: "2.5rem", fontWeight:"bold" }}>{totalEquity.split('.')[0]}</span>
+                    <span style={{ fontSize: "1.6rem" }}>.{totalEquity.split('.')[1]}</span>
+                  </Typography>
+                  {/* İlk Kart */}
+                  <Box  sx={{ borderRadius: 3 }}>            {/* Total Account Equity */}
                     
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                mt: 1,
-                mb: 0,
+                  
+
+                
+
                
-              }}
-            >
-             <Button
-          className="deposit-button"
-              
-                 sx={{
-                  flexDirection: 'column', // Stack icon and text vertically
-                  textTransform: "none", 
-                backgroundColor: 'rgba(110, 211, 255, 0.05)',
-          color:'white',                   fontSize: '0.7rem',
-          
+                  {/* Buttons */}
+                  <Box width={'100%'}
+                          
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      mt: 1,
+                      mb: 0,
+                     
+                    }}
+                  >
+                   <Button
+                className="deposit-button"
+                data-tour="deposit-button"
+                   sx={{
+                    flexDirection: 'column', // Stack icon and text vertically
+                    textTransform: "none", 
+                  backgroundColor: 'rgba(110, 211, 255, 0.05)',
+                color:'white',                   fontSize: '0.7rem',
+                
                   mr:1,                  boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
                            px:2,
 
@@ -455,253 +449,247 @@ const GradientBox = styled(Box)(() => ({
                 <AddCircleIcon sx={{ fontSize: '1.5rem', color:"#89d9ff" }} />
                 Deposit
               </Button>
-      <Button
-               className="withdraw-button"
-      sx={{
-                  flexDirection: 'column', // Stack icon and text vertically
-                  textTransform: "none",
-                                  
-                  mr:1,
-px:2,
-                color:'white',
-                  fontSize: '0.7rem',
-                backgroundColor: 'rgba(110, 211, 255, 0.05)',
-                  boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
+                <Button
+                 className="withdraw-button"
+                data-tour="withdraw-button"
+                sx={{
+                    flexDirection: 'column', // Stack icon and text vertically
+                    textTransform: "none",
+                                    
+                    mr:1,
+                px:2,
+                  color:'white',
+                    fontSize: '0.7rem',
+                  backgroundColor: 'rgba(110, 211, 255, 0.05)',
+                    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
 
-                  borderRadius: 2,
-                }}
-        onClick={() => setOpenWithdrawDrawer(true)}
-      >
-        <OutboundIcon sx={{ fontSize: '1.5rem', color:"#89d9ff" }} />
-        Withdraw
-      </Button>
+                    borderRadius: 2,
+                  }}
+          onClick={() => setOpenWithdrawDrawer(true)}
+        >
+          <OutboundIcon sx={{ fontSize: '1.5rem', color:"#89d9ff" }} />
+          Withdraw
+        </Button>
 
 
-    
-              <Button
-              className="swap-button"
-  onClick={() => setOpenSwapDrawer(true)}
-    sx={{
-                  flexDirection: 'column',
-                  textTransform: "none",
-                backgroundColor: 'rgba(110, 211, 255, 0.05)',
+      
+                <Button
+                className="swap-button"
+          onClick={() => setOpenSwapDrawer(true)}
+            sx={{
+                    flexDirection: 'column',
+                    textTransform: "none",
+                  backgroundColor: 'rgba(110, 211, 255, 0.05)',
                            px:3,
-color:'white',
-                  fontSize: '0.7rem',
-                  boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
-                  borderRadius: 2, 
-                }}
->
-  <SwapHorizontalCircleIcon sx={{ fontSize: '1.5rem', color:"#89d9ff" }} />
-  Swap
-</Button>
+                color:'white',
+                    fontSize: '0.7rem',
+                    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
+                    borderRadius: 2, 
+                  }}
+          >
+            <SwapHorizontalCircleIcon sx={{ fontSize: '1.5rem', color:"#89d9ff" }} />
+            Swap
+          </Button>
 
-  <>
-      <Button
-                  className="history-button"
-        onClick={() => setOpenHistoryDrawer(true)}
-       sx={{
-                  flexDirection: 'column', // Stack icon and text vertically
-                  textTransform: "none",
-                backgroundColor: 'rgba(110, 211, 255, 0.05)',
+            <>
+                <Button
+                    className="history-button"
+              onClick={() => setOpenHistoryDrawer(true)}
+             sx={{
+                    flexDirection: 'column', // Stack icon and text vertically
+                    textTransform: "none",
+                  backgroundColor: 'rgba(110, 211, 255, 0.05)',
                                                               px:2,
 
-ml:1,
+                ml:1,
                   color:'white',
-                  fontSize: '0.7rem',
-                  boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
-                  borderRadius: 2,
-                }}
-      >
-        <ReceiptLongIcon sx={{ fontSize: '1.5rem',                               color: '#6ed3ff',
- }} />
-        History
-      </Button>
-    </>
+                    fontSize: '0.7rem',
+                    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
+                    borderRadius: 2,
+                  }}
+              >
+                <ReceiptLongIcon sx={{ fontSize: '1.5rem',                               color: '#6ed3ff',
+              }} />
+                History
+              </Button>
+            </>
 
 
-  
+          
 
-{/* Tam Ekran TokenSwap Modal */}
-{showTokenSwap && (
-  <Box className="fullscreen-modal">
-    {/* Üst Bar */}
-    <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-      <Typography variant="h6">Convert Assets</Typography>
-      <Button
-        onClick={() => setShowTokenSwap(false)} // Modalı kapat
-        sx={{ textTransform: "none", color: "red" }}
-      >
-        Close
-      </Button>
-    </Box>
-
-    {/* TokenSwap Bileşeni */}
-    <Box sx={{ flex: 1, overflowY: "auto" }}>
-      <TokenSwap />
-    </Box>
-  </Box>
-)}
+        {/* Tam Ekran TokenSwap Modal */}
+        {showTokenSwap && (
+          <Box className="fullscreen-modal">
+            {/* Üst Bar */}
+            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <Typography variant="h6">Convert Assets</Typography>
+              <Button
+                onClick={() => setShowTokenSwap(false)} // Modalı kapat
+                sx={{ textTransform: "none", color: "red" }}
+              >
+                Close
+              </Button>
             </Box>
-        </Box>
 
+            {/* TokenSwap Bileşeni */}
+            <Box sx={{ flex: 1, overflowY: "auto" }}>
+              <TokenSwap />
+            </Box>
+          </Box>
+        )}
+              </Box>
+          </Box>
 
           {/* Description */}
-       
+         
            
 
          
 
           {/* Stats Grid */}
-       
+         
         </Box>
       </GradientBox>
-                </Box>
-
-     
-  
-              
-     
-         
-
-      {/* İkinci Kart - Asset List */}
-<Box sx={{ borderRadius: 3, mt: 4, mx:1 }}>
-   
-    {/* Başlık ve Arama Kutusu */}
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        mb: 1,
-        
-      }}
-    >
-      {/* Arama Kutusunun Görünümü */}
-        <Typography variant="subtitle1" mx={1} fontSize={'1.3em'}>My Assets</Typography>
-                <Typography mx={1} variant="subtitle1" fontSize={'1em'} color={'gray'}>see all</Typography>
-
-     
     </Box>
 
-    {/* Dinamik Item Listesi */}
-    {filteredData.map((item, index) => (
-      <Tooltip
-        key={index}
-        title={
-          !item.active
-            ? `${item.symbol} şu anda aktif değil. Yakında kullanıma sunulacak!`
-            : ""
-        }
-        arrow
+    {/* İkinci Kart - Asset List */}
+    <Box sx={{ borderRadius: 3, mt: 4, mx:1 }}>
+     
+      {/* Başlık ve Arama Kutusu */}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 1,
+          
+        }}
       >
-        <Box
+        {/* Arama Kutusunun Görünümü */}
+          <Typography variant="subtitle1" mx={1} fontSize={'1.3em'}>My Assets</Typography>
+                  <Typography mx={1} variant="subtitle1" fontSize={'1em'} color={'gray'}>see all</Typography>
+
+       
+      </Box>
+
+      {/* Dinamik Item Listesi */}
+      {filteredData.map((item, index) => (
+        <Tooltip
           key={index}
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            mb: 1,
-            borderBottom: index < filteredData.length - 1 ? "" : "none",
-            px: 1,
-            py:1.2,
-            backgroundImage: !item.active
-              ? "linear-gradient(45deg, #f3f3f3 25%, #eaeaea 25%, #eaeaea 50%, #f3f3f3 50%, #f3f3f3 75%, #eaeaea 75%, #eaeaea)"
-              : "none",
-            borderRadius: 2,
-            pointerEvents: !item.active ? "none" : "auto",
-            opacity: item.active ? 1 : 0.6,
-          }}
+          title={
+            !item.active
+              ? `${item.symbol} şu anda aktif değil. Yakında kullanıma sunulacak!`
+              : ""
+          }
+          arrow
         >
-          {/* Sol Kısım: Logo ve Yazılar */}
-          <Box sx={{ display: "flex", alignItems: "center",color:"white",fontWeight:"bold" }}>
-            <Avatar
-              src={item.logo}
-              alt={item.symbol}
-              sx={{ width: 40, height: 40, mr: 2 ,color:"black"}}
-            />
-            <Box>
-              <Typography variant="body2" fontSize={'1rem' } >
-                {item.symbol}
-                {!item.active && (
-                  <span style={{ marginLeft: "10px", color: "gray" }}>
-                    🔒 coming soon
-                  </span>
-                )}
+          <Box
+            key={index}
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              mb: 1,
+              borderBottom: index < filteredData.length - 1 ? "" : "none",
+              px: 1,
+              py:1.2,
+              backgroundImage: !item.active
+                ? "linear-gradient(45deg, #f3f3f3 25%, #eaeaea 25%, #eaeaea 50%, #f3f3f3 50%, #f3f3f3 75%, #eaeaea 75%, #eaeaea)"
+                : "none",
+              borderRadius: 2,
+              pointerEvents: !item.active ? "none" : "auto",
+              opacity: item.active ? 1 : 0.6,
+            }}
+          >
+            {/* Sol Kısım: Logo ve Yazılar */}
+            <Box sx={{ display: "flex", alignItems: "center",color:"white",fontWeight:"bold" }}>
+              <Avatar
+                src={item.logo}
+                alt={item.symbol}
+                sx={{ width: 40, height: 40, mr: 2 ,color:"black"}}
+              />
+              <Box>
+                <Typography variant="body2" fontSize={'1rem' } >
+                  {item.symbol}
+                  {!item.active && (
+                    <span style={{ marginLeft: "10px", color: "gray" }}>
+                      🔒 coming soon
+                    </span>
+                  )}
+                </Typography>
+              <Typography variant="subtitle2" fontSize={"0.8rem"} color="gray">
+                ${item.price}
               </Typography>
-            <Typography variant="subtitle2" fontSize={"0.8rem"} color="gray">
-              ${item.price}
-            </Typography>
+               
+              </Box>
+            </Box>
+
+            {/* Sağ Kısım: Rakamlar */}
+            <Box sx={{ textAlign: "right" }}>
+                <Typography variant="body2" fontSize={'1rem' } >
+                 {formatDisplayAmount(item.amount, item.symbol)}
+              </Typography>
              
+              <Typography variant="subtitle2" fontSize={"0.8rem"} color="gray">
+                  ${item.usdValue.toFixed(2)}
+              </Typography>
             </Box>
           </Box>
+        </Tooltip>
+      ))}
 
-          {/* Sağ Kısım: Rakamlar */}
-          <Box sx={{ textAlign: "right" }}>
-              <Typography variant="body2" fontSize={'1rem' } >
-               {formatDisplayAmount(item.amount, item.symbol)}
-            </Typography>
-           
-            <Typography variant="subtitle2" fontSize={"0.8rem"} color="gray">
-                ${item.usdValue.toFixed(2)}
-            </Typography>
-          </Box>
-        </Box>
-      </Tooltip>
-    ))}
+    
+    </Box>
+  </Box>
 
-  
-</Box>
-</Box>
+  {/* Add the new drawer components */}
+  <DepositDrawer
+    open={openDepositDrawer}
+    onClose={() => setOpenDepositDrawer(false)}
+  />
 
+  <WithdrawDrawer
+    open={openWithdrawDrawer}
+    onClose={() => setOpenWithdrawDrawer(false)}
+  />
 
-{/* Add the new drawer components */}
-<DepositDrawer
-  open={openDepositDrawer}
-  onClose={() => setOpenDepositDrawer(false)}
-/>
+  <HistoryDrawer
+    open={openHistoryDrawer}
+    onClose={() => setOpenHistoryDrawer(false)}
+  />
 
-<WithdrawDrawer
-  open={openWithdrawDrawer}
-  onClose={() => setOpenWithdrawDrawer(false)}
-/>
+  {/* Add the new SwapDrawer component */}
+  <SwapDrawer
+    open={openSwapDrawer}
+    onClose={() => setOpenSwapDrawer(false)}
+  />
 
-<HistoryDrawer
-  open={openHistoryDrawer}
-  onClose={() => setOpenHistoryDrawer(false)}
-/>
-
-{/* Add the new SwapDrawer component */}
-<SwapDrawer
-  open={openSwapDrawer}
-  onClose={() => setOpenSwapDrawer(false)}
-/>
-
-            <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={2000}
-        onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }} // Display on top
-      >
-        <SnackbarContent
-          style={{
-            backgroundColor: '#4caf50', // Green background
-            color: '#fff', // White text color
-            borderRadius: 8, // Rounded corners
-            display: 'flex',
-            alignItems: 'center',
-            padding: '10px 20px',
-          }}
-          message={
-            <span style={{ display: 'flex', alignItems: 'center' }}>
-              <CheckCircleOutline style={{ marginRight: 10 }} />
-              Copied to clipboard!
-            </span>
-          }
-        />
-      </Snackbar>
-    </ThemeProvider>
-  );
+          <Snackbar
+      open={snackbarOpen}
+      autoHideDuration={2000}
+      onClose={handleSnackbarClose}
+      anchorOrigin={{ vertical: 'top', horizontal: 'center' }} // Display on top
+    >
+      <SnackbarContent
+        style={{
+          backgroundColor: '#4caf50', // Green background
+          color: '#fff', // White text color
+          borderRadius: 8, // Rounded corners
+          display: 'flex',
+          alignItems: 'center',
+          padding: '10px 20px',
+        }}
+        message={
+          <span style={{ display: 'flex', alignItems: 'center' }}>
+            <CheckCircleOutline style={{ marginRight: 10 }} />
+            Copied to clipboard!
+          </span>
+        }
+      />
+    </Snackbar>
+  </ThemeProvider>
+</WithTourSection>
+);
 };
 
 export default AccountEquityCard;

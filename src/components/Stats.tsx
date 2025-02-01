@@ -7,6 +7,7 @@ import "./text.css";
 import Dashboard from './Dashboard';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
+import { WithTourSection } from './TourGuide/withTourSection';
 
 interface StatsProps {
   totalLockedTon: number;
@@ -181,245 +182,247 @@ const Stats: React.FC<StatsProps> = ({
   };
 
   return (
-    < Box mx={-1}>
-      <Dashboard data={dashboardData} />
+    <WithTourSection sectionId="stats-section">
+      <Box mx={-1} data-tour="stats-section">
+        <Dashboard data={dashboardData} />
 
-      {/* Chart Section */}
-      <Box sx={{ mt: 8}}>
-        <Box sx={{ 
-          display: 'flex', 
-          flexDirection: 'column',
-          bgcolor: '#2f363a', 
-          borderRadius: 2,
-          width: '100%',
-          overflow: 'hidden'
-        }}>
-          <Box sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            mb: 2,
-            px: 2,
-            pt: 2
+        {/* Chart Section */}
+        <Box sx={{ mt: 8}}>
+          <Box sx={{ 
+            display: 'flex', 
+            flexDirection: 'column',
+            bgcolor: '#2f363a', 
+            borderRadius: 2,
+            width: '100%',
+            overflow: 'hidden'
           }}>
-          
-            <Box>
-              <ToggleButtonGroup
-                value={chartType}
-                exclusive
-                onChange={handleChartTypeChange}
-                aria-label="chart type"
-                size={isMobile ? "small" : "medium"}
-                sx={{
-                  backgroundColor: 'transparent',
-                  '& .MuiToggleButton-root': {
-                    color: '#ffffff',
-                    border: 'none',
-                    padding: '4px 8px',
-                    '&.Mui-selected': {
-                      backgroundColor: '#36A2EB',
+            <Box sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              mb: 2,
+              px: 2,
+              pt: 2
+            }}>
+            
+              <Box>
+                <ToggleButtonGroup
+                  value={chartType}
+                  exclusive
+                  onChange={handleChartTypeChange}
+                  aria-label="chart type"
+                  size={isMobile ? "small" : "medium"}
+                  sx={{
+                    backgroundColor: 'transparent',
+                    '& .MuiToggleButton-root': {
                       color: '#ffffff',
-                      borderRadius: '8px',
+                      border: 'none',
+                      padding: '4px 8px',
+                      '&.Mui-selected': {
+                        backgroundColor: '#36A2EB',
+                        color: '#ffffff',
+                        borderRadius: '8px',
+                      },
                     },
-                  },
-                }}
-              >
-                <ToggleButton value="tvl" aria-label="TVL">
-                  TVL
-                </ToggleButton>
-                <ToggleButton value="earnings" aria-label="24H Earnings">
-                  24H Earnings
-                </ToggleButton>
-              </ToggleButtonGroup>
+                  }}
+                >
+                  <ToggleButton value="tvl" aria-label="TVL">
+                    TVL
+                  </ToggleButton>
+                  <ToggleButton value="earnings" aria-label="24H Earnings">
+                    24H Earnings
+                  </ToggleButton>
+                </ToggleButtonGroup>
+              </Box>
+
+              <Box>
+                <ToggleButtonGroup
+                  value={timeRange}
+                  exclusive
+                  onChange={handleTimeRangeChange}
+                  aria-label="time range"
+                  size={isMobile ? "small" : "medium"}
+                  sx={{
+                    backgroundColor: 'transparent',
+                    '& .MuiToggleButton-root': {
+                      color: '#ffffff',
+                      border: 'none',
+                      padding: '4px 8px',
+                      minWidth: '40px',
+                      '&.Mui-selected': {
+                        backgroundColor: '#36A2EB',
+                        color: '#ffffff',
+                        borderRadius: '8px',
+                      },
+                      '&:hover': {
+                        backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                      },
+                    },
+                  }}
+                >
+                  <ToggleButton value="w" aria-label="Week">
+                    W
+                  </ToggleButton>
+                  <ToggleButton value="m" aria-label="Month">
+                    M
+                  </ToggleButton>
+                  <ToggleButton value="all" aria-label="All">
+                    ALL
+                  </ToggleButton>
+                </ToggleButtonGroup>
+              </Box>
             </Box>
 
-            <Box>
-              <ToggleButtonGroup
-                value={timeRange}
-                exclusive
-                onChange={handleTimeRangeChange}
-                aria-label="time range"
-                size={isMobile ? "small" : "medium"}
-                sx={{
-                  backgroundColor: 'transparent',
-                  '& .MuiToggleButton-root': {
-                    color: '#ffffff',
-                    border: 'none',
-                    padding: '4px 8px',
-                    minWidth: '40px',
-                    '&.Mui-selected': {
-                      backgroundColor: '#36A2EB',
-                      color: '#ffffff',
-                      borderRadius: '8px',
-                    },
-                    '&:hover': {
-                      backgroundColor: 'rgba(54, 162, 235, 0.1)',
-                    },
-                  },
-                }}
-              >
-                <ToggleButton value="w" aria-label="Week">
-                  W
-                </ToggleButton>
-                <ToggleButton value="m" aria-label="Month">
-                  M
-                </ToggleButton>
-                <ToggleButton value="all" aria-label="All">
-                  ALL
-                </ToggleButton>
-              </ToggleButtonGroup>
+            <Box sx={{ width: '100%' }}>
+              {chartType === 'tvl' ? (
+                <AreaChartComponent
+                  data={getDisplayData()}
+                  title="TVL"
+                  valueLabel="TON"
+                  timeRange={timeRange}
+                />
+              ) : (
+                <BarChartComponent
+                  data={getDisplayData()}
+                  title="24H Earnings"
+                  valueLabel="TON"
+                  timeRange={timeRange}
+                />
+              )}
             </Box>
-          </Box>
-
-          <Box sx={{ width: '100%' }}>
-            {chartType === 'tvl' ? (
-              <AreaChartComponent
-                data={getDisplayData()}
-                title="TVL"
-                valueLabel="TON"
-                timeRange={timeRange}
-              />
-            ) : (
-              <BarChartComponent
-                data={getDisplayData()}
-                title="24H Earnings"
-                valueLabel="TON"
-                timeRange={timeRange}
-              />
-            )}
           </Box>
         </Box>
-      </Box>
 
-      <Grid container alignItems="center" justifyContent="space-between" sx={{ mt: 6, mb:1 }}>
-        <Grid item xs>
-          <Box display="flex" alignItems="center" gap={1.5}>
-            <Box
-              sx={{
-                background: 'linear-gradient(135deg, rgba(54, 162, 235, 0.1), rgba(77, 201, 255, 0.1))',
-                borderRadius: '8px',
-                p: 0.8,
-                display: 'flex',
-                alignItems: 'center',
-                border: '1px solid rgba(54, 162, 235, 0.2)',
-              }}
-            >
-              <AccountBalanceWalletOutlinedIcon sx={{ 
-                color: '#36A2EB',
-                fontSize: { xs: '1.2rem', sm: '1.4rem' }
-              }} />
-            </Box>
-            <Box>
-              <Typography 
-                variant="h6" 
+        <Grid container alignItems="center" justifyContent="space-between" sx={{ mt: 6, mb:1 }}>
+          <Grid item xs>
+            <Box display="flex" alignItems="center" gap={1.5}>
+              <Box
                 sx={{
-                  fontSize: { xs: '0.8rem', sm: '1.3rem' },
-                  color: '#fff',
-                  fontWeight: 600,
-                  letterSpacing: '0.5px',
-                  mb: 0.2
-                }}
-              >
-                Liquidity Pools
-              </Typography>
-              <Typography 
-                sx={{ 
-                  color: '#6B7280',
-                  fontSize: { xs: '0.75rem', sm: '0.85rem' },
+                  background: 'linear-gradient(135deg, rgba(54, 162, 235, 0.1), rgba(77, 201, 255, 0.1))',
+                  borderRadius: '8px',
+                  p: 0.8,
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 1
+                  border: '1px solid rgba(54, 162, 235, 0.2)',
                 }}
               >
-                <Box component="span" sx={{ 
-                  width: 6, 
-                  height: 6, 
-                  borderRadius: '50%', 
-                  backgroundColor: '#4CAF50',
-                  display: 'inline-block'
+                <AccountBalanceWalletOutlinedIcon sx={{ 
+                  color: '#36A2EB',
+                  fontSize: { xs: '1.2rem', sm: '1.4rem' }
                 }} />
-                Active Pools Overview
-              </Typography>
+              </Box>
+              <Box>
+                <Typography 
+                  variant="h6" 
+                  sx={{
+                    fontSize: { xs: '0.8rem', sm: '1.3rem' },
+                    color: '#fff',
+                    fontWeight: 600,
+                    letterSpacing: '0.5px',
+                    mb: 0.2
+                  }}
+                >
+                  Liquidity Pools
+                </Typography>
+                <Typography 
+                  sx={{ 
+                    color: '#6B7280',
+                    fontSize: { xs: '0.75rem', sm: '0.85rem' },
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1
+                  }}
+                >
+                  <Box component="span" sx={{ 
+                    width: 6, 
+                    height: 6, 
+                    borderRadius: '50%', 
+                    backgroundColor: '#4CAF50',
+                    display: 'inline-block'
+                  }} />
+                  Active Pools Overview
+                </Typography>
+              </Box>
             </Box>
-          </Box>
-        </Grid>
+          </Grid>
 
-        <Grid item>
-          <Box 
-            sx={{ 
-              display: 'flex',
-              alignItems: 'center',
-              gap: 0.5,
-              background: 'rgba(54, 162, 235, 0.1)',
-              borderRadius: '20px',
-              padding: { xs: '6px 12px', sm: '6px 14px' },
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-              ml: { xs: 1, sm: 2 },
-              '&:hover': {
-                background: 'rgba(54, 162, 235, 0.15)',
-                transform: 'translateY(-1px)'
-              }
-            }}
-          >
-            <Typography 
+          <Grid item>
+            <Box 
               sx={{ 
-                color: '#36A2EB',
-                fontWeight: 500,
-                fontSize: { xs: '0.8rem', sm: '0.9rem' },
-                whiteSpace: 'nowrap'
+                display: 'flex',
+                alignItems: 'center',
+                gap: 0.5,
+                background: 'rgba(54, 162, 235, 0.1)',
+                borderRadius: '20px',
+                padding: { xs: '6px 12px', sm: '6px 14px' },
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                ml: { xs: 1, sm: 2 },
+                '&:hover': {
+                  background: 'rgba(54, 162, 235, 0.15)',
+                  transform: 'translateY(-1px)'
+                }
               }}
             >
-              Docs
-            </Typography>
-            <InfoOutlinedIcon sx={{ 
-              fontSize: { xs: '0.9rem', sm: '1rem' },
-              color: '#36A2EB'
-            }} />
-          </Box>
+              <Typography 
+                sx={{ 
+                  color: '#36A2EB',
+                  fontWeight: 500,
+                  fontSize: { xs: '0.8rem', sm: '0.9rem' },
+                  whiteSpace: 'nowrap'
+                }}
+              >
+                Docs
+              </Typography>
+              <InfoOutlinedIcon sx={{ 
+                fontSize: { xs: '0.9rem', sm: '1rem' },
+                color: '#36A2EB'
+              }} />
+            </Box>
+          </Grid>
         </Grid>
-      </Grid>
 
-      {/* Pool Kartları */}
-      <Grid container spacing={1} justifyContent="center">
-        {/* 1 Günlük Havuz */}
-        <Grid item xs={6} sm={3} >
-          <PoolStats poolName="Pools" totalPools={totalPools} apy={25.21} fillPercentage={12} tvl='53.22M'  badgeText="Daily" leverage={125}/>
-        </Grid>
-        {/* 14 Günlük Havuz */}
-        <Grid item xs={6} sm={3} >
-          <PoolStats poolName="Pools" totalPools={totalPools} apy={30.44} fillPercentage={65} tvl='53.22M' badgeText="14D" leverage={125}/>
-        </Grid>
-        {/* 30 Günlük Havuz */}
-      
-        {/* 90 Günlük Havuz - Full olarak göster */}
-        <Grid item xs={6} sm={3} sx={{mt:2}} >
-          <PoolStats poolName="Pools" totalPools={totalPools} apy={40.68} fillPercentage={80} tvl='53.22M' badgeText="90D" leverage={125} />
-        </Grid>
+        {/* Pool Kartları */}
+        <Grid container spacing={1} justifyContent="center">
+          {/* 1 Günlük Havuz */}
+          <Grid item xs={6} sm={3} >
+            <PoolStats poolName="Pools" totalPools={totalPools} apy={25.21} fillPercentage={12} tvl='53.22M'  badgeText="Daily" leverage={125}/>
+          </Grid>
+          {/* 14 Günlük Havuz */}
+          <Grid item xs={6} sm={3} >
+            <PoolStats poolName="Pools" totalPools={totalPools} apy={30.44} fillPercentage={65} tvl='53.22M' badgeText="14D" leverage={125}/>
+          </Grid>
+          {/* 30 Günlük Havuz */}
+        
+          {/* 90 Günlük Havuz - Full olarak göster */}
           <Grid item xs={6} sm={3} sx={{mt:2}} >
-          <PoolStats poolName="Pools" totalPools={12} apy={35.99} fillPercentage={100} tvl='100.22M' badgeText="30D" leverage={125} />
-        </Grid>
-          <Grid item xs={6} sm={3} sx={{mt:2}} >
-          <PoolStats poolName="Pools" totalPools={12} apy={35.99} fillPercentage={100} tvl='100.22M' badgeText="30D" leverage={125}/>
-        </Grid>
-          <Grid item xs={6} sm={3} sx={{mt:2}} >
-          <PoolStats poolName="Pools" totalPools={12} apy={35.99} fillPercentage={100} tvl='100.22M' badgeText="30D" leverage={125} />
-        </Grid>
-          <Grid item xs={6} sm={3} sx={{mt:2}} >
-          <PoolStats poolName="Pools" totalPools={12} apy={35.99} fillPercentage={100} tvl='100.22M' badgeText="30D" leverage={125}/>
-        </Grid>
-          <Grid item xs={6} sm={3} sx={{mt:2}} >
-          <PoolStats poolName="Pools" totalPools={12} apy={35.99} fillPercentage={100} tvl='100.22M' badgeText="30D" leverage={125}/>
-        </Grid>
-          <Grid item xs={6} sm={3} sx={{mt:2}} >
-          <PoolStats poolName="Pools" totalPools={12} apy={35.99} fillPercentage={100} tvl='100.22M' badgeText="30D" leverage={125}/>
-        </Grid>
-          <Grid item xs={6} sm={3} sx={{mt:2}} >
-          <PoolStats poolName="Pools" totalPools={1.08} apy={35.99} fillPercentage={100} tvl='100.22M' badgeText="30D"   leverage={125}
+            <PoolStats poolName="Pools" totalPools={totalPools} apy={40.68} fillPercentage={80} tvl='53.22M' badgeText="90D" leverage={125} />
+          </Grid>
+            <Grid item xs={6} sm={3} sx={{mt:2}} >
+            <PoolStats poolName="Pools" totalPools={12} apy={35.99} fillPercentage={100} tvl='100.22M' badgeText="30D" leverage={125} />
+          </Grid>
+            <Grid item xs={6} sm={3} sx={{mt:2}} >
+            <PoolStats poolName="Pools" totalPools={12} apy={35.99} fillPercentage={100} tvl='100.22M' badgeText="30D" leverage={125}/>
+          </Grid>
+            <Grid item xs={6} sm={3} sx={{mt:2}} >
+            <PoolStats poolName="Pools" totalPools={12} apy={35.99} fillPercentage={100} tvl='100.22M' badgeText="30D" leverage={125} />
+          </Grid>
+            <Grid item xs={6} sm={3} sx={{mt:2}} >
+            <PoolStats poolName="Pools" totalPools={12} apy={35.99} fillPercentage={100} tvl='100.22M' badgeText="30D" leverage={125}/>
+          </Grid>
+            <Grid item xs={6} sm={3} sx={{mt:2}} >
+            <PoolStats poolName="Pools" totalPools={12} apy={35.99} fillPercentage={100} tvl='100.22M' badgeText="30D" leverage={125}/>
+          </Grid>
+            <Grid item xs={6} sm={3} sx={{mt:2}} >
+            <PoolStats poolName="Pools" totalPools={12} apy={35.99} fillPercentage={100} tvl='100.22M' badgeText="30D" leverage={125}/>
+          </Grid>
+            <Grid item xs={6} sm={3} sx={{mt:2}} >
+            <PoolStats poolName="Pools" totalPools={1.08} apy={35.99} fillPercentage={100} tvl='100.22M' badgeText="30D"   leverage={125}
 />
+          </Grid>
         </Grid>
-      </Grid>
-    </Box>
+      </Box>
+    </WithTourSection>
   );
 };
 

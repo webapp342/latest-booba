@@ -48,6 +48,7 @@ import comingSoonLogo from '../assets/task1logo.png';
 import UserDataTable from './UserDataTable';
 import { ShowAdButton } from './ShowAdButton';
 import styled from 'styled-components';
+import WithTourSection from '../components/TourGuide/withTourSection';
 
 // Firebase App initialization
 const app = initializeApp(firebaseConfig);
@@ -476,334 +477,336 @@ const GradientBox = styled(Box)(() => ({
 
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container maxWidth="lg" sx={{px:1, py: 8, mb:8}}>
+    <WithTourSection sectionId="tasks-section">
+      <ThemeProvider theme={theme}>
+        <Container maxWidth="lg" sx={{px:1, py: 8, mb:8}}>
 
 
-          <GradientBox>
-        <Box 
-          sx={{ 
-            display: 'flex', 
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: { xs: 2, sm: 3 },
-          }}
-        >
-  
-
-          {/* Main Title */}
-          <Typography 
-            className="text-gradient" 
-            fontFamily={'Montserrat'} 
-            sx={{
-              fontSize: { xs: '1.4rem', sm: '1.6rem' },
-              fontWeight: 800,
-              letterSpacing: '-0.02em',
-              textAlign: 'center',
-              lineHeight: 1.2,
-              maxWidth: '280px',
-              animation: 'fadeIn 0.5s ease-in',
-              background: 'linear-gradient(90deg, #6ED3FF 0%, #89D9FF 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
+            <GradientBox>
+          <Box 
+            sx={{ 
+              display: 'flex', 
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: { xs: 2, sm: 3 },
             }}
           >
-            Complete Tasks
-          </Typography>
-              <Typography 
-            className="text-gradient" 
-            fontFamily={'Montserrat'} 
-            sx={{
-              fontSize: { xs: '1.4rem', sm: '1.6rem' },
-              fontWeight: 800,
-              letterSpacing: '-0.02em',
-              textAlign: 'center',
-              mt:-2,
-              lineHeight: 1.2,
-              maxWidth: '280px',
-              animation: 'fadeIn 0.5s ease-in',
-              background: 'linear-gradient(90deg,rgb(240, 245, 247) 0%,rgb(99, 122, 133) 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}
-          >
-           Earn Rewards
-          </Typography>
+    
 
-          {/* Description */}
-          <Box sx={{ 
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 2
-          }}>
+            {/* Main Title */}
             <Typography 
-              sx={{ 
-                fontSize: { xs: '0.875rem', sm: '0.9rem' },
-                color: 'rgba(255,255,255,0.85)',
+              className="text-gradient" 
+              fontFamily={'Montserrat'} 
+              sx={{
+                fontSize: { xs: '1.4rem', sm: '1.6rem' },
+                fontWeight: 800,
+                letterSpacing: '-0.02em',
                 textAlign: 'center',
-                fontWeight: 600,
-                lineHeight: 1.6
+                lineHeight: 1.2,
+                maxWidth: '280px',
+                animation: 'fadeIn 0.5s ease-in',
+                background: 'linear-gradient(90deg, #6ED3FF 0%, #89D9FF 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
               }}
             >
-Earn rewards by completing tasks, invite friends, watching ads, and more in our next-level DeFi experience!              <span className="text-gradient" style={{
-                fontWeight: 700,
-                padding: '0 4px',
-                whiteSpace: 'nowrap'
-              }}>
-                next-level DeFi experience!
-              </span>
+              Complete Tasks
+            </Typography>
+                <Typography 
+              className="text-gradient" 
+              fontFamily={'Montserrat'} 
+              sx={{
+                fontSize: { xs: '1.4rem', sm: '1.6rem' },
+                fontWeight: 800,
+                letterSpacing: '-0.02em',
+                textAlign: 'center',
+                mt:-2,
+                lineHeight: 1.2,
+                maxWidth: '280px',
+                animation: 'fadeIn 0.5s ease-in',
+                background: 'linear-gradient(90deg,rgb(240, 245, 247) 0%,rgb(99, 122, 133) 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
+             Earn Rewards
             </Typography>
 
-            {/* Sub Description with Icon */}
-            <Box sx={{
+            {/* Description */}
+            <Box sx={{ 
               display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 1,
-              padding: '8px 16px',
-              borderRadius: '12px',
-              border: '1px solid rgba(110, 211, 255, 0.1)',
-                            backgroundColor: 'rgba(110, 211, 255, 0.05)'
-
+              flexDirection: 'column',
+              gap: 2
             }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <img src={task8Logo} alt="" width={24} style={{ borderRadius: '50%' }} />
-              <Typography color="white" variant="h6" sx={{ fontWeight: 600 }}>
-                125.000 <span style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '0.9rem' }}>BBLIP</span>
+              <Typography 
+                sx={{ 
+                  fontSize: { xs: '0.875rem', sm: '0.9rem' },
+                  color: 'rgba(255,255,255,0.85)',
+                  textAlign: 'center',
+                  fontWeight: 600,
+                  lineHeight: 1.6
+                }}
+              >
+Earn rewards by completing tasks, invite friends, watching ads, and more in our next-level DeFi experience!              <span className="text-gradient" style={{
+                  fontWeight: 700,
+                  padding: '0 4px',
+                  whiteSpace: 'nowrap'
+                }}>
+                  next-level DeFi experience!
+                </span>
               </Typography>
+
+              {/* Sub Description with Icon */}
+              <Box sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 1,
+                padding: '8px 16px',
+                borderRadius: '12px',
+                border: '1px solid rgba(110, 211, 255, 0.1)',
+                              backgroundColor: 'rgba(110, 211, 255, 0.05)'
+
+              }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <img src={task8Logo} alt="" width={24} style={{ borderRadius: '50%' }} />
+                <Typography color="white" variant="h6" sx={{ fontWeight: 600 }}>
+                  125.000 <span style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '0.9rem' }}>BBLIP</span>
+                </Typography>
+              </Box>
+              +
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <img src={task9Logo} alt="" width={24} />
+                <Typography color="white" variant="h6" sx={{ fontWeight: 600 }}>
+                  50 <span style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '0.9rem' }}>TON</span>
+                </Typography>
+              </Box>
+              </Box>
             </Box>
-            +
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <img src={task9Logo} alt="" width={24} />
-              <Typography color="white" variant="h6" sx={{ fontWeight: 600 }}>
-                50 <span style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '0.9rem' }}>TON</span>
-              </Typography>
-            </Box>
-            </Box>
+
+          
+          </Box>
+        </GradientBox>
+    
+          <Box sx={{ width: '100%', mb: 4 }}>
+            <UserDataTable />
           </Box>
 
-        
-        </Box>
-      </GradientBox>
-  
-        <Box sx={{ width: '100%', mb: 4 }}>
-          <UserDataTable />
-        </Box>
-
-        <Box
-          sx={{
-            display: 'flex',
-            overflowX: 'auto',
-            py: 2,
-            px: 1,
-            mb: 3,
-            justifyContent: 'center',
-            '&::-webkit-scrollbar': {
-              display: 'none'
-            },
-            msOverflowStyle: 'none',
-            scrollbarWidth: 'none',
-          }}
-        >
-          {categories.map((category) => (
-            <CategorySelector
-              key={category.id}
-              category={category}
-              isSelected={selectedCategory === category.id}
-              hasBadge={[3].includes(category.id)}
-              onClick={() => setSelectedCategory(category.id)}
-            />
-          ))}
-        </Box>
-
-        {loading ? (
-          <Box sx={{ py: 8, display: 'flex', justifyContent: 'center' }}>
-            <CircularProgress sx={{ color: '#00c6ff' }} />
-          </Box>
-        ) : error ? (
-          <Typography color="error" sx={{ py: 8, textAlign: 'center' }}>{error}</Typography>
-        ) : (
-          <Box sx={{ width: '100%' }}>
-            {categories
-              .find((category) => category.id === selectedCategory)
-              ?.tasks.map((taskIndex) => {
-                if (taskIndex === 9) {
-                  return (
-                   <Paper
-    elevation={0}
-    sx={{
-      borderRadius: 2,
-      
-      mb: 1,
-      width: '95%',
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      transition: 'all 0.2s ease',
-   
-    }}
-  >
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <Box
-                          component="img"
-                          src={watchad}
-                          alt="Watch Ads"
-                          sx={{
-                            width: 30,
-                            height: 30,
-                            borderRadius: '12px',
-                            p: 0.4,
-                    
-                            backgroundColor: 'rgba(0, 198, 255, 0.05)',
-                            border: '1px solid rgba(255, 255, 255, 0.08)',
-                          }}
-                        />
-                        <Box>
-                          <Typography 
-                            variant="subtitle1"
-                            textAlign={'left'}
-                            sx={{
-                              fontWeight: 400,
-                              color: '#FFFFFF',
-                            }}
-                          > Watch Ad
-                          </Typography>
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <img src={task8Logo} alt="" width={16} style={{ borderRadius: '50%' }} />
-                            <Typography
-                              variant="caption"
-                              sx={{
-                                color: '#98d974',
-                                fontWeight: 600,
-                              }}
-                            >
-                              +5 BBLIP
-                            </Typography>
-                          </Box>
-                        </Box>
-                      </Box>
-                      <ShowAdButton />
-                    </Paper>
-                  );
-                }
-
-                if (selectedCategory === 3 && taskIndex === 4) {
-                  return (
-                    <Box key="test-component" sx={{ mb: 2 }}>
-                      <TestComponent />
-                    </Box>
-                  );
-                }
-
-                return (
-                  <TaskCard
-                    key={taskIndex}
-                    task={tasksMetadata[taskIndex]}
-                    index={taskIndex}
-                    status={taskStatus[taskIndex]}
-                    loading={loadingTaskIndex === taskIndex}
-                    onStart={() => handleTaskCompletion(taskIndex)}
-                    onClaim={() => handleClaimTask(taskIndex)}
-                    invitedCount={invitedUsersCount}
-                    requiredCount={
-                      taskIndex === 4 ? 1 :
-                      taskIndex === 5 ? 10 :
-                      taskIndex === 6 ? 25 :
-                      taskIndex === 7 ? 50 :
-                      taskIndex === 8 ? 100 : 0
-                    }
-                  />
-                );
-              })}
-
-            {(selectedCategory === 1) && (
-            <Paper
-    elevation={0}
-    sx={{
-      borderRadius: 2,
-      
-      mb: 1,
-      width: '95%',
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      transition: 'all 0.2s ease',
-   
-    }}
-  >
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <Box
-                    sx={{
-                      width: 35,
-                      height: 35,
-            
-                      backgroundColor: 'rgba(0, 198, 255, 0.05)',
-                      border: '1px solid rgba(255, 255, 255, 0.08)',
-                      borderRadius: '12px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center'
-                    }}
-                  >
-                    <WalletIcon sx={{ color: '#00c6ff' }} />
-                  </Box>
-                  <Box>
-                    <Typography 
-                      variant="subtitle1"
-                      sx={{ 
-                        fontWeight: 400,
-                        color: '#FFFFFF',
-           
-                      }}
-                    >
-                      Connect Wallet
-                    </Typography>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <img src={task8Logo} alt="" width={16} style={{ borderRadius: '50%' }} />
-                      <Typography
-                        variant="caption"
-                        sx={{
-                          color: '#98d974',
-                          fontWeight: 600,
-                        }}
-                      >
-                        +5 BBLIP
-                      </Typography>
-                    </Box>
-                  </Box>
-                </Box>
-                <Header />
-              </Paper>
-            )}
-          </Box>
-        )}
-
-      
-
-        <Snackbar
-          open={openSnackbar}
-          autoHideDuration={3000}
-          onClose={() => setOpenSnackbar(false)}
-          anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          TransitionComponent={Slide}
-        >
-          <Alert
-            severity="success"
-            variant="filled"
+          <Box
             sx={{
-              backgroundColor: '#4caf50',
-              color: '#fff',
-              borderRadius: '8px',
-              '& .MuiAlert-icon': {
-                color: '#fff'
-              }
+              display: 'flex',
+              overflowX: 'auto',
+              py: 2,
+              px: 1,
+              mb: 3,
+              justifyContent: 'center',
+              '&::-webkit-scrollbar': {
+                display: 'none'
+              },
+              msOverflowStyle: 'none',
+              scrollbarWidth: 'none',
             }}
           >
-            {rewardMessage}
-          </Alert>
-        </Snackbar>
-      </Container>
-    </ThemeProvider>
+            {categories.map((category) => (
+              <CategorySelector
+                key={category.id}
+                category={category}
+                isSelected={selectedCategory === category.id}
+                hasBadge={[3].includes(category.id)}
+                onClick={() => setSelectedCategory(category.id)}
+              />
+            ))}
+          </Box>
+
+          {loading ? (
+            <Box sx={{ py: 8, display: 'flex', justifyContent: 'center' }}>
+              <CircularProgress sx={{ color: '#00c6ff' }} />
+            </Box>
+          ) : error ? (
+            <Typography color="error" sx={{ py: 8, textAlign: 'center' }}>{error}</Typography>
+          ) : (
+            <Box sx={{ width: '100%' }}>
+              {categories
+                .find((category) => category.id === selectedCategory)
+                ?.tasks.map((taskIndex) => {
+                  if (taskIndex === 9) {
+                    return (
+                     <Paper
+       elevation={0}
+       sx={{
+         borderRadius: 2,
+         
+         mb: 1,
+         width: '95%',
+         display: 'flex',
+         justifyContent: 'space-between',
+         alignItems: 'center',
+         transition: 'all 0.2s ease',
+      
+       }}
+     >
+                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                           <Box
+                             component="img"
+                             src={watchad}
+                             alt="Watch Ads"
+                             sx={{
+                               width: 30,
+                               height: 30,
+                               borderRadius: '12px',
+                               p: 0.4,
+                       
+                               backgroundColor: 'rgba(0, 198, 255, 0.05)',
+                               border: '1px solid rgba(255, 255, 255, 0.08)',
+                             }}
+                           />
+                           <Box>
+                             <Typography 
+                               variant="subtitle1"
+                               textAlign={'left'}
+                               sx={{
+                                 fontWeight: 400,
+                                 color: '#FFFFFF',
+                               }}
+                             > Watch Ad
+                             </Typography>
+                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                               <img src={task8Logo} alt="" width={16} style={{ borderRadius: '50%' }} />
+                               <Typography
+                                 variant="caption"
+                                 sx={{
+                                   color: '#98d974',
+                                   fontWeight: 600,
+                                 }}
+                               >
+                                 +5 BBLIP
+                               </Typography>
+                             </Box>
+                           </Box>
+                         </Box>
+                         <ShowAdButton />
+                       </Paper>
+                    );
+                  }
+
+                  if (selectedCategory === 3 && taskIndex === 4) {
+                    return (
+                      <Box key="test-component" sx={{ mb: 2 }}>
+                        <TestComponent />
+                      </Box>
+                    );
+                  }
+
+                  return (
+                    <TaskCard
+                      key={taskIndex}
+                      task={tasksMetadata[taskIndex]}
+                      index={taskIndex}
+                      status={taskStatus[taskIndex]}
+                      loading={loadingTaskIndex === taskIndex}
+                      onStart={() => handleTaskCompletion(taskIndex)}
+                      onClaim={() => handleClaimTask(taskIndex)}
+                      invitedCount={invitedUsersCount}
+                      requiredCount={
+                        taskIndex === 4 ? 1 :
+                        taskIndex === 5 ? 10 :
+                        taskIndex === 6 ? 25 :
+                        taskIndex === 7 ? 50 :
+                        taskIndex === 8 ? 100 : 0
+                      }
+                    />
+                  );
+                })}
+
+              {(selectedCategory === 1) && (
+              <Paper
+       elevation={0}
+       sx={{
+         borderRadius: 2,
+         
+         mb: 1,
+         width: '95%',
+         display: 'flex',
+         justifyContent: 'space-between',
+         alignItems: 'center',
+         transition: 'all 0.2s ease',
+      
+       }}
+     >
+                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                   <Box
+                     sx={{
+                       width: 35,
+                       height: 35,
+             
+                       backgroundColor: 'rgba(0, 198, 255, 0.05)',
+                       border: '1px solid rgba(255, 255, 255, 0.08)',
+                       borderRadius: '12px',
+                       display: 'flex',
+                       alignItems: 'center',
+                       justifyContent: 'center'
+                     }}
+                   >
+                     <WalletIcon sx={{ color: '#00c6ff' }} />
+                   </Box>
+                   <Box>
+                     <Typography 
+                       variant="subtitle1"
+                       sx={{ 
+                         fontWeight: 400,
+                         color: '#FFFFFF',
+            
+                       }}
+                     >
+                       Connect Wallet
+                     </Typography>
+                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                       <img src={task8Logo} alt="" width={16} style={{ borderRadius: '50%' }} />
+                       <Typography
+                         variant="caption"
+                         sx={{
+                           color: '#98d974',
+                           fontWeight: 600,
+                         }}
+                       >
+                         +5 BBLIP
+                       </Typography>
+                     </Box>
+                   </Box>
+                 </Box>
+                 <Header />
+               </Paper>
+              )}
+            </Box>
+          )}
+
+        
+
+          <Snackbar
+            open={openSnackbar}
+            autoHideDuration={3000}
+            onClose={() => setOpenSnackbar(false)}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            TransitionComponent={Slide}
+          >
+            <Alert
+              severity="success"
+              variant="filled"
+              sx={{
+                backgroundColor: '#4caf50',
+                color: '#fff',
+                borderRadius: '8px',
+                '& .MuiAlert-icon': {
+                  color: '#fff'
+                }
+              }}
+            >
+              {rewardMessage}
+            </Alert>
+          </Snackbar>
+        </Container>
+      </ThemeProvider>
+    </WithTourSection>
   );
 };
 

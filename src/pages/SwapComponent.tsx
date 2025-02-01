@@ -27,6 +27,7 @@ import { CheckCircleOutline } from '@mui/icons-material';
 import { TransitionProps } from '@mui/material/transitions';
 import { firebaseConfig } from "./firebaseConfig";
 import BackspaceIcon from '@mui/icons-material/Backspace';
+import WithTourSection from '../components/TourGuide/withTourSection';
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -580,247 +581,249 @@ const TokenSwap: React.FC = () => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Box sx={{ 
-        color: 'white', 
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        pb: 'calc(320px + env(safe-area-inset-bottom, 16px))',
-      }}>
-        {/* Content Area */}
-        <Box sx={{ mx:-1, pt: 1 }}>
-          {/* Header */}
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1.5 }}>
-            <Typography variant="h6" sx={{ fontWeight: '500', fontSize: '18px', color: '#6ed3ff' }}>
-              Swap
-            </Typography>
-            <IconButton size="small" sx={{ color: '#6ed3ff' }}>
-              <TuneRoundedIcon fontSize="small" />
-            </IconButton>
-          </Box>
-
-          {/* From Token Box */}
-          <TokenBox sx={{ mb: -3 }}>
-            {/* Main Row */}
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              {/* Input */}
-              <Typography sx={{ 
-                fontSize: '28px', 
-                fontWeight: '500',
-                color: fromAmount ? '#6ed3ff' : 'rgba(255, 255, 255, 0.3)',
-                flex: 1
-              }}>
-                {fromAmount || '0'}
+    <WithTourSection sectionId="swap-section">
+      <ThemeProvider theme={theme}>
+        <Box sx={{ 
+          color: 'white', 
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          pb: 'calc(320px + env(safe-area-inset-bottom, 16px))',
+        }}>
+          {/* Content Area */}
+          <Box sx={{ mx:-1, pt: 1 }}>
+            {/* Header */}
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1.5 }}>
+              <Typography variant="h6" sx={{ fontWeight: '500', fontSize: '18px', color: '#6ed3ff' }}>
+                Swap
               </Typography>
-              
-              {/* Token Select */}
-              <TokenSelectButton
-                onClick={() => {
-                  setSelectedTokenType("from");
-                  setOpenDrawer(true);
-                }}
-              >
-                <Avatar
-                  src={tokens.find(t => t.name === fromToken)?.icon}
-                  sx={{ width: 20, height: 20, mr: 0.5 }}
-                />
-                {fromToken}
-              </TokenSelectButton>
-            </Box>
-
-            {/* Sub Row */}
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 0.5 }}>
-              {/* USD Value */}
-              <Typography sx={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '12px' }}>
-                ${calculateUSDValue(fromAmount, fromToken).toFixed(2)}
-              </Typography>
-
-              {/* Balance and Max */}
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                <Typography sx={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '12px' }}>
-                  {formatDisplayAmount(getBalanceForToken(fromToken), fromToken)} 
-                </Typography>
-                <MaxButton onClick={() => handleMaxClick("from")}>
-                  Max
-                </MaxButton>
-              </Box>
-            </Box>
-          </TokenBox>
-
-          {/* Swap Icon */}
-          <Box sx={{ 
-            display: 'flex', 
-            justifyContent: 'center', 
-            position: 'relative',
-          
-          }}>
-            <SwapIconButton
-              size="small"
-              onClick={handleTokenSwapInline2}
-            >
-              <SwapVertRoundedIcon sx={{ fontSize: 16 }} />
-            </SwapIconButton>
-          </Box>
-
-          {/* To Token Box */}
-          <TokenBox sx={{  }}>
-            {/* Main Row */}
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              {/* Input */}
-              <Typography sx={{ 
-                fontSize: '28px', 
-                fontWeight: '500',
-                color: toAmount ? '#6ed3ff' : 'rgba(255, 255, 255, 0.3)',
-                flex: 1
-              }}>
-                {toAmount || '0'}
-              </Typography>
-              
-              {/* Token Select */}
-              <TokenSelectButton
-                onClick={() => {
-                  setSelectedTokenType("to");
-                  setOpenDrawer(true);
-                }}
-              >
-                <Avatar
-                  src={tokens.find(t => t.name === toToken)?.icon}
-                  sx={{ width: 20, height: 20, mr: 0.5 }}
-                />
-                {toToken}
-              </TokenSelectButton>
-            </Box>
-
-            {/* Sub Row - Only USD Value */}
-            <Box sx={{ mt: 0.5 }}>
-              <Typography sx={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '12px' }}>
-                ${calculateUSDValue(toAmount, toToken).toFixed(2)}
-              </Typography>
-            </Box>
-          </TokenBox>
-        </Box>
-
-        {/* Custom Keyboard */}
-        <KeyboardContainer>
-          <Box sx={{ p: 1 }}>
-            <Grid container spacing={0.5}>
-              <Grid item xs={4}><KeyboardButton onClick={() => handleNumberClick("1")}>1</KeyboardButton></Grid>
-              <Grid item xs={4}><KeyboardButton onClick={() => handleNumberClick("2")}>2</KeyboardButton></Grid>
-              <Grid item xs={4}><KeyboardButton onClick={() => handleNumberClick("3")}>3</KeyboardButton></Grid>
-              <Grid item xs={4}><KeyboardButton onClick={() => handleNumberClick("4")}>4</KeyboardButton></Grid>
-              <Grid item xs={4}><KeyboardButton onClick={() => handleNumberClick("5")}>5</KeyboardButton></Grid>
-              <Grid item xs={4}><KeyboardButton onClick={() => handleNumberClick("6")}>6</KeyboardButton></Grid>
-              <Grid item xs={4}><KeyboardButton onClick={() => handleNumberClick("7")}>7</KeyboardButton></Grid>
-              <Grid item xs={4}><KeyboardButton onClick={() => handleNumberClick("8")}>8</KeyboardButton></Grid>
-              <Grid item xs={4}><KeyboardButton onClick={() => handleNumberClick("9")}>9</KeyboardButton></Grid>
-              <Grid item xs={4}><KeyboardButton onClick={() => handleNumberClick(".")}>.</KeyboardButton></Grid>
-              <Grid item xs={4}><KeyboardButton onClick={() => handleNumberClick("0")}>0</KeyboardButton></Grid>
-              <Grid item xs={4}><KeyboardButton onClick={() => handleNumberClick("backspace")}><BackspaceIcon /></KeyboardButton></Grid>
-            </Grid>
-            
-            {/* Swap Button */}
-            <Box sx={{ mt: 1, mb: 1 }}>
-              <SwapButton
-                fullWidth
-                onClick={handleSwap}
-                disabled={!fromAmount || !toAmount || isSwapping}
-                sx={{ height: '44px' }}
-              >
-                {error ? error : isSwapping ? 'Swapping...' : 'Swap'}
-              </SwapButton>
-            </Box>
-          </Box>
-        </KeyboardContainer>
-
-        {/* Token Selection Drawer */}
-        <TokenListDrawer
-          anchor="bottom"
-          open={openDrawer}
-          onClose={() => setOpenDrawer(false)}
-          onOpen={() => setOpenDrawer(true)}
-        >
-          <Box sx={{ mx:-1 }}>
-            <Box sx={{ 
-              display: 'flex', 
-              justifyContent: 'space-between', 
-              alignItems: 'center',
-              mb: 3,
-            }}>
-              <Typography variant="h6" sx={{ color: 'white', fontWeight: 600 }}>
-                Select Asset
-              </Typography>
-              <IconButton 
-                onClick={() => setOpenDrawer(false)}
-                sx={{ color: 'rgba(255, 255, 255, 0.5)' }}
-              >
-                <CloseIcon />
+              <IconButton size="small" sx={{ color: '#6ed3ff' }}>
+                <TuneRoundedIcon fontSize="small" />
               </IconButton>
             </Box>
 
-            <Box sx={{ maxHeight: '60vh', overflow: 'auto' }}>
-              {tokens.map((token) => (
-                <TokenListItem
-                  key={token.name}
-                  onClick={() => handleTokenSelect(token)}
-                  disabled={token.name === 'BBLIP'}
-                  sx={{
-                    opacity: token.name === 'BBLIP' ? 0.5 : 1,
+            {/* From Token Box */}
+            <TokenBox sx={{ mb: -3 }}>
+              {/* Main Row */}
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                {/* Input */}
+                <Typography sx={{ 
+                  fontSize: '28px', 
+                  fontWeight: '500',
+                  color: fromAmount ? '#6ed3ff' : 'rgba(255, 255, 255, 0.3)',
+                  flex: 1
+                }}>
+                  {fromAmount || '0'}
+                </Typography>
+                
+                {/* Token Select */}
+                <TokenSelectButton
+                  onClick={() => {
+                    setSelectedTokenType("from");
+                    setOpenDrawer(true);
                   }}
                 >
                   <Avatar
-                    src={token.icon}
-                    sx={{ width: 36, height: 36, mr: 2 }}
+                    src={tokens.find(t => t.name === fromToken)?.icon}
+                    sx={{ width: 20, height: 20, mr: 0.5 }}
                   />
-                  <Box sx={{ flexGrow: 1 }}>
-                    <Typography variant="subtitle1" sx={{ color: 'white' }}>
-                      {token.name}
-                    </Typography>
-                    <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.5)' }}>
-                      Balance: {formatDisplayAmount(getBalanceForToken(token.name), token.name)}
-                    </Typography>
-                  </Box>
-                  {token.name === 'BBLIP' && (
-                    <Typography variant="caption" sx={{ color: '#6ed3ff' }}>
-                      Coming Soon
-                    </Typography>
-                  )}
-                </TokenListItem>
-              ))}
-            </Box>
-          </Box>
-        </TokenListDrawer>
+                  {fromToken}
+                </TokenSelectButton>
+              </Box>
 
-        {/* Success Snackbar */}
-        <Snackbar
-          open={showSuccess && !!success}
-          autoHideDuration={4000}
-          onClose={handleCloseSuccess}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-          TransitionComponent={SlideTransition}
-          sx={{
-            '& .MuiSnackbar-root': {
-              minWidth: 'auto',
-            },
-          }}
-        >
-          <CustomAlert>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <CheckCircleOutline sx={{ color: '#81c784' }} />
-              <Typography variant="body2">{success}</Typography>
+              {/* Sub Row */}
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 0.5 }}>
+                {/* USD Value */}
+                <Typography sx={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '12px' }}>
+                  ${calculateUSDValue(fromAmount, fromToken).toFixed(2)}
+                </Typography>
+
+                {/* Balance and Max */}
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                  <Typography sx={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '12px' }}>
+                    {formatDisplayAmount(getBalanceForToken(fromToken), fromToken)} 
+                  </Typography>
+                  <MaxButton onClick={() => handleMaxClick("from")}>
+                    Max
+                  </MaxButton>
+                </Box>
+              </Box>
+            </TokenBox>
+
+            {/* Swap Icon */}
+            <Box sx={{ 
+              display: 'flex', 
+              justifyContent: 'center', 
+              position: 'relative',
+            
+            }}>
+              <SwapIconButton
+                size="small"
+                onClick={handleTokenSwapInline2}
+              >
+                <SwapVertRoundedIcon sx={{ fontSize: 16 }} />
+              </SwapIconButton>
             </Box>
-            <IconButton
-              size="small"
-              aria-label="close"
-              color="inherit"
-              onClick={handleCloseSuccess}
-            >
-              <CloseIcon fontSize="small" />
-            </IconButton>
-          </CustomAlert>
-        </Snackbar>
-      </Box>
-    </ThemeProvider>
+
+            {/* To Token Box */}
+            <TokenBox sx={{  }}>
+              {/* Main Row */}
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                {/* Input */}
+                <Typography sx={{ 
+                  fontSize: '28px', 
+                  fontWeight: '500',
+                  color: toAmount ? '#6ed3ff' : 'rgba(255, 255, 255, 0.3)',
+                  flex: 1
+                }}>
+                  {toAmount || '0'}
+                </Typography>
+                
+                {/* Token Select */}
+                <TokenSelectButton
+                  onClick={() => {
+                    setSelectedTokenType("to");
+                    setOpenDrawer(true);
+                  }}
+                >
+                  <Avatar
+                    src={tokens.find(t => t.name === toToken)?.icon}
+                    sx={{ width: 20, height: 20, mr: 0.5 }}
+                  />
+                  {toToken}
+                </TokenSelectButton>
+              </Box>
+
+              {/* Sub Row - Only USD Value */}
+              <Box sx={{ mt: 0.5 }}>
+                <Typography sx={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '12px' }}>
+                  ${calculateUSDValue(toAmount, toToken).toFixed(2)}
+                </Typography>
+              </Box>
+            </TokenBox>
+          </Box>
+
+          {/* Custom Keyboard */}
+          <KeyboardContainer>
+            <Box sx={{ p: 1 }}>
+              <Grid container spacing={0.5}>
+                <Grid item xs={4}><KeyboardButton onClick={() => handleNumberClick("1")}>1</KeyboardButton></Grid>
+                <Grid item xs={4}><KeyboardButton onClick={() => handleNumberClick("2")}>2</KeyboardButton></Grid>
+                <Grid item xs={4}><KeyboardButton onClick={() => handleNumberClick("3")}>3</KeyboardButton></Grid>
+                <Grid item xs={4}><KeyboardButton onClick={() => handleNumberClick("4")}>4</KeyboardButton></Grid>
+                <Grid item xs={4}><KeyboardButton onClick={() => handleNumberClick("5")}>5</KeyboardButton></Grid>
+                <Grid item xs={4}><KeyboardButton onClick={() => handleNumberClick("6")}>6</KeyboardButton></Grid>
+                <Grid item xs={4}><KeyboardButton onClick={() => handleNumberClick("7")}>7</KeyboardButton></Grid>
+                <Grid item xs={4}><KeyboardButton onClick={() => handleNumberClick("8")}>8</KeyboardButton></Grid>
+                <Grid item xs={4}><KeyboardButton onClick={() => handleNumberClick("9")}>9</KeyboardButton></Grid>
+                <Grid item xs={4}><KeyboardButton onClick={() => handleNumberClick(".")}>.</KeyboardButton></Grid>
+                <Grid item xs={4}><KeyboardButton onClick={() => handleNumberClick("0")}>0</KeyboardButton></Grid>
+                <Grid item xs={4}><KeyboardButton onClick={() => handleNumberClick("backspace")}><BackspaceIcon /></KeyboardButton></Grid>
+              </Grid>
+              
+              {/* Swap Button */}
+              <Box sx={{ mt: 1, mb: 1 }}>
+                <SwapButton
+                  fullWidth
+                  onClick={handleSwap}
+                  disabled={!fromAmount || !toAmount || isSwapping}
+                  sx={{ height: '44px' }}
+                >
+                  {error ? error : isSwapping ? 'Swapping...' : 'Swap'}
+                </SwapButton>
+              </Box>
+            </Box>
+          </KeyboardContainer>
+
+          {/* Token Selection Drawer */}
+          <TokenListDrawer
+            anchor="bottom"
+            open={openDrawer}
+            onClose={() => setOpenDrawer(false)}
+            onOpen={() => setOpenDrawer(true)}
+          >
+            <Box sx={{ mx:-1 }}>
+              <Box sx={{ 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                alignItems: 'center',
+                mb: 3,
+              }}>
+                <Typography variant="h6" sx={{ color: 'white', fontWeight: 600 }}>
+                  Select Asset
+                </Typography>
+                <IconButton 
+                  onClick={() => setOpenDrawer(false)}
+                  sx={{ color: 'rgba(255, 255, 255, 0.5)' }}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </Box>
+
+              <Box sx={{ maxHeight: '60vh', overflow: 'auto' }}>
+                {tokens.map((token) => (
+                  <TokenListItem
+                    key={token.name}
+                    onClick={() => handleTokenSelect(token)}
+                    disabled={token.name === 'BBLIP'}
+                    sx={{
+                      opacity: token.name === 'BBLIP' ? 0.5 : 1,
+                    }}
+                  >
+                    <Avatar
+                      src={token.icon}
+                      sx={{ width: 36, height: 36, mr: 2 }}
+                    />
+                    <Box sx={{ flexGrow: 1 }}>
+                      <Typography variant="subtitle1" sx={{ color: 'white' }}>
+                        {token.name}
+                      </Typography>
+                      <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.5)' }}>
+                        Balance: {formatDisplayAmount(getBalanceForToken(token.name), token.name)}
+                      </Typography>
+                    </Box>
+                    {token.name === 'BBLIP' && (
+                      <Typography variant="caption" sx={{ color: '#6ed3ff' }}>
+                        Coming Soon
+                      </Typography>
+                    )}
+                  </TokenListItem>
+                ))}
+              </Box>
+            </Box>
+          </TokenListDrawer>
+
+          {/* Success Snackbar */}
+          <Snackbar
+            open={showSuccess && !!success}
+            autoHideDuration={4000}
+            onClose={handleCloseSuccess}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            TransitionComponent={SlideTransition}
+            sx={{
+              '& .MuiSnackbar-root': {
+                minWidth: 'auto',
+              },
+            }}
+          >
+            <CustomAlert>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <CheckCircleOutline sx={{ color: '#81c784' }} />
+                <Typography variant="body2">{success}</Typography>
+              </Box>
+              <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={handleCloseSuccess}
+              >
+                <CloseIcon fontSize="small" />
+              </IconButton>
+            </CustomAlert>
+          </Snackbar>
+        </Box>
+      </ThemeProvider>
+    </WithTourSection>
   );
 };
 
