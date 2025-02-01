@@ -15,7 +15,8 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { SupportMessage } from '../../types/support';
-import { sendSupportMessage, getUserMessages, markMessageAsRead} from '../../services/supportService';
+import { sendSupportMessage, getUserMessages, markMessageAsRead } from '../../services/supportService';
+import { Timestamp } from 'firebase/firestore';
 
 interface PaginatedSupportChatProps {
   open: boolean;
@@ -23,6 +24,13 @@ interface PaginatedSupportChatProps {
   userId: string;
   userName: string;
 }
+
+const convertToDate = (timestamp: Date | Timestamp): Date => {
+  if (timestamp instanceof Timestamp) {
+    return timestamp.toDate();
+  }
+  return timestamp;
+};
 
 export const PaginatedSupportChat: React.FC<PaginatedSupportChatProps> = ({
   open,
@@ -45,17 +53,23 @@ export const PaginatedSupportChat: React.FC<PaginatedSupportChatProps> = ({
       const unsubscribe = getUserMessages(userId, (newMessages) => {
         console.log('Received new messages:', newMessages);
         if (newMessages && newMessages.length > 0) {
-          setMessages(newMessages);
+          // Convert timestamps to dates
+          const processedMessages = newMessages.map(msg => ({
+            ...msg,
+            timestamp: convertToDate(msg.timestamp)
+          }));
+          
+          setMessages(processedMessages);
           
           // Initially display only the last 10 messages
-          const lastMessages = newMessages.slice(0, messagesPerPage);
+          const lastMessages = processedMessages.slice(0, messagesPerPage);
           console.log('Setting displayed messages:', lastMessages);
           setDisplayedMessages(lastMessages);
           
           // Mark unread messages as read
           newMessages.forEach(msg => {
             if (!msg.isRead && msg.isAdmin) {
-              markMessageAsRead(msg.id);
+              markMessageAsRead(userId, msg.id);
             }
           });
 
@@ -82,7 +96,11 @@ export const PaginatedSupportChat: React.FC<PaginatedSupportChatProps> = ({
     setLoading(true);
     try {
       const nextPage = page + 1;
-      const newDisplayedMessages = messages.slice(0, nextPage * messagesPerPage);
+      const newDisplayedMessages = messages.map(msg => ({
+        ...msg,
+        timestamp: convertToDate(msg.timestamp)
+      })).slice(0, nextPage * messagesPerPage);
+      
       console.log('New displayed messages:', newDisplayedMessages);
       setDisplayedMessages(newDisplayedMessages);
       setPage(nextPage);
@@ -138,15 +156,15 @@ export const PaginatedSupportChat: React.FC<PaginatedSupportChatProps> = ({
     }
   };
 
-  const formatTimestamp = (timestamp: Date) => {
+  const formatTimestamp = (timestamp: Date | Timestamp) => {
+    const date = convertToDate(timestamp);
     const today = new Date();
-    const messageDate = new Date(timestamp);
     
-    if (today.toDateString() === messageDate.toDateString()) {
-      return messageDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    if (today.toDateString() === date.toDateString()) {
+      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
     
-    return messageDate.toLocaleString([], {
+    return date.toLocaleString([], {
       month: 'short',
       day: 'numeric',
       hour: '2-digit',
@@ -196,56 +214,59 @@ export const PaginatedSupportChat: React.FC<PaginatedSupportChatProps> = ({
                 </Box>
               )}
               
-              {displayedMessages.slice().reverse().map((message) => (
-                <Box
-                  key={message.id}
-                  sx={{
-                    display: 'flex',
-                    justifyContent: message.senderId === userId ? 'flex-end' : 'flex-start',
-                    mb: 2
-                  }}
-                >
+              {displayedMessages.slice().reverse().map((message) => {
+                const messageDate = convertToDate(message.timestamp);
+                return (
                   <Box
+                    key={message.id}
                     sx={{
-                      maxWidth: '70%',
-                      bgcolor: message.senderId === userId ? 'primary.100' : 'primary.50',
-                      p: 2,
-                      borderRadius: 2,
-                      position: 'relative',
-                      '&::after': {
-                        content: '""',
-                        position: 'absolute',
-                        width: 0,
-                        height: 0,
-                        borderStyle: 'solid',
-                        borderWidth: '8px',
-                        borderColor: `transparent ${message.senderId === userId ? '#bbdefb transparent transparent transparent' : 'transparent transparent #e3f2fd'}`,
-                        transform: message.senderId === userId ? 'rotate(45deg)' : 'rotate(-45deg)',
-                        top: '15px',
-                        [message.senderId === userId ? 'right' : 'left']: '-8px',
-                      }
+                      display: 'flex',
+                      justifyContent: message.senderId === userId ? 'flex-end' : 'flex-start',
+                      mb: 2
                     }}
                   >
-                    <Typography variant="subtitle2" fontWeight="bold" color="primary.dark">
-                      {message.senderId === userId ? 'You' : 'Support Team'}
-                    </Typography>
-                    <Typography variant="body1" sx={{ wordBreak: 'break-word' }}>
-                      {message.message}
-                    </Typography>
-                    <Typography 
-                      variant="caption" 
-                      color="text.secondary"
-                      sx={{ 
-                        display: 'block',
-                        textAlign: message.senderId === userId ? 'right' : 'left',
-                        mt: 0.5
+                    <Box
+                      sx={{
+                        maxWidth: '70%',
+                        bgcolor: message.senderId === userId ? 'primary.100' : 'primary.50',
+                        p: 2,
+                        borderRadius: 2,
+                        position: 'relative',
+                        '&::after': {
+                          content: '""',
+                          position: 'absolute',
+                          width: 0,
+                          height: 0,
+                          borderStyle: 'solid',
+                          borderWidth: '8px',
+                          borderColor: `transparent ${message.senderId === userId ? '#bbdefb transparent transparent transparent' : 'transparent transparent #e3f2fd'}`,
+                          transform: message.senderId === userId ? 'rotate(45deg)' : 'rotate(-45deg)',
+                          top: '15px',
+                          [message.senderId === userId ? 'right' : 'left']: '-8px',
+                        }
                       }}
                     >
-                      {formatTimestamp(message.timestamp)}
-                    </Typography>
+                      <Typography variant="subtitle2" fontWeight="bold" color="primary.dark">
+                        {message.senderId === userId ? 'You' : 'Support Team'}
+                      </Typography>
+                      <Typography variant="body1" sx={{ wordBreak: 'break-word' }}>
+                        {message.message}
+                      </Typography>
+                      <Typography 
+                        variant="caption" 
+                        color="text.secondary"
+                        sx={{ 
+                          display: 'block',
+                          textAlign: message.senderId === userId ? 'right' : 'left',
+                          mt: 0.5
+                        }}
+                      >
+                        {formatTimestamp(messageDate)}
+                      </Typography>
+                    </Box>
                   </Box>
-                </Box>
-              ))}
+                );
+              })}
               <div ref={messagesEndRef} />
             </Box>
             

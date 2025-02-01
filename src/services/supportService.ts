@@ -1,42 +1,53 @@
-import { collection, addDoc, query, where, updateDoc, doc, onSnapshot, orderBy, getDocs, writeBatch} from 'firebase/firestore';
+import { collection, setDoc, doc, onSnapshot, orderBy, query, getDoc, updateDoc, arrayUnion, serverTimestamp, Timestamp } from 'firebase/firestore';
 import { db } from '../pages/firebase';
-import { SupportMessage, SupportChat } from '../types/support';
+import { UserChatDocument, ChatMessage, SupportMessage, SupportChat } from '../types/support';
 import WebApp from '@twa-dev/sdk';
+import { v4 as uuidv4 } from 'uuid';
 
-const SUPPORT_COLLECTION = 'support_chats';
+const SUPPORT_COLLECTION = 'user_chats';
 const ADMIN_ID = '1421109983';
+
+const convertTimestampToDate = (timestamp: Date | Timestamp): Date => {
+  if (timestamp instanceof Timestamp) {
+    return timestamp.toDate();
+  }
+  return timestamp;
+};
 
 export const sendSupportMessage = async (message: string, userId: string, userName: string) => {
   try {
     console.log('Sending message with:', { userId, userName, message });
-    const chatRef = collection(db, SUPPORT_COLLECTION);
     
     const isAdmin = userId === ADMIN_ID;
-    let targetUserId = userId;
-    let targetUserName = userName;
+    const targetUserId = isAdmin ? 
+      (userName.startsWith('User ') ? userName.split('User ')[1] : userName) : 
+      userId;
 
-    // If admin is sending, we need to extract the user ID from the userName
-    if (isAdmin && userName.startsWith('User ')) {
-      targetUserId = userName.split('User ')[1];
-      targetUserName = userName;
-    }
-
-    const newMessage: Omit<SupportMessage, 'id'> = {
-      senderId: userId,
-      receiverId: isAdmin ? targetUserId : ADMIN_ID,
-      userName: isAdmin ? 'Support Team' : targetUserName,
+    const chatDocRef = doc(db, SUPPORT_COLLECTION, targetUserId);
+    const now = Timestamp.now();
+    
+    const newMessage: ChatMessage = {
+      id: uuidv4(),
       message,
-      timestamp: new Date(),
+      timestamp: now,
       isAdmin,
-      isRead: false,
-      participants: [targetUserId, ADMIN_ID] // Always use actual user ID
+      isRead: false
     };
 
-    console.log('New message object:', newMessage);
-    const docRef = await addDoc(chatRef, newMessage);
-    console.log('Message sent with ID:', docRef.id);
+    // Update or create the chat document
+    await setDoc(chatDocRef, {
+      userId: targetUserId,
+      userName: `User ${targetUserId}`,
+      lastMessage: message,
+      lastMessageTimestamp: now,
+      unreadCount: isAdmin ? 1 : 0,
+      messages: arrayUnion(newMessage),
+      updatedAt: serverTimestamp(),
+      createdAt: serverTimestamp()
+    }, { merge: true });
 
-    // If admin is sending a message, notify the user
+    console.log('Message sent successfully');
+
     if (isAdmin) {
       WebApp.showAlert(`New support message from admin: ${message}`);
     }
@@ -51,33 +62,34 @@ export const sendSupportMessage = async (message: string, userId: string, userNa
 export const getUserMessages = (userId: string, callback: (messages: SupportMessage[]) => void) => {
   console.log('Getting messages for user:', userId);
   
-  // Use orderBy with composite index for better performance
-  const q = query(
-    collection(db, SUPPORT_COLLECTION),
-    where('participants', 'array-contains', userId),
-    orderBy('timestamp', 'desc')
-  );
+  const docRef = doc(db, SUPPORT_COLLECTION, userId);
+  
+  return onSnapshot(docRef, (snapshot) => {
+    if (!snapshot.exists()) {
+      console.log('No chat document exists for user:', userId);
+      callback([]);
+      return;
+    }
 
-  return onSnapshot(q, (snapshot) => {
-    console.log('Received snapshot with size:', snapshot.size);
-    const messages = snapshot.docs.map(doc => {
-      const data = doc.data();
-      console.log('Message data:', data);
-      return {
-        id: doc.id,
-        senderId: data.senderId || '',
-        receiverId: data.receiverId || '',
-        userName: data.userName || '',
-        message: data.message || '',
-        timestamp: data.timestamp?.toDate() || new Date(),
-        isAdmin: data.isAdmin || false,
-        isRead: data.isRead || false,
-        participants: data.participants || []
-      } as SupportMessage;
-    });
+    const chatDoc = snapshot.data() as UserChatDocument;
+    console.log('Chat document:', chatDoc);
 
-    console.log('Processed messages:', messages);
-    callback(messages);
+    // Convert ChatMessage[] to SupportMessage[]
+    const messages = chatDoc.messages.map(msg => ({
+      ...msg,
+      timestamp: convertTimestampToDate(msg.timestamp),
+      senderId: msg.isAdmin ? ADMIN_ID : userId,
+      receiverId: msg.isAdmin ? userId : ADMIN_ID,
+      userName: msg.isAdmin ? 'Support Team' : chatDoc.userName
+    }));
+
+    // Sort messages by timestamp
+    const sortedMessages = messages.sort((a, b) => 
+      b.timestamp.getTime() - a.timestamp.getTime()
+    );
+
+    console.log('Processed messages:', sortedMessages);
+    callback(sortedMessages);
   }, (error) => {
     console.error('Error in getUserMessages:', error);
   });
@@ -86,103 +98,66 @@ export const getUserMessages = (userId: string, callback: (messages: SupportMess
 export const getAllChats = (callback: (chats: SupportChat[]) => void) => {
   const q = query(
     collection(db, SUPPORT_COLLECTION),
-    orderBy('timestamp', 'desc')
+    orderBy('updatedAt', 'desc')
   );
 
   return onSnapshot(q, (snapshot) => {
-    const messages = snapshot.docs.map(doc => {
-      const data = doc.data();
-      return {
-        id: doc.id,
-        senderId: data.senderId || '',
-        receiverId: data.receiverId || '',
-        userName: data.userName || '',
-        message: data.message || '',
-        timestamp: data.timestamp?.toDate() || new Date(),
-        isAdmin: data.isAdmin || false,
-        isRead: data.isRead || false,
-        participants: data.participants || []
-      } as SupportMessage;
-    });
-
-    const chatMap = new Map<string, SupportChat>();
-    messages.forEach(message => {
-      // Use the non-admin user's ID for grouping
-      const userId = message.isAdmin ? message.receiverId : message.senderId;
-      const userName = message.isAdmin ? `User ${message.receiverId}` : message.userName;
+    const chats = snapshot.docs.map(doc => {
+      const data = doc.data() as UserChatDocument;
       
-      if (!chatMap.has(userId)) {
-        chatMap.set(userId, {
-          userId,
-          userName,
-          lastMessage: message.message,
-          lastMessageTimestamp: message.timestamp,
-          unreadCount: message.isAdmin ? 0 : 1,
-          messages: [message]
-        });
-      } else {
-        const chat = chatMap.get(userId)!;
-        chat.messages.push(message);
-        if (!message.isAdmin && !message.isRead) {
-          chat.unreadCount++;
-        }
-      }
+      // Convert ChatMessage[] to SupportMessage[]
+      const messages = data.messages.map(msg => ({
+        ...msg,
+        timestamp: convertTimestampToDate(msg.timestamp),
+        senderId: msg.isAdmin ? ADMIN_ID : data.userId,
+        receiverId: msg.isAdmin ? data.userId : ADMIN_ID,
+        userName: msg.isAdmin ? 'Support Team' : data.userName
+      }));
+
+      return {
+        userId: data.userId,
+        userName: data.userName,
+        lastMessage: data.lastMessage,
+        lastMessageTimestamp: convertTimestampToDate(data.lastMessageTimestamp),
+        unreadCount: data.unreadCount,
+        messages
+      } as SupportChat;
     });
 
-    callback(Array.from(chatMap.values()));
+    callback(chats);
   });
 };
 
-export const markMessageAsRead = async (messageId: string) => {
+export const markMessageAsRead = async (userId: string, messageId: string) => {
   try {
-    const messageRef = doc(db, SUPPORT_COLLECTION, messageId);
-    await updateDoc(messageRef, { isRead: true });
+    const chatDocRef = doc(db, SUPPORT_COLLECTION, userId);
+    
+    // Get current document
+    const snapshot = await getDoc(chatDocRef);
+    if (!snapshot.exists()) {
+      return false;
+    }
+
+    const chatDoc = snapshot.data() as UserChatDocument;
+    
+    // Update the specific message
+    const updatedMessages = chatDoc.messages.map(msg => 
+      msg.id === messageId ? { ...msg, isRead: true } : msg
+    );
+
+    // Count unread messages
+    const unreadCount = updatedMessages.filter(msg => !msg.isRead && !msg.isAdmin).length;
+
+    // Update document
+    await updateDoc(chatDocRef, {
+      messages: updatedMessages,
+      unreadCount,
+      updatedAt: serverTimestamp()
+    });
+
     return true;
   } catch (error) {
     console.error('Error marking message as read:', error);
-    return false;
-  }
-};
-
-export const migrateExistingMessages = async () => {
-  try {
-    const q = query(collection(db, SUPPORT_COLLECTION));
-    const snapshot = await getDocs(q);
-    
-    const batch = writeBatch(db);
-    let operationCount = 0;
-    
-    snapshot.forEach((docSnapshot) => {
-      const data = docSnapshot.data();
-      if (!data.participants && data.senderId && data.receiverId) {
-        batch.update(docSnapshot.ref, {
-          participants: [data.senderId, data.receiverId],
-          // Ensure all required fields exist
-          senderId: data.senderId || '',
-          receiverId: data.receiverId || '',
-          userName: data.userName || '',
-          message: data.message || '',
-          timestamp: data.timestamp || new Date(),
-          isAdmin: data.isAdmin || false,
-          isRead: data.isRead || false
-        });
-        operationCount++;
-        
-        if (operationCount >= 500) {
-          batch.commit();
-          operationCount = 0;
-        }
-      }
-    });
-    
-    if (operationCount > 0) {
-      await batch.commit();
-    }
-    
-    console.log('Migration completed successfully');
-    return true;
-  } catch (error) {
-    console.error('Error during migration:', error);
     return false;
   }
 }; 

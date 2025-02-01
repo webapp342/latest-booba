@@ -183,7 +183,7 @@ export const AdminSupportPanel: React.FC<AdminSupportPanelProps> = ({
                           </Typography>
                           <Typography>{message.message}</Typography>
                           <Typography variant="caption" color="text.secondary">
-                            {message.timestamp.toLocaleTimeString()}
+                            {message.timestamp.toLocaleString()}
                           </Typography>
                         </Box>
                       </Box>
