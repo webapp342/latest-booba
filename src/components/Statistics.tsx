@@ -1,13 +1,19 @@
-import React from 'react';
-import { Box, Typography, Grid } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Typography, Grid, Button } from '@mui/material';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 import TONIcon from '../assets/kucukTON.png';
 import AluminumIcon from '../assets/aluminum.png';
 import HistoryIcon from '@mui/icons-material/History';
-import AnimationIcon from '@mui/icons-material/Animation';import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-
-
+import AnimationIcon from '@mui/icons-material/Animation';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import LinearProgress from '@mui/material/LinearProgress';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
+import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
+import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
+import ControlPointDuplicateIcon from '@mui/icons-material/ControlPointDuplicate';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 
 const StatItem = ({ title, value, change, isRightAligned = false }: { 
   title: string; 
@@ -16,11 +22,14 @@ const StatItem = ({ title, value, change, isRightAligned = false }: {
   isRightAligned?: boolean;
 }) => (
   <Box sx={{ 
-  
     textAlign: isRightAligned ? 'right' : 'left',
-
   }}>
-    <Typography sx={{ color: '#6B7280', fontSize: '0.875rem' }}>
+    <Typography sx={{ 
+      color: 'rgba(255, 255, 255, 0.7)', 
+      fontSize: '0.8rem',
+      mb: 0.5,
+      fontWeight: 500
+    }}>
       {title}
     </Typography>
     <Box sx={{ 
@@ -29,7 +38,12 @@ const StatItem = ({ title, value, change, isRightAligned = false }: {
       gap: 1,
       justifyContent: isRightAligned ? 'flex-end' : 'flex-start',
     }}>
-      <Typography sx={{ color: '#fff', fontSize: '1.2rem', fontWeight: 600 }}>
+      <Typography sx={{ 
+        color: '#fff', 
+        fontSize: '1.1rem', 
+        fontWeight: 600,
+        letterSpacing: '0.5px'
+      }}>
         {value}
       </Typography>
       {change !== undefined && (
@@ -37,8 +51,9 @@ const StatItem = ({ title, value, change, isRightAligned = false }: {
           display: 'flex',
           alignItems: 'center',
           gap: 0.5,
-          color: change === 0 ? '#6B7280' : (change > 0 ? '#34D399' : '#F87171'),
-          fontSize: '0.875rem'
+          color: change === 0 ? 'rgba(255, 255, 255, 0.5)' : (change > 0 ? '#22C55E' : '#EF4444'),
+          fontSize: '0.75rem',
+          fontWeight: 500
         }}>
           {change === 0 ? '-' : change > 0 ? <TrendingUpIcon fontSize="small" /> : <TrendingDownIcon fontSize="small" />}
           {Math.abs(change).toFixed(2)}%
@@ -55,10 +70,15 @@ const CryptoCard = ({
   apy, 
   tvl, 
   price, 
-  myEarnings, 
-  dailyEarnings,
-  dailyEarningsPercentage,
-  mlpBalance 
+ 
+  poolStats = {
+    volume24h: '$1.2M',
+    fees24h: '$3.2K',
+    change24h: 2.5,
+    totalUsers: '1.2K',
+    currentCapacity: 750000,
+    maxCapacity: 1000000
+  }
 }: {
   symbol: string;
   icon1: string;
@@ -70,126 +90,480 @@ const CryptoCard = ({
   dailyEarnings: string;
   dailyEarningsPercentage: number;
   mlpBalance: string;
-}) => (
-  <Box
-    sx={{
-      borderRadius: 2,
-      p: 2,
-      mb: 2,
-      backgroundColor: '#2f363a',
-      border: '1px solid #2D3135',
-    }}
-  >
-    {/* Header */}
-    <Box sx={{ 
-      display: 'flex', 
-      justifyContent: 'space-between', 
-      alignItems: 'center',
-      mb: 3
-    }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-        <Box sx={{ display: 'flex', position: 'relative' }}>
-          <img src={icon1} alt={symbol} style={{ width: 32, height: 32 }} />
-          <img 
-            src={icon2} 
-            alt="USDC" 
-            style={{ 
-              width: 32, 
-              height: 32,
-              position: 'relative',
-              left: -10,
-              marginRight: -10 // To compensate for the overlap
-            }} 
-          />
-        </Box>
-        <Typography sx={{ color: '#fff', fontSize: '1.5rem', fontWeight: 600 }}>
-          {symbol}
-        </Typography>
-      </Box>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-        <Typography sx={{ color: '#6B7280', fontSize: '1rem' }}>
-          APY
-        </Typography>
-        <Typography sx={{ color: '#22C55E', fontSize: '1.2rem', fontWeight: 500 }}>
-          {apy}%
-        </Typography>
-      </Box>
-    </Box>
+  poolStats?: {
+    volume24h: string;
+    fees24h: string;
+    change24h: number;
+    totalUsers: string;
+    currentCapacity: number;
+    maxCapacity: number;
+  };
+}) => {
+  const capacityPercentage = (poolStats.currentCapacity / poolStats.maxCapacity) * 100;
+  const remainingCapacity = poolStats.maxCapacity - poolStats.currentCapacity;
+  const formatNumber = (num: number) => {
+    if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
+    if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
+    return num.toString();
+  };
 
-    {/* Main Stats */}
-    <Box sx={{ 
-      display: 'flex', 
-      justifyContent: 'space-between',
-      mb: 2
-    }}>
-      <Box>
-        <Typography sx={{ color: '#6B7280', fontSize: '0.875rem' }}>
-          TVL
-        </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <img 
-            src={TONIcon} 
-            alt="TON" 
-            style={{ 
-              width: 16, 
-              height: 16 
-            }} 
-          />
-          <Typography sx={{ color: '#fff', fontSize: '1rem', fontWeight: 600 }}>
-            {tvl.replace('$', '')}
+  return (
+    <Box
+      sx={{
+        borderRadius: '16px',
+        p: { xs: 2, sm: 3 },
+        mb: 2,
+        background: 'linear-gradient(180deg, rgba(47, 54, 58, 0.95) 0%, rgba(47, 54, 58, 0.85) 100%)',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
+        backdropFilter: 'blur(10px)',
+        transition: 'all 0.2s ease-in-out',
+        '&:hover': {
+          transform: 'translateY(-2px)',
+          boxShadow: '0 8px 16px rgba(0, 0, 0, 0.2)',
+          border: '1px solid rgba(110, 211, 255, 0.3)',
+        }
+      }}
+    >
+      {/* Header with APY Focus */}
+      <Box sx={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center',
+        mb: 3
+      }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+          <Box sx={{ display: 'flex', position: 'relative' }}>
+            <img src={icon1} alt={symbol} style={{ width: 36, height: 36 }} />
+            <img 
+              src={icon2} 
+              alt="USDC" 
+              style={{ 
+                width: 36, 
+                height: 36,
+                position: 'relative',
+                left: -12,
+                marginRight: -12
+              }} 
+            />
+          </Box>
+          <Box>
+            <Typography sx={{ 
+              color: '#fff', 
+              fontSize: { xs: '1rem', sm: '1.15rem' }, 
+              fontWeight: 600,
+              letterSpacing: '0.5px'
+            }}>
+              {symbol}
+            </Typography>
+            <Typography sx={{ 
+              color: 'rgba(255, 255, 255, 0.6)',
+              fontSize: '0.75rem'
+            }}>
+              Popular Pool
+            </Typography>
+          </Box>
+        </Box>
+        <Box sx={{ textAlign: 'right' }}>
+          <Box sx={{ 
+            display: 'inline-flex', 
+            alignItems: 'center', 
+            gap: 1,
+            background: 'rgba(34, 197, 94, 0.1)',
+            borderRadius: '12px',
+            padding: '6px 12px',
+            border: '1px solid rgba(34, 197, 94, 0.2)',
+          }}>
+            <Typography sx={{ 
+              color: '#22C55E', 
+              fontSize: '1.1rem', 
+              fontWeight: 700,
+              letterSpacing: '0.5px'
+            }}>
+              {apy}% APY
+            </Typography>
+          </Box>
+          <Typography sx={{ 
+            color: 'rgba(255, 255, 255, 0.6)',
+            fontSize: '0.75rem',
+            mt: 0.5
+          }}>
+            Last 30 days avg.
           </Typography>
         </Box>
       </Box>
-      <Box>
-        <Typography sx={{ color: '#6B7280', fontSize: '0.875rem' }}>
-          Duration
-        </Typography>
-        <Typography sx={{ color: '#fff', fontSize: '1rem', fontWeight: 600 }}>
-          {price}
-        </Typography>
-      </Box>
-      <Box sx={{
-        backgroundColor: '#6ed3ff',
-        color: '#000',
-        px: 2,
-        
-        borderRadius: 2,
-        display: 'flex',
-        alignItems: 'center',
-        cursor: 'pointer',
-      }}>
-        <Typography sx={{ fontWeight: 600 }}>
-          Earn
-        </Typography>
-      </Box>
-    </Box>
 
-    {/* Bottom Stats */}
-    <Box sx={{ pt: 1, borderTop: '1px dashed gray' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-        <Typography sx={{ color: '#6B7280', fontSize: '0.75rem' }}>
-        Earnings: {myEarnings}
+      {/* Performance Metrics */}
+      <Box sx={{ 
+        display: 'grid',
+        gridTemplateColumns: 'repeat(2, 1fr)',
+        gap: 2,
+        mb: 3,
+        background: 'rgba(255, 255, 255, 0.03)',
+        borderRadius: '12px',
+        p: 2
+      }}>
+        <Box>
+          <Box sx={{ mb: 2 }}>
+            <Typography sx={{ 
+              color: 'rgba(255, 255, 255, 0.7)', 
+              fontSize: '0.75rem',
+              mb: 0.5,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 0.5
+            }}>
+              24h Trading Volume
+            </Typography>
+            <Typography sx={{ 
+              color: '#fff', 
+              fontSize: '1rem', 
+              fontWeight: 600
+            }}>
+              {poolStats.volume24h}
+            </Typography>
+          </Box>
+          <Box>
+            <Typography sx={{ 
+              color: 'rgba(255, 255, 255, 0.7)', 
+              fontSize: '0.75rem',
+              mb: 0.5,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 0.5
+            }}>
+              Total Value Locked
+            </Typography>
+            <Typography sx={{ 
+              color: '#fff', 
+              fontSize: '1rem', 
+              fontWeight: 600
+            }}>
+              {tvl}
+            </Typography>
+          </Box>
+        </Box>
+        <Box>
+          <Box sx={{ mb: 2 }}>
+            <Typography sx={{ 
+              color: 'rgba(255, 255, 255, 0.7)', 
+              fontSize: '0.75rem',
+              mb: 0.5
+            }}>
+              24h Performance
+            </Typography>
+            <Box sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: 0.5 
+            }}>
+              <Typography sx={{ 
+                color: poolStats.change24h >= 0 ? '#22C55E' : '#EF4444',
+                fontSize: '1rem', 
+                fontWeight: 600,
+                display: 'flex',
+                alignItems: 'center'
+              }}>
+                {poolStats.change24h >= 0 ? <TrendingUpIcon sx={{ fontSize: '1.2rem' }} /> : <TrendingDownIcon sx={{ fontSize: '1.2rem' }} />}
+                {Math.abs(poolStats.change24h)}%
+              </Typography>
+            </Box>
+          </Box>
+          <Box>
+            <Typography sx={{ 
+              color: 'rgba(255, 255, 255, 0.7)', 
+              fontSize: '0.75rem',
+              mb: 0.5
+            }}>
+              24h Fees Generated
+            </Typography>
+            <Typography sx={{ 
+              color: '#fff', 
+              fontSize: '1rem', 
+              fontWeight: 600
+            }}>
+              {poolStats.fees24h}
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
+
+      {/* Action Section */}
+      <Box sx={{ 
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        background: 'rgba(110, 211, 255, 0.1)',
+        borderRadius: '12px',
+        p: 2
+      }}>
+        <Box>
+          <Typography sx={{ 
+            color: '#fff',
+            fontSize: '0.9rem',
+            fontWeight: 600,
+            mb: 0.5
+          }}>
+            Start Earning Now
+          </Typography>
+          <Typography sx={{ 
+            color: 'rgba(255, 255, 255, 0.6)',
+            fontSize: '0.75rem'
+          }}>
+            Lock Period: {price}
+          </Typography>
+        </Box>
+        <Button
+          sx={{
+            backgroundColor: '#6ed3ff',
+            color: '#000',
+            px: 3,
+            py: 1,
+            borderRadius: '10px',
+            fontSize: '0.9rem',
+            fontWeight: 600,
+            textTransform: 'none',
+            transition: 'all 0.2s ease-in-out',
+            '&:hover': {
+              backgroundColor: '#5bc0ff',
+              transform: 'translateY(-1px)',
+              boxShadow: '0 4px 8px rgba(110, 211, 255, 0.2)'
+            }
+          }}
+        >
+          Subscribe
+        </Button>
+      </Box>
+
+      {/* Pool Stats */}
+      <Box sx={{ 
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        mt: 2,
+        pt: 2,
+        borderTop: '1px solid rgba(255, 255, 255, 0.1)'
+      }}>
+        <Typography sx={{ 
+          color: 'rgba(255, 255, 255, 0.6)',
+          fontSize: '0.75rem',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 0.5
+        }}>
+          Active Users: {poolStats.totalUsers}
         </Typography>
-        <Typography sx={{ color: '#6B7280', fontSize: '0.75rem' }}>
-          24h Earnings: {dailyEarnings}
-          <span style={{ color: dailyEarningsPercentage === 0 ? '#6B7280' : '#22C55E' }}>
-            ({dailyEarningsPercentage >= 0 ? '+' : ''}{dailyEarningsPercentage}%)
-          </span>
+        <Typography sx={{ 
+          color: 'rgba(255, 255, 255, 0.6)',
+          fontSize: '0.75rem'
+        }}>
+          Pool Share Available
         </Typography>
       </Box>
-      <Typography sx={{ color: '#6B7280', fontSize: '0.75rem' }}>
-       lbTON Balance: {mlpBalance}
-      </Typography>
+
+      {/* Pool Capacity Section */}
+      <Box sx={{ 
+        mt: 2,
+        pt: 2,
+        borderTop: '1px solid rgba(255, 255, 255, 0.1)'
+      }}>
+        <Box sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          mb: 1
+        }}>
+          <Box>
+            <Typography sx={{ 
+              color: 'rgba(255, 255, 255, 0.6)',
+              fontSize: '0.75rem',
+              mb: 0.5
+            }}>
+              Pool Capacity
+            </Typography>
+            <Typography sx={{ 
+              color: '#fff',
+              fontSize: '0.85rem',
+              fontWeight: 500
+            }}>
+              {formatNumber(poolStats.currentCapacity)} TON Locked
+            </Typography>
+          </Box>
+          <Box sx={{ textAlign: 'right' }}>
+            <Typography sx={{ 
+              color: 'rgba(255, 255, 255, 0.6)',
+              fontSize: '0.75rem',
+              mb: 0.5
+            }}>
+              Until Full
+            </Typography>
+            <Typography sx={{ 
+              color: capacityPercentage > 90 ? '#EF4444' : 
+                     capacityPercentage > 75 ? '#F59E0B' : '#22C55E',
+              fontSize: '0.85rem',
+              fontWeight: 500
+            }}>
+              {formatNumber(remainingCapacity)} TON
+            </Typography>
+          </Box>
+        </Box>
+        <Box sx={{ position: 'relative', mt:2, }}>
+          <LinearProgress
+            variant="determinate"
+            value={capacityPercentage}
+            sx={{
+              height: 8,
+              borderRadius: 4,
+              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+              '& .MuiLinearProgress-bar': {
+                backgroundColor: capacityPercentage > 90 ? '#EF4444' : 
+                                capacityPercentage > 75 ? '#F59E0B' : '#22C55E',
+                borderRadius: 4,
+              }
+            }}
+          />
+          <Typography sx={{ 
+          
+            right: 0,
+            top: '100%',
+            color: 'rgba(255, 255, 255, 0.6)',
+            fontSize: '0.7rem',
+            mt: 0.5,
+         
+          }}>
+            {capacityPercentage.toFixed(1)}% Pool Filled
+          </Typography>
+        </Box>
+      </Box>
     </Box>
-  </Box>
-);
+  );
+};
 
 const Statistics: React.FC = () => {
+  const hasUserPools = false;
+  const [showAllPools, setShowAllPools] = useState(false);
+
+  // Pool data array to make it easier to manage
+  const poolData = [
+    {
+      symbol: "TONUSDT",
+      apy: 1533.32,
+      tvl: "$1.73M",
+      price: "30 Day",
+      poolStats: {
+        volume24h: '$1.2M',
+        fees24h: '$3.2K',
+        change24h: 2.5,
+        totalUsers: '1.2K',
+        currentCapacity: 750000,
+        maxCapacity: 1000000
+      }
+    },
+    {
+      symbol: "ETHUSDC",
+      apy: 1324.91,
+      tvl: "$373.36k",
+      price: "14 Day",
+      poolStats: {
+        volume24h: '$1.2M',
+        fees24h: '$3.2K',
+        change24h: 2.5,
+        totalUsers: '1.2K',
+        currentCapacity: 850000,
+        maxCapacity: 1000000
+      }
+    },
+    {
+      symbol: "ETHUSDC",
+      apy: 1127.80,
+      tvl: "$296.21k",
+      price: "14 Day",
+      poolStats: {
+        volume24h: '$1.2M',
+        fees24h: '$3.2K',
+        change24h: 2.5,
+        totalUsers: '1.2K',
+        currentCapacity: 650000,
+        maxCapacity: 1000000
+      }
+    },
+    {
+      symbol: "ETHUSDC",
+      apy: 1068.40,
+      tvl: "$164.18k",
+      price: "14 Day",
+      poolStats: {
+        volume24h: '$1.2M',
+        fees24h: '$3.2K',
+        change24h: 2.5,
+        totalUsers: '1.2K',
+        currentCapacity: 920000,
+        maxCapacity: 1000000
+      }
+    },
+    {
+      symbol: "ETHUSDC",
+      apy: 789.12,
+      tvl: "$92.95k",
+      price: "1 Day",
+      poolStats: {
+        volume24h: '$1.2M',
+        fees24h: '$3.2K',
+        change24h: 2.5,
+        totalUsers: '1.2K',
+        currentCapacity: 450000,
+        maxCapacity: 1000000
+      }
+    },
+    {
+      symbol: "ETHUSDC",
+      apy: 789.12,
+      tvl: "$79.51k",
+      price: "1 Day",
+      poolStats: {
+        volume24h: '$1.2M',
+        fees24h: '$3.2K',
+        change24h: 2.5,
+        totalUsers: '1.2K',
+        currentCapacity: 550000,
+        maxCapacity: 1000000
+      }
+    },
+    {
+      symbol: "ETHUSDC",
+      apy: 789.12,
+      tvl: "$60.49k",
+      price: "1 Day",
+      poolStats: {
+        volume24h: '$1.2M',
+        fees24h: '$3.2K',
+        change24h: 2.5,
+        totalUsers: '1.2K',
+        currentCapacity: 350000,
+        maxCapacity: 1000000
+      }
+    },
+    {
+      symbol: "ETHUSDC",
+      apy: 789.12,
+      tvl: "$56.87k",
+      price: "1 Day",
+      poolStats: {
+        volume24h: '$1.2M',
+        fees24h: '$3.2K',
+        change24h: 2.5,
+        totalUsers: '1.2K',
+        currentCapacity: 250000,
+        maxCapacity: 1000000
+      }
+    }
+  ];
+
+  const displayedPools = showAllPools ? poolData : poolData.slice(0, 2);
+
   return (
     <Box mx={-1} mb={10}>
-      {/* Dashboard Card */}
-      <Box>
-        {/* Header */}
+       {/* Dashboard Card */}
+      <Box sx={{ mb: 4 }}>
         <Box sx={{ 
           display: 'flex', 
           justifyContent: 'space-between', 
@@ -200,7 +574,7 @@ const Statistics: React.FC = () => {
             variant="h6"
             sx={{
               color: '#fff',
-              fontSize: '1.25rem',
+              fontSize: '1.1rem',
               fontWeight: 600,
             }}
           >
@@ -213,7 +587,6 @@ const Statistics: React.FC = () => {
               gap: 0.5,
               color: '#36A2EB',
               cursor: 'pointer',
-          
             }}
           >
             <HistoryIcon fontSize="small" />
@@ -227,12 +600,10 @@ const Statistics: React.FC = () => {
             borderRadius: '16px',
             p: 2,
             border: '1px solid rgba(255, 255, 255, 0.1)',
-            
             boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-            mb: 4
           }}
         >
-          <Grid container spacing={3}>
+          <Grid container spacing={2}>
             <Grid item xs={6}>
               <StatItem
                 title="Total Value"
@@ -263,187 +634,466 @@ const Statistics: React.FC = () => {
           </Grid>
         </Box>
       </Box>
-      <Grid container alignItems="center" justifyContent="space-between" sx={{ mt: 6, mb:1 }}>
 
-       <Grid item xs>
-          <Box display="flex" alignItems="center" gap={1.5}>
-            <Box
-              sx={{
-                background: 'linear-gradient(135deg, rgba(54, 162, 235, 0.1), rgba(77, 201, 255, 0.1))',
-                borderRadius: '8px',
-                p: 0.8,
+
+                    <Box display="flex" alignItems="center" gap={1.5}>
+
+     <Box
+                  sx={{
+                    background: 'linear-gradient(135deg, rgba(110, 211, 255, 0.1), rgba(140, 230, 255, 0.1))',
+                    borderRadius: '8px',
+                    p: 0.8,
+                    display: 'flex',
+                    alignItems: 'center',
+                    border: '1px solid rgba(110, 211, 255, 0.2)',
+                  }}
+                >
+                  <AccountBalanceIcon sx={{ 
+                    color: '#6ed3ff',
+                    fontSize: { xs: '1.2rem', sm: '1.4rem' }
+                  }} />
+                </Box>
+                <Box>
+                  <Typography 
+                    variant="h6" 
+                    sx={{
+                      fontSize: { xs: '0.8rem', sm: '1.2rem' },
+                      color: '#fff',
+                      fontWeight: 600,
+                      letterSpacing: '0.5px',
+                      mb: 0.2
+                    }}
+                  >
+                    Your Pools
+                  </Typography>
+                  <Typography 
+                    sx={{ 
+                      color: '#6B7280',
+                      fontSize: { xs: '0.75rem', sm: '0.85rem' },
+                    }}
+                  >
+                    Manage your created pools
+                  </Typography>
+                </Box>
+       </Box>
+      {/* Create Your Own Pool Section - Moved to top */}
+      <Box sx={{ mb: 4 }}>
+        
+        <Box
+          sx={{
+            background: 'linear-gradient(180deg, rgba(47, 54, 58, 0.95) 0%, rgba(47, 54, 58, 0.85) 100%)',
+            border: '1px solid rgba(110, 211, 255, 0.1)',
+            borderRadius: '16px',
+            p: 1,
+            mt:1,
+          }}
+        >
+       
+
+          {/* Title in middle */}
+    
+
+          {/* Description below title */}
+        
+
+          <Box sx={{ 
+            display: 'flex', 
+            justifyContent: 'space-between',
+            gap: 1.5,
+            mb: 3,
+     
+          }}>
+            <Box sx={{ 
+              flex: 1,
+              background: 'rgba(34, 197, 94, 0.05)',
+              borderRadius: '10px',
+              p: 1,
+              border: '1px solid rgba(34, 197, 94, 0.1)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              textAlign: 'center',
+              transition: 'all 0.2s ease-in-out',
+           
+            }}>
+              <Box sx={{
+                background: 'rgba(34, 197, 94, 0.1)',
+                borderRadius: '6px',
+                p: 0.5,
+                mb: 1,
                 display: 'flex',
-                alignItems: 'center',
-                border: '1px solid rgba(54, 162, 235, 0.2)',
-              }}
-            >
-              <AnimationIcon sx={{ 
-                color: '#36A2EB',
-                fontSize: { xs: '1.2rem', sm: '1.4rem' }
-              }} />
+                alignItems: 'center'
+              }}>
+                < RocketLaunchIcon  sx={{ fontSize: '1rem', color: '#22C55E' }} />
+              </Box>
+              <Typography sx={{ 
+               fontSize: '0.8rem',
+                fontWeight: 600,
+       
+                color: '#22C55E',
+          
+              }}>
+                2x APY
+              </Typography>
+       
             </Box>
-            <Box>
-              <Typography 
-                variant="h6" 
-                sx={{
-                  fontSize: { xs: '0.8rem', sm: '1.3rem' },
-                  color: '#fff',
-                  fontWeight: 600,
-                  letterSpacing: '0.5px',
-                  mb: 0.2
-                }}
-              >
-                Popular Pools
+
+            <Box sx={{ 
+              flex: 1,
+              background: 'rgba(110, 211, 255, 0.05)',
+              borderRadius: '10px',
+              p: 1,
+              border: '1px solid rgba(110, 211, 255, 0.1)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              textAlign: 'center',
+              transition: 'all 0.2s ease-in-out',
+             
+            }}>
+              <Box sx={{
+                background: 'rgba(110, 211, 255, 0.1)',
+                borderRadius: '6px',
+                p: 0.5,
+                mb: 1,
+                display: 'flex',
+                alignItems: 'center'
+              }}>
+                <CheckCircleOutline sx={{ fontSize: '1rem', color: '#6ed3ff' }} />
+              </Box>
+              <Typography sx={{ 
+                fontSize: '0.8rem',
+                fontWeight: 600,
+                color: '#6ed3ff',
+           
+              }}>
+                Full Control
               </Typography>
-              <Typography 
-                sx={{ 
-                  color: '#6B7280',
-                  fontSize: { xs: '0.75rem', sm: '0.85rem' },
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 1
-                }}
-              >
-                <Box component="span" sx={{ 
-                  width: 6, 
-                  height: 6, 
-                  borderRadius: '50%', 
-                  backgroundColor: '#4CAF50',
-                  display: 'inline-block'
-                }} />
-               Popular Pools Overview
+           
+            </Box>
+
+            <Box sx={{ 
+              flex: 1,
+              background: 'rgba(168, 85, 247, 0.05)',
+              borderRadius: '10px',
+                  p: 1,
+              border: '1px solid rgba(168, 85, 247, 0.1)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              textAlign: 'center',
+              transition: 'all 0.2s ease-in-out',
+              
+            }}>
+              <Box sx={{
+                background: 'rgba(168, 85, 247, 0.1)',
+                borderRadius: '6px',
+                p: 0.5,
+                mb: 1,
+                display: 'flex',
+                alignItems: 'center'
+              }}>
+                <ControlPointDuplicateIcon
+ sx={{ fontSize: '1rem', color: '#A855F7' }} />
+              </Box>
+              <Typography sx={{ 
+                fontSize: '0.8rem',
+                fontWeight: 600,
+                color: '#A855F7',
+        
+     
+              }}>
+                Extra Income
               </Typography>
+           
             </Box>
           </Box>
-        </Grid>
-         <Grid item>
-          <Box 
-            sx={{ 
-              display: 'flex',
-              alignItems: 'center',
-              gap: 0.5,
-              background: 'rgba(54, 162, 235, 0.1)',
-              borderRadius: '20px',
-              padding: { xs: '6px 12px', sm: '6px 14px' },
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-              ml: { xs: 1, sm: 2 },
-              '&:hover': {
-                background: 'rgba(54, 162, 235, 0.15)',
-                transform: 'translateY(-1px)'
-              }
+  <Typography
+            sx={{
+              color: 'rgba(255, 255, 255, 0.6)',
+              fontSize: '0.85rem',
+              mb: 1,
+              mt:-2,
+              textAlign: 'center',
+              maxWidth: '600px',
+              mx: 'auto'
             }}
           >
-      
-            <InfoOutlinedIcon sx={{ 
-              fontSize: { xs: '0.9rem', sm: '1rem' },
-              color: '#36A2EB'
-            }} />
+            Create your own pool and earn additional rewards from other users' deposits
+          </Typography>
+          <Box sx={{
+            display: 'flex',
+            justifyContent: 'center'
+          }}>
+            <Button
+            fullWidth
+              startIcon={<AddCircleOutlineIcon />}
+              sx={{
+                backgroundColor: '#6ed3ff',
+                color: '#000',
+                py: 1.2,
+                px: 4,
+                borderRadius: '12px',
+                fontSize: '0.9rem',
+                fontWeight: 600,
+                textTransform: 'none',
+                whiteSpace: 'nowrap',
+                transition: 'all 0.2s ease-in-out',
+               
+              }}
+            >
+              Create Pool
+            </Button>
+          </Box>
+        </Box>
+      </Box>
+
+     
+
+      {/* Main Content Grid */}
+      <Grid container spacing={3}>
+        {/* Left Column - Popular Pools */}
+        <Grid item xs={12} md={8}>
+          <Box sx={{ 
+            display: 'flex', 
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            mb: 2
+          }}>
+            <Box display="flex" alignItems="center" gap={1.5}>
+              <Box
+                sx={{
+                  background: 'linear-gradient(135deg, rgba(54, 162, 235, 0.1), rgba(77, 201, 255, 0.1))',
+                  borderRadius: '8px',
+                  p: 0.8,
+                  display: 'flex',
+                  alignItems: 'center',
+                  border: '1px solid rgba(54, 162, 235, 0.2)',
+                }}
+              >
+                <AnimationIcon sx={{ 
+                  color: '#36A2EB',
+                  fontSize: { xs: '1.2rem', sm: '1.4rem' }
+                }} />
+              </Box>
+              <Box>
+                <Typography 
+                  variant="h6" 
+                  sx={{
+                    fontSize: { xs: '0.8rem', sm: '1.2rem' },
+                    color: '#fff',
+                    fontWeight: 600,
+                    letterSpacing: '0.5px',
+                    mb: 0.2
+                  }}
+                >
+                  Popular Pools
+                </Typography>
+                <Typography 
+                  sx={{ 
+                    color: '#6B7280',
+                    fontSize: { xs: '0.75rem', sm: '0.85rem' },
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1
+                  }}
+                >
+                  <Box component="span" sx={{ 
+                    width: 6, 
+                    height: 6, 
+                    borderRadius: '50%', 
+                    backgroundColor: '#4CAF50',
+                    display: 'inline-block'
+                  }} />
+                  Popular Pools Overview
+                </Typography>
+              </Box>
+            </Box>
+            <Box 
+              sx={{ 
+                display: 'flex',
+                alignItems: 'center',
+                gap: 0.5,
+                background: 'rgba(54, 162, 235, 0.1)',
+                borderRadius: '20px',
+                padding: { xs: '6px 12px', sm: '6px 14px' },
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                '&:hover': {
+                  background: 'rgba(54, 162, 235, 0.15)',
+                  transform: 'translateY(-1px)'
+                }
+              }}
+            >
+              <InfoOutlinedIcon sx={{ 
+                fontSize: { xs: '0.9rem', sm: '1rem' },
+                color: '#36A2EB'
+              }} />
+            </Box>
+          </Box>
+
+          {/* Popular Pool Cards */}
+          <Box sx={{ 
+            maxHeight: showAllPools ? 'calc(100vh - 300px)' : 'auto',
+            overflowY: showAllPools ? 'auto' : 'visible',
+            pr: 2,
+            mr: -2,
+            '&::-webkit-scrollbar': {
+              width: '8px',
+            },
+            '&::-webkit-scrollbar-track': {
+              background: 'rgba(110, 211, 255, 0.05)',
+              borderRadius: '4px',
+              margin: '4px'
+            },
+            '&::-webkit-scrollbar-thumb': {
+              background: 'rgba(110, 211, 255, 0.1)',
+              borderRadius: '4px',
+              border: '2px solid rgba(110, 211, 255, 0.05)',
+              '&:hover': {
+                background: 'rgba(110, 211, 255, 0.2)',
+              }
+            }
+          }}>
+            {displayedPools.map((pool, index) => (
+              <CryptoCard
+                key={index}
+                symbol={pool.symbol}
+                icon1={TONIcon}
+                icon2={AluminumIcon}
+                apy={pool.apy}
+                tvl={pool.tvl}
+                price={pool.price}
+                myEarnings="$0.00"
+                dailyEarnings="$0.00"
+                dailyEarningsPercentage={0.00}
+                mlpBalance="$0.00"
+                poolStats={pool.poolStats}
+              />
+            ))}
+
+            {!showAllPools && (
+              <Box
+                onClick={() => setShowAllPools(true)}
+                sx={{
+                  borderRadius: '16px',
+                  p: 3,
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease-in-out',
+               
+                }}
+              >
+                <Box sx={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: 1,
+                  color: '#6ed3ff'
+                }}>
+                  <Typography sx={{ 
+                    fontSize: '0.85rem',
+                    fontWeight: 600
+                  }}>
+                    See all
+                  </Typography>
+                  <Box 
+                    component="span" 
+                    sx={{ 
+                      fontSize: '0.8rem',
+                      backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                      borderRadius: '12px',
+                      padding: '4px 8px',
+                      border: '1px solid rgba(110, 211, 255, 0.2)',
+                    }}
+                  >
+                    {poolData.length - 2}+
+                  </Box>
+                </Box>
+              </Box>
+            )}
+          </Box>
+        </Grid>
+
+        {/* Right Column - Your Pools */}
+        <Grid item xs={12} md={4}>
+          <Box sx={{ mb: 3 }}>
+            <Box sx={{ 
+              display: 'flex', 
+              alignItems: 'center',
+              mb: 2
+            }}>
+              <Box display="flex" alignItems="center" gap={1.5}>
+                <Box
+                  sx={{
+                    background: 'linear-gradient(135deg, rgba(110, 211, 255, 0.1), rgba(140, 230, 255, 0.1))',
+                    borderRadius: '8px',
+                    p: 0.8,
+                    display: 'flex',
+                    alignItems: 'center',
+                    border: '1px solid rgba(110, 211, 255, 0.2)',
+                  }}
+                >
+                  <ManageHistoryIcon sx={{  
+                    color: '#6ed3ff',
+                    fontSize: { xs: '1.2rem', sm: '1.4rem' }
+                  }} />
+                </Box>
+                <Box>
+                  <Typography 
+                    variant="h6" 
+                    sx={{
+                      fontSize: { xs: '0.8rem', sm: '1.2rem' },
+                      color: '#fff',
+                      fontWeight: 600,
+                      letterSpacing: '0.5px',
+                      mb: 0.2
+                    }}
+                  >
+                    Your Pools
+                  </Typography>
+                  <Typography 
+                    sx={{ 
+                      color: '#6B7280',
+                      fontSize: { xs: '0.75rem', sm: '0.85rem' },
+                    }}
+                  >
+                    Manage your created pools
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+
+            {!hasUserPools ? (
+              <Box
+                sx={{
+                  background: 'linear-gradient(180deg, rgba(47, 54, 58, 0.95) 0%, rgba(47, 54, 58, 0.85) 100%)',
+                  border: '1px solid rgba(110, 211, 255, 0.1)',
+                  borderRadius: '16px',
+                  p: 2,
+                  textAlign: 'center'
+                }}
+              >
+                <Typography
+                  sx={{
+                    color: 'rgba(255, 255, 255, 0.6)',
+                    fontSize: '0.85rem',
+              
+                  }}
+                >
+                  You haven't created any pools yet.
+                </Typography>
+           
+              </Box>
+            ) : (
+              <Box>
+                {/* User pools will be listed here */}
+              </Box>
+            )}
           </Box>
         </Grid>
       </Grid>
-
-      <CryptoCard
-        symbol="TONUSDT"
-        icon1={TONIcon}
-        icon2={AluminumIcon}
-        apy={1533.32}
-        tvl="$1.73M"
-        price="30 Day"
-        myEarnings="$0.00"
-        dailyEarnings="$0.00"
-        dailyEarningsPercentage={0.00}
-        mlpBalance="$0.00"
-      />
-
-      <CryptoCard
-        symbol="ETHUSDC"
-        icon1={TONIcon}
-        icon2={AluminumIcon}
-        apy={1324.91}
-        tvl="$373.36k"
-        price="14 Day"
-        myEarnings="$0.00"
-        dailyEarnings="$0.00"
-        dailyEarningsPercentage={0.00}
-        mlpBalance="$0.00"
-      />
-
-       <CryptoCard
-        symbol="ETHUSDC"
-        icon1={TONIcon}
-        icon2={AluminumIcon}
-        apy={1127.80}
-        tvl="$296.21k"
-        price="14 Day"
-        myEarnings="$0.00"
-        dailyEarnings="$0.00"
-        dailyEarningsPercentage={0.00}
-        mlpBalance="$0.00"
-      />
-
-       <CryptoCard
-        symbol="ETHUSDC"
-        icon1={TONIcon}
-        icon2={AluminumIcon}
-        apy={1068.40}
-        tvl="$164.18k"
-        price="14 Day"
-        myEarnings="$0.00"
-        dailyEarnings="$0.00"
-        dailyEarningsPercentage={0.00}
-        mlpBalance="$0.00"
-      />
-
-       <CryptoCard
-        symbol="ETHUSDC"
-        icon1={TONIcon}
-        icon2={AluminumIcon}
-        apy={789.12}
-        tvl="$92.95k"
-        price="1 Day"
-        myEarnings="$0.00"
-        dailyEarnings="$0.00"
-        dailyEarningsPercentage={0.00}
-        mlpBalance="$0.00"
-      />
-
-      <CryptoCard
-        symbol="ETHUSDC"
-        icon1={TONIcon}
-        icon2={AluminumIcon}
-        apy={789.12}
-        tvl="$79.51k"
-        price="1 Day"
-        myEarnings="$0.00"
-        dailyEarnings="$0.00"
-        dailyEarningsPercentage={0.00}
-        mlpBalance="$0.00"
-      />
-      <CryptoCard
-        symbol="ETHUSDC"
-        icon1={TONIcon}
-        icon2={AluminumIcon}
-        apy={789.12}
-        tvl="$60.49k"
-        price="1 Day"
-        myEarnings="$0.00"
-        dailyEarnings="$0.00"
-        dailyEarningsPercentage={0.00}
-        mlpBalance="$0.00"
-      />
-      <CryptoCard
-        symbol="ETHUSDC"
-        icon1={TONIcon}
-        icon2={AluminumIcon}
-        apy={789.12}
-        tvl="$56.87k"
-        price="1 Day"
-        myEarnings="$0.00"
-        dailyEarnings="$0.00"
-        dailyEarningsPercentage={0.00}
-        mlpBalance="$0.00"
-      />
     </Box>
   );
 };

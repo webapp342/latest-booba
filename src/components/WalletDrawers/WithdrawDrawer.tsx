@@ -11,6 +11,7 @@ const WithdrawDrawer: React.FC<WithdrawDrawerProps> = ({ open, onClose }) => {
     <TwoFieldsComponent 
       open={open}
       onClose={onClose}
+      
     />
   );
 };

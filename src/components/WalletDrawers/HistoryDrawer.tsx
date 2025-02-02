@@ -11,6 +11,7 @@ import { doc, getFirestore, onSnapshot } from 'firebase/firestore';
 import { app } from '../../pages/firebaseConfig';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import CloseIcon from '@mui/icons-material/Close';
 
 const db = getFirestore(app);
 
@@ -21,6 +22,7 @@ const StyledDrawer = styled(Drawer)(({ }) => ({
     padding: '24px',
     height: '70vh',
     border: '1px solid rgba(110, 211, 255, 0.1)',
+    
   }
 }));
 
@@ -29,6 +31,7 @@ const DrawerHeader = styled(Box)({
   justifyContent: 'space-between',
   alignItems: 'center',
   marginBottom: '24px',
+  
 });
 
 const TransactionItem = styled(Box)({
@@ -96,24 +99,39 @@ const HistoryDrawer: React.FC<HistoryDrawerProps> = ({ open, onClose }) => {
       open={open}
       onClose={onClose}
     >
-      <DrawerHeader>
+      <DrawerHeader mx={-2}>
         <Button
           onClick={onClose}
           sx={{
             color: 'rgba(255, 255, 255, 0.5)',
-            '&:hover': { color: '#fff' }
+            '&:hover': { color: '#fff' },
+            minWidth: '40px',
+            padding: '8px'
           }}
         >
-          ✖
+          <CloseIcon fontSize="medium" />
         </Button>
-        <Typography variant="h6" sx={{ color: '#fff', fontWeight: 600 }}>
+        <Typography 
+          variant="h6" 
+          sx={{ 
+            position: 'absolute',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            color: '#fff',
+            opacity: 0.7,
+            textAlign: 'center',
+            whiteSpace: 'nowrap'
+          }}
+        >
           Transaction History
         </Typography>
         <Box sx={{ width: 40 }} /> {/* Spacing için boş box */}
       </DrawerHeader>
 
       {loading ? (
-        <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 ,'&::-webkit-scrollbar': {
+    display: 'none'
+  },}}>
           <CircularProgress sx={{ color: '#6ed3ff' }} />
         </Box>
       ) : (
@@ -160,7 +178,9 @@ const HistoryDrawer: React.FC<HistoryDrawerProps> = ({ open, onClose }) => {
 
           {completedTransactions.length > 0 && (
             <>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, mt: 3 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, mt: 3 ,'&::-webkit-scrollbar': {
+    display: 'none'
+  },}}>
                 <CheckCircleIcon sx={{ color: '#4caf50', mr: 1, fontSize: 20 }} />
                 <Typography sx={{ color: '#4caf50', fontWeight: 600 }}>
                   Completed Transactions

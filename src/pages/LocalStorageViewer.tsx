@@ -20,6 +20,7 @@ import WithdrawDrawer from '../components/WalletDrawers/WithdrawDrawer';
 import HistoryDrawer from '../components/WalletDrawers/HistoryDrawer';
 import SwapDrawer from '../components/WalletDrawers/SwapDrawer';
 import { WithTourSection } from '../components/TourGuide/withTourSection';
+import axios from 'axios';
 
 
 const app = initializeApp(firebaseConfig);
@@ -66,7 +67,7 @@ const initialData: Asset[] = [
     symbol: "BBLIP",
     view:"Booba Blip",
     name: "BBLIP",
-    amount: 0, // Placeholder, updated dynamically
+    amount: 0,
     usdValue: 0,
     price:0.07,
     active: true
@@ -75,21 +76,18 @@ const initialData: Asset[] = [
     logo: "https://cryptologos.cc/logos/toncoin-ton-logo.png?v=040",
     symbol: "TON",
     name: "Ton",
-        view:"Booba Blip",
-
+    view:"Booba Blip",
     amount: 10000,
     usdValue: 0,
-        price:5.23,
-
+    price:0,
     active: true
   },
   {
     logo: "https://s3-symbol-logo.tradingview.com/crypto/XTVCUSDT--big.svg",
     symbol: "USDT",
     name: "USDT",
-        view:"Booba Blip",
-    price:1.000,
-
+    view:"Booba Blip",
+    price:1.00, // USDT her zaman 1 USD
     amount: 0,
     usdValue: 0,
     active: true
@@ -151,9 +149,9 @@ const AccountEquityCard: React.FC = () => {
   const [openHistoryDrawer, setOpenHistoryDrawer] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [, setComment] = useState("Loading..."); // Default value for comment
-  const [tonPrice, setTonPrice] = useState<number | null>(null); // TON price state
+  const [tonPrice, setTonPrice] = useState<number>(0); // Default to 0 instead of null
   const [, setQrCodeUrl] = useState<string>('');
-  const [data, setData] = useState<Asset[]>([]); // Initialize as an empty array
+  const [data, setData] = useState<Asset[]>(initialData); // Initialize with initialData
   const [totalEquity, setTotalEquity] = useState<string>("0.00");
    const navigate = useNavigate();
 
@@ -196,6 +194,73 @@ useEffect(() => {
     })); // Format with commas and 2 decimal places
   }, [data]);
 
+  // Combine price fetching and data update in one effect
+  useEffect(() => {
+    const updatePricesAndCalculateValues = async () => {
+      try {
+        const response = await axios.get(`https://api.binance.com/api/v3/ticker/price`, {
+          params: { symbol: 'TONUSDT' },
+        });
+        const newTonPrice = parseFloat(response.data.price);
+        setTonPrice(newTonPrice);
+
+        const updatedData = data.map(item => {
+          let newPrice = item.price;
+          let amount = item.amount;
+          let usdValue = 0;
+
+          switch(item.symbol) {
+            case "TON":
+              newPrice = newTonPrice;
+              amount = amount / 1000; // Convert to actual amount
+              usdValue = amount * newTonPrice;
+              break;
+            case "TICKET":
+              newPrice = newTonPrice * 2.5;
+              usdValue = amount * (newTonPrice * 2.5);
+              break;
+            case "BBLIP":
+              amount = amount / 1000; // Convert to actual amount
+              usdValue = amount * 0.07;
+              break;
+            case "USDT":
+              newPrice = 1.00;
+              usdValue = amount;
+              break;
+            default:
+              usdValue = amount * newPrice;
+          }
+
+          return {
+            ...item,
+            price: newPrice,
+            usdValue: usdValue
+          };
+        });
+
+        setData(updatedData);
+
+        // Calculate total equity
+        const newTotalEquity = updatedData.reduce((sum, item) => sum + item.usdValue, 0);
+        setTotalEquity(newTotalEquity.toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        }));
+
+      } catch (error) {
+        console.error("Error updating prices:", error);
+      }
+    };
+
+    // Initial update
+    updatePricesAndCalculateValues();
+
+    // Set up interval for updates
+    const interval = setInterval(updatePricesAndCalculateValues, 60000);
+    return () => clearInterval(interval);
+  }, []); // Empty dependency array since we're managing all updates internally
+
+  // Update data when Firestore changes
   useEffect(() => {
     const telegramUserId = localStorage.getItem("telegramUserId");
     if (!telegramUserId) {
@@ -203,93 +268,62 @@ useEffect(() => {
       return;
     }
 
-    // Firestore real-time listener
     const docRef = doc(db, "users", telegramUserId);
     const unsubscribe = onSnapshot(docRef, (docSnap) => {
       if (docSnap.exists()) {
-        const data = docSnap.data();
-        const bblipAmount = data.bblip || 0;
-        const totalUSD = data.usdt || 0;
-        const ticket = data.tickets || 0;
-        const ton = data.total || 0;
+        const userData = docSnap.data();
+        
+        setData(prevData => 
+          prevData.map(item => {
+            let newAmount = item.amount;
+            
+            switch(item.symbol) {
+              case "BBLIP":
+                newAmount = userData.bblip || 0;
+                break;
+              case "USDT":
+                newAmount = userData.usdt || 0;
+                break;
+              case "TICKET":
+                newAmount = userData.tickets || 0;
+                break;
+              case "TON":
+                newAmount = userData.total || 0;
+                break;
+            }
 
+            const actualAmount = item.symbol === "BBLIP" || item.symbol === "TON" 
+              ? newAmount / 1000 
+              : newAmount;
 
-        // Update initialData dynamically
-        const updatedData = initialData.map((item) => {
-          switch (item.symbol) {
-            case "BBLIP":
-              return { ...item, amount: bblipAmount };
-            case "USDT":
-              return { ...item, amount: totalUSD };
-            case "TICKET":
-              return { ...item, amount: ticket };
-               case "TON":
-              return { ...item, amount: ton };
-            default:
-              return item;
-          }
-        });
+            let usdValue = 0;
+            switch(item.symbol) {
+              case "USDT":
+                usdValue = actualAmount;
+                break;
+              case "BBLIP":
+                usdValue = actualAmount * 0.07;
+                break;
+              case "TON":
+                usdValue = actualAmount * tonPrice;
+                break;
+              case "TICKET":
+                usdValue = actualAmount * (tonPrice * 2.5);
+                break;
+            }
 
-        setData(updatedData);
-
-        // Store values in localStorage
-        localStorage.setItem("bblipAmount", JSON.stringify(bblipAmount));
-        localStorage.setItem("totalUSD", JSON.stringify(totalUSD));
-        localStorage.setItem("ticket", JSON.stringify(ticket));
-      } else {
-        console.error("Document not found!");
+            return {
+              ...item,
+              amount: newAmount,
+              usdValue: usdValue
+            };
+          })
+        );
       }
     });
+
     return () => unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    // Fetch the TON/USDT price from Binance API
-    const fetchTonPrice = async () => {
-      try {
-        const response = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=TONUSDT');
-        const data = await response.json();
-        if (data && data.price) {
-          setTonPrice(parseFloat(data.price));
-        }
-      } catch (error) {
-        console.error("Error fetching TON price:", error);
-      }
-    };
-
-    fetchTonPrice();
-  }, []);
-
-   // Updated USD value calculation
-  const calculateUsdValue = (amount: number, symbol: string) => {
-    const actualAmount = symbol === "BBLIP" || symbol === "TON" ? amount / 1000 : amount;
-    
-    if (symbol === "USDT") {
-      return actualAmount;
-    }
-    if (symbol === "BBLIP") {
-      return actualAmount * 0.07; // BBLIP price using actual amount
-    }
-    if (symbol === "TON") {
-      if (tonPrice !== null) {
-        return actualAmount * tonPrice; // TON price using actual amount
-      } else {
-        console.warn("TON price is not available");
-        return 0; // Return 0 if tonPrice is not available
-      }
-    }
-    return 0;
-  };
-
-  useEffect(() => {
-    // Update the usdValue for each asset whenever TON price is fetched or changed
-    const updatedData = data.map((item) => ({
-      ...item,
-      usdValue: calculateUsdValue(item.amount, item.symbol),
-    }));
-
-    setData(updatedData);
-  }, [tonPrice]); // Sadece tonPrice'ı bağımlılık olarak bırakıyoruz
+  }, [tonPrice]); // Add tonPrice as dependency since we use it in calculations
 
   // Arama filtreleme fonksiyonu
   const filteredData = data.filter(
@@ -420,14 +454,13 @@ const GradientBox = styled(Box)(() => ({
 
                
                   {/* Buttons */}
-                  <Box width={'100%'}
-                          
+                <Box 
                     sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
+                      display: "grid",
+                      gridTemplateColumns: "repeat(4, 1fr)",
+                      width: '100%',
                       mt: 1,
                       mb: 0,
-                     
                     }}
                   >
                    <Button

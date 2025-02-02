@@ -7,6 +7,7 @@ import ton from '../assets/kucukTON.png';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import BackspaceIcon from '@mui/icons-material/Backspace';
+import CloseIcon from '@mui/icons-material/Close';
 
 // Firebase initialization
 const app = initializeApp(firebaseConfig);
@@ -16,11 +17,31 @@ const StyledDrawer = styled(Drawer)(({ }) => ({
   '& .MuiDrawer-paper': {
     background: 'linear-gradient(180deg, rgba(26, 33, 38, 0.99) 0%, rgba(26, 33, 38, 0.95) 100%)',
     borderRadius: '24px 24px 0 0',
-    padding: '24px',
-    height: '80vh',
+  
+    
+    maxHeight: '90vh',
+    height: 'auto',
     border: '1px solid rgba(110, 211, 255, 0.1)',
+    overflow: 'visible',
   }
 }));
+
+const DrawerContent = styled(Box)({
+  height: '100%',
+  overflow: 'auto',
+  paddingBottom: 'calc(320px + env(safe-area-inset-bottom, 16px))',
+  width: '100%',
+  margin: '0 auto',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  '&::-webkit-scrollbar': {
+    display: 'none'
+  },
+  scrollbarWidth: 'none',
+  msOverflowStyle: 'none'
+});
+
 const KeyboardContainer = styled(Box)({
   backdropFilter: 'blur(20px)',
   borderTop: '1px solid rgba(110, 211, 255, 0.1)',
@@ -28,9 +49,10 @@ const KeyboardContainer = styled(Box)({
   bottom: 0,
   left: 0,
   right: 0,
+  backgroundColor: 'rgba(26, 33, 38, 0.98)',
+  zIndex: 1300,
   paddingBottom: 'env(safe-area-inset-bottom, 22px)',
 });
-
 
 const KeyboardButton = styled(Button)({
   color: 'white',
@@ -206,133 +228,199 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
       width: '100%',
       color: '#fff',
       position: 'relative',
-      maxHeight: '80vh',
-      pb: 'calc(320px + env(safe-area-inset-bottom, 16px))',
+      minHeight: '60vh',
+ 
     }}>
       <Box sx={{
         display: 'flex',
-        width: '100%',
-        justifyContent: 'flex-start',
+        width: '90%',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         mb: 3,
+        mt:3,
+        position: 'relative',
       }}>
         <Button
           onClick={handleBack}
           sx={{
             color: 'rgba(255, 255, 255, 0.5)',
-            '&:hover': { color: '#fff' }
+            '&:hover': { color: '#fff' },
+            minWidth: '40px',
+            padding: '8px'
           }}
         >
-          {step === 2 ? <ArrowBackIosNewIcon /> : '✖'}
+          {step === 2 ? <ArrowBackIosNewIcon /> : <CloseIcon fontSize="medium" />}
         </Button>
+        <Typography 
+          variant="h6" 
+          sx={{
+            position: 'absolute',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            opacity: 0.7
+          }}
+        >
+          Withdraw TON
+        </Typography>
+        <Box sx={{ width: 40 }} /> {/* Spacing için boş box */}
       </Box>
 
-      <Fade in={showSuccess} timeout={500}>
+      <DrawerContent>
+        <Fade in={showSuccess} timeout={500}>
+          <Box sx={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'rgba(26, 33, 38, 0.98)',
+            zIndex: 9999,
+          }}>
+            <CheckCircleOutlineIcon sx={{ 
+              fontSize: 80, 
+              color: '#4CAF50',
+              mb: 2,
+              animation: 'pop 0.3s ease-out',
+              '@keyframes pop': {
+                '0%': {
+                  transform: 'scale(0.8)',
+                  opacity: 0,
+                },
+                '100%': {
+                  transform: 'scale(1)',
+                  opacity: 1,
+                },
+              },
+            }} />
+            <Typography variant="h6" sx={{ 
+              color: '#fff',
+              animation: 'fadeIn 0.3s ease-out 0.2s both',
+              '@keyframes fadeIn': {
+                '0%': {
+                  opacity: 0,
+                  transform: 'translateY(10px)',
+                },
+                '100%': {
+                  opacity: 1,
+                  transform: 'translateY(0)',
+                },
+              },
+            }}>
+              Withdrawal Successful
+            </Typography>
+          </Box>
+        </Fade>
+
         <Box sx={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
           display: 'flex',
-          flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: 'rgba(26, 33, 38, 0.98)',
-          zIndex: 9999,
+          gap: 2,
+          mb: 2,
+          width: '100%',
         }}>
-          <CheckCircleOutlineIcon sx={{ 
-            fontSize: 80, 
-            color: '#4CAF50',
-            mb: 2,
-            animation: 'pop 0.3s ease-out',
-            '@keyframes pop': {
-              '0%': {
-                transform: 'scale(0.8)',
-                opacity: 0,
-              },
-              '100%': {
-                transform: 'scale(1)',
-                opacity: 1,
-              },
-            },
-          }} />
-          <Typography variant="h6" sx={{ 
-            color: '#fff',
-            animation: 'fadeIn 0.3s ease-out 0.2s both',
-            '@keyframes fadeIn': {
-              '0%': {
-                opacity: 0,
-                transform: 'translateY(10px)',
-              },
-              '100%': {
-                opacity: 1,
-                transform: 'translateY(0)',
-              },
-            },
+          <img 
+            src={ton}
+            alt="TON Logo" 
+            style={{ 
+              width: '48px',
+              height: '48px',
+              marginBottom: '8px'
+            }} 
+          />
+          <Typography variant="h3" sx={{ 
+            fontSize: '48px',
+            fontWeight: 'bold',
+            mb: 1,
           }}>
-            Withdrawal Successful
+            {amount || '0'}
           </Typography>
         </Box>
-      </Fade>
 
-      <Typography variant="h6" sx={{mb:4, mt: -6, opacity: 0.7 }}>
-        Withdraw TON
-      </Typography>
-
-      <Box sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-      }}>
-        <img 
-          src={ton}
-          alt="TON Logo" 
-          style={{ 
-            width: '48px',
-            height: '48px',
-            marginBottom: '8px'
-          }} 
-        />
-        <Typography sx={{ opacity: 0.7 }}>
-          {step === 1 ? 'Enter Amount' : 'Enter Address'}
-        </Typography>
-      </Box>
-
-      <Box sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        mb: 3,
-      }}>
-        <Typography variant="h3" sx={{ 
-          fontSize: '48px',
-          fontWeight: 'bold',
-          mb: 1,
+        <Typography sx={{ 
+          opacity: 0.7, 
+          mb: 2, 
+          width: '100%',
+          textAlign: 'center'
         }}>
-          {amount || '0'}
-        </Typography>
-        <Typography sx={{ opacity: 0.7 }}>
           $ {usdValue.toFixed(2)}
         </Typography>
-      </Box>
 
-      <Box sx={{
-        width: '100%',
-        mb: 2,
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '12px',
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: '12px',
-      }}>
-        <Typography sx={{ opacity: 0.7 }}>
-          Remaining Balance
-        </Typography>
-        <Typography>
-          {userData?.total ? (userData.total / 1000).toFixed(2) : '0'} TON
-        </Typography>
-      </Box>
+        <Box sx={{
+          width: '90%',
+       
+          mt: 3,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '12px 16px',
+          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+          borderRadius: '12px',
+      
+        }}>
+          <Typography sx={{ opacity: 0.7 }}>
+            Remaining Balance
+          </Typography>
+          <Typography>
+            {userData?.total ? (userData.total / 1000).toFixed(2) : '0'} TON
+          </Typography>
+        </Box>
+
+        {step === 2 && (
+          <Box sx={{ 
+            width: '98%', 
+            mb: 3,
+            display: 'flex',
+            mt: 1,
+          }}>
+            <TextField
+              fullWidth
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder="Enter TON address"
+              error={address.length > 0 && address.length !== 48}
+              helperText={address.length > 0 && address.length !== 48 ? "TON address must be 48 characters long" : ""}
+              sx={{
+                backgroundColor: 'rgba(18, 22, 25, 0.5)',
+                backdropFilter: 'blur(10px)',
+                borderRadius: '12px',
+                '& .MuiOutlinedInput-root': {
+                  color: '#fff',
+                  height: '56px',
+                  '& fieldset': {
+                    borderColor: 'rgba(110, 211, 255, 0.1)',
+                    borderRadius: '12px',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: 'rgba(110, 211, 255, 0.2)',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: 'rgba(110, 211, 255, 0.3)',
+                  },
+                  '& input': {
+                    padding: '0 16px',
+                    fontSize: '14px',
+                    '&::placeholder': {
+                      color: 'rgba(255, 255, 255, 0.5)',
+                      opacity: 1,
+                    },
+                  },
+                },
+                '& .MuiFormHelperText-root': {
+                  color: '#ff4d4d',
+                  marginLeft: '4px',
+                  marginTop: '4px',
+                  fontSize: '12px',
+                },
+              }}
+            />
+          </Box>
+        )}
+      </DrawerContent>
 
       {step === 1 ? (
         <KeyboardContainer>
@@ -352,7 +440,7 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
               <Grid item xs={4}><KeyboardButton onClick={() => handleNumberClick("backspace")}><BackspaceIcon /></KeyboardButton></Grid>
             </Grid>
 
-            <Box sx={{ mt: 1, px: 0.5 }}>
+            <Box sx={{ mt: 1,    px: 1, }}>
               <Button
                 fullWidth
                 variant="contained"
@@ -379,72 +467,39 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
           </Box>
         </KeyboardContainer>
       ) : (
-        <Box sx={{ width: '100%', mb: 3 }}>
-          <TextField
+        <Box sx={{ 
+          position: 'fixed', 
+          bottom: 0, 
+          left: 0, 
+          right: 0,
+          px: 1,
+          pb: 'env(safe-area-inset-bottom, 22px)',
+          backdropFilter: 'blur(20px)',
+          zIndex: 1300,
+        }}>
+          <Button
             fullWidth
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            placeholder="Enter TON address"
-            error={address.length > 0 && address.length !== 48}
-            helperText={address.length > 0 && address.length !== 48 ? "TON address must be 48 characters long" : ""}
+            variant="contained"
+            onClick={handleWithdraw}
             sx={{
-              '& .MuiOutlinedInput-root': {
-                color: '#fff',
-                '& fieldset': {
-                  borderColor: 'rgba(255, 255, 255, 0.23)',
-                },
-                '&:hover fieldset': {
-                  borderColor: 'rgba(255, 255, 255, 0.5)',
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: '#0066FF',
-                },
+              backgroundColor: '#6ed3ff',
+              color: '#1a2126',
+              height: '44px',
+              mb: 1,
+              borderRadius: '12px',
+              fontSize: '16px',
+              fontWeight: 'bold',
+              '&:hover': {
+                backgroundColor: '#89d9ff',
               },
-              '& .MuiInputLabel-root': {
-                color: 'rgba(255, 255, 255, 0.7)',
-              },
-              '& .MuiFormHelperText-root': {
-                color: 'error.main',
-                marginLeft: 0,
+              '&:disabled': {
+                backgroundColor: 'rgba(110, 211, 255, 0.3)',
+                color: 'rgba(255, 255, 255, 0.3)',
               },
             }}
-          />
-
-          <Box sx={{ 
-            position: 'fixed', 
-            bottom: 0, 
-            left: 0, 
-            right: 0, 
-           px: 1,
-            pb: 'env(safe-area-inset-bottom, 22px)',
-            backgroundColor: 'rgba(18, 22, 25, 0.95)',
-            backdropFilter: 'blur(20px)',
-            borderTop: '1px solid rgba(110, 211, 255, 0.1)',
-          }}>
-            <Button
-              fullWidth
-              
-              variant="contained"
-              onClick={handleWithdraw}
-              sx={{
-                backgroundColor: '#6ed3ff',
-                color: '#1a2126',
-                height: '44px',
-                mb:1,                borderRadius: '12px',
-                fontSize: '16px',
-                fontWeight: 'bold',
-                '&:hover': {
-                  backgroundColor: '#89d9ff',
-                },
-                '&:disabled': {
-                  backgroundColor: 'rgba(110, 211, 255, 0.3)',
-                  color: 'rgba(255, 255, 255, 0.3)',
-                },
-              }}
-            >
-              Withdraw
-            </Button>
-          </Box>
+          >
+            Withdraw
+          </Button>
         </Box>
       )}
 

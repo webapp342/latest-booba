@@ -20,8 +20,7 @@ import axios from "axios";
 import logo5 from '../assets/logo5.png';
 import { doc, onSnapshot, getFirestore, updateDoc } from "firebase/firestore";
 import { initializeApp } from 'firebase/app';
-import { useNavigate } from "react-router-dom";
-import WebApp from "@twa-dev/sdk";
+
 import CloseIcon from '@mui/icons-material/Close';
 import { CheckCircleOutline } from '@mui/icons-material';
 import { TransitionProps } from '@mui/material/transitions';
@@ -49,6 +48,7 @@ const TokenBox = styled(Box)({
   backdropFilter: 'blur(10px)',
   borderRadius: '16px',
   padding: '12px',
+  
   marginBottom: '4px',
   border: '1px solid rgba(110, 211, 255, 0.1)',
 });
@@ -181,6 +181,8 @@ const KeyboardContainer = styled(Box)({
   bottom: 0,
   left: 0,
   right: 0,
+  backgroundColor: 'rgba(26, 33, 38, 0.98)',
+  zIndex: 1300,
   paddingBottom: 'env(safe-area-inset-bottom, 22px)',
 });
 
@@ -207,7 +209,6 @@ const TokenSwap: React.FC = () => {
   const [success, setSuccess] = useState<string | null>(null);
   const [isSwapping, setIsSwapping] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
-  const navigate = useNavigate();
   const [activeInput] = useState<"from" | "to">("from");
 
   const [balances, setBalances] = useState({
@@ -242,24 +243,8 @@ const TokenSwap: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    const backButton = WebApp.BackButton;
-    
-    // BackButton'u görünür yap ve tıklanma işlevi ekle
-    backButton.show();
-    backButton.onClick(() => {
-      navigate("/latest-booba/stake");
-    });
-    
-    // Cleanup: Bileşen unmount olduğunda butonu gizle ve event handler'ı kaldır
-    return () => {
-      backButton.hide();
-      backButton.offClick(() => {
-        navigate("/latest-booba/stake"); // Buraya tekrar aynı callback sağlanmalıdır.
-      });
-    };
-  }, [navigate]);
-    
+ 
+     
 
   useEffect(() => {
     fetchTonPrice();
@@ -300,6 +285,12 @@ const TokenSwap: React.FC = () => {
       return "Invalid amount";
     }
 
+    // Check for whole number requirement when dealing with TICKET
+    if ((toToken === "TICKET" && !Number.isInteger(toAmountNum)) || 
+        (fromToken === "TICKET" && !Number.isInteger(fromAmountNum))) {
+      return "Ticket amount must be a whole number";
+    }
+
     if (fromToken === "TON" && balances.ton < fromAmountNum * 1000) {
       return "Insufficient balance";
     } else if (fromToken === "USDT" && balances.usdt < fromAmountNum) {
@@ -330,49 +321,47 @@ const TokenSwap: React.FC = () => {
       return;
     }
 
+    let calculatedToAmount: string = "";
+    let calculatedFromAmount: string = "";
+
     if (type === "from") {
       setFromAmount(inputValue);
 
-      // TON -> USDT
+      // Calculate toAmount based on conversion rates
       if (fromToken === "TON" && toToken === "USDT") {
-        setToAmount((amount * tonPrice).toFixed(2));
+        calculatedToAmount = (amount * tonPrice).toFixed(2);
+      } else if (fromToken === "USDT" && toToken === "TON") {
+        calculatedToAmount = (amount / tonPrice).toFixed(2);
+      } else if (fromToken === "TON" && toToken === "TICKET") {
+        calculatedToAmount = Math.floor(amount / TICKET_TON_RATE).toString(); // Round down for TICKET
+      } else if (fromToken === "TICKET" && toToken === "TON") {
+        calculatedToAmount = (amount * TICKET_TON_RATE).toFixed(2);
+      } else if (fromToken === "TICKET" && toToken === "USDT") {
+        calculatedToAmount = (amount * TICKET_TON_RATE * tonPrice).toFixed(2);
+      } else if (fromToken === "USDT" && toToken === "TICKET") {
+        calculatedToAmount = Math.floor(amount / (TICKET_TON_RATE * tonPrice)).toString(); // Round down for TICKET
       }
-      // USDT -> TON
-      else if (fromToken === "USDT" && toToken === "TON") {
-        setToAmount((amount / tonPrice).toFixed(2));
-      }
-      // TON -> TICKET
-      else if (fromToken === "TON" && toToken === "TICKET") {
-        setToAmount((amount / TICKET_TON_RATE).toFixed(2));
-      }
-      // TICKET -> TON
-      else if (fromToken === "TICKET" && toToken === "TON") {
-        setToAmount((amount * TICKET_TON_RATE).toFixed(2));
-      }
-      // TICKET -> USDT
-      else if (fromToken === "TICKET" && toToken === "USDT") {
-        setToAmount((amount * TICKET_TON_RATE * tonPrice).toFixed(2));
-      }
-      // USDT -> TICKET
-      else if (fromToken === "USDT" && toToken === "TICKET") {
-        setToAmount((amount / (TICKET_TON_RATE * tonPrice)).toFixed(2));
-      }
+
+      setToAmount(calculatedToAmount || "");
     } else {
       setToAmount(inputValue);
 
+      // Calculate fromAmount based on conversion rates
       if (fromToken === "TON" && toToken === "USDT") {
-        setFromAmount((amount / tonPrice).toFixed(2));
+        calculatedFromAmount = (amount / tonPrice).toFixed(2);
       } else if (fromToken === "USDT" && toToken === "TON") {
-        setFromAmount((amount * tonPrice).toFixed(2));
+        calculatedFromAmount = (amount * tonPrice).toFixed(2);
       } else if (fromToken === "TON" && toToken === "TICKET") {
-        setFromAmount((amount * TICKET_TON_RATE).toFixed(2));
+        calculatedFromAmount = (amount * TICKET_TON_RATE).toFixed(2);
       } else if (fromToken === "TICKET" && toToken === "TON") {
-        setFromAmount((amount / TICKET_TON_RATE).toFixed(2));
+        calculatedFromAmount = Math.floor(amount / TICKET_TON_RATE).toString(); // Round down for TICKET
       } else if (fromToken === "TICKET" && toToken === "USDT") {
-        setFromAmount((amount / (TICKET_TON_RATE * tonPrice)).toFixed(2));
+        calculatedFromAmount = Math.floor(amount / (TICKET_TON_RATE * tonPrice)).toString(); // Round down for TICKET
       } else if (fromToken === "USDT" && toToken === "TICKET") {
-        setFromAmount((amount * (TICKET_TON_RATE * tonPrice)).toFixed(2));
+        calculatedFromAmount = (amount * (TICKET_TON_RATE * tonPrice)).toFixed(2);
       }
+
+      setFromAmount(calculatedFromAmount || "");
     }
 
     setTimeout(() => {
@@ -587,15 +576,26 @@ const TokenSwap: React.FC = () => {
       <ThemeProvider theme={theme}>
         <Box sx={{ 
           color: 'white', 
-          minHeight: '100vh',
           display: 'flex',
           flexDirection: 'column',
-          pb: 'calc(320px + env(safe-area-inset-bottom, 16px))',
+          minHeight: '60vh',
+          position: 'relative',
         }}>
           {/* Content Area */}
-          <Box sx={{ mx:-1, pt: 1 }}>
+          <Box sx={{ 
+          
+            pt: 1,
+            pb: 'calc(320px + env(safe-area-inset-bottom, 16px))',
+            height: '80%',
+            overflow: 'auto',
+            '&::-webkit-scrollbar': {
+              display: 'none'
+            },
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none'
+          }}>
             {/* Header */}
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1.5 }}>
+            <Box sx={{mx:1, display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1.5 }}>
               <Typography variant="h6" sx={{ fontWeight: '500', fontSize: '18px', color: '#6ed3ff' }}>
                 Swap
               </Typography>
@@ -703,6 +703,38 @@ const TokenSwap: React.FC = () => {
                 </Typography>
               </Box>
             </TokenBox>
+                {/* Conversion Rate Display */}
+              <Typography 
+                sx={{ 
+                  color: 'rgba(255, 255, 255, 0.7)', 
+                  fontSize: '12px',
+                  mt: 2,
+                  textAlign: 'center',
+                  backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                  padding: '4px 12px',
+                  borderRadius: '12px',
+                  maxWidth: '100%',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis'
+                }}
+              >
+                {(() => {
+                  if (fromToken === "TON" && toToken === "USDT") {
+                    return `1 TON = ${tonPrice.toFixed(2)} USDT`;
+                  } else if (fromToken === "USDT" && toToken === "TON") {
+                    return `1 USDT = ${(1 / tonPrice).toFixed(4)} TON`;
+                  } else if (fromToken === "TON" && toToken === "TICKET") {
+                    return `1 TICKET = ${TICKET_TON_RATE} TON`;
+                  } else if (fromToken === "TICKET" && toToken === "TON") {
+                    return `1 TICKET = ${TICKET_TON_RATE} TON`;
+                  } else if (fromToken === "TICKET" && toToken === "USDT") {
+                    return `1 TICKET = ${(TICKET_TON_RATE * tonPrice).toFixed(2)} USDT`;
+                  } else if (fromToken === "USDT" && toToken === "TICKET") {
+                    return `1 TICKET = ${(TICKET_TON_RATE * tonPrice).toFixed(2)} USDT`;
+                  }
+                  return "";
+                })()}
+              </Typography>
           </Box>
 
           {/* Custom Keyboard */}
