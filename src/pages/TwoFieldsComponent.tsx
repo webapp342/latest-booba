@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Typography, Box, TextField, Fade, Drawer, styled, Grid } from '@mui/material';
+import { Button, Typography, Box, TextField, Fade, Drawer, styled, Grid, Modal } from '@mui/material';
 import { initializeApp } from 'firebase/app';
-import { getFirestore, doc, onSnapshot, updateDoc } from 'firebase/firestore';
+import { getFirestore, doc, onSnapshot, updateDoc, getDoc } from 'firebase/firestore';
 import { firebaseConfig } from './firebaseConfig';
 import ton from '../assets/kucukTON.png';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import BackspaceIcon from '@mui/icons-material/Backspace';
 import CloseIcon from '@mui/icons-material/Close';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import StarIcon from '@mui/icons-material/Star';
 
 // Firebase initialization
 const app = initializeApp(firebaseConfig);
@@ -64,9 +66,92 @@ const KeyboardButton = styled(Button)({
 
 });
 
+const MinWithdrawModal = styled(Modal)({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+});
+
+const MinWithdrawContent = styled(Box)({
+  backgroundColor: 'rgba(18, 22, 25, 0.95)',
+  backdropFilter: 'blur(20px)',
+  borderRadius: '24px',
+  padding: '32px',
+  width: '90%',
+  maxWidth: '360px',
+  border: '1px solid rgba(255, 77, 77, 0.2)',
+  outline: 'none',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  gap: '24px',
+});
+
+const StarsModal = styled(Modal)({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+});
+
+const StarsModalContent = styled(Box)({
+  backgroundColor: 'rgba(18, 22, 25, 0.95)',
+  backdropFilter: 'blur(20px)',
+  borderRadius: '24px',
+  padding: '32px',
+  width: '90%',
+  maxWidth: '360px',
+  border: '1px solid rgba(110, 211, 255, 0.1)',
+  outline: 'none',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  gap: '24px',
+});
+
 interface TwoFieldsComponentProps {
   open: boolean;
   onClose: () => void;
+}
+
+interface TelegramWebApp {
+  ready: () => void;
+  MainButton: {
+    text: string;
+    show: () => void;
+    hide: () => void;
+    onClick: (callback: () => void) => void;
+  };
+  showInvoice: (params: {
+    title: string;
+    description: string;
+    payload: string;
+    currency: string;
+    prices: Array<{
+      label: string;
+      amount: number;
+    }>;
+  }) => Promise<{
+    status: 'paid' | 'failed' | 'cancelled';
+    payload?: string;
+  }>;
+  initDataUnsafe?: {
+    user?: {
+      language_code?: string;
+      id?: number;
+      first_name?: string;
+      last_name?: string;
+      username?: string;
+    };
+    start_param?: string;
+  };
+}
+
+declare global {
+  interface Window {
+    Telegram?: {
+      WebApp: TelegramWebApp;
+    };
+  }
 }
 
 const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }) => {
@@ -77,6 +162,10 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
   const [tonPrice, setTonPrice] = useState<number>(0);
   const [step, setStep] = useState(1);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [showMinWithdrawModal, setShowMinWithdrawModal] = useState(false);
+  const [showStarsModal, setShowStarsModal] = useState(false);
+  const [isProcessingStars] = useState(false);
+  const [isUpgrading, setIsUpgrading] = useState(false);
 
   useEffect(() => {
     if (!open) {
@@ -158,9 +247,18 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
       return;
     }
 
-    const enteredAmount = Number(amount) * 1000;
+    const enteredAmount = Number(amount);
 
-    if (userData?.total < enteredAmount) {
+    // Check for amounts less than or equal to 1
+    if (enteredAmount <= 1) {
+      setErrorMessage('Please enter a valid amount');
+      return;
+    }
+
+    // Convert to nanoTON for balance check
+    const enteredAmountNano = enteredAmount * 1000;
+
+    if (userData?.total < enteredAmountNano) {
       setErrorMessage('Insufficient Balance');
       return;
     }
@@ -169,15 +267,78 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
     setErrorMessage('');
   };
 
+  const checkUserLevel = async (telegramUserId: string) => {
+    const userRef = doc(db, "users", telegramUserId);
+    const userDoc = await getDoc(userRef);
+    
+    if (userDoc.exists()) {
+      return userDoc.data().level || 0;
+    }
+    return 0;
+  };
+
+  const handleLevelUpgrade = async () => {
+    if (!window.Telegram?.WebApp) return;
+    
+    setIsUpgrading(true);
+    try {
+      // Create invoice for level upgrade
+      const invoiceResult = await window.Telegram.WebApp.showInvoice({
+        title: "Level Upgrade",
+        description: "Upgrade to Level 1 to unlock withdrawals over 3 TON",
+        currency: "XTR",
+        prices: [{
+          label: "Level 1 Access",
+          amount: 20 // 20 Stars
+        }],
+        payload: `level_upgrade_${Date.now()}`
+      });
+
+      if (invoiceResult.status === 'paid') {
+        const telegramUserId = localStorage.getItem("telegramUserId");
+        if (telegramUserId) {
+          const userRef = doc(db, "users", telegramUserId);
+          await updateDoc(userRef, {
+            level: 1,
+            lastLevelUpgrade: new Date().toISOString(),
+            upgradeTransaction: {
+              amount: 20,
+              timestamp: new Date().toISOString(),
+              type: 'LEVEL_UPGRADE',
+              payload: invoiceResult.payload
+            }
+          });
+          
+          setShowStarsModal(false);
+          // Proceed with withdrawal if level upgrade is successful
+          handleWithdraw();
+        }
+      } else if (invoiceResult.status === 'failed') {
+        setErrorMessage('Payment failed. Please try again.');
+      }
+      // User cancelled payment - no error message needed
+    } catch (error) {
+      console.error("Error processing payment:", error);
+      setErrorMessage('Failed to process payment. Please try again.');
+    } finally {
+      setIsUpgrading(false);
+    }
+  };
+
   const handleWithdraw = async () => {
     if (!address) {
       setErrorMessage('Please enter a valid address');
       return;
     }
 
-    // TON address validation
     if (address.length !== 48) {
       setErrorMessage('Please check your TON wallet address format');
+      return;
+    }
+
+    const withdrawAmount = Number(amount);
+    if (withdrawAmount < 3) {
+      setShowMinWithdrawModal(true);
       return;
     }
 
@@ -185,6 +346,16 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
     if (!telegramUserId) {
       console.error("Telegram User ID not found!");
       return;
+    }
+
+    // Check user level for withdrawals >= 3 TON
+    if (withdrawAmount >= 3) {
+      const userLevel = await checkUserLevel(telegramUserId);
+      
+      if (userLevel < 1) {
+        setShowStarsModal(true);
+        return;
+      }
     }
 
     const enteredAmount = Number(amount) * 1000;
@@ -320,8 +491,8 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
           alignItems: 'center',
           justifyContent: 'center',
           gap: 2,
-          mb: 2,
-          width: '100%',
+          width: '90%',
+          mb: 3,
         }}>
           <img 
             src={ton}
@@ -329,96 +500,469 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
             style={{ 
               width: '48px',
               height: '48px',
-              marginBottom: '8px'
             }} 
           />
           <Typography variant="h3" sx={{ 
             fontSize: '48px',
             fontWeight: 'bold',
-            mb: 1,
           }}>
             {amount || '0'}
           </Typography>
         </Box>
 
-        <Typography sx={{ 
-          opacity: 0.7, 
-          mb: 2, 
-          width: '100%',
-          textAlign: 'center'
-        }}>
-          $ {usdValue.toFixed(2)}
-        </Typography>
+        {step === 1 && (
+          <>
+            <Box sx={{
+              width: '90%',
+              mb: 2,
+              display: 'flex',
+              gap: 1,
+              justifyContent: 'center',
+            }}>
+              <Button
+                onClick={() => {
+                  if (userData?.total) {
+                    const maxAmount = userData.total / 1000;
+                    setAmount((maxAmount * 0.25).toFixed(2));
+                  }
+                }}
+                sx={{
+                  color: '#6ed3ff',
+                  fontSize: '0.75rem',
+                  padding: '4px 12px',
+                  minWidth: 'unset',
+                  borderRadius: '8px',
+                  backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                  border: '1px solid rgba(110, 211, 255, 0.2)',
+                  '&:hover': {
+                    backgroundColor: 'rgba(110, 211, 255, 0.15)',
+                  }
+                }}
+              >
+                25%
+              </Button>
+              <Button
+                onClick={() => {
+                  if (userData?.total) {
+                    const maxAmount = userData.total / 1000;
+                    setAmount((maxAmount * 0.5).toFixed(2));
+                  }
+                }}
+                sx={{
+                  color: '#6ed3ff',
+                  fontSize: '0.75rem',
+                  padding: '4px 12px',
+                  minWidth: 'unset',
+                  borderRadius: '8px',
+                  backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                  border: '1px solid rgba(110, 211, 255, 0.2)',
+                  '&:hover': {
+                    backgroundColor: 'rgba(110, 211, 255, 0.15)',
+                  }
+                }}
+              >
+                50%
+              </Button>
+              <Button
+                onClick={() => {
+                  if (userData?.total) {
+                    const maxAmount = userData.total / 1000;
+                    setAmount((maxAmount * 0.75).toFixed(2));
+                  }
+                }}
+                sx={{
+                  color: '#6ed3ff',
+                  fontSize: '0.75rem',
+                  padding: '4px 12px',
+                  minWidth: 'unset',
+                  borderRadius: '8px',
+                  backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                  border: '1px solid rgba(110, 211, 255, 0.2)',
+                  '&:hover': {
+                    backgroundColor: 'rgba(110, 211, 255, 0.15)',
+                  }
+                }}
+              >
+                75%
+              </Button>
+              <Button
+                onClick={() => setAmount(userData?.total ? (userData.total / 1000).toFixed(2) : '0')}
+                sx={{
+                  color: '#6ed3ff',
+                  fontSize: '0.75rem',
+                  padding: '4px 12px',
+                  minWidth: 'unset',
+                  borderRadius: '8px',
+                  backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                  border: '1px solid rgba(110, 211, 255, 0.2)',
+                  '&:hover': {
+                    backgroundColor: 'rgba(110, 211, 255, 0.15)',
+                  }
+                }}
+              >
+                Max
+              </Button>
+            </Box>
 
-        <Box sx={{
-          width: '90%',
-       
-          mt: 3,
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '12px 16px',
-          backgroundColor: 'rgba(255, 255, 255, 0.1)',
-          borderRadius: '12px',
-      
-        }}>
-          <Typography sx={{ opacity: 0.7 }}>
-            Remaining Balance
+            <Typography sx={{ 
+              fontSize: '0.85rem',
+              color: 'rgba(255, 255, 255, 0.7)',
+              mb: 1,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1,
+              width: '90%'
+            }}>
+              <Box sx={{
+                width: 6,
+                height: 6,
+                borderRadius: '50%',
+                backgroundColor: '#6ed3ff'
+              }} />
+              Amount Details
+            </Typography>
+            <Box sx={{
+              width: '90%',
+              mb: 3,
+      px: 2,
+              py:1,              backgroundColor: 'rgba(110, 211, 255, 0.05)',
+              borderRadius: '12px',
+              border: '1px solid rgba(110, 211, 255, 0.1)',
+            }}>
+              <Box sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 0.5
+              }}>
+                <Typography sx={{ 
+                  fontSize: '1.2rem',
+                  color: '#fff',
+                  fontWeight: 500
+                }}>
+                  $ {usdValue.toFixed(2)}
+                </Typography>
+                <Typography sx={{ 
+                  fontSize: '0.75rem',
+                  color: 'rgba(255, 255, 255, 0.5)'
+                }}>
+                  1 TON ≈ ${tonPrice.toFixed(2)}
+                </Typography>
+              </Box>
+            </Box>
+
+            <Typography sx={{ 
+              fontSize: '0.85rem',
+              color: 'rgba(255, 255, 255, 0.7)',
+              mb: 1,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1,
+              width: '90%'
+            }}>
+              <Box sx={{
+                width: 6,
+                height: 6,
+                borderRadius: '50%',
+                backgroundColor: '#fff'
+              }} />
+              Available Balance
+            </Typography>
+            <Box sx={{
+              width: '90%',
+              mb: 3,
+              px: 2,
+              py:1,
+              backgroundColor: 'rgba(255, 255, 255, 0.03)',
+              borderRadius: '12px',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+            }}>
+              <Box sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}>
+                <Typography sx={{ 
+                  fontSize: '0.8rem',
+                  color: 'rgba(255, 255, 255, 0.6)'
+                }}>
+                  Balance
+                </Typography>
+                <Box sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-end'
+                }}>
+                  <Typography sx={{ 
+                    fontSize: '0.8rem',
+                    color: '#fff',
+                    fontWeight: 500
+                  }}>
+                    {userData?.total ? (userData.total / 1000).toFixed(2) : '0'} TON
+                  </Typography>
+                  <Typography sx={{ 
+                    fontSize: '0.75rem',
+                    color: 'rgba(255, 255, 255, 0.5)'
+                  }}>
+                    ≈ ${((userData?.total ? userData.total / 1000 : 0) * tonPrice).toFixed(2)}
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+          </>
+        )}
+
+        {errorMessage && (
+          <Typography 
+            sx={{ 
+              color: '#ff4d4d',
+              fontSize: '0.85rem',
+              mt: 2,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 0.5,
+              padding: '8px 12px',
+              borderRadius: '8px',
+              backgroundColor: 'rgba(255, 77, 77, 0.1)',
+              width: '90%',
+              textAlign: 'center'
+            }}
+          >
+            {errorMessage}
           </Typography>
-          <Typography>
-            {userData?.total ? (userData.total / 1000).toFixed(2) : '0'} TON
-          </Typography>
-        </Box>
+        )}
 
         {step === 2 && (
-          <Box sx={{ 
-            width: '98%', 
-            mb: 3,
-            display: 'flex',
-            mt: 1,
-          }}>
-            <TextField
-              fullWidth
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              placeholder="Enter TON address"
-              error={address.length > 0 && address.length !== 48}
-              helperText={address.length > 0 && address.length !== 48 ? "TON address must be 48 characters long" : ""}
-              sx={{
-                backgroundColor: 'rgba(18, 22, 25, 0.5)',
-                backdropFilter: 'blur(10px)',
-                borderRadius: '12px',
-                '& .MuiOutlinedInput-root': {
-                  color: '#fff',
-                  height: '56px',
-                  '& fieldset': {
-                    borderColor: 'rgba(110, 211, 255, 0.1)',
-                    borderRadius: '12px',
-                  },
-                  '&:hover fieldset': {
-                    borderColor: 'rgba(110, 211, 255, 0.2)',
-                  },
-                  '&.Mui-focused fieldset': {
-                    borderColor: 'rgba(110, 211, 255, 0.3)',
-                  },
-                  '& input': {
-                    padding: '0 16px',
-                    fontSize: '14px',
-                    '&::placeholder': {
-                      color: 'rgba(255, 255, 255, 0.5)',
-                      opacity: 1,
+          <>
+            <Typography sx={{ 
+              fontSize: '0.85rem',
+              color: 'rgba(255, 255, 255, 0.7)',
+              mb: 1,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1,
+              width: '90%'
+            }}>
+              <Box sx={{
+                width: 6,
+                height: 6,
+                borderRadius: '50%',
+                backgroundColor: '#6ed3ff'
+              }} />
+              Recipient Address
+            </Typography>
+            <Box sx={{
+              width: '98%',
+              mb: 3,
+         
+              backgroundColor: 'rgba(110, 211, 255, 0.05)',
+              borderRadius: '12px',
+              border: '1px solid rgba(110, 211, 255, 0.1)',
+              position: 'relative'
+            }}>
+              <TextField
+                fullWidth
+                
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                placeholder="Enter TON wallet address"
+                error={address.length > 0 && address.length !== 48}
+                helperText={address.length > 0 && address.length !== 48 ? "TON address must be 48 characters long" : ""}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    color: '#fff',
+                    height: '56px',
+                    paddingRight: '56px',
+                    '& fieldset': {
+                      borderColor: 'transparent',
+                      borderRadius: '12px',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: 'rgba(110, 211, 255, 0.2)',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: 'rgba(110, 211, 255, 0.3)',
+                    },
+                    '& input': {
+                      padding: '0 16px',
+                      fontSize: '14px',
+                      '&::placeholder': {
+                        color: 'rgba(255, 255, 255, 0.5)',
+                        opacity: 1,
+                      },
                     },
                   },
-                },
-                '& .MuiFormHelperText-root': {
-                  color: '#ff4d4d',
-                  marginLeft: '4px',
-                  marginTop: '4px',
-                  fontSize: '12px',
-                },
-              }}
-            />
-          </Box>
+                  '& .MuiFormHelperText-root': {
+                    color: '#ff4d4d',
+                    marginLeft: '4px',
+                    marginTop: '4px',
+                    fontSize: '12px',
+                  },
+                }}
+              />
+              <Button
+                onClick={async () => {
+                  try {
+                    const text = await navigator.clipboard.readText();
+                    setAddress(text);
+                  } catch (err) {
+                    console.error('Failed to read clipboard:', err);
+                  }
+                }}
+                sx={{
+                  position: 'absolute',
+                  right: '8px',
+                  top: '8px',
+                  minWidth: 'unset',
+                  height: '40px',
+                  color: '#6ed3ff',
+                  fontSize: '0.75rem',
+                  padding: '4px 12px',
+                  borderRadius: '8px',
+                  backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                  border: '1px solid rgba(110, 211, 255, 0.2)',
+              
+                }}
+              >
+                Paste
+              </Button>
+            </Box>
+
+            <Typography sx={{ 
+              fontSize: '0.85rem',
+              color: 'rgba(255, 255, 255, 0.7)',
+              mb: 1,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1,
+              width: '90%'
+            }}>
+              <Box sx={{
+                width: 6,
+                height: 6,
+                borderRadius: '50%',
+                backgroundColor: '#6ed3ff'
+              }} />
+              Transaction Details
+            </Typography>
+            <Box sx={{
+              width: '90%',
+              mb: 3,
+              p: 2,
+              backgroundColor: 'rgba(110, 211, 255, 0.05)',
+              borderRadius: '12px',
+              border: '1px solid rgba(110, 211, 255, 0.1)',
+            }}>
+              <Box sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                mb: 1
+              }}>
+                <Typography sx={{ 
+                  fontSize: '0.8rem',
+                  color: 'rgba(255, 255, 255, 0.6)'
+                }}>
+                  You Send
+                </Typography>
+                <Box sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-end'
+                }}>
+                  <Typography sx={{ 
+                    fontSize: '0.8rem',
+                    color: '#fff',
+                    fontWeight: 500
+                  }}>
+                    {amount} TON
+                  </Typography>
+                  <Typography sx={{ 
+                    fontSize: '0.75rem',
+                    color: 'rgba(255, 255, 255, 0.5)'
+                  }}>
+                    ≈ ${usdValue.toFixed(2)}
+                  </Typography>
+                </Box>
+              </Box>
+              <Box sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                mb: 1
+              }}>
+                <Typography sx={{ 
+                  fontSize: '0.8rem',
+                  color: 'rgba(255, 255, 255, 0.6)'
+                }}>
+                  Network Fee
+                </Typography>
+                <Box sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-end'
+                }}>
+                  <Typography sx={{ 
+                    fontSize: '0.8rem',
+                    color: '#fff',
+                    fontWeight: 500
+                  }}>
+                    ~0.05 TON
+                  </Typography>
+                  <Typography sx={{ 
+                    fontSize: '0.75rem',
+                    color: 'rgba(255, 255, 255, 0.5)'
+                  }}>
+                    ≈ ${(0.05 * tonPrice).toFixed(2)}
+                  </Typography>
+                </Box>
+              </Box>
+              <Box sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                pt: 1,
+                mt: 1,
+                borderTop: '1px solid rgba(255, 255, 255, 0.1)'
+              }}>
+                <Typography sx={{ 
+                  fontSize: '0.8rem',
+                  color: 'rgba(255, 255, 255, 0.6)'
+                }}>
+                  Total Amount
+                </Typography>
+                <Box sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-end'
+                }}>
+                  <Typography sx={{ 
+                    fontSize: '0.8rem',
+                    color: '#fff',
+                    fontWeight: 600
+                  }}>
+                    {(Number(amount) + 0.05).toFixed(2)} TON
+                  </Typography>
+                  <Typography sx={{ 
+                    fontSize: '0.75rem',
+                    color: 'rgba(255, 255, 255, 0.5)'
+                  }}>
+                    ≈ ${((Number(amount) + 0.05) * tonPrice).toFixed(2)}
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+            <Typography sx={{ 
+              fontSize: '0.75rem',
+              color: 'rgba(255, 255, 255, 0.5)',
+              mb: 3,
+              textAlign: 'center',
+              width: '90%'
+            }}>
+              Please double-check the address before confirming the transaction
+            </Typography>
+          </>
         )}
       </DrawerContent>
 
@@ -502,12 +1046,6 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
           </Button>
         </Box>
       )}
-
-      {errorMessage && (
-        <Typography color="error" sx={{ mb: 2 }}>
-          {errorMessage}
-        </Typography>
-      )}
     </Box>
   );
 
@@ -518,6 +1056,108 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
       onClose={onClose}
     >
       {content}
+      <MinWithdrawModal
+        open={showMinWithdrawModal}
+        onClose={() => setShowMinWithdrawModal(false)}
+      >
+        <MinWithdrawContent>
+          <Box sx={{ 
+            width: '64px', 
+            height: '64px', 
+            borderRadius: '50%', 
+            backgroundColor: 'rgba(255, 77, 77, 0.1)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <ErrorOutlineIcon sx={{ fontSize: 32, color: '#ff4d4d' }} />
+          </Box>
+          <Typography sx={{ 
+            color: 'white', 
+            fontSize: '18px', 
+            fontWeight: '500',
+            textAlign: 'center'
+          }}>
+            Minimum Withdrawal Amount
+          </Typography>
+          <Typography sx={{ 
+            color: 'rgba(255, 255, 255, 0.7)', 
+            fontSize: '14px',
+            textAlign: 'center'
+          }}>
+            The minimum withdrawal amount is 3 TON
+          </Typography>
+          <Button
+            fullWidth
+            onClick={() => setShowMinWithdrawModal(false)}
+            sx={{
+              backgroundColor: 'rgba(255, 77, 77, 0.1)',
+              color: '#ff4d4d',
+              height: '44px',
+              borderRadius: '12px',
+              fontSize: '16px',
+              fontWeight: '500',
+              '&:hover': {
+                backgroundColor: 'rgba(255, 77, 77, 0.2)',
+              },
+            }}
+          >
+            Close
+          </Button>
+        </MinWithdrawContent>
+      </MinWithdrawModal>
+      <StarsModal
+        open={showStarsModal}
+        onClose={() => !isProcessingStars && setShowStarsModal(false)}
+      >
+        <StarsModalContent>
+          <Box sx={{ 
+            width: '64px', 
+            height: '64px', 
+            borderRadius: '50%', 
+            backgroundColor: 'rgba(110, 211, 255, 0.1)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <StarIcon sx={{ fontSize: 32, color: '#6ed3ff' }} />
+          </Box>
+          <Typography sx={{ 
+            color: 'white', 
+            fontSize: '18px', 
+            fontWeight: '500',
+            textAlign: 'center'
+          }}>
+            Level Upgrade Required
+          </Typography>
+          <Typography sx={{ 
+            color: 'rgba(255, 255, 255, 0.7)', 
+            fontSize: '14px',
+            textAlign: 'center',
+            marginBottom: '8px'
+          }}>
+            Upgrade to Level 1 to unlock withdrawals over 3 TON
+          </Typography>
+          <Button
+            fullWidth
+            onClick={handleLevelUpgrade}
+            disabled={isUpgrading}
+            sx={{
+              backgroundColor: 'rgba(110, 211, 255, 0.1)',
+              color: '#6ed3ff',
+              height: '44px',
+              borderRadius: '12px',
+              fontSize: '16px',
+              fontWeight: '500',
+              '&:hover': {
+                backgroundColor: 'rgba(110, 211, 255, 0.2)',
+              },
+            }}
+          >
+            {isUpgrading ? 'Processing...' : 'Pay 20 Stars to Upgrade'}
+          </Button>
+        </StarsModalContent>
+      </StarsModal>
     </StyledDrawer>
   );
 };

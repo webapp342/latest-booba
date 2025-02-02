@@ -8,7 +8,7 @@ import {
   SnackbarContent,
   styled,
 } from '@mui/material';
-import { CheckCircleOutline, ContentCopy } from '@mui/icons-material';
+import { CheckCircleOutline } from '@mui/icons-material';
 import CloseIcon from '@mui/icons-material/Close';
 import QRCode from 'qrcode';
 import { doc, getDoc, getFirestore } from 'firebase/firestore';
@@ -40,22 +40,7 @@ const DrawerHeader = styled(Box)({
   position: 'relative',
 });
 
-const QRContainer = styled(Box)({
-  borderRadius: '16px',
-  padding: '20px',
-  width: '100%',
-  maxWidth: '280px',
-  margin: '8px auto',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-  position: 'relative',
-  '@media (max-width: 600px)': {
-    padding: '16px',
-    maxWidth: '240px',
-  }
-});
+
 
 
 
@@ -194,7 +179,7 @@ const DepositDrawer: React.FC<DepositDrawerProps> = ({ open, onClose }) => {
                 fontWeight: 500
               }}
             >
-              Ton Adresi
+               Deposit
             </Typography>
             <Box sx={{ width: 40 }} />
           </DrawerHeader>
@@ -203,153 +188,238 @@ const DepositDrawer: React.FC<DepositDrawerProps> = ({ open, onClose }) => {
             display: 'flex', 
             flexDirection: 'column', 
             alignItems: 'center',
-            gap: { xs: 2, sm: 3 },
             width: '100%',
-            maxWidth: '600px',
-        
+            color: '#fff',
+            position: 'relative',
+            minHeight: '70vh',
           }}>
-            <QRContainer>
+   
+
+            <Box sx={{
+              width: '90%',
+              mb: 3,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
               {qrCodeUrl && (
-                <>
+                <Box sx={{
+                  width: '100%',
+                  maxWidth: '280px',
+                  maxHeight: '220px',
+                  aspectRatio: '1',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  p: 0,
+                  borderRadius: '12px',
+                }}>
                   <img 
                     src={qrCodeUrl} 
                     alt="QR Code" 
                     style={{ 
-                      width: '100%', 
-                      height: 'auto',
-                      display: 'block'
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'contain'
                     }} 
                   />
-                 
-                </>
+                </Box>
               )}
-            </QRContainer>
+            </Box>
 
-            <Box sx={{ width: '100%' }}>
+            <Typography sx={{ 
+              fontSize: '0.85rem',
+              color: 'rgba(255, 255, 255, 0.7)',
+              mb: 1,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1,
+              width: '90%'
+            }}>
               <Box sx={{
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                borderRadius: '12px',
-                padding: '12px 16px',
-                width: '90%',
+                width: 6,
+                height: 6,
+                borderRadius: '50%',
+                backgroundColor: '#6ed3ff'
+              }} />
+              Deposit Address
+            </Typography>
+            <Box sx={{
+              width: '90%',
+              mb: 1,
+              p: 2,
+              backgroundColor: 'rgba(110, 211, 255, 0.05)',
+              borderRadius: '12px',
+              border: '1px solid rgba(110, 211, 255, 0.1)',
+            }}>
+              <Box sx={{
                 display: 'flex',
                 justifyContent: 'space-between',
-                alignItems: 'center'
+                alignItems: 'center',
+                gap: 2
               }}>
                 <Typography sx={{ 
                   color: '#fff', 
-                  fontSize: '0.9rem',
+                  fontSize: '0.85rem',
                   flex: 1,
                   overflow: 'hidden',
-                  textOverflow: 'ellipsis'
+                  textOverflow: 'ellipsis',
+                  fontFamily: 'monospace'
                 }}>
                   UQCHHbMAASLfzfSaMhuNcN_CYV4V-9gek7djHixvW5gBfVhJ
                 </Typography>
                 <Button
                   onClick={() => handleCopy('UQCHHbMAASLfzfSaMhuNcN_CYV4V-9gek7djHixvW5gBfVhJ')}
                   sx={{ 
-                    color: 'rgba(255, 255, 255, 0.7)',
-                    minWidth: 'auto',
-                    padding: '8px',
+                    color: '#6ed3ff',
+                    fontSize: '0.75rem',
+                    padding: '4px 12px',
+                    minWidth: 'unset',
+                    borderRadius: '8px',
+                    backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                    border: '1px solid rgba(110, 211, 255, 0.2)',
                     '&:hover': {
-                      color: '#fff',
-                      backgroundColor: 'rgba(255, 255, 255, 0.1)'
+                      backgroundColor: 'rgba(110, 211, 255, 0.15)',
                     }
                   }}
                 >
-                  <ContentCopy sx={{ fontSize: 20 }} />
+                  Copy
                 </Button>
               </Box>
             </Box>
 
-            <Box sx={{ width: '100%' }}>
-              <Box sx={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: '4px',
-                mb: 1
-              }}>
-                <Typography sx={{ 
-                  color: 'rgba(255, 255, 255, 0.7)',
-                  fontSize: '0.85rem'
-                }}>
-                  Transfer Notu
-                </Typography>
-                <Box component="span" sx={{ 
-                  color: '#FF5F5F',
-                  fontSize: '0.85rem',
-                  lineHeight: 1,
-                  mb: '2px'
-                }}>
-                  *
-                </Box>
-              </Box>
-
+            <Typography sx={{ 
+              fontSize: '0.85rem',
+              color: 'rgba(255, 255, 255, 0.7)',
+              mb: 1,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1,
+              width: '90%'
+            }}>
               <Box sx={{
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                borderRadius: '12px',
-                padding: '12px 16px',
-                width: '90%',
+                width: 6,
+                height: 6,
+                borderRadius: '50%',
+                backgroundColor: '#6ed3ff'
+              }} />
+              Comment (Important)
+            </Typography>
+            <Box sx={{
+              width: '90%',
+              mb: 1,
+              p: 2,
+              backgroundColor: 'rgba(110, 211, 255, 0.05)',
+              borderRadius: '12px',
+              border: '1px solid rgba(110, 211, 255, 0.1)',
+            }}>
+              <Box sx={{
                 display: 'flex',
                 justifyContent: 'space-between',
-                alignItems: 'center'
+                alignItems: 'center',
+                gap: 2
               }}>
                 <Typography sx={{ 
                   color: '#fff', 
-                  fontSize: '0.9rem',
+                  fontSize: '0.85rem',
                   flex: 1,
                   overflow: 'hidden',
-                  textOverflow: 'ellipsis'
+                  textOverflow: 'ellipsis',
+                  fontFamily: 'monospace'
                 }}>
                   {comment}
                 </Typography>
                 <Button
                   onClick={() => handleCopy(comment)}
                   sx={{ 
-                    color: 'rgba(255, 255, 255, 0.7)',
-                    minWidth: 'auto',
-                    padding: '8px',
+                    color: '#6ed3ff',
+                    fontSize: '0.75rem',
+                    padding: '4px 12px',
+                    minWidth: 'unset',
+                    borderRadius: '8px',
+                    backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                    border: '1px solid rgba(110, 211, 255, 0.2)',
                     '&:hover': {
-                      color: '#fff',
-                      backgroundColor: 'rgba(255, 255, 255, 0.1)'
+                      backgroundColor: 'rgba(110, 211, 255, 0.15)',
                     }
                   }}
                 >
-                  <ContentCopy sx={{ fontSize: 20 }} />
+                  Copy
                 </Button>
               </Box>
             </Box>
+          <Typography sx={{ 
+                fontSize: '0.8rem',
+                color: 'rgba(255, 255, 255, 0.5)',
+              }}>
+                • Only send TON to this deposit address
+              </Typography>
+            <Box sx={{
+              width: '90%',
+              mt: 2,
+              p: 2,
+              mb:4,
+              backgroundColor: 'rgba(255, 193, 7, 0.1)',
+              borderRadius: '12px',
+              border: '1px solid rgba(255, 193, 7, 0.2)',
+            }}>
+              
+              <Typography sx={{ 
+                fontSize: '0.8rem',
+                color: 'rgba(255, 193, 7, 0.9)',
+                lineHeight: 1.5
+              }}>
+                Important: Please make sure to include the comment when depositing. Deposits without the correct comment cannot be credited to your account.
+              </Typography>
+            </Box>
 
-            <Typography
-              sx={{
-                color: 'rgba(255, 255, 255, 0.7)',
-                textAlign: 'center',
-                fontSize: '0.875rem',
-                width: '100%'
-              }}
-            >
-              Bu adres yalnızca TON varlıklarını almak için kullanılabilir.
-            </Typography>
+            <Box sx={{
+              width: '90%',
+              mt: 2,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 1
+            }}>
+          
+              <Typography sx={{ 
+                fontSize: '0.8rem',
+                color: 'rgba(255, 255, 255, 0.5)',
+              }}>
+                • Only send TON to this deposit address
+              </Typography>
+            </Box>
 
-            <Button
-              fullWidth
-              onClick={handleTelegramShare}
-              sx={{
-                backgroundColor: '#2AABEE',
-                color: '#fff',
-                borderRadius: '12px',
-                padding: '14px',
-                marginTop: '16px',
-                width: '100%',
-                fontSize: '0.95rem',
-                fontWeight: 500,
-                textTransform: 'none',
-                '&:hover': {
-                  backgroundColor: '#229ED9'
-                }
-              }}
-            >
-              Telegram Kişisiyle Paylaş
-            </Button>
+            <Box sx={{ 
+              position: 'fixed', 
+              bottom: 0, 
+              left: 0, 
+              right: 0,
+              px: 2,
+              pb: 'env(safe-area-inset-bottom, 22px)',
+              backdropFilter: 'blur(20px)',
+              borderTop: '1px solid rgba(110, 211, 255, 0.1)',
+              backgroundColor: 'rgba(26, 33, 38, 0.8)',
+              zIndex: 1300,
+            }}>
+              <Button
+                fullWidth
+                onClick={handleTelegramShare}
+                sx={{
+                  backgroundColor: '#6ed3ff',
+                  color: '#1a2126',
+                  height: '44px',
+                  my: 2,
+                  borderRadius: '12px',
+                  fontSize: '16px',
+                  fontWeight: 'bold',
+                  '&:hover': {
+                    backgroundColor: '#89d9ff',
+                  }
+                }}
+              >
+                Share on Telegram
+              </Button>
+            </Box>
           </Box>
         </Box>
       </StyledDrawer>

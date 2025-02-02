@@ -108,11 +108,11 @@ const CryptoCard = ({
   };
 
   return (
-    <Box
-      sx={{
+  <Box
+    sx={{
         borderRadius: '16px',
         p: { xs: 2, sm: 3 },
-        mb: 2,
+      mb: 2,
         background: 'linear-gradient(180deg, rgba(47, 54, 58, 0.95) 0%, rgba(47, 54, 58, 0.85) 100%)',
         border: '1px solid rgba(255, 255, 255, 0.1)',
         backdropFilter: 'blur(10px)',
@@ -125,27 +125,27 @@ const CryptoCard = ({
       }}
     >
       {/* Header with APY Focus */}
-      <Box sx={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center',
-        mb: 3
-      }}>
+    <Box sx={{ 
+      display: 'flex', 
+      justifyContent: 'space-between', 
+      alignItems: 'center',
+      mb: 3
+    }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-          <Box sx={{ display: 'flex', position: 'relative' }}>
+        <Box sx={{ display: 'flex', position: 'relative' }}>
             <img src={icon1} alt={symbol} style={{ width: 36, height: 36 }} />
-            <img 
-              src={icon2} 
-              alt="USDC" 
-              style={{ 
+          <img 
+            src={icon2} 
+            alt="USDC" 
+            style={{ 
                 width: 36, 
                 height: 36,
-                position: 'relative',
+              position: 'relative',
                 left: -12,
                 marginRight: -12
-              }} 
-            />
-          </Box>
+            }} 
+          />
+        </Box>
           <Box>
             <Typography sx={{ 
               color: '#fff', 
@@ -153,8 +153,8 @@ const CryptoCard = ({
               fontWeight: 600,
               letterSpacing: '0.5px'
             }}>
-              {symbol}
-            </Typography>
+          {symbol}
+        </Typography>
             <Typography sx={{ 
               color: 'rgba(255, 255, 255, 0.6)',
               fontSize: '0.75rem'
@@ -162,7 +162,7 @@ const CryptoCard = ({
               Popular Pool
             </Typography>
           </Box>
-        </Box>
+      </Box>
         <Box sx={{ textAlign: 'right' }}>
           <Box sx={{ 
             display: 'inline-flex', 
@@ -180,7 +180,7 @@ const CryptoCard = ({
               letterSpacing: '0.5px'
             }}>
               {apy}% APY
-            </Typography>
+        </Typography>
           </Box>
           <Typography sx={{ 
             color: 'rgba(255, 255, 255, 0.6)',
@@ -188,9 +188,9 @@ const CryptoCard = ({
             mt: 0.5
           }}>
             Last 30 days avg.
-          </Typography>
-        </Box>
+        </Typography>
       </Box>
+    </Box>
 
       {/* Performance Metrics */}
       <Box sx={{ 
@@ -251,8 +251,8 @@ const CryptoCard = ({
             }}>
               24h Performance
             </Typography>
-            <Box sx={{ 
-              display: 'flex', 
+    <Box sx={{ 
+      display: 'flex', 
               alignItems: 'center', 
               gap: 0.5 
             }}>
@@ -268,21 +268,21 @@ const CryptoCard = ({
               </Typography>
             </Box>
           </Box>
-          <Box>
+      <Box>
             <Typography sx={{ 
               color: 'rgba(255, 255, 255, 0.7)', 
               fontSize: '0.75rem',
               mb: 0.5
             }}>
               24h Fees Generated
-            </Typography>
+        </Typography>
             <Typography sx={{ 
               color: '#fff', 
               fontSize: '1rem', 
               fontWeight: 600
             }}>
               {poolStats.fees24h}
-            </Typography>
+          </Typography>
           </Box>
         </Box>
       </Box>
@@ -296,7 +296,7 @@ const CryptoCard = ({
         borderRadius: '12px',
         p: 2
       }}>
-        <Box>
+      <Box>
           <Typography sx={{ 
             color: '#fff',
             fontSize: '0.9rem',
@@ -304,18 +304,18 @@ const CryptoCard = ({
             mb: 0.5
           }}>
             Start Earning Now
-          </Typography>
+        </Typography>
           <Typography sx={{ 
             color: 'rgba(255, 255, 255, 0.6)',
             fontSize: '0.75rem'
           }}>
             Lock Period: {price}
-          </Typography>
-        </Box>
+        </Typography>
+      </Box>
         <Button
           sx={{
-            backgroundColor: '#6ed3ff',
-            color: '#000',
+        backgroundColor: '#6ed3ff',
+        color: '#000',
             px: 3,
             py: 1,
             borderRadius: '10px',
@@ -387,7 +387,7 @@ const CryptoCard = ({
             }}>
               {formatNumber(poolStats.currentCapacity)} TON Locked
             </Typography>
-          </Box>
+    </Box>
           <Box sx={{ textAlign: 'right' }}>
             <Typography sx={{ 
               color: 'rgba(255, 255, 255, 0.6)',
@@ -395,7 +395,7 @@ const CryptoCard = ({
               mb: 0.5
             }}>
               Until Full
-            </Typography>
+        </Typography>
             <Typography sx={{ 
               color: capacityPercentage > 90 ? '#EF4444' : 
                      capacityPercentage > 75 ? '#F59E0B' : '#22C55E',
@@ -403,8 +403,8 @@ const CryptoCard = ({
               fontWeight: 500
             }}>
               {formatNumber(remainingCapacity)} TON
-            </Typography>
-          </Box>
+        </Typography>
+      </Box>
         </Box>
         <Box sx={{ position: 'relative', mt:2, }}>
           <LinearProgress
@@ -431,11 +431,11 @@ const CryptoCard = ({
          
           }}>
             {capacityPercentage.toFixed(1)}% Pool Filled
-          </Typography>
+      </Typography>
         </Box>
-      </Box>
     </Box>
-  );
+  </Box>
+);
 };
 
 const Statistics: React.FC = () => {
@@ -562,7 +562,7 @@ const Statistics: React.FC = () => {
 
   return (
     <Box mx={-1} mb={10}>
-       {/* Dashboard Card */}
+      {/* Dashboard Card */}
       <Box sx={{ mb: 4 }}>
         <Box sx={{ 
           display: 'flex', 
@@ -860,76 +860,76 @@ const Statistics: React.FC = () => {
             justifyContent: 'space-between',
             mb: 2
           }}>
-            <Box display="flex" alignItems="center" gap={1.5}>
-              <Box
-                sx={{
-                  background: 'linear-gradient(135deg, rgba(54, 162, 235, 0.1), rgba(77, 201, 255, 0.1))',
-                  borderRadius: '8px',
-                  p: 0.8,
-                  display: 'flex',
-                  alignItems: 'center',
-                  border: '1px solid rgba(54, 162, 235, 0.2)',
-                }}
-              >
-                <AnimationIcon sx={{ 
-                  color: '#36A2EB',
-                  fontSize: { xs: '1.2rem', sm: '1.4rem' }
-                }} />
-              </Box>
-              <Box>
-                <Typography 
-                  variant="h6" 
-                  sx={{
-                    fontSize: { xs: '0.8rem', sm: '1.2rem' },
-                    color: '#fff',
-                    fontWeight: 600,
-                    letterSpacing: '0.5px',
-                    mb: 0.2
-                  }}
-                >
-                  Popular Pools
-                </Typography>
-                <Typography 
-                  sx={{ 
-                    color: '#6B7280',
-                    fontSize: { xs: '0.75rem', sm: '0.85rem' },
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 1
-                  }}
-                >
-                  <Box component="span" sx={{ 
-                    width: 6, 
-                    height: 6, 
-                    borderRadius: '50%', 
-                    backgroundColor: '#4CAF50',
-                    display: 'inline-block'
-                  }} />
-                  Popular Pools Overview
-                </Typography>
-              </Box>
-            </Box>
-            <Box 
-              sx={{ 
+          <Box display="flex" alignItems="center" gap={1.5}>
+            <Box
+              sx={{
+                background: 'linear-gradient(135deg, rgba(54, 162, 235, 0.1), rgba(77, 201, 255, 0.1))',
+                borderRadius: '8px',
+                p: 0.8,
                 display: 'flex',
                 alignItems: 'center',
-                gap: 0.5,
-                background: 'rgba(54, 162, 235, 0.1)',
-                borderRadius: '20px',
-                padding: { xs: '6px 12px', sm: '6px 14px' },
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                '&:hover': {
-                  background: 'rgba(54, 162, 235, 0.15)',
-                  transform: 'translateY(-1px)'
-                }
+                border: '1px solid rgba(54, 162, 235, 0.2)',
               }}
             >
-              <InfoOutlinedIcon sx={{ 
-                fontSize: { xs: '0.9rem', sm: '1rem' },
-                color: '#36A2EB'
+              <AnimationIcon sx={{ 
+                color: '#36A2EB',
+                fontSize: { xs: '1.2rem', sm: '1.4rem' }
               }} />
             </Box>
+            <Box>
+              <Typography 
+                variant="h6" 
+                sx={{
+                    fontSize: { xs: '0.8rem', sm: '1.2rem' },
+                  color: '#fff',
+                  fontWeight: 600,
+                  letterSpacing: '0.5px',
+                  mb: 0.2
+                }}
+              >
+                Popular Pools
+              </Typography>
+              <Typography 
+                sx={{ 
+                  color: '#6B7280',
+                  fontSize: { xs: '0.75rem', sm: '0.85rem' },
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1
+                }}
+              >
+                <Box component="span" sx={{ 
+                  width: 6, 
+                  height: 6, 
+                  borderRadius: '50%', 
+                  backgroundColor: '#4CAF50',
+                  display: 'inline-block'
+                }} />
+               Popular Pools Overview
+              </Typography>
+            </Box>
+          </Box>
+          <Box 
+            sx={{ 
+              display: 'flex',
+              alignItems: 'center',
+              gap: 0.5,
+              background: 'rgba(54, 162, 235, 0.1)',
+              borderRadius: '20px',
+              padding: { xs: '6px 12px', sm: '6px 14px' },
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              '&:hover': {
+                background: 'rgba(54, 162, 235, 0.15)',
+                transform: 'translateY(-1px)'
+              }
+            }}
+          >
+            <InfoOutlinedIcon sx={{ 
+              fontSize: { xs: '0.9rem', sm: '1rem' },
+              color: '#36A2EB'
+            }} />
+          </Box>
           </Box>
 
           {/* Popular Pool Cards */}
@@ -956,18 +956,18 @@ const Statistics: React.FC = () => {
             }
           }}>
             {displayedPools.map((pool, index) => (
-              <CryptoCard
+      <CryptoCard
                 key={index}
                 symbol={pool.symbol}
-                icon1={TONIcon}
-                icon2={AluminumIcon}
+        icon1={TONIcon}
+        icon2={AluminumIcon}
                 apy={pool.apy}
                 tvl={pool.tvl}
                 price={pool.price}
-                myEarnings="$0.00"
-                dailyEarnings="$0.00"
-                dailyEarningsPercentage={0.00}
-                mlpBalance="$0.00"
+        myEarnings="$0.00"
+        dailyEarnings="$0.00"
+        dailyEarningsPercentage={0.00}
+        mlpBalance="$0.00"
                 poolStats={pool.poolStats}
               />
             ))}

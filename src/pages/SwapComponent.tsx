@@ -12,6 +12,8 @@ import {
   Slide,
   Paper,
   Snackbar,
+  Modal,
+  CircularProgress,
 } from "@mui/material";
 import SwapVertRoundedIcon from '@mui/icons-material/SwapVertRounded';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -27,6 +29,8 @@ import { TransitionProps } from '@mui/material/transitions';
 import { firebaseConfig } from "./firebaseConfig";
 import BackspaceIcon from '@mui/icons-material/Backspace';
 import WithTourSection from '../components/TourGuide/withTourSection';
+import { motion, AnimatePresence } from "framer-motion";
+import DoneIcon from '@mui/icons-material/Done';
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -44,79 +48,86 @@ interface TokenInfo {
 
 // Styled Components
 const TokenBox = styled(Box)({
-  backgroundColor: 'rgba(18, 22, 25, 0.5)',
-  backdropFilter: 'blur(10px)',
-  borderRadius: '16px',
-  padding: '12px',
-  
+  backgroundColor: 'rgba(18, 22, 25, 0.7)',
+  backdropFilter: 'blur(20px)',
+  borderRadius: '20px',
+  padding: '20px',
   marginBottom: '4px',
-  border: '1px solid rgba(110, 211, 255, 0.1)',
+  border: '1px solid rgba(110, 211, 255, 0.08)',
+  transition: 'all 0.3s ease',
+  '&:hover': {
+    border: '1px solid rgba(110, 211, 255, 0.15)',
+    backgroundColor: 'rgba(18, 22, 25, 0.8)',
+    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)',
+  }
 });
-
 
 const TokenSelectButton = styled(Button)({
   color: 'white',
-  padding: '6px 12px',
-  borderRadius: '20px',
-  backgroundColor: 'rgba(110, 211, 255, 0.1)',
+  padding: '8px 16px',
+  borderRadius: '24px',
+  backgroundColor: 'rgba(110, 211, 255, 0.08)',
   textTransform: 'none',
   minWidth: 'auto',
   '&:hover': {
-    backgroundColor: 'rgba(110, 211, 255, 0.2)',
+    backgroundColor: 'rgba(110, 211, 255, 0.15)',
+    boxShadow: '0 2px 12px rgba(110, 211, 255, 0.1)',
   },
+  transition: 'all 0.3s ease',
 });
 
 const MaxButton = styled(Button)({
   color: '#6ed3ff',
   fontSize: '12px',
-  padding: '2px 8px',
+  padding: '3px 12px',
   minWidth: 'auto',
-  borderRadius: '4px',
-  backgroundColor: 'rgba(110, 211, 255, 0.1)',
+  borderRadius: '12px',
   textTransform: 'none',
-  '&:hover': {
-    backgroundColor: 'rgba(110, 211, 255, 0.2)',
-  },
+  
+  transition: 'all 0.3s ease',
 });
 
 const SwapIconButton = styled(IconButton)({
   position: 'relative',
   backgroundColor: 'rgba(18, 22, 25, 0.95)',
-  padding: '6px',
-  width: '28px',
-  height: '28px',
+  padding: '10px',
+  width: '36px',
+  height: '36px',
   color: '#6ed3ff',
-  border: '1px solid rgba(110, 211, 255, 0.2)',
-  boxShadow: '0 0 10px rgba(110, 211, 255, 0.1)',
+  border: '1px solid rgba(110, 211, 255, 0.15)',
+  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
   transform: 'translateY(50%)',
   zIndex: 2,
   '&:hover': {
-    backgroundColor: 'rgba(110, 211, 255, 0.1)',
-    border: '1px solid rgba(110, 211, 255, 0.3)',
-    boxShadow: '0 0 15px rgba(110, 211, 255, 0.2)',
+    backgroundColor: 'rgba(110, 211, 255, 0.08)',
+    border: '1px solid rgba(110, 211, 255, 0.25)',
+    boxShadow: '0 4px 15px rgba(110, 211, 255, 0.15)',
   },
   '&:active': {
     transform: 'translateY(50%) scale(0.95)',
   },
-  transition: 'all 0.2s ease',
+  transition: 'all 0.3s ease',
 });
 
 const SwapButton = styled(Button)({
-  backgroundColor: '#6ed3ff',
+  background: 'linear-gradient(135deg, #6ed3ff 0%, #89d9ff 100%)',
   color: '#1a2126',
-  borderRadius: '12px',
+  borderRadius: '16px',
   padding: '16px',
   fontSize: '16px',
   fontWeight: 'bold',
   textTransform: 'none',
   marginTop: '16px',
+  boxShadow: '0 4px 15px rgba(110, 211, 255, 0.2)',
   '&:hover': {
-    backgroundColor: '#89d9ff',
+    background: 'linear-gradient(135deg, #89d9ff 0%, #6ed3ff 100%)',
+    boxShadow: '0 4px 20px rgba(110, 211, 255, 0.3)',
   },
   '&:disabled': {
-    backgroundColor: 'rgba(110, 211, 255, 0.3)',
+    background: 'linear-gradient(135deg, rgba(110, 211, 255, 0.3) 0%, rgba(137, 217, 255, 0.3) 100%)',
     color: 'rgba(255, 255, 255, 0.3)',
   },
+  transition: 'all 0.3s ease',
 });
 
 const TokenListDrawer = styled(SwipeableDrawer)({
@@ -175,8 +186,8 @@ const SlideTransition = React.forwardRef((
 });
 
 const KeyboardContainer = styled(Box)({
-  backdropFilter: 'blur(20px)',
-  borderTop: '1px solid rgba(110, 211, 255, 0.1)',
+  backdropFilter: 'blur(25px)',
+  borderTop: '1px solid rgba(110, 211, 255, 0.08)',
   position: 'fixed',
   bottom: 0,
   left: 0,
@@ -184,17 +195,56 @@ const KeyboardContainer = styled(Box)({
   backgroundColor: 'rgba(26, 33, 38, 0.98)',
   zIndex: 1300,
   paddingBottom: 'env(safe-area-inset-bottom, 22px)',
+  boxShadow: '0 -4px 20px rgba(0, 0, 0, 0.2)',
 });
-
 
 const KeyboardButton = styled(Button)({
   color: 'white',
-  borderRadius: '8px',
+  borderRadius: '12px',
   width: '100%',
-  height: '42px',
+  height: '48px',
   fontSize: '20px',
   fontWeight: '500',
+  transition: 'all 0.2s ease',
+  '&:hover': {
+    backgroundColor: 'rgba(110, 211, 255, 0.08)',
+  },
+});
 
+const SwapModal = styled(Modal)({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+});
+
+const ModalContent = styled(Box)({
+  backgroundColor: 'rgba(18, 22, 25, 0.95)',
+  backdropFilter: 'blur(20px)',
+  borderRadius: '24px',
+  padding: '32px',
+  width: '90%',
+  maxWidth: '360px',
+  border: '1px solid rgba(110, 211, 255, 0.1)',
+  outline: 'none',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  gap: '24px',
+});
+
+const SwapLoadingCircle = styled(CircularProgress)({
+  color: '#6ed3ff',
+});
+
+const SuccessCircle = styled(Box)({
+  width: '64px',
+  height: '64px',
+  borderRadius: '50%',
+  backgroundColor: 'rgba(110, 211, 255, 0.1)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: '#6ed3ff',
 });
 
 const TokenSwap: React.FC = () => {
@@ -205,11 +255,13 @@ const TokenSwap: React.FC = () => {
   const [tonPrice, setTonPrice] = useState<number>(0);
   const [openDrawer, setOpenDrawer] = useState(false);
   const [selectedTokenType, setSelectedTokenType] = useState<"from" | "to">("from");
-  const [error, setError] = useState<string | null>(null);
+  const [, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [isSwapping, setIsSwapping] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [activeInput] = useState<"from" | "to">("from");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [swapStatus, setSwapStatus] = useState<'loading' | 'success'>('loading');
 
   const [balances, setBalances] = useState({
     bblip: 0,
@@ -242,9 +294,6 @@ const TokenSwap: React.FC = () => {
       console.error("Error fetching TON price:", error);
     }
   };
-
- 
-     
 
   useEffect(() => {
     fetchTonPrice();
@@ -283,6 +332,24 @@ const TokenSwap: React.FC = () => {
 
     if (isNaN(fromAmountNum) || isNaN(toAmountNum) || fromAmountNum === 0 || toAmountNum === 0) {
       return "Invalid amount";
+    }
+
+    // TON -> TICKET işleminde kullanılacak TON miktarını göster
+    if (fromToken === "TON" && toToken === "TICKET") {
+      const requiredTON = toAmountNum * TICKET_TON_RATE;
+      if (fromAmountNum >= requiredTON) {
+        return `This swap will use ${requiredTON} TON for ${toAmountNum} TICKET`;
+      } else {
+        return `Insufficient TON. Need ${requiredTON} TON for ${toAmountNum} TICKET`;
+      }
+    }
+
+    // Minimum 1 TICKET kontrolü
+    if (toToken === "TICKET" && toAmountNum < 1) {
+      return "Minimum swap amount is 1 TICKET";
+    }
+    if (fromToken === "TICKET" && fromAmountNum < 1) {
+      return "Minimum swap amount is 1 TICKET";
     }
 
     // Check for whole number requirement when dealing with TICKET
@@ -333,13 +400,13 @@ const TokenSwap: React.FC = () => {
       } else if (fromToken === "USDT" && toToken === "TON") {
         calculatedToAmount = (amount / tonPrice).toFixed(2);
       } else if (fromToken === "TON" && toToken === "TICKET") {
-        calculatedToAmount = Math.floor(amount / TICKET_TON_RATE).toString(); // Round down for TICKET
+        calculatedToAmount = Math.floor(amount / TICKET_TON_RATE).toString(); // Her TICKET 2.5 TON
       } else if (fromToken === "TICKET" && toToken === "TON") {
         calculatedToAmount = (amount * TICKET_TON_RATE).toFixed(2);
       } else if (fromToken === "TICKET" && toToken === "USDT") {
         calculatedToAmount = (amount * TICKET_TON_RATE * tonPrice).toFixed(2);
       } else if (fromToken === "USDT" && toToken === "TICKET") {
-        calculatedToAmount = Math.floor(amount / (TICKET_TON_RATE * tonPrice)).toString(); // Round down for TICKET
+        calculatedToAmount = Math.floor(amount / (TICKET_TON_RATE * tonPrice)).toString();
       }
 
       setToAmount(calculatedToAmount || "");
@@ -352,11 +419,11 @@ const TokenSwap: React.FC = () => {
       } else if (fromToken === "USDT" && toToken === "TON") {
         calculatedFromAmount = (amount * tonPrice).toFixed(2);
       } else if (fromToken === "TON" && toToken === "TICKET") {
-        calculatedFromAmount = (amount * TICKET_TON_RATE).toFixed(2);
+        calculatedFromAmount = (amount * TICKET_TON_RATE).toFixed(2); // Her TICKET için 2.5 TON
       } else if (fromToken === "TICKET" && toToken === "TON") {
-        calculatedFromAmount = Math.floor(amount / TICKET_TON_RATE).toString(); // Round down for TICKET
+        calculatedFromAmount = Math.floor(amount / TICKET_TON_RATE).toString();
       } else if (fromToken === "TICKET" && toToken === "USDT") {
-        calculatedFromAmount = Math.floor(amount / (TICKET_TON_RATE * tonPrice)).toString(); // Round down for TICKET
+        calculatedFromAmount = Math.floor(amount / (TICKET_TON_RATE * tonPrice)).toString();
       } else if (fromToken === "USDT" && toToken === "TICKET") {
         calculatedFromAmount = (amount * (TICKET_TON_RATE * tonPrice)).toFixed(2);
       }
@@ -397,7 +464,8 @@ const TokenSwap: React.FC = () => {
 
   const handleSwap = async () => {
     const validationError = validateInputs();
-    if (validationError) {
+    // Eğer validasyon mesajı "This swap will use" ile başlıyorsa işleme devam et
+    if (validationError && !validationError.startsWith('This swap will use')) {
       setError(validationError);
       return;
     }
@@ -405,6 +473,8 @@ const TokenSwap: React.FC = () => {
     setError(null);
     setSuccess(null);
     setIsSwapping(true);
+    setModalOpen(true);
+    setSwapStatus('loading');
 
     try {
       const telegramUserId = localStorage.getItem("telegramUserId");
@@ -416,8 +486,28 @@ const TokenSwap: React.FC = () => {
       const toAmountNum = parseFloat(toAmount);
       const docRef = doc(db, "users", telegramUserId);
 
+      // Simulate network delay
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      // TON -> TICKET
+      if (fromToken === "TON" && toToken === "TICKET") {
+        const requiredTON = toAmountNum * TICKET_TON_RATE * 1000; // Convert to nanoTON
+        await updateDoc(docRef, {
+          total: balances.ton - requiredTON,
+          tickets: (balances.ticket || 0) + toAmountNum,
+        });
+        setSuccess(`Successfully swapped ${requiredTON/1000} TON to ${toAmountNum} TICKET`);
+      }
+      // TICKET -> TON
+      else if (fromToken === "TICKET" && toToken === "TON") {
+        await updateDoc(docRef, {
+          tickets: balances.ticket - fromAmountNum,
+          total: balances.ton + (fromAmountNum * TICKET_TON_RATE * 1000), // Convert to nanoTON
+        });
+        setSuccess(`Successfully swapped ${fromAmountNum} TICKET to ${toAmountNum} TON`);
+      }
       // TON -> USDT
-      if (fromToken === "TON" && toToken === "USDT") {
+      else if (fromToken === "TON" && toToken === "USDT") {
         await updateDoc(docRef, {
           total: balances.ton - fromAmountNum * 1000,
           usdt: (balances.usdt || 0) + toAmountNum,
@@ -431,22 +521,6 @@ const TokenSwap: React.FC = () => {
           total: balances.ton + toAmountNum * 1000,
         });
         setSuccess(`Successfully swapped ${fromAmountNum} USDT to ${toAmountNum} TON`);
-      }
-      // TON -> TICKET
-      else if (fromToken === "TON" && toToken === "TICKET") {
-        await updateDoc(docRef, {
-          total: balances.ton - fromAmountNum * 1000,
-          tickets: (balances.ticket || 0) + toAmountNum,
-        });
-        setSuccess(`Successfully swapped ${fromAmountNum} TON to ${toAmountNum} TICKET`);
-      }
-      // TICKET -> TON
-      else if (fromToken === "TICKET" && toToken === "TON") {
-        await updateDoc(docRef, {
-          tickets: balances.ticket - fromAmountNum,
-          total: balances.ton + toAmountNum * 1000,
-        });
-        setSuccess(`Successfully swapped ${fromAmountNum} TICKET to ${toAmountNum} TON`);
       }
       // TICKET -> USDT
       else if (fromToken === "TICKET" && toToken === "USDT") {
@@ -467,11 +541,16 @@ const TokenSwap: React.FC = () => {
         throw new Error("Unsupported token swap");
       }
 
-      setShowSuccess(true);
-      setFromAmount("");
-      setToAmount("");
+      setSwapStatus('success');
+      setTimeout(() => {
+        setModalOpen(false);
+        setFromAmount("");
+        setToAmount("");
+      }, 2000);
+
     } catch (error) {
       setError(error instanceof Error ? error.message : "An error occurred during the swap");
+      setModalOpen(false);
     } finally {
       setIsSwapping(false);
     }
@@ -571,6 +650,31 @@ const TokenSwap: React.FC = () => {
     handleAmountChange(e, activeInput);
   };
 
+  const calculatePriceImpact = () => {
+    if (!fromAmount || !toAmount) return null;
+    
+    // TICKET işlemleri için price impact gösterme
+    if (fromToken === "TICKET" || toToken === "TICKET") {
+      return null;
+    }
+    
+    // Diğer işlemler için price impact hesapla
+    return 0.1; // Placeholder for other token swaps
+  };
+
+  const calculateMinimumReceived = () => {
+    if (!toAmount) return 0;
+    const amount = parseFloat(toAmount);
+
+    // TICKET işlemleri için minimum received hesaplanmayacak
+    if (fromToken === "TICKET" || toToken === "TICKET") {
+      return amount; // Sabit oran olduğu için aynı miktar
+    }
+
+    // Diğer token çiftleri için slippage hesaplaması
+    return amount * 0.999; // 0.1% slippage
+  };
+
   return (
     <WithTourSection sectionId="swap-section">
       <ThemeProvider theme={theme}>
@@ -583,8 +687,7 @@ const TokenSwap: React.FC = () => {
         }}>
           {/* Content Area */}
           <Box sx={{ 
-          
-            pt: 1,
+            pt: 2,
             pb: 'calc(320px + env(safe-area-inset-bottom, 16px))',
             height: '80%',
             overflow: 'auto',
@@ -595,17 +698,34 @@ const TokenSwap: React.FC = () => {
             msOverflowStyle: 'none'
           }}>
             {/* Header */}
-            <Box sx={{mx:1, display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1.5 }}>
-              <Typography variant="h6" sx={{ fontWeight: '500', fontSize: '18px', color: '#6ed3ff' }}>
+            <Box sx={{
+              mx: 2,
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              mb: 1
+            }}>
+              <Typography variant="h6" sx={{ 
+                fontWeight: '600',
+                fontSize: '20px',
+                color: '#6ed3ff',
+                letterSpacing: '0.5px'
+              }}>
                 Swap
               </Typography>
-              <IconButton size="small" sx={{ color: '#6ed3ff' }}>
+              <IconButton 
+                size="small" 
+                sx={{ 
+                  color: '#6ed3ff',
+                
+                }}
+              >
                 <TuneRoundedIcon fontSize="small" />
               </IconButton>
             </Box>
 
             {/* From Token Box */}
-            <TokenBox sx={{ mb: -3 }}>
+            <TokenBox sx={{ mb: -4 }}>
               {/* Main Row */}
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 {/* Input */}
@@ -640,13 +760,13 @@ const TokenSwap: React.FC = () => {
                   ${calculateUSDValue(fromAmount, fromToken).toFixed(2)}
                 </Typography>
 
-                {/* Balance and Max */}
+                {/* Balance and Max */} 
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                   <Typography sx={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '12px' }}>
                     {formatDisplayAmount(getBalanceForToken(fromToken), fromToken)} 
                   </Typography>
                   <MaxButton onClick={() => handleMaxClick("from")}>
-                    Max
+                 Use Max
                   </MaxButton>
                 </Box>
               </Box>
@@ -703,38 +823,88 @@ const TokenSwap: React.FC = () => {
                 </Typography>
               </Box>
             </TokenBox>
-                {/* Conversion Rate Display */}
-              <Typography 
-                sx={{ 
-                  color: 'rgba(255, 255, 255, 0.7)', 
-                  fontSize: '12px',
-                  mt: 2,
-                  textAlign: 'center',
-                  backgroundColor: 'rgba(110, 211, 255, 0.1)',
-                  padding: '4px 12px',
-                  borderRadius: '12px',
-                  maxWidth: '100%',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis'
-                }}
-              >
-                {(() => {
-                  if (fromToken === "TON" && toToken === "USDT") {
-                    return `1 TON = ${tonPrice.toFixed(2)} USDT`;
-                  } else if (fromToken === "USDT" && toToken === "TON") {
-                    return `1 USDT = ${(1 / tonPrice).toFixed(4)} TON`;
-                  } else if (fromToken === "TON" && toToken === "TICKET") {
-                    return `1 TICKET = ${TICKET_TON_RATE} TON`;
-                  } else if (fromToken === "TICKET" && toToken === "TON") {
-                    return `1 TICKET = ${TICKET_TON_RATE} TON`;
-                  } else if (fromToken === "TICKET" && toToken === "USDT") {
-                    return `1 TICKET = ${(TICKET_TON_RATE * tonPrice).toFixed(2)} USDT`;
-                  } else if (fromToken === "USDT" && toToken === "TICKET") {
-                    return `1 TICKET = ${(TICKET_TON_RATE * tonPrice).toFixed(2)} USDT`;
-                  }
-                  return "";
-                })()}
-              </Typography>
+            
+            {/* Details Section */}
+            <Box sx={{ px: 1, mt: 1, opacity: 0.9 }}>
+              <Box sx={{ 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                alignItems: 'center',
+              }}>
+                <Typography sx={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '14px' }}>
+                  Rate
+                </Typography>
+                <Typography sx={{ color: '#6ed3ff', fontSize: '14px' }}>
+                  {(() => {
+                    if (fromToken === "TON" && toToken === "USDT") {
+                      return `1 TON = ${tonPrice.toFixed(2)} USDT`;
+                    } else if (fromToken === "USDT" && toToken === "TON") {
+                      return `1 USDT = ${(1 / tonPrice).toFixed(4)} TON`;
+                    } else if (fromToken === "TON" && toToken === "TICKET") {
+                      return `1 TICKET = ${TICKET_TON_RATE} TON`;
+                    } else if (fromToken === "TICKET" && toToken === "TON") {
+                      return `1 TICKET = ${TICKET_TON_RATE} TON`;
+                    } else if (fromToken === "TICKET" && toToken === "USDT") {
+                      return `1 TICKET = ${(TICKET_TON_RATE * tonPrice).toFixed(2)} USDT`;
+                    } else if (fromToken === "USDT" && toToken === "TICKET") {
+                      return `1 TICKET = ${(TICKET_TON_RATE * tonPrice).toFixed(2)} USDT`;
+                    }
+                    return "";
+                  })()}
+                </Typography>
+              </Box>
+              {/* Price Impact sadece TICKET olmayan işlemlerde göster */}
+              {fromToken !== "TICKET" && toToken !== "TICKET" && (
+                <>
+                  <Box sx={{ 
+                    display: 'flex', 
+                    justifyContent: 'space-between', 
+                    alignItems: 'center',
+                  }}>
+                    <Typography sx={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '14px' }}>
+                      Price Impact
+                    </Typography>
+                    <Typography sx={{ color: '#6ed3ff', fontSize: '14px' }}>
+                      {calculatePriceImpact() === null ? '-' : `${calculatePriceImpact()}%`}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ 
+                    display: 'flex', 
+                    justifyContent: 'space-between', 
+                    alignItems: 'center',
+                  }}>
+                    <Typography sx={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '14px' }}>
+                      Minimum Received
+                    </Typography>
+                    <Typography sx={{ color: '#6ed3ff', fontSize: '14px' }}>
+                      {calculateMinimumReceived().toFixed(4)} {toToken}
+                    </Typography>
+                  </Box>
+                </>
+              )}
+              <Box sx={{ 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                alignItems: 'center',
+              }}>
+                <Typography sx={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '14px' }}>
+                  Protocol Fee
+                </Typography>
+                <Typography sx={{ 
+                  color: '#6ed3ff', 
+                  fontSize: '14px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 0.5
+                }}>
+                  {(fromToken === "TICKET" && toToken === "TON") || (fromToken === "TON" && toToken === "TICKET") ? (
+                    <Box component="span" sx={{ color: '#4CAF50' }}>Covered by Protocol</Box>
+                  ) : (
+                    "~0.0000011 TON"
+                  )}
+                </Typography>
+              </Box>
+            </Box>
           </Box>
 
           {/* Custom Keyboard */}
@@ -760,10 +930,23 @@ const TokenSwap: React.FC = () => {
                 <SwapButton
                   fullWidth
                   onClick={handleSwap}
-                  disabled={!fromAmount || !toAmount || isSwapping}
-                  sx={{ height: '44px' }}
+                  disabled={!fromAmount || !toAmount || isSwapping || (!!validateInputs() && !validateInputs()?.startsWith('This swap'))}
+                  sx={{ 
+                    height: '44px',
+                    '& .MuiTypography-root': {
+                      color: validateInputs()?.startsWith('This swap') ? '#1a2126' : 'inherit'
+                    }
+                  }}
                 >
-                  {error ? error : isSwapping ? 'Swapping...' : 'Swap'}
+                  {isSwapping ? (
+                    'Swapping...'
+                  ) : validateInputs() ? (
+                    <Typography sx={{ fontSize: '14px' }}>
+                      {validateInputs()}
+                    </Typography>
+                  ) : (
+                    'Swap'
+                  )}
                 </SwapButton>
               </Box>
             </Box>
@@ -855,6 +1038,61 @@ const TokenSwap: React.FC = () => {
               </IconButton>
             </CustomAlert>
           </Snackbar>
+
+          <SwapModal
+            open={modalOpen}
+            onClose={() => {
+              if (swapStatus === 'success') {
+                setModalOpen(false);
+              }
+            }}
+          >
+            <ModalContent>
+              <AnimatePresence mode="wait">
+                {swapStatus === 'loading' ? (
+                  <motion.div
+                    key="loading"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}
+                  >
+                    <SwapLoadingCircle size={64} />
+                    <Typography sx={{ color: 'white', fontSize: '18px', fontWeight: '500' }}>
+                      Swapping
+                    </Typography>
+                    <Typography sx={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '14px', textAlign: 'center' }}>
+                      You swapped {fromAmount} {fromToken} for {toAmount} {toToken}
+                    </Typography>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="success"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}
+                  >
+                    <SuccessCircle>
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ type: "spring", stiffness: 200, damping: 10 }}
+                      >
+                        <DoneIcon sx={{ fontSize: 32 }} />
+                      </motion.div>
+                    </SuccessCircle>
+                    <Typography sx={{ color: 'white', fontSize: '18px', fontWeight: '500' }}>
+                      Swap Successful
+                    </Typography>
+                    <Typography sx={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '14px', textAlign: 'center' }}>
+                      You swapped {fromAmount} {fromToken} for {toAmount} {toToken}
+                    </Typography>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </ModalContent>
+          </SwapModal>
         </Box>
       </ThemeProvider>
     </WithTourSection>
