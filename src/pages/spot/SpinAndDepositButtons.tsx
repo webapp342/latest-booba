@@ -279,7 +279,7 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
       : selectedSpinType === 'ticket'
       ? '1 Ticket'
       : '5 BBLIP'}{' '}
-    to spin with this choice
+    to spin
   </Typography>
 )}
 
