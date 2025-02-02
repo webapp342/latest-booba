@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Box } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import OnboardingSlides from './OnboardingSlides';
@@ -30,6 +30,13 @@ interface OnboardingProviderProps {
 export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children }) => {
   const [isFirstVisit, setIsFirstVisit] = useState(true);
   const [isTourActive, setIsTourActive] = useState(false);
+
+  useEffect(() => {
+    const onboardingCompleted = localStorage.getItem('onboardingCompleted');
+    if (onboardingCompleted === 'true') {
+      setIsFirstVisit(false);
+    }
+  }, []);
 
   const completeOnboarding = () => {
     setIsFirstVisit(false);

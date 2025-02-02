@@ -3,16 +3,29 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Paper, keyframes, Box, IconButton, Tooltip } from '@mui/material';
+import { 
+  Paper, 
+  keyframes, 
+  Box, 
+  IconButton, 
+  Tooltip, 
+  Dialog, 
+  DialogTitle, 
+  DialogContent, 
+  DialogActions,
+  Button,
+  Typography
+} from '@mui/material';
 import { 
   Gamepad2,
   Wallet,
   BarChart2,
   ListTodo,
   BadgeDollarSign,
-  HelpCircle
+  HelpCircle,
+  ExternalLink
 } from 'lucide-react';
-import { SupportButton } from '../components/Support/SupportButton';
+
 
 // Animasyon keyframes'i
 const coinAnimation = keyframes`
@@ -76,8 +89,9 @@ const navItems = [
   },
 ];
 
-export default function SimpleBottomNavigation() {
+export default function Navigation() {
   const [value, setValue] = React.useState<number>(0);
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -100,6 +114,17 @@ export default function SimpleBottomNavigation() {
     setTimeout(() => {
       navigate(navItems[newValue].path);
     }, 0);
+  };
+
+  const handleSupportClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleTelegramClick = () => {
+    // URL encode the default message
+    const defaultMessage = encodeURIComponent("Merhaba, bir konuda yardıma ihtiyacım var.");
+    window.open(`https://t.me/BoobaBlipCMO?start=${defaultMessage}`, '_blank');
+    setIsModalOpen(false);
   };
 
   const theme = createTheme({
@@ -139,12 +164,7 @@ export default function SimpleBottomNavigation() {
         <Box sx={{ position: 'absolute', top: -40, right: 16 }}>
           <Tooltip title="Support">
             <IconButton
-              onClick={() => {
-                const supportButton = document.querySelector('button[data-support-button="true"]');
-                if (supportButton) {
-                  (supportButton as HTMLButtonElement).click();
-                }
-              }}
+              onClick={handleSupportClick}
               sx={{
                 backgroundColor: 'rgba(110, 211, 255, 0.1)',
                 color: '#6ed3ff',
@@ -157,6 +177,66 @@ export default function SimpleBottomNavigation() {
             </IconButton>
           </Tooltip>
         </Box>
+
+        {/* Support Modal */}
+        <Dialog 
+          open={isModalOpen} 
+          onClose={() => setIsModalOpen(false)}
+          PaperProps={{
+            sx: {
+              backgroundColor: '#1a2126',
+              color: 'white',
+              borderRadius: 3,
+              maxWidth: '90%',
+              width: '400px'
+            }
+          }}
+        >
+          <DialogTitle sx={{ 
+            borderBottom: '1px solid rgba(110, 211, 255, 0.1)',
+            color: '#6ed3ff'
+          }}>
+            Teknik Destek
+          </DialogTitle>
+          <DialogContent sx={{ mt: 2 }}>
+            <Typography variant="body1" sx={{ mb: 2 }}>
+              Herhangi bir sorunuz veya sorununuz mu var? Size yardımcı olmaktan mutluluk duyarız.
+            </Typography>
+            <Typography variant="body2" color="grey.400">
+              Telegram üzerinden bize ulaşabilirsiniz. Destek ekibimiz en kısa sürede size dönüş yapacaktır.
+            </Typography>
+          </DialogContent>
+          <DialogActions sx={{ 
+            borderTop: '1px solid rgba(110, 211, 255, 0.1)',
+            p: 2
+          }}>
+            <Button 
+              onClick={() => setIsModalOpen(false)}
+              sx={{ 
+                color: 'grey.400',
+                '&:hover': { color: 'grey.300' }
+              }}
+            >
+              Close
+            </Button>
+            <Button
+            fullWidth
+              variant="contained"
+              onClick={handleTelegramClick}
+              startIcon={<ExternalLink size={16} />}
+              sx={{
+                bgcolor: '#6ed3ff',
+                color: '#1a2126',
+                '&:hover': {
+                  bgcolor: '#5bc0ff'
+                }
+              }}
+            >
+              Contact Us
+            </Button>
+          </DialogActions>
+        </Dialog>
+
         <BottomNavigation
           value={value}
           onChange={handleChange}
@@ -220,7 +300,6 @@ export default function SimpleBottomNavigation() {
           ))}
         </BottomNavigation>
       </Paper>
-      <SupportButton />
     </ThemeProvider>
   );
 }
