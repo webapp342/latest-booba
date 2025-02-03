@@ -1,7 +1,9 @@
 import React from 'react';
 import { Box, Typography, LinearProgress } from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import tonLogo from '../assets/kucukTON.png';
+import { motion } from 'framer-motion';
 
 interface PoolStatsProps {
   poolName: string;
@@ -14,249 +16,168 @@ interface PoolStatsProps {
 }
 
 const PoolStats: React.FC<PoolStatsProps> = ({
-
-  totalPools,
   apy,
   fillPercentage,
   tvl,
-    leverage,
-
+  leverage,
   badgeText
 }) => {
   const isFull = fillPercentage === 100;
 
-  return (
-    <Box
-      sx={{
-        backgroundColor: '#2f363a',
-        borderRadius: '16px',
-        p: 1,
-    
-        height: '100%',
-        border: '1px solid rgba(255, 255, 255, 0.1)',
-        transition: 'transform 0.2s, box-shadow 0.2s',
-        position: 'relative',
-        opacity: isFull ? 0.7 : 1,
-      
-      }}
-    >
-      {isFull && (
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            backgroundColor: 'rgba(0, 0, 0, 0.7)',
-            borderRadius: '8px',
-            padding: '8px 16px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 1,
-           
-            zIndex: 2,
-          }}
-        >
-          <LockIcon sx={{ color: '#fff' }} />
-          <Typography sx={{ color: '#fff', fontWeight: 600 }}>
-            Pool is Full
-          </Typography>
-        </Box>
-      )}
+  const getStatusColor = () => {
+    if (isFull) return '#ff4d4d';
+    if (fillPercentage > 85) return '#ffa726';
+    return '#6ed3ff';
+  };
 
-      {/* Badge */}
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
       <Box
         sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          mb: 2,
+          backgroundColor: 'rgba(47, 54, 58, 0.95)',
+          borderRadius: '16px',
+          p: { xs: 1.5, sm: 2 },
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          position: 'relative',
+          opacity: isFull ? 0.7 : 1,
         }}
       >
-        <Box
-          sx={{
-            backgroundColor: isFull ? 'rgba(239, 68, 68, 0.1)' : 'rgba(54, 162, 235, 0.1)',
-            color: isFull ? '#EF4444' : '#36A2EB',
-            padding: '4px 12px',
-            borderRadius: '20px',
-            fontSize: '0.85rem',
-
-            fontWeight: 600,
-          }}
-        >
-          {badgeText}
-        </Box>
-        <Typography
-          sx={{
-            color: isFull ? '#EF4444' : '#36A2EB',
-            fontSize: '1rem',
-            fontWeight: 700,
-          }}
-        >
-          {apy}%
-          <Typography component="span" sx={{             fontSize: '0.75rem',
- color: '#6B7280', ml: 0.5 }}>
-            APY
-          </Typography>
-        </Typography>
-      </Box>
-
-      {/* TVL Section */}
-      <Box sx={{ mb: 1 }}>
-        <Typography
-          sx={{
-            color: '#6B7280',
-            fontSize: '0.75rem',
-          }}
-        >
-          Total Value Locked
-        </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        {isFull && (
           <Box
-            component="img"
-            src={tonLogo}
             sx={{
-              width: 16,
-              height: 16,
-              objectFit: 'contain'
-            }}
-          />
-          <Typography
-            sx={{
-              color: '#ffffff',
-              fontSize: '1rem',
-              fontWeight: 600,
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              backgroundColor: 'rgba(0, 0, 0, 0.9)',
+              borderRadius: '12px',
+              padding: '8px 16px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1,
+              zIndex: 2,
+              border: '1px solid rgba(255, 77, 77, 0.2)',
             }}
           >
-            {tvl} 
+            <LockIcon sx={{ color: '#ff4d4d', fontSize: 20 }} />
+            <Typography sx={{ color: '#fff', fontWeight: 600, fontSize: '0.9rem' }}>
+              Pool is Full
+            </Typography>
+          </Box>
+        )}
+
+        {/* Top Section */}
+        <Box sx={{ mb: 1.5 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+            {/* Status Badge */}
+            <Box
+              sx={{
+                backgroundColor: `${getStatusColor()}20`,
+                color: getStatusColor(),
+                padding: '4px 12px',
+                borderRadius: '8px',
+                fontSize: '0.8rem',
+                fontWeight: 600,
+                border: `1px solid ${getStatusColor()}40`,
+              }}
+            >
+              {badgeText}
+            </Box>
+            {/* APY */}
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+              <Typography sx={{ color: '#6ed3ff', fontSize: '1.1rem', fontWeight: 700 }}>
+                {apy}%
+              </Typography>
+            </Box>
+          </Box>
+
+          {/* Status Text */}
+          <Typography
+            sx={{
+              color: 'rgba(255, 255, 255, 0.7)',
+              fontSize: '0.8rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 0.5,
+            }}
+          >
+            <InfoOutlinedIcon sx={{ fontSize: 14 }} />
+            {isFull ? 'Pool is currently full' : fillPercentage > 85 ? 'Pool is almost full' : 'Pool is open '}
           </Typography>
         </Box>
-      </Box>
 
-      {/* Progress Bar */}
-      <Box sx={{ mb: 1 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-          <Typography sx={{ color: '#6B7280', fontSize: '0.75rem' }}>
-            Pool Capacity
-          </Typography>
-          <Typography sx={{ color: isFull ? '#EF4444' : '#ffffff', fontSize: '0.85rem', fontWeight: isFull ? 600 : 400 }}>
-            {fillPercentage}%
-          </Typography>
-        </Box>
-        <LinearProgress
-          variant="determinate"
-          value={fillPercentage}
+        {/* Stats Grid */}
+        <Box
           sx={{
-            height: 8,
-            borderRadius: 4,
-            backgroundColor: 'rgba(54, 162, 235, 0.1)',
-            position: 'relative',
-            overflow: 'hidden',
-            '&::after': {
-              content: '""',
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
-              transform: 'translateX(-100%)',
-              animation: 'shimmer 2s infinite',
-            },
-            '& .MuiLinearProgress-bar': {
-              background: fillPercentage > 85
-                ? 'linear-gradient(90deg, #ff4d4d, #ff6b6b)'
-                : 'linear-gradient(90deg, #36A2EB, #4dc9ff)',
-              borderRadius: 4,
-              transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
-              animation: fillPercentage > 85 ? 'warningPulse 2s infinite' : 'progressAnimation 2s infinite',
-              boxShadow: fillPercentage > 85 
-                ? '0 0 10px rgba(255, 77, 77, 0.5)'
-                : '0 0 10px rgba(54, 162, 235, 0.3)',
-            },
-            '@keyframes shimmer': {
-              '0%': {
-                transform: 'translateX(-100%)',
-              },
-              '100%': {
-                transform: 'translateX(100%)',
-              },
-            },
-            '@keyframes warningPulse': {
-              '0%': {
-                boxShadow: '0 0 5px rgba(255, 77, 77, 0.5)',
-              },
-              '50%': {
-                boxShadow: '0 0 15px rgba(255, 77, 77, 0.8)',
-              },
-              '100%': {
-                boxShadow: '0 0 5px rgba(255, 77, 77, 0.5)',
-              },
-            },
-            '@keyframes progressAnimation': {
-              '0%': {
-                backgroundPosition: '0% 50%',
-              },
-              '50%': {
-                backgroundPosition: '100% 50%',
-              },
-              '100%': {
-                backgroundPosition: '0% 50%',
-              },
-            },
-          }}
-        />
-      </Box>
-
-      {/* Total Pools */}
-      <Box display={'flex'} justifyContent={'space-between'}sx={{ mt: 1 }}>
-        <Box>
-           <Typography
-          sx={{
-            color: '#6B7280',
-            fontSize: '0.75rem',
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: 1.5,
+            mb: 1.5,
           }}
         >
-          Tier
-        </Typography>
-        <Typography
-          sx={{
-            mb:-2,
-            color: '#ffffff',
-            fontSize: '1rem',
-            fontWeight: 500,
-          }}
-        >
-          {totalPools}%
-        </Typography>
-
-        </Box>
-
+          {/* TVL */}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
             <Box>
-           <Typography
-          sx={{
-            color: '#6B7280',
-            fontSize: '0.75rem',
-          }}
-        >
-          Leverage
-        </Typography>
-        <Typography
-        align='right'
-          sx={{
-            mb:-2,
-            color: '#ffffff',
-            fontSize: '1rem',
-            fontWeight: 500,
-          }}
-        >
-          {leverage}x
-        </Typography>
+              <Typography sx={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '0.75rem' }}>
+                TVL
+              </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                <Box component="img" src={tonLogo} sx={{ width: 16, height: 16 }} />
+                <Typography sx={{ color: '#fff', fontSize: '1.1rem', fontWeight: 600 }}>
+                  {tvl}
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
 
+          {/* Leverage */}
+          <Box sx={{ textAlign: 'right' }}>
+            <Typography sx={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '0.75rem' }}>
+              Leverage
+            </Typography>
+            <Typography sx={{ color: '#fff', fontSize: '1.1rem', fontWeight: 700 }}>
+              {leverage}x
+            </Typography>
+          </Box>
         </Box>
-       
+
+        {/* Progress Bar */}
+        <Box>
+          <Box sx={{ 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            mb: 0.5,
+            alignItems: 'center'
+          }}>
+            <Typography sx={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '0.75rem' }}>
+              Pool Capacity
+            </Typography>
+            <Typography sx={{ color: getStatusColor(), fontSize: '0.75rem', fontWeight: 600 }}>
+              {fillPercentage}%
+            </Typography>
+          </Box>
+          <LinearProgress
+            variant="determinate"
+            value={fillPercentage}
+            sx={{
+              height: 6,
+              borderRadius: 3,
+              backgroundColor: 'rgba(54, 162, 235, 0.1)',
+              '& .MuiLinearProgress-bar': {
+                background: fillPercentage > 85
+                  ? 'linear-gradient(90deg, #ffa726, #ffb74d)'
+                  : 'linear-gradient(90deg, #6ed3ff, #89d9ff)',
+                borderRadius: 3,
+              },
+            }}
+          />
+        </Box>
       </Box>
-    </Box>
+    </motion.div>
   );
 };
 

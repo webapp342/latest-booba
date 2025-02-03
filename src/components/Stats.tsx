@@ -5,9 +5,10 @@ import AreaChartComponent from './charts/AreaChartComponent';
 import BarChartComponent from './charts/BarChartComponent';
 import "./text.css";
 import Dashboard from './Dashboard';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
 import { WithTourSection } from './TourGuide/withTourSection';
+import AddIcon from '@mui/icons-material/Add';
+import CreatePoolModal from './CreatePool/CreatePoolModal';
 
 interface StatsProps {
   totalLockedTon: number;
@@ -23,6 +24,7 @@ const Stats: React.FC<StatsProps> = ({
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [chartType, setChartType] = useState<'tvl' | 'earnings'>('tvl');
   const [timeRange, setTimeRange] = useState<'w' | 'm' | 'all'>('all');
+  const [isCreatePoolModalOpen, setIsCreatePoolModalOpen] = useState(false);
 
   // Get current UTC date
   const currentUTCDate = new Date();
@@ -365,19 +367,21 @@ const Stats: React.FC<StatsProps> = ({
               }}
             >
               <Typography 
+                onClick={() => setIsCreatePoolModalOpen(true)}
                 sx={{ 
                   color: '#36A2EB',
                   fontWeight: 500,
                   fontSize: { xs: '0.8rem', sm: '0.9rem' },
-                  whiteSpace: 'nowrap'
+                  whiteSpace: 'nowrap',
+                  display: 'flex', 
+                  alignItems: 'center',
+                  gap: 0.5,
+                  cursor: 'pointer'
                 }}
               >
-                Docs
+                <AddIcon sx={{ fontSize: 16 }} />
+                Create Pool
               </Typography>
-              <InfoOutlinedIcon sx={{ 
-                fontSize: { xs: '0.9rem', sm: '1rem' },
-                color: '#36A2EB'
-              }} />
             </Box>
           </Grid>
         </Grid>
@@ -421,6 +425,11 @@ const Stats: React.FC<StatsProps> = ({
 />
           </Grid>
         </Grid>
+
+        <CreatePoolModal 
+          open={isCreatePoolModalOpen}
+          onClose={() => setIsCreatePoolModalOpen(false)}
+        />
       </Box>
     </WithTourSection>
   );

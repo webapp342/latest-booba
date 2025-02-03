@@ -10,6 +10,7 @@ import BackspaceIcon from '@mui/icons-material/Backspace';
 import CloseIcon from '@mui/icons-material/Close';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import StarIcon from '@mui/icons-material/Star';
+import SwapDrawer from '../components/WalletDrawers/SwapDrawer';
 
 // Firebase initialization
 const app = initializeApp(firebaseConfig);
@@ -166,6 +167,8 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
   const [showStarsModal, setShowStarsModal] = useState(false);
   const [isProcessingStars] = useState(false);
   const [isUpgrading, setIsUpgrading] = useState(false);
+  const [showLevelUpSuccess, setShowLevelUpSuccess] = useState(false);
+  const [showSwapDrawer, setShowSwapDrawer] = useState(false);
 
   useEffect(() => {
     if (!open) {
@@ -267,59 +270,79 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
     setErrorMessage('');
   };
 
-  const checkUserLevel = async (telegramUserId: string) => {
-    const userRef = doc(db, "users", telegramUserId);
-    const userDoc = await getDoc(userRef);
-    
-    if (userDoc.exists()) {
-      return userDoc.data().level || 0;
-    }
-    return 0;
+
+  const getLevelRequirements = (amount: number): { requiredLevel: number, requiredTickets: number } => {
+    if (amount <= 3) return { requiredLevel: 1, requiredTickets: 1 };
+    if (amount <= 5) return { requiredLevel: 1, requiredTickets: 1 };
+    if (amount <= 10) return { requiredLevel: 2, requiredTickets: 3 }; // 1 + 2
+    if (amount <= 15) return { requiredLevel: 3, requiredTickets: 6 }; // 1 + 2 + 3
+    if (amount <= 20) return { requiredLevel: 4, requiredTickets: 10 }; // 1 + 2 + 3 + 4
+    if (amount <= 25) return { requiredLevel: 5, requiredTickets: 15 }; // 1 + 2 + 3 + 4 + 5
+    if (amount <= 30) return { requiredLevel: 6, requiredTickets: 21 }; // 1 + 2 + 3 + 4 + 5 + 6
+    if (amount <= 35) return { requiredLevel: 7, requiredTickets: 28 }; // 1 + 2 + 3 + 4 + 5 + 6 + 7
+    if (amount <= 40) return { requiredLevel: 8, requiredTickets: 36 }; // 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8
+    if (amount <= 45) return { requiredLevel: 9, requiredTickets: 45 }; // 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9
+    return { requiredLevel: 10, requiredTickets: 55 }; // 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 + 10
   };
 
+
   const handleLevelUpgrade = async () => {
-    if (!window.Telegram?.WebApp) return;
-    
     setIsUpgrading(true);
+    setErrorMessage('');
+
+    const telegramUserId = localStorage.getItem("telegramUserId");
+    if (!telegramUserId) {
+      setErrorMessage('User ID not found');
+      setIsUpgrading(false);
+      return;
+    }
+
     try {
-      // Create invoice for level upgrade
-      const invoiceResult = await window.Telegram.WebApp.showInvoice({
-        title: "Level Upgrade",
-        description: "Upgrade to Level 1 to unlock withdrawals over 3 TON",
-        currency: "XTR",
-        prices: [{
-          label: "Level 1 Access",
-          amount: 20 // 20 Stars
-        }],
-        payload: `level_upgrade_${Date.now()}`
+      const userRef = doc(db, "users", telegramUserId);
+      const userDoc = await getDoc(userRef);
+      
+      if (!userDoc.exists()) {
+        setErrorMessage('User data not found');
+        setIsUpgrading(false);
+        return;
+      }
+
+      const userData = userDoc.data();
+      const currentLevel = userData.level || 0;
+      const nextLevel = currentLevel + 1;
+      const requiredTickets = nextLevel;
+      
+      if (!userData.tickets || userData.tickets < requiredTickets) {
+        setErrorMessage(`Not enough tickets. Need ${requiredTickets} tickets for level ${nextLevel}`);
+        setIsUpgrading(false);
+        return;
+      }
+
+      await updateDoc(userRef, {
+        level: nextLevel,
+        tickets: userData.tickets - requiredTickets,
+        lastLevelUpgrade: new Date().toISOString(),
+        upgradeTransaction: {
+          amount: requiredTickets,
+          timestamp: new Date().toISOString(),
+          type: 'TICKET_UPGRADE',
+          fromLevel: currentLevel,
+          toLevel: nextLevel
+        }
       });
 
-      if (invoiceResult.status === 'paid') {
-        const telegramUserId = localStorage.getItem("telegramUserId");
-        if (telegramUserId) {
-          const userRef = doc(db, "users", telegramUserId);
-          await updateDoc(userRef, {
-            level: 1,
-            lastLevelUpgrade: new Date().toISOString(),
-            upgradeTransaction: {
-              amount: 20,
-              timestamp: new Date().toISOString(),
-              type: 'LEVEL_UPGRADE',
-              payload: invoiceResult.payload
-            }
-          });
-          
-          setShowStarsModal(false);
-          // Proceed with withdrawal if level upgrade is successful
-          handleWithdraw();
-        }
-      } else if (invoiceResult.status === 'failed') {
-        setErrorMessage('Payment failed. Please try again.');
-      }
-      // User cancelled payment - no error message needed
+      // Show level up success animation
+      setShowStarsModal(false);
+      setShowLevelUpSuccess(true);
+      
+      // Hide success animation after 2 seconds
+      setTimeout(() => {
+        setShowLevelUpSuccess(false);
+      }, 2000);
+
     } catch (error) {
-      console.error("Error processing payment:", error);
-      setErrorMessage('Failed to process payment. Please try again.');
+      console.error("Error processing level upgrade:", error);
+      setErrorMessage('Failed to process upgrade. Please try again.');
     } finally {
       setIsUpgrading(false);
     }
@@ -337,8 +360,12 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
     }
 
     const withdrawAmount = Number(amount);
-    if (withdrawAmount < 3) {
-      setShowMinWithdrawModal(true);
+    const { requiredLevel } = getLevelRequirements(withdrawAmount);
+    const currentLevel = userData?.level || 0;
+    
+    // Level kontrolü
+    if (currentLevel < requiredLevel) {
+      setShowStarsModal(true);
       return;
     }
 
@@ -348,17 +375,7 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
       return;
     }
 
-    // Check user level for withdrawals >= 3 TON
-    if (withdrawAmount >= 3) {
-      const userLevel = await checkUserLevel(telegramUserId);
-      
-      if (userLevel < 1) {
-        setShowStarsModal(true);
-        return;
-      }
-    }
-
-    const enteredAmount = Number(amount) * 1000;
+    const enteredAmount = withdrawAmount * 1000;
     const newTotal = userData.total - enteredAmount;
     const processId = new Date().getTime().toString();
 
@@ -407,7 +424,7 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
         width: '90%',
         justifyContent: 'space-between',
         alignItems: 'center',
-        mb: 3,
+        mb: 3,    
         mt:3,
         position: 'relative',
       }}>
@@ -1112,52 +1129,327 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
       >
         <StarsModalContent>
           <Box sx={{ 
-            width: '64px', 
-            height: '64px', 
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 3,
+            width: '100%'
+          }}>
+            {/* Header Section */}
+            <Box sx={{ 
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 2
+            }}>
+              <Box sx={{ 
+                width: '64px', 
+                height: '64px', 
+                borderRadius: '50%', 
+                backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                animation: 'pulse 2s infinite',
+                '@keyframes pulse': {
+                  '0%': {
+                    boxShadow: '0 0 0 0 rgba(110, 211, 255, 0.4)',
+                  },
+                  '70%': {
+                    boxShadow: '0 0 0 10px rgba(110, 211, 255, 0)',
+                  },
+                  '100%': {
+                    boxShadow: '0 0 0 0 rgba(110, 211, 255, 0)',
+                  },
+                },
+              }}>
+                <StarIcon sx={{ 
+                  fontSize: 32, 
+                  color: '#6ed3ff',
+                  animation: 'rotate 2s infinite linear',
+                  '@keyframes rotate': {
+                    '0%': {
+                      transform: 'rotate(0deg)',
+                    },
+                    '100%': {
+                      transform: 'rotate(360deg)',
+                    },
+                  },
+                }} />
+              </Box>
+              <Box sx={{ textAlign: 'center' }}>
+                <Typography sx={{ 
+                  color: 'white', 
+                  fontSize: '20px', 
+                  fontWeight: '600',
+                  mb: 1
+                }}>
+                  Level Upgrade Required
+                </Typography>
+                <Typography sx={{ 
+                  color: 'rgba(255, 255, 255, 0.7)', 
+                  fontSize: '14px',
+                  lineHeight: 1.5
+                }}>
+                  {(function() {
+                    const currentLevel = userData?.level || 0;
+                    const nextLevel = currentLevel + 1;
+                    const withdrawAmount = Number(amount);
+                    const { requiredLevel } = getLevelRequirements(withdrawAmount);
+                    
+                    if (currentLevel === 0) {
+                      return `Upgrade to Level 1 to continue`;
+                    } else if (currentLevel < requiredLevel) {
+                      return `Upgrade to Level ${nextLevel} to continue.`;
+                    }
+                    return `Maximum level reached for this withdrawal amount`;
+                  })()}
+                </Typography>
+              </Box>
+            </Box>
+
+            {/* Level Info Section */}
+            <Box sx={{
+              width: '100%',
+              display: 'flex',
+              gap: 2
+            }}>
+              <Box sx={{
+                flex: 1,
+                backgroundColor: 'rgba(110, 211, 255, 0.05)',
+                borderRadius: '16px',
+                padding: '16px',
+                border: '1px solid rgba(110, 211, 255, 0.1)',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 1
+              }}>
+                <Typography sx={{ 
+                  color: 'rgba(255, 255, 255, 0.7)',
+                  fontSize: '12px',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px'
+                }}>
+                  Current Level
+                </Typography>
+                <Typography sx={{ 
+                  color: '#6ed3ff',
+                  fontSize: '24px',
+                  fontWeight: '600'
+                }}>
+                  {userData?.level || 0}
+                </Typography>
+              </Box>
+              <Box sx={{
+                flex: 1,
+                backgroundColor: 'rgba(110, 211, 255, 0.05)',
+                borderRadius: '16px',
+                padding: '16px',
+                border: '1px solid rgba(110, 211, 255, 0.1)',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 1
+              }}>
+                <Typography sx={{ 
+                  color: 'rgba(255, 255, 255, 0.7)',
+                  fontSize: '12px',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px'
+                }}>
+                  Your Tickets
+                </Typography>
+                <Typography sx={{ 
+                  color: '#6ed3ff',
+                  fontSize: '24px',
+                  fontWeight: '600'
+                }}>
+                  {userData?.tickets || 0}
+                </Typography>
+              </Box>
+            </Box>
+
+            {/* Error Message */}
+            {errorMessage && (
+              <Typography sx={{ 
+                color: '#ff4d4d', 
+                fontSize: '14px',
+                textAlign: 'center',
+                padding: '8px 12px',
+                backgroundColor: 'rgba(255, 77, 77, 0.1)',
+                borderRadius: '8px',
+                width: '100%'
+              }}>
+                {errorMessage}
+              </Typography>
+            )}
+
+            {/* Action Buttons */}
+            <Box sx={{ 
+              width: '100%', 
+              display: 'flex', 
+              flexDirection: 'column', 
+              gap: 2 
+            }}>
+              <Button
+                fullWidth
+                onClick={handleLevelUpgrade}
+                disabled={isUpgrading || !userData?.tickets || userData?.tickets < (userData?.level + 1 || 1)}
+                sx={{
+                  backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                  color: '#6ed3ff',
+                  height: '48px',
+                  borderRadius: '12px',
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  textTransform: 'none',
+                  '&:hover': {
+                    backgroundColor: 'rgba(110, 211, 255, 0.2)',
+                  },
+                  '&:disabled': {
+                    backgroundColor: 'rgba(110, 211, 255, 0.05)',
+                    color: 'rgba(110, 211, 255, 0.3)',
+                  }
+                }}
+              >
+                {isUpgrading ? 'Processing...' : 'Use Upgrade Ticket'}
+              </Button>
+
+              {(!userData?.tickets || userData?.tickets < (userData?.level + 1 || 1)) && (
+                <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 1 }}>
+                 
+                  <Button
+                    fullWidth
+                    onClick={() => {
+                      const currentLevel = userData?.level || 0;
+                      const nextLevel = currentLevel + 1;
+                      const currentTickets = userData?.tickets || 0;
+                      const neededTickets = nextLevel - currentTickets;
+                      setShowStarsModal(false);
+                      setShowSwapDrawer(true);
+                      return neededTickets; // Bu değer SwapDrawer'a defaultAmount olarak geçecek
+                    }}
+                    sx={{
+                      backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                      color: '#fff',
+                      height: '48px',
+                      borderRadius: '12px',
+                      fontSize: '16px',
+                      fontWeight: '600',
+                      textTransform: 'none',
+                      '&:hover': {
+                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                      }
+                    }}
+                  >
+                    Get More Tickets
+                  </Button>
+                   <Typography sx={{ 
+                    color: 'rgba(255, 255, 255, 0.7)', 
+                    fontSize: '14px',
+                    textAlign: 'center',
+                    padding: '8px 12px',
+                    borderRadius: '8px',
+                  }}>
+                    {(() => {
+                      const currentLevel = userData?.level || 0;
+                      const nextLevel = currentLevel + 1;
+                      const currentTickets = userData?.tickets || 0;
+                      const neededTickets = nextLevel - currentTickets;
+                      return `You need ${neededTickets} more ticket${neededTickets > 1 ? 's' : ''} to reach Level ${nextLevel}`;
+                    })()}
+                  </Typography>
+                </Box>
+              )}
+            </Box>
+          </Box>
+        </StarsModalContent>
+      </StarsModal>
+
+      <Modal
+        open={showLevelUpSuccess}
+        onClose={() => setShowLevelUpSuccess(false)}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Box sx={{
+          backgroundColor: 'rgba(18, 22, 25, 0.95)',
+          backdropFilter: 'blur(20px)',
+          borderRadius: '24px',
+          padding: '32px',
+          width: '90%',
+          maxWidth: '360px',
+          border: '1px solid rgba(110, 211, 255, 0.2)',
+          outline: 'none',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '24px',
+          animation: 'popIn 0.3s ease-out',
+          '@keyframes popIn': {
+            '0%': {
+              transform: 'scale(0.9)',
+              opacity: 0,
+            },
+            '100%': {
+              transform: 'scale(1)',
+              opacity: 1,
+            },
+          },
+        }}>
+          <Box sx={{ 
+            width: '80px', 
+            height: '80px', 
             borderRadius: '50%', 
             backgroundColor: 'rgba(110, 211, 255, 0.1)',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            animation: 'pulse 1s ease-out infinite'
           }}>
-            <StarIcon sx={{ fontSize: 32, color: '#6ed3ff' }} />
+            <StarIcon sx={{ 
+              fontSize: 40, 
+              color: '#6ed3ff',
+              animation: 'rotate 1s ease-out'
+            }} />
           </Box>
           <Typography sx={{ 
-            color: 'white', 
-            fontSize: '18px', 
+            color: '#6ed3ff',
+            fontSize: '24px',
             fontWeight: '500',
             textAlign: 'center'
           }}>
-            Level Upgrade Required
+            Level Up!
           </Typography>
           <Typography sx={{ 
-            color: 'rgba(255, 255, 255, 0.7)', 
-            fontSize: '14px',
-            textAlign: 'center',
-            marginBottom: '8px'
+            color: 'rgba(255, 255, 255, 0.7)',
+            fontSize: '16px',
+            textAlign: 'center'
           }}>
-            Upgrade to Level 1 to unlock withdrawals over 3 TON
+            {`You've reached Level ${userData?.level || 1}`}
           </Typography>
-          <Button
-            fullWidth
-            onClick={handleLevelUpgrade}
-            disabled={isUpgrading}
-            sx={{
-              backgroundColor: 'rgba(110, 211, 255, 0.1)',
-              color: '#6ed3ff',
-              height: '44px',
-              borderRadius: '12px',
-              fontSize: '16px',
-              fontWeight: '500',
-              '&:hover': {
-                backgroundColor: 'rgba(110, 211, 255, 0.2)',
-              },
-            }}
-          >
-            {isUpgrading ? 'Processing...' : 'Pay 20 Stars to Upgrade'}
-          </Button>
-        </StarsModalContent>
-      </StarsModal>
+        </Box>
+      </Modal>
+      <SwapDrawer
+        open={showSwapDrawer}
+        onClose={() => setShowSwapDrawer(false)}
+        defaultAmount={(() => {
+          if (!showSwapDrawer) return undefined;
+          const currentLevel = userData?.level || 0;
+          const nextLevel = currentLevel + 1;
+          const currentTickets = userData?.tickets || 0;
+          return nextLevel - currentTickets;
+        })()}
+        onSwapComplete={() => {
+          setShowSwapDrawer(false);
+          setShowStarsModal(true);
+        }}
+      />
     </StyledDrawer>
   );
 };

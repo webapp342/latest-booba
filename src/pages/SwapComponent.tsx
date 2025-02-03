@@ -46,6 +46,11 @@ interface TokenInfo {
   icon: string;
 }
 
+interface TokenSwapProps {
+  defaultAmount?: number;
+  onClose?: () => void;
+}
+
 // Styled Components
 const TokenBox = styled(Box)({
   backgroundColor: 'rgba(18, 22, 25, 0.7)',
@@ -247,7 +252,7 @@ const SuccessCircle = styled(Box)({
   color: '#6ed3ff',
 });
 
-const TokenSwap: React.FC = () => {
+const TokenSwap: React.FC<TokenSwapProps> = ({ defaultAmount, onClose }) => {
   const [fromToken, setFromToken] = useState<TokenType>("TON");
   const [toToken, setToToken] = useState<TokenType>("TICKET");
   const [fromAmount, setFromAmount] = useState("");
@@ -262,6 +267,8 @@ const TokenSwap: React.FC = () => {
   const [activeInput] = useState<"from" | "to">("from");
   const [modalOpen, setModalOpen] = useState(false);
   const [swapStatus, setSwapStatus] = useState<'loading' | 'success'>('loading');
+  const [, setUserData] = useState<{ level?: number } | null>(null);
+  const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
 
   const [balances, setBalances] = useState({
     bblip: 0,
@@ -318,55 +325,134 @@ const TokenSwap: React.FC = () => {
           ticket: data.tickets || 0,
           ton: data.total || 0
         });
+        setUserData({
+          level: data.level || 0
+        });
       }
     });
 
     return () => unsubscribe();
   }, []);
 
+  // Initialize with defaultAmount
+  useEffect(() => {
+    if (defaultAmount && defaultAmount > 0) {
+      const requiredTON = (defaultAmount * TICKET_TON_RATE).toFixed(2);
+      setFromToken("TON");
+      setToToken("TICKET");
+      setFromAmount(requiredTON);
+      setToAmount(defaultAmount.toString());
+    }
+  }, [defaultAmount]);
+
+  // Cleanup when component unmounts or drawer closes
+  useEffect(() => {
+    if (!onClose) return;
+
+    const cleanup = () => {
+      setFromToken("TON");
+      setToToken("TICKET");
+      setFromAmount("");
+      setToAmount("");
+      setOpenDrawer(false);
+      setSelectedTokenType("from");
+      setError(null);
+      setSuccess(null);
+      setIsSwapping(false);
+      setShowSuccess(false);
+      setModalOpen(false);
+      setSwapStatus('loading');
+    };
+
+    return cleanup;
+  }, [onClose]);
+
+  // Level requirement functions
+
   const validateInputs = () => {
-    if (!fromAmount || !toAmount) return null;
+    // 1. Boş input kontrolü
+    if (!fromAmount || !toAmount) {
+      return "Enter an amount";
+    }
 
     const fromAmountNum = parseFloat(fromAmount);
     const toAmountNum = parseFloat(toAmount);
 
-    if (isNaN(fromAmountNum) || isNaN(toAmountNum) || fromAmountNum === 0 || toAmountNum === 0) {
+    // 2. Temel miktar kontrolleri
+    if (isNaN(fromAmountNum) || isNaN(toAmountNum)) {
       return "Invalid amount";
     }
 
-    // TON -> TICKET işleminde kullanılacak TON miktarını göster
+    if (fromAmountNum === 0 || toAmountNum === 0) {
+      return "Amount cannot be zero";
+    }
+
+    if (fromAmountNum < 0 || toAmountNum < 0) {
+      return "Amount cannot be negative";
+    }
+
+    // 3. TON -> TICKET işlemi kontrolleri
     if (fromToken === "TON" && toToken === "TICKET") {
+      // TICKET miktarı tam sayı olmalı
+      if (!Number.isInteger(toAmountNum)) {
+        return "Ticket amount must be a whole number";
+      }
+
       const requiredTON = toAmountNum * TICKET_TON_RATE;
-      if (fromAmountNum >= requiredTON) {
-        return `This swap will use ${requiredTON} TON for ${toAmountNum} TICKET`;
-      } else {
-        return `Insufficient TON. Need ${requiredTON} TON for ${toAmountNum} TICKET`;
+
+      // TON miktarı kontrolü
+      if (fromAmountNum < requiredTON) {
+        return `Insufficient TON. Need ${requiredTON} TON`;
+      }
+      
+      // Bakiye kontrolü
+      if (balances.ton < requiredTON * 1000) {
+        return "Insufficient TON balance";
+      }
+
+      return `This swap will use ${requiredTON} TON for ${toAmountNum} TICKET`;
+    }
+
+    // 4. TICKET -> TON işlemi kontrolleri
+    if (fromToken === "TICKET" && toToken === "TON") {
+      // TICKET miktarı tam sayı olmalı
+      if (!Number.isInteger(fromAmountNum)) {
+        return "Ticket amount must be a whole number";
+      }
+
+      // Bakiye kontrolü
+      if (balances.ticket < fromAmountNum) {
+        return "Insufficient TICKET balance";
       }
     }
 
-    // Minimum 1 TICKET kontrolü
-    if (toToken === "TICKET" && toAmountNum < 1) {
-      return "Minimum swap amount is 1 TICKET";
-    }
-    if (fromToken === "TICKET" && fromAmountNum < 1) {
-      return "Minimum swap amount is 1 TICKET";
-    }
-
-    // Check for whole number requirement when dealing with TICKET
-    if ((toToken === "TICKET" && !Number.isInteger(toAmountNum)) || 
-        (fromToken === "TICKET" && !Number.isInteger(fromAmountNum))) {
-      return "Ticket amount must be a whole number";
-    }
-
+    // 5. Genel bakiye kontrolleri
     if (fromToken === "TON" && balances.ton < fromAmountNum * 1000) {
-      return "Insufficient balance";
+      return "Insufficient TON balance";
     } else if (fromToken === "USDT" && balances.usdt < fromAmountNum) {
-      return "Insufficient balance";
+      return "Insufficient USDT balance";
     } else if (fromToken === "TICKET" && balances.ticket < fromAmountNum) {
-      return "Insufficient balance";
+      return "Insufficient TICKET balance";
     }
 
     return null;
+  };
+
+  const getSwapButtonText = () => {
+    if (isSwapping) return 'Processing...';
+    
+    const validationError = validateInputs();
+    if (!validationError) return 'Swap';
+    if (validationError.startsWith('This swap will use')) return 'Swap';
+    
+    return validationError;
+  };
+
+  const isSwapDisabled = () => {
+    const validationError = validateInputs();
+    if (!validationError) return false;
+    if (validationError.startsWith('This swap will use')) return false;
+    return true;
   };
 
   const handleAmountChange = (
@@ -374,6 +460,11 @@ const TokenSwap: React.FC = () => {
     type: "from" | "to"
   ) => {
     const inputValue = e.target.value;
+
+    // Negatif sayıları engelle
+    if (inputValue.startsWith('-')) {
+      return;
+    }
 
     if (inputValue === "") {
       setFromAmount("");
@@ -400,12 +491,14 @@ const TokenSwap: React.FC = () => {
       } else if (fromToken === "USDT" && toToken === "TON") {
         calculatedToAmount = (amount / tonPrice).toFixed(2);
       } else if (fromToken === "TON" && toToken === "TICKET") {
-        calculatedToAmount = Math.floor(amount / TICKET_TON_RATE).toString(); // Her TICKET 2.5 TON
+        // TICKET için tam sayı hesaplama
+        calculatedToAmount = Math.floor(amount / TICKET_TON_RATE).toString();
       } else if (fromToken === "TICKET" && toToken === "TON") {
         calculatedToAmount = (amount * TICKET_TON_RATE).toFixed(2);
       } else if (fromToken === "TICKET" && toToken === "USDT") {
         calculatedToAmount = (amount * TICKET_TON_RATE * tonPrice).toFixed(2);
       } else if (fromToken === "USDT" && toToken === "TICKET") {
+        // TICKET için tam sayı hesaplama
         calculatedToAmount = Math.floor(amount / (TICKET_TON_RATE * tonPrice)).toString();
       }
 
@@ -419,11 +512,12 @@ const TokenSwap: React.FC = () => {
       } else if (fromToken === "USDT" && toToken === "TON") {
         calculatedFromAmount = (amount * tonPrice).toFixed(2);
       } else if (fromToken === "TON" && toToken === "TICKET") {
-        calculatedFromAmount = (amount * TICKET_TON_RATE).toFixed(2); // Her TICKET için 2.5 TON
+        calculatedFromAmount = (amount * TICKET_TON_RATE).toFixed(2);
       } else if (fromToken === "TICKET" && toToken === "TON") {
+        // TICKET için tam sayı hesaplama
         calculatedFromAmount = Math.floor(amount / TICKET_TON_RATE).toString();
       } else if (fromToken === "TICKET" && toToken === "USDT") {
-        calculatedFromAmount = Math.floor(amount / (TICKET_TON_RATE * tonPrice)).toString();
+        calculatedFromAmount = (amount / (TICKET_TON_RATE * tonPrice)).toFixed(2);
       } else if (fromToken === "USDT" && toToken === "TICKET") {
         calculatedFromAmount = (amount * (TICKET_TON_RATE * tonPrice)).toFixed(2);
       }
@@ -464,7 +558,6 @@ const TokenSwap: React.FC = () => {
 
   const handleSwap = async () => {
     const validationError = validateInputs();
-    // Eğer validasyon mesajı "This swap will use" ile başlıyorsa işleme devam et
     if (validationError && !validationError.startsWith('This swap will use')) {
       setError(validationError);
       return;
@@ -486,8 +579,20 @@ const TokenSwap: React.FC = () => {
       const toAmountNum = parseFloat(toAmount);
       const docRef = doc(db, "users", telegramUserId);
 
-      // Simulate network delay
+      // İlk aşama - İşlem başlatılıyor
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      setLoadingMessage("Preparing transaction...");
+
+      // İkinci aşama - Kontrat kontrolü
       await new Promise(resolve => setTimeout(resolve, 2000));
+      setLoadingMessage("Checking smart contract...");
+
+      // Üçüncü aşama - İşlem onayı
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      setLoadingMessage("Confirming transaction...");
+
+      // Son aşama - İşlem tamamlanıyor
+      await new Promise(resolve => setTimeout(resolve, 1500));
 
       // TON -> TICKET
       if (fromToken === "TON" && toToken === "TICKET") {
@@ -502,7 +607,7 @@ const TokenSwap: React.FC = () => {
       else if (fromToken === "TICKET" && toToken === "TON") {
         await updateDoc(docRef, {
           tickets: balances.ticket - fromAmountNum,
-          total: balances.ton + (fromAmountNum * TICKET_TON_RATE * 1000), // Convert to nanoTON
+          total: balances.ton + (fromAmountNum * TICKET_TON_RATE * 1000),
         });
         setSuccess(`Successfully swapped ${fromAmountNum} TICKET to ${toAmountNum} TON`);
       }
@@ -542,11 +647,16 @@ const TokenSwap: React.FC = () => {
       }
 
       setSwapStatus('success');
-      setTimeout(() => {
-        setModalOpen(false);
-        setFromAmount("");
-        setToAmount("");
-      }, 2000);
+      
+      // Başarılı durumunu göster ve sonra kapat
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      setModalOpen(false);
+      setFromAmount("");
+      setToAmount("");
+      if (onClose) {
+        onClose();
+      }
 
     } catch (error) {
       setError(error instanceof Error ? error.message : "An error occurred during the swap");
@@ -930,23 +1040,25 @@ const TokenSwap: React.FC = () => {
                 <SwapButton
                   fullWidth
                   onClick={handleSwap}
-                  disabled={!fromAmount || !toAmount || isSwapping || (!!validateInputs() && !validateInputs()?.startsWith('This swap'))}
-                  sx={{ 
-                    height: '44px',
-                    '& .MuiTypography-root': {
-                      color: validateInputs()?.startsWith('This swap') ? '#1a2126' : 'inherit'
+                  disabled={isSwapDisabled() || isSwapping}
+                  sx={{
+                    backgroundColor: isSwapDisabled() ? 'rgba(110, 211, 255, 0.1)' : '#6ed3ff',
+                    color: isSwapDisabled() ? 'rgba(255, 255, 255, 0.5)' : '#1a2126',
+                    height: '48px',
+                    borderRadius: '12px',
+                    fontSize: '16px',
+                    fontWeight: '600',
+                    marginTop: '16px',
+                    '&:hover': {
+                      backgroundColor: isSwapDisabled() ? 'rgba(110, 211, 255, 0.15)' : '#89d9ff',
+                    },
+                    '&:disabled': {
+                      backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                      color: 'rgba(255, 255, 255, 0.3)',
                     }
                   }}
                 >
-                  {isSwapping ? (
-                    'Swapping...'
-                  ) : validateInputs() ? (
-                    <Typography sx={{ fontSize: '14px' }}>
-                      {validateInputs()}
-                    </Typography>
-                  ) : (
-                    'Swap'
-                  )}
+                  {getSwapButtonText()}
                 </SwapButton>
               </Box>
             </Box>
@@ -1059,10 +1171,10 @@ const TokenSwap: React.FC = () => {
                   >
                     <SwapLoadingCircle size={64} />
                     <Typography sx={{ color: 'white', fontSize: '18px', fontWeight: '500' }}>
-                      Swapping
+                      {loadingMessage || "Processing Swap"}
                     </Typography>
                     <Typography sx={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '14px', textAlign: 'center' }}>
-                      You swapped {fromAmount} {fromToken} for {toAmount} {toToken}
+                      {fromAmount} {fromToken} → {toAmount} {toToken}
                     </Typography>
                   </motion.div>
                 ) : (

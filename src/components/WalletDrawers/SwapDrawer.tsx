@@ -44,18 +44,26 @@ const DrawerContent = styled(Box)({
 interface SwapDrawerProps {
   open: boolean;
   onClose: () => void;
+  defaultAmount?: number;
+  onSwapComplete?: () => void;
 }
 
-const SwapDrawer: React.FC<SwapDrawerProps> = ({ open, onClose }) => {
+const SwapDrawer: React.FC<SwapDrawerProps> = ({ open, onClose, defaultAmount, onSwapComplete }) => {
+  const handleClose = () => {
+    if (onClose) {
+      onClose();
+    }
+  };
+
   return (
     <StyledDrawer
       anchor="bottom"
       open={open}
-      onClose={onClose}
+      onClose={handleClose}
     >
       <DrawerHeader mx={-2}>
         <Button
-          onClick={onClose}
+          onClick={handleClose}
           sx={{
             color: 'rgba(255, 255, 255, 0.5)',
             minWidth: '40px',
@@ -76,10 +84,19 @@ const SwapDrawer: React.FC<SwapDrawerProps> = ({ open, onClose }) => {
         >
           Swap Assets
         </Typography>
-        <Box sx={{ width: 40 }} /> {/* Spacing için boş box */}
+        <Box sx={{ width: 40 }} />
       </DrawerHeader>
       <DrawerContent m={-2}>
-        <TokenSwap />
+        <TokenSwap 
+          key={defaultAmount} 
+          defaultAmount={defaultAmount} 
+          onClose={() => {
+            if (onSwapComplete) {
+              onSwapComplete();
+            }
+            handleClose();
+          }} 
+        />
       </DrawerContent>
     </StyledDrawer>
   );
