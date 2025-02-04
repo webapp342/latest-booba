@@ -682,7 +682,7 @@ const BoxOpening: React.FC = () => {
             <Grid item xs={4}>
               <Box sx={{ textAlign: 'center' }}>
                 <Typography sx={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>
-                  Unique Boxes
+                  Uniques
                 </Typography>
                 <Typography sx={{ color: commonStyles.primaryColor, fontWeight: 'bold', fontSize: '1.5rem' }}>
                   {new Set(allDrops.map(drop => drop.boxTitle)).size}

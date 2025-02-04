@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Button, Container, Grid, IconButton, CircularProgress, Drawer  } from '@mui/material';
+import { Box, Typography, Button, Container, Grid, IconButton, CircularProgress, Drawer, Snackbar, Alert  } from '@mui/material';
 import { motion } from 'framer-motion';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -74,6 +74,8 @@ const BoxDetail: React.FC = () => {
   const [showDepositDrawer, setShowDepositDrawer] = useState(false);
   const [showSwapDrawer, setShowSwapDrawer] = useState(false);
   const [neededAmount, setNeededAmount] = useState<number>(0);
+  const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
     const telegramUserId = localStorage.getItem("telegramUserId");
@@ -274,12 +276,15 @@ const BoxDetail: React.FC = () => {
 
       await updateDoc(userRef, updates);
 
-      setError(`Successfully purchased ${quantity} ${boxData?.title}!`);
+      // Set success message and show snackbar
+      setSuccessMessage(`Successfully purchased ${boxData?.title}!`);
+      setShowSuccessSnackbar(true);
+      
+      // Close modal after delay
       setTimeout(() => {
         setShowPurchaseModal(false);
         setQuantity(1);
-        setError(null);
-      }, 2000);
+      }, 1000);
 
     } catch (error) {
       console.error('Error purchasing box:', error);
@@ -667,7 +672,8 @@ borderBottom:'2px solid',                    borderColor: () => {
         sx={{
           '& .MuiDrawer-paper': {
             background: 'linear-gradient(145deg, rgba(26,27,35,0.95) 0%, rgba(26,27,35,0.98) 100%)',
-            borderLeft: `1px solid ${commonStyles.borderColor}`
+            borderLeft: `1px solid ${commonStyles.borderColor}`,
+            maxHeight: '80vh'
           }
         }}
       >
@@ -678,7 +684,8 @@ borderBottom:'2px solid',                    borderColor: () => {
           borderTopLeftRadius: '20px',
           borderTopRightRadius: '20px',
           position: 'relative',
-          minHeight: { xs: '85vh', sm: '80vh' }
+          height: '80vh',
+          overflowY: 'auto'
         }}>
           <IconButton
             onClick={() => {
@@ -863,25 +870,25 @@ borderBottom:'2px solid',                    borderColor: () => {
                 flex: 1,
                 height: '64px',
                 background: selectedPayment === 'USDT' 
-                  ? 'rgba(110, 211, 255, 0.15)'
+                  ? 'rgba(38, 161, 123, 0.15)'
                   : 'rgba(110, 211, 255, 0.05)',
-                border: `1px solid ${selectedPayment === 'USDT' ? 'rgba(110, 211, 255, 0.3)' : 'rgba(110, 211, 255, 0.1)'}`,
+                border: `1px solid ${selectedPayment === 'USDT' ? 'rgba(38, 161, 123, 0.3)' : 'rgba(110, 211, 255, 0.1)'}`,
                 borderRadius: '12px',
                 transition: 'all 0.3s ease',
                 transform: selectedPayment === 'USDT' ? 'scale(1.02)' : 'scale(1)',
-                boxShadow: selectedPayment === 'USDT' ? '0 8px 32px rgba(110, 211, 255, 0.15)' : 'none',
+                boxShadow: selectedPayment === 'USDT' ? '0 8px 32px rgba(38, 161, 123, 0.15)' : 'none',
                 '&:hover': {
                   background: selectedPayment === 'USDT'
-                    ? 'rgba(110, 211, 255, 0.2)'
+                    ? 'rgba(38, 161, 123, 0.2)'
                     : 'rgba(110, 211, 255, 0.1)',
                   transform: 'scale(1.02)',
-                  boxShadow: '0 8px 32px rgba(110, 211, 255, 0.2)'
+                  boxShadow: '0 8px 32px rgba(38, 161, 123, 0.2)'
                 }
               }}
             >
               <Box sx={{ textAlign: 'center' }}>
                 <Typography sx={{ 
-                  color: selectedPayment === 'USDT' ? '#6ed3ff' : 'rgba(255,255,255,0.6)',
+                  color: selectedPayment === 'USDT' ? '#26A17B' : 'rgba(255,255,255,0.6)',
                   fontSize: '1.2rem',
                   fontWeight: 'bold',
                   mb: 0.5
@@ -889,7 +896,7 @@ borderBottom:'2px solid',                    borderColor: () => {
                   USDT
                 </Typography>
                 <Typography sx={{ 
-                  color: 'rgba(255,255,255,0.5)',
+                  color: selectedPayment === 'USDT' ? 'rgba(38, 161, 123, 0.7)' : 'rgba(255,255,255,0.5)',
                   fontSize: '0.8rem',
                   textTransform: 'none'
                 }}>
@@ -897,6 +904,73 @@ borderBottom:'2px solid',                    borderColor: () => {
                 </Typography>
               </Box>
             </Button>
+          </Box>
+
+          {/* Total Amount Display - New Simple Design */}
+          <Box sx={{ 
+            display: 'flex', 
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            mb: 3,
+            px: 1
+          }}>
+            <Box sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: 1.5 
+            }}>
+              <Box component="img"
+                src={selectedPayment === 'TON' ? tonLogo : usdtLogo}
+                alt={selectedPayment}
+                sx={{
+                  width: '24px',
+                  height: '24px',
+                  objectFit: 'contain'
+                }}
+              />
+              <Typography sx={{ 
+                color: 'rgba(255,255,255,0.6)',
+                fontSize: '0.9rem',
+                fontWeight: '500'
+              }}>
+                Total Amount
+              </Typography>
+            </Box>
+
+            <Box sx={{ 
+              display: 'flex', 
+              alignItems: 'flex-end',
+              flexDirection: 'column',
+              gap: 0.5
+            }}>
+              <Typography sx={{ 
+                color: selectedPayment === 'USDT' ? '#26A17B' : '#6ed3ff',
+                fontSize: { xs: '1.8rem', sm: '2rem' },
+                fontWeight: '700',
+                lineHeight: 1,
+                mt:2,
+                letterSpacing: '0.5px'
+              }}>
+                {calculateTotal()} {selectedPayment}
+              </Typography>
+              {selectedPayment === 'TON' ? (
+                tonPrice && (
+                  <Typography sx={{ 
+                    color: 'rgba(255,255,255,0.5)',
+                    fontSize: '0.85rem'
+                  }}>
+                    ≈ ${(parseFloat(calculateTotal()) * tonPrice).toFixed(2)}
+                  </Typography>
+                )
+              ) : (
+                <Typography sx={{ 
+                  color: 'rgba(255,255,255,0.5)',
+                  fontSize: '0.85rem'
+                }}>
+                  ≈ ${parseFloat(calculateTotal()).toFixed(2)}
+                </Typography>
+              )}
+            </Box>
           </Box>
 
           {/* Error Messages with improved design */}
@@ -1007,47 +1081,6 @@ borderBottom:'2px solid',                    borderColor: () => {
             </Box>
           )}
 
-          {/* Success Message with improved design */}
-          {error && error.includes('Successfully') && (
-            <Box sx={{ 
-              width: '100%', 
-              mb: 3,
-              background: 'linear-gradient(135deg, rgba(76, 175, 80, 0.05), rgba(76, 175, 80, 0.02))',
-              backdropFilter: 'blur(10px)',
-              border: '1px solid rgba(76, 175, 80, 0.2)',
-              borderRadius: '16px',
-              p: 3,
-              boxShadow: '0 8px 32px rgba(76, 175, 80, 0.1)',
-              animation: 'slideIn 0.3s ease',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 2
-            }}>
-              <Box component="span" sx={{
-                width: '24px',
-                height: '24px',
-                borderRadius: '50%',
-                background: 'rgba(76, 175, 80, 0.1)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#4CAF50',
-                fontSize: '16px'
-              }}>
-                ✓
-              </Box>
-              <Typography sx={{ 
-                color: '#4CAF50',
-                textAlign: 'center',
-                fontSize: '1rem',
-                fontWeight: '500'
-              }}>
-                {error}
-              </Typography>
-            </Box>
-          )}
-
           <style>
             {`
               @keyframes slideIn {
@@ -1074,136 +1107,6 @@ borderBottom:'2px solid',                    borderColor: () => {
             `}
           </style>
 
-          {/* Total Price Display */}
-          <Box sx={{ 
-            display: 'flex', 
-            flexDirection: 'column',
-            mb: 3,
-            background: 'rgba(110, 211, 255, 0.02)',
-            backdropFilter: 'blur(10px)',
-            borderRadius: '20px',
-            position: 'relative',
-            overflow: 'hidden',
-          }}>
-            {/* Price Header */}
-            <Box sx={{
-              background: 'rgba(110, 211, 255, 0.05)',
-              borderBottom: '1px solid rgba(110, 211, 255, 0.1)',
-              p: 2,
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center'
-            }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <Box sx={{
-                  width: '32px',
-                  height: '32px',
-                  borderRadius: '8px',
-                  background: 'rgba(110, 211, 255, 0.1)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  padding: '4px'
-                }}>
-                  <Box component="img"
-                    src={selectedPayment === 'TON' ? tonLogo : usdtLogo}
-                    alt={selectedPayment}
-                    sx={{
-                      width: '20px',
-                      height: '20px',
-                      objectFit: 'contain',
-                      filter: 'none'
-                    }}
-                  />
-                </Box>
-                <Typography sx={{ 
-                  color: 'rgba(255,255,255,0.7)',
-                  fontSize: '0.9rem',
-                  fontWeight: '500',
-                  textTransform: 'none'
-                }}>
-                  Total Amount
-                </Typography>
-              </Box>
-              {selectedPayment === 'TON' ? (
-                tonPrice && (
-                  <Typography sx={{ 
-                    color: 'rgba(255,255,255,0.5)',
-                    fontSize: '0.85rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 0.5
-                  }}>
-                    <Box component="span" sx={{ 
-                      color: '#6ed3ff',
-                      fontSize: '0.9rem',
-                      fontWeight: '500'
-                    }}>
-                      ${(parseFloat(calculateTotal()) * tonPrice).toFixed(2)}
-                    </Box>
-                    <Box component="span">USD</Box>
-                  </Typography>
-                )
-              ) : (
-                <Typography sx={{ 
-                  color: 'rgba(255,255,255,0.5)',
-                  fontSize: '0.85rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 0.5
-                }}>
-                  <Box component="span" sx={{ 
-                    color: '#6ed3ff',
-                    fontSize: '0.9rem',
-                    fontWeight: '500'
-                  }}>
-                    ${parseFloat(calculateTotal()).toFixed(2)}
-                  </Box>
-                  <Box component="span">USD</Box>
-                </Typography>
-              )}
-            </Box>
-
-            {/* Price Display */}
-            <Box sx={{
-              p: 3,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              position: 'relative',
-              '&::before': {
-                content: '""',
-                position: 'absolute',
-                top: 0,
-                left: '10%',
-                right: '10%',
-                height: '1px',
-                background: 'linear-gradient(90deg, transparent, rgba(110, 211, 255, 0.1), transparent)'
-              }
-            }}>
-              <Typography sx={{ 
-                color: '#6ed3ff',
-                fontSize: { xs: '2.2rem', sm: '2.8rem' },
-                fontWeight: '700',
-                letterSpacing: '0.5px',
-                textShadow: '0 0 20px rgba(110, 211, 255, 0.3)',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 1
-              }}>
-                {calculateTotal()}
-                <Box component="span" sx={{ 
-                  fontSize: { xs: '1.2rem', sm: '1.4rem' },
-                  color: 'rgba(255,255,255,0.6)',
-                  fontWeight: '500',
-                  ml: 1
-                }}>
-                  {selectedPayment}
-                </Box>
-              </Typography>
-            </Box>
-          </Box>
-
           {/* Confirm Purchase Button */}
           <Button
             variant="contained"
@@ -1215,7 +1118,9 @@ borderBottom:'2px solid',                    borderColor: () => {
               overflow: 'hidden',
               background: !canPurchase()
                 ? 'rgba(110, 211, 255, 0.05)'
-                : 'linear-gradient(135deg, #6ed3ff 0%, #6ed3ff80 100%)',
+                : selectedPayment === 'USDT'
+                  ? 'linear-gradient(135deg, #26A17B 0%, #32D6A6 100%)'
+                  : 'linear-gradient(135deg, #6ed3ff 0%, #6ed3ff80 100%)',
               color: !canPurchase()
                 ? 'rgba(255,255,255,0.3)'
                 : 'white',
@@ -1226,7 +1131,9 @@ borderBottom:'2px solid',                    borderColor: () => {
               textTransform: 'none',
               boxShadow: !canPurchase() 
                 ? 'none' 
-                : '0 8px 32px rgba(110, 211, 255, 0.2)',
+                : selectedPayment === 'USDT'
+                  ? '0 8px 32px rgba(38, 161, 123, 0.2)'
+                  : '0 8px 32px rgba(110, 211, 255, 0.2)',
               border: !canPurchase()
                 ? '1px solid rgba(110, 211, 255, 0.1)'
                 : 'none',
@@ -1245,10 +1152,14 @@ borderBottom:'2px solid',                    borderColor: () => {
               '&:hover': {
                 background: !canPurchase()
                   ? 'rgba(110, 211, 255, 0.05)'
-                  : 'linear-gradient(135deg, #6ed3ff80 0%, #6ed3ff 100%)',
+                  : selectedPayment === 'USDT'
+                    ? 'linear-gradient(135deg, #32D6A6 0%, #26A17B 100%)'
+                    : 'linear-gradient(135deg, #6ed3ff80 0%, #6ed3ff 100%)',
                 boxShadow: !canPurchase() 
                   ? 'none' 
-                  : '0 12px 40px rgba(110, 211, 255, 0.3)',
+                  : selectedPayment === 'USDT'
+                    ? '0 12px 40px rgba(38, 161, 123, 0.3)'
+                    : '0 12px 40px rgba(110, 211, 255, 0.3)',
                 transform: !canPurchase() ? 'none' : 'translateY(-2px)',
                 '&::before': {
                   left: '100%'
@@ -1361,6 +1272,28 @@ borderBottom:'2px solid',                    borderColor: () => {
           setError(null);
         }}
       />
+
+      {/* Add Snackbar at the end of the component */}
+      <Snackbar
+        open={showSuccessSnackbar}
+        autoHideDuration={3000}
+        onClose={() => setShowSuccessSnackbar(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      >
+        <Alert 
+          onClose={() => setShowSuccessSnackbar(false)}
+          severity="success"
+          sx={{ 
+            background: 'linear-gradient(135deg, #4CAF50, #45a049)',
+            color: 'white',
+            '& .MuiAlert-icon': {
+              color: 'white'
+            }
+          }}
+        >
+          {successMessage}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };
