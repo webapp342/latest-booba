@@ -119,11 +119,11 @@ export const boxesData: Record<string, BoxData> = {
     normalPrice: '49.99',
     salePrice: '39.99',
     drops: [
-      { name: 'Signed MAGA Hat', image: donaldTrumpBoxImage, price: '500.00', rarity: 10.5, code: 'DT0001' },
-      { name: 'Commemorative Coin Set', image: donaldTrumpBoxImage, price: '300.00', rarity: 20.5, code: 'DT0002' },
-      { name: 'Campaign Poster Collection', image: donaldTrumpBoxImage, price: '200.00', rarity: 30.5, code: 'DT0003' },
-      { name: 'Trump Playing Cards', image: donaldTrumpBoxImage, price: '100.00', rarity: 40.5, code: 'DT0004' },
-      { name: 'Political Pin Set', image: donaldTrumpBoxImage, price: '50.00', rarity: 50.5, code: 'DT0005' }
+      { name: 'Signed MAGA Hat', image: donaldTrumpBoxImage, price: '500.00', rarity: 0.00789, code: 'DT0001' },
+      { name: 'Commemorative Coin Set', image: donaldTrumpBoxImage, price: '300.00', rarity: 0.00089, code: 'DT0002' },
+      { name: 'Campaign Poster Collection', image: donaldTrumpBoxImage, price: '200.00', rarity: 0.1089, code: 'DT0003' },
+      { name: 'Trump Playing Cards', image: donaldTrumpBoxImage, price: '100.00', rarity: 0.489, code: 'DT0004' },
+      { name: 'Political Pin Set', image: donaldTrumpBoxImage, price: '50.00', rarity: 0.1789, code: 'DT0005' }
     ]
   },
   'rolex-yachtmaster': {

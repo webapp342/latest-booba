@@ -607,7 +607,8 @@ const BoxOpening: React.FC = () => {
 
     let allDrops = Object.entries(userStats.drops).flatMap(([boxTitle, drops]) =>
       drops.map(drop => {
-        const boxData = boxesData[boxTitle.toLowerCase()];
+        // Find the box data using the exact title
+        const boxData = Object.values(boxesData).find(box => box.title === boxTitle);
         const dropData = boxData?.drops.find(d => d.code === drop.code);
         
         return {
