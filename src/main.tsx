@@ -24,6 +24,8 @@ import { OnboardingProvider } from './components/Onboarding/OnboardingProvider'
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import ErrorBoundary from "./components/ErrorBoundary.tsx";
 import { Box, Typography } from '@mui/material';
+import BoxOpening from "./components/boxOpening/BoxOpening";
+import BoxDetail from './components/boxOpening/BoxDetail';
 
 if (WebApp.isVersionAtLeast('8.0') && 
     WebApp.platform !== 'tdesktop' && 
@@ -160,6 +162,14 @@ const router = createBrowserRouter([
       {
         path: "top",
         element: <TopComponent />
+      },
+      {
+        path: "mystery-box",
+        element: <BoxOpening />
+      },
+      {
+        path: "box/:boxId",
+        element: <BoxDetail />
       }
     ]
   }

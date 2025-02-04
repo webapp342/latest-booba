@@ -23,7 +23,8 @@ import {
   ListTodo,
   BadgeDollarSign,
   HelpCircle,
-  ExternalLink
+  ExternalLink,
+  Gift
 } from 'lucide-react';
 
 
@@ -74,6 +75,12 @@ const navItems = [
     ),
     path: '/latest-booba/stake',
     dataTour: 'earn-nav'
+  },
+  {
+    label: 'Mystery Box',
+    icon: <Gift size={24} strokeWidth={1.5} />,
+    path: '/latest-booba/mystery-box',
+    dataTour: 'mystery-box-nav'
   },
   { 
     label: 'Tasks', 
