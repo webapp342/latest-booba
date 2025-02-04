@@ -1883,7 +1883,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
             padding: '4px'
           }}>
             <Button
-              onClick={(e) => handleActionChange(e, 'stake')}
+              onClick={(e: React.MouseEvent<HTMLElement, MouseEvent> | null) => handleActionChange(e, 'stake')}
               sx={{
                 flex: 1,
                 color: selectedAction === 'stake' ? '#fff' : '#6B7280',
@@ -1905,7 +1905,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
               </Box>
             </Button>
             <Button
-              onClick={(e) => handleActionChange(e, 'unstake')}
+              onClick={(e: React.MouseEvent<HTMLElement, MouseEvent> | null) => handleActionChange(e, 'unstake')}
               sx={{
                 flex: 1,
                 color: selectedAction === 'unstake' ? '#fff' : '#6B7280',

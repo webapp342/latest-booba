@@ -40,7 +40,7 @@ const BarChartComponent: React.FC<BarChartComponentProps> = ({ data, title, valu
   const formattedValue = formatValue(currentDayValue);
 
   return (
-    <Box 
+    <Box // @ts-ignore
       sx={{ 
         width: '100%', 
         height: isMobile ? 300 : 400,

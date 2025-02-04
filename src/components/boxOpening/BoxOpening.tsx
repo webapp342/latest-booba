@@ -1034,7 +1034,7 @@ const BoxOpening: React.FC = () => {
         <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
           <Tabs 
             value={currentTab} 
-            onChange={(_, newValue: TabType) => setCurrentTab(newValue)}
+            onChange={(_: any, newValue: TabType) => setCurrentTab(newValue)}
             sx={{
               '& .MuiTab-root': {
                 color: 'rgba(255,255,255,0.7)',
