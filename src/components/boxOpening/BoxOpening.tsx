@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Container, Typography, Button, CircularProgress, Grid, Card, TextField, InputAdornment } from '@mui/material';
+import { Box, Container, Typography, Button, CircularProgress, Grid, Card, TextField, InputAdornment, Tabs, Tab } from '@mui/material';
 import { motion } from 'framer-motion';
 import gsap from 'gsap';
 import BoxOpenAnimation from './BoxOpenAnimation';
 import RewardDisplay from './RewardDisplay';
 import KeyCrafting from './KeyCrafting';
-import { generateReward, BoxReward } from '../../utils/randomizer';
 import { useNavigate } from 'react-router-dom';
 import { db } from '../../pages/firebase';
-import { doc, updateDoc, increment, onSnapshot, getDoc } from 'firebase/firestore';
-
+import { doc, updateDoc, increment, onSnapshot } from 'firebase/firestore';
+import { boxesData } from '../../data/boxesData';
 
 import SearchIcon from '@mui/icons-material/Search';
 
@@ -440,19 +439,20 @@ const BoxOpening: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortByPrice, setSortByPrice] = useState<'asc' | 'desc' | ''>('asc');
+  const [sortByPrice, setSortByPrice] = useState<'asc' | 'desc'>('asc');
+  const [currentTab, setCurrentTab] = useState<'boxes' | 'drops'>('boxes');
+  const [dropsSortBy, setDropsSortBy] = useState<'price' | 'rarity'>('price');
 
-  // Filter and sort cards
+  // Filter and sort cards for Boxes tab
   const filteredCards = gameCards.filter(card => {
     const matchesSearch = card.title.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesSearch;
   }).sort((a, b) => {
     if (sortByPrice === 'asc') {
       return parseFloat(a.salePrice) - parseFloat(b.salePrice);
-    } else if (sortByPrice === 'desc') {
+    } else {
       return parseFloat(b.salePrice) - parseFloat(a.salePrice);
     }
-    return 0;
   });
 
   useEffect(() => {
@@ -482,65 +482,7 @@ const BoxOpening: React.FC = () => {
     return () => unsubscribe();
   }, [navigate]);
 
-  const updateUserStats = async (userId: string, reward: BoxReward, boxTitle: string) => {
-    const userRef = doc(db, 'users', userId);
-    
-    const updates: any = {
-      keys: increment(-1),
-      [`boxes.${boxTitle}`]: increment(-1)
-    };
 
-    // Kullanıcının drops listesini güncelle
-    const userDoc = await getDoc(doc(db, 'users', userId));
-    const userData = userDoc.data() as UserStats;
-    const existingDrops = userData.drops || {};
-    const userDrops = existingDrops[boxTitle] || [];
-    
-    // Aynı koda sahip drop var mı kontrol et
-    const existingDropIndex = userDrops.findIndex(drop => drop.code === reward.code);
-    
-    if (existingDropIndex !== -1) {
-      // Varsa miktarını artır
-      userDrops[existingDropIndex].amount += 1;
-    } else {
-      // Yoksa yeni ekle
-      userDrops.push(reward);
-    }
-    
-    updates[`drops.${boxTitle}`] = userDrops;
-    
-    await updateDoc(userRef, updates);
-  };
-
-  const getBoxOpeningStatus = (stats: UserStats | null) => {
-    if (!stats) return { canOpen: false, message: 'Veriler yükleniyor...' };
-    
-    if (stats.totalBoxes === 0 && stats.keys === 0) {
-      return { 
-        canOpen: false, 
-        message: 'Kutu açmak için kutunuz ve anahtarınız olması gerekiyor' 
-      };
-    }
-    
-    if (stats.totalBoxes === 0) {
-      return { 
-        canOpen: false, 
-        message: `${stats.keys} anahtarınız var fakat kutunuz yok` 
-      };
-    }
-    
-    if (stats.keys === 0) {
-      return { 
-        canOpen: false, 
-        message: `${stats.totalBoxes} kutunuz var fakat anahtarınız yok` 
-      };
-    }
-    
-    return { 
-      canOpen: true, 
-      message: `${stats.totalBoxes} kutu ve ${stats.keys} anahtarınız var` 
-    };
-  };
 
 
 
@@ -549,39 +491,6 @@ const BoxOpening: React.FC = () => {
     setCurrentReward(null);
   };
 
-  const handleOpenBox = async () => {
-    const telegramUserId = localStorage.getItem("telegramUserId");
-    if (!telegramUserId || !currentReward) {
-      setError('User or reward not found');
-      return;
-    }
-
-    setError(null);
-    setIsOpening(true);
-    setShowReward(false);
-
-    try {
-      const reward = generateReward(currentReward.code);
-      await updateUserStats(telegramUserId, reward, currentReward.name);
-      
-      // Ödül bilgilerini bul
-      const drop = gameCards.find(card => card.id === currentReward.code);
-      if (!drop) throw new Error('Drop not found');
-      
-      setCurrentReward({
-        code: reward.code,
-        name: drop.title,
-        image: drop.image,
-        price: drop.salePrice,
-        rarity: 0, // Assuming no rarity information is available
-        amount: reward.amount
-      });
-    } catch (error) {
-      console.error('Error opening box:', error);
-      setError('Kutu açılırken bir hata oluştu');
-      setIsOpening(false);
-    }
-  };
 
   const handleCraftKey = async () => {
     const telegramUserId = localStorage.getItem("telegramUserId");
@@ -619,6 +528,260 @@ const BoxOpening: React.FC = () => {
     navigate(`/latest-booba/box/${cardId}`);
   };
 
+  const renderMyDrops = () => {
+    if (!userStats || !userStats.drops) return null;
+
+    let allDrops = Object.entries(userStats.drops).flatMap(([boxTitle, drops]) =>
+      drops.map(drop => {
+        const boxData = boxesData[boxTitle.toLowerCase()];
+        const dropData = boxData?.drops.find(d => d.code === drop.code);
+        
+        return {
+          ...drop,
+          boxTitle,
+          name: dropData?.name || 'Unknown Item',
+          image: dropData?.image || '',
+          price: dropData?.price || '0',
+          rarity: dropData?.rarity || 0
+        };
+      })
+    );
+
+    // Filter and sort drops...
+    allDrops = allDrops.filter(drop => {
+      const searchString = searchTerm.toLowerCase();
+      return (
+        drop.name.toLowerCase().includes(searchString) ||
+        drop.boxTitle.toLowerCase().includes(searchString)
+      );
+    });
+
+    allDrops.sort((a, b) => {
+      switch (dropsSortBy) {
+        case 'price':
+          return sortByPrice === 'asc' 
+            ? parseFloat(a.price) - parseFloat(b.price)
+            : parseFloat(b.price) - parseFloat(a.price);
+        case 'rarity':
+          return sortByPrice === 'asc'
+            ? a.rarity - b.rarity
+            : b.rarity - a.rarity;
+        default:
+          return 0;
+      }
+    });
+
+    return (
+      <Box>
+        {/* Drops Summary */}
+        <Box sx={{ mb: 3, p: 3, borderRadius: '15px', background: 'rgba(108, 93, 211, 0.1)' }}>
+          <Typography variant="h6" sx={{ color: 'white', mb: 2 }}>
+            My Collection Summary
+          </Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={4}>
+              <Box sx={{ textAlign: 'center' }}>
+                <Typography sx={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>
+                  Total Items
+                </Typography>
+                <Typography sx={{ color: '#6C5DD3', fontWeight: 'bold', fontSize: '1.5rem' }}>
+                  {allDrops.length}
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={4}>
+              <Box sx={{ textAlign: 'center' }}>
+                <Typography sx={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>
+                  Total Value
+                </Typography>
+                <Typography sx={{ color: '#6C5DD3', fontWeight: 'bold', fontSize: '1.5rem' }}>
+                  ${allDrops.reduce((sum, drop) => sum + parseFloat(drop.price) * drop.amount, 0).toFixed(2)}
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={4}>
+              <Box sx={{ textAlign: 'center' }}>
+                <Typography sx={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>
+                  Unique Boxes
+                </Typography>
+                <Typography sx={{ color: '#6C5DD3', fontWeight: 'bold', fontSize: '1.5rem' }}>
+                  {new Set(allDrops.map(drop => drop.boxTitle)).size}
+                </Typography>
+              </Box>
+            </Grid>
+          </Grid>
+        </Box>
+
+        {/* Sort Controls */}
+        <Box sx={{ 
+          mb: 3, 
+          display: 'flex',
+          alignItems: 'center',
+          gap: 1,
+          width: '100%'
+        }}>
+          <Box sx={{ 
+            display: 'flex', 
+            gap: 1, 
+            flex: 2
+          }}>
+            {['price', 'rarity'].map((sortType) => (
+              <Button
+                key={sortType}
+                onClick={() => setDropsSortBy(sortType as 'price' | 'rarity')}
+                variant={dropsSortBy === sortType ? 'contained' : 'outlined'}
+                size="small"
+                fullWidth
+                sx={{
+                  color: dropsSortBy === sortType ? 'white' : 'rgba(255,255,255,0.7)',
+                  borderColor: 'rgba(255,255,255,0.2)',
+                  backgroundColor: dropsSortBy === sortType ? '#6C5DD3' : 'transparent',
+                  '&:hover': {
+                    backgroundColor: dropsSortBy === sortType ? '#8677E3' : 'rgba(108,93,211,0.1)'
+                  },
+                  fontSize: '0.8rem',
+                  letterSpacing: 0.1,
+                  textTransform: 'none',
+                  height: '36px'
+                }}
+              >
+                {sortType.charAt(0).toUpperCase() + sortType.slice(1)}
+              </Button>
+            ))}
+          </Box>
+          <Button
+            onClick={() => setSortByPrice(prev => prev === 'asc' ? 'desc' : 'asc')}
+            variant="outlined"
+            size="small"
+            fullWidth
+            sx={{
+              flex: 1,
+              color: 'white',
+              borderColor: 'rgba(255,255,255,0.2)',
+              fontSize: '0.8rem',
+              letterSpacing: 0.1,
+              textTransform: 'none',
+              height: '36px'
+            }}
+          >
+            {sortByPrice === 'asc' ? '↑ Ascending' : '↓ Descending'}
+          </Button>
+        </Box>
+
+        {/* Drops Grid */}
+        <Grid container spacing={2}>
+          {allDrops.map((drop, index) => (
+            <Grid item xs={12} sm={6} md={4} key={`${drop.code}-${index}`}>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <Card sx={{
+                  background: 'linear-gradient(145deg, rgba(26,27,35,0.9) 0%, rgba(26,27,35,0.95) 100%)',
+                  borderRadius: '15px',
+                  overflow: 'hidden',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  height: '100%',
+                  transition: 'transform 0.2s',
+                 
+                }}>
+                  {/* Image Container */}
+                  <Box sx={{ 
+                    position: 'relative', 
+                    pt: '75%',
+                    background: 'linear-gradient(45deg, rgba(108,93,211,0.1) 0%, rgba(108,93,211,0.05) 100%)'
+                  }}>
+                    <Box
+                      component="img"
+                      src={drop.image}
+                      alt={drop.name}
+                      sx={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        mb:1,
+                        objectFit: 'contain',
+                        p: 0.5
+                      }}
+                    />
+                    {/* Rarity Badge */}
+                    <Box sx={{
+                      position: 'absolute',
+                      top: 10,
+                      right: 10,
+                      background: 'rgba(108,93,211,0.9)',
+                      borderRadius: '12px',
+                      px: 1.5,
+                      py: 0.5
+                    }}>
+                      <Typography sx={{ color: 'white', fontSize: '0.8rem', fontWeight: 'bold' }}>
+                        {(drop.rarity * 100).toFixed(2)}% Rare
+                      </Typography>
+                    </Box>
+                  </Box>
+
+                  {/* Content */}
+                  <Box sx={{ p: 2 }}>
+                    {/* Title and Source */}
+                    <Box sx={{ mb: 2 }}>
+                      <Typography variant="h6" sx={{ 
+                        color: 'white', 
+                        fontWeight: 'bold', 
+                        fontSize: '1.1rem',
+                        mb: 0.5
+                      }}>
+                        {drop.name}
+                      </Typography>
+                      <Typography sx={{ 
+                        color: 'rgba(255,255,255,0.7)', 
+                        fontSize: '0.85rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 0.5
+                      }}>
+                        From: {drop.boxTitle}
+                      </Typography>
+                    </Box>
+
+                    {/* Price and Amount */}
+                    <Box sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      background: 'rgba(108,93,211,0.1)',
+                      borderRadius: '12px',
+                      p: 1.5
+                    }}>
+                      <Box>
+                        <Typography sx={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem' }}>
+                          Value
+                        </Typography>
+                        <Typography sx={{ color: '#6C5DD3', fontWeight: 'bold', fontSize: '1.2rem' }}>
+                          ${drop.price}
+                        </Typography>
+                      </Box>
+                      <Box sx={{ textAlign: 'right' }}>
+                        <Typography sx={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem' }}>
+                          Amount
+                        </Typography>
+                        <Typography sx={{ color: '#6C5DD3', fontWeight: 'bold', fontSize: '1.2rem' }}>
+                          {drop.amount}x
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </Box>
+                </Card>
+              </motion.div>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+    );
+  };
+
   if (loading) {
     return (
       <Container maxWidth="lg">
@@ -632,58 +795,78 @@ const BoxOpening: React.FC = () => {
   return (
     <Container maxWidth="lg">
       <Box sx={{ py: 4 }}>
-        {/* User Status */}
-        {userStats && (
-          <Box sx={{ mb: 4, textAlign: 'center' }}>
-            <Typography 
-              variant="h6" 
-              sx={{ 
-                color: 'white',
-                mb: 2
-              }}
-            >
-              {getBoxOpeningStatus(userStats).message}
-            </Typography>
-          </Box>
-        )}
-
-        {/* Search and Sort Controls */}
-        <Box sx={{ mb: 4, display: 'flex', gap: 2, alignItems: 'center' }}>
-          <TextField
-            fullWidth
-            variant="outlined"
-            placeholder="Search boxes..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon sx={{ color: 'white' }} />
-                </InputAdornment>
-              ),
-              sx: {
-                color: 'white',
-                '& .MuiOutlinedInput-notchedOutline': {
-                  borderColor: 'rgba(255,255,255,0.2)',
+        {/* Search Bar */}
+        <Box sx={{ mb: 4 }}>
+          <Box sx={{ display: 'flex', gap: 2, alignItems: 'stretch' }}>
+            <TextField
+              fullWidth
+              variant="outlined"
+              placeholder={currentTab === 'boxes' ? "Search boxes..." : "Search drops..."}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon sx={{ color: 'white' }} />
+                  </InputAdornment>
+                ),
+                sx: {
+                  color: 'white',
+                  height: '100%',
+                  '& .MuiOutlinedInput-root': {
+                    height: '100%'
+                  },
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'rgba(255,255,255,0.2)',
+                  },
                 },
-             
-              },
-            }}
-          />
-          <Button
-            onClick={() => setSortByPrice(prev => prev === 'asc' ? 'desc' : 'asc')}
-            sx={{
-              color: 'white',
-              borderColor: 'rgba(255,255,255,0.2)',
-              fontSize:'0.8rem',
-              letterSpacing:0.1,
-                          textTransform:'none'
+              }}
+              sx={{
+                '& .MuiInputBase-root': {
+                  height: '48px'
+                }
+              }}
+            />
+            {currentTab === 'boxes' && (
+              <Button
+                onClick={() => setSortByPrice(prev => prev === 'asc' ? 'desc' : 'asc')}
+                sx={{
+                  color: 'white',
+                  borderColor: 'rgba(255,255,255,0.2)',
+                  fontSize: '0.8rem',
+                  letterSpacing: 0.1,
+                  textTransform: 'none',
+                  minWidth: '120px',
+                  height: '48px'
+                }}
+                variant="outlined"
+              >
+                Price {sortByPrice === 'asc' ? '↑' : '↓'}
+              </Button>
+            )}
+          </Box>
+        </Box>
 
+        {/* Tab Bar */}
+        <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
+          <Tabs 
+            value={currentTab} 
+            onChange={(_, newValue) => setCurrentTab(newValue)}
+            sx={{
+              '& .MuiTab-root': {
+                color: 'rgba(255,255,255,0.7)',
+                '&.Mui-selected': {
+                  color: '#6C5DD3'
+                }
+              },
+              '& .MuiTabs-indicator': {
+                backgroundColor: '#6C5DD3'
+              }
             }}
-            variant="outlined"
           >
-            Sort by Price {sortByPrice === 'asc' ? '↑' : '↓'}
-          </Button>
+            <Tab label="Boxes" value="boxes" />
+            <Tab label="My Drops" value="drops" />
+          </Tabs>
         </Box>
 
         {error && (
@@ -692,111 +875,112 @@ const BoxOpening: React.FC = () => {
           </Typography>
         )}
 
-        {/* Box Grid */}
-        <Grid container spacing={1}>
-          {filteredCards.map((card) => (
-            <Grid item xs={6} key={card.id}>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <Card
-                  onClick={() => handleCardClick(card.id)}
-                  sx={{
-                    background: 'linear-gradient(145deg, rgba(26,27,35,0.9) 0%, rgba(26,27,35,0.95) 100%)',
-                    borderRadius: '15px',
-                    overflow: 'hidden',
-                    cursor: 'pointer',
-                    transition: 'transform 0.2s, box-shadow 0.2s',
-                    border: '1px solid rgba(255,255,255,0.1)',
-                    height: '100%',
-                    '&:hover': {
-                      transform: 'translateY(-5px)',
-                      boxShadow: '0 8px 16px rgba(0,0,0,0.2)'
-                    }
-                  }}
+        {/* Content based on selected tab */}
+        {currentTab === 'boxes' ? (
+          <Grid container spacing={1}>
+            {filteredCards.map((card) => (
+              <Grid item xs={6} key={card.id}>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
                 >
-                  <Box
-                    component="img"
-                    src={card.image}
-                    alt={card.title}
+                  <Card
+                    onClick={() => handleCardClick(card.id)}
                     sx={{
-                      width: '100%',
-                      height: '200px',
-                      mt:-3,
-                      mb:-7,
-                      objectFit: 'contain',
-                      p: 1,
+                      background: 'linear-gradient(145deg, rgba(26,27,35,0.9) 0%, rgba(26,27,35,0.95) 100%)',
+                      borderRadius: '15px',
+                      overflow: 'hidden',
+                      cursor: 'pointer',
+                      transition: 'transform 0.2s, box-shadow 0.2s',
+                      border: '1px solid rgba(255,255,255,0.1)',
+                      height: '100%',
+                
                     }}
-                  />
-                  <Box sx={{ p: 2 }}>
-                    <Typography
-                      variant="h6"
+                  >
+                    <Box
+                      component="img"
+                      src={card.image}
+                      alt={card.title}
                       sx={{
-                        color: 'white',
-                        fontWeight: 'bold',
-                      
-                        fontSize: '1rem',
+                        width: '100%',
+                        height: '200px',
+                        mt:-3,
+                        mb:-7,
+                        objectFit: 'contain',
+                        p: 1,
                       }}
-                    >
-                      {card.title}
-                    </Typography>
-                    <Typography
-                      sx={{
-                        color: 'rgba(255,255,255,0.7)',
-                        mb: 2,
-                        fontSize: '0.9rem',
-                        height: '40px',
-                        overflow: 'hidden',
-                      }}
-                    >
-                      {card.description}
-                    </Typography>
-                  
-                      <Box  sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                      }} >
-                        <Typography
-                          sx={{
-                            color: 'rgba(255,255,255,0.5)',
-                            textDecoration: 'line-through',
-                            fontSize: '0.9rem',
-                          }}
-                        >
-                          ${card.normalPrice}
-                        </Typography>
-                        <Typography
-                          sx={{
-                            color: '#6C5DD3',
-                            fontWeight: 'bold',
-                            fontSize: '1.2rem',
-                          }}
-                        >
-                          ${card.salePrice}
-                        </Typography>
-                      </Box>
-                      <Button
-                        onClick={() => handleCardClick(card.id)}
-                        variant="contained"
-                        fullWidth
+                    />
+                    <Box sx={{ p: 2 }}>
+                      <Typography
+                        variant="h6"
                         sx={{
-                          mt:1,
-                          background: 'linear-gradient(90deg, #6C5DD3, #8677E3)',
                           color: 'white',
+                          fontWeight: 'bold',
+                        
+                          fontSize: '1rem',
                         }}
                       >
-                        Open Box
-                      </Button>
-                  
-                  </Box>
-                </Card>
-              </motion.div>
-            </Grid>
-          ))}
-        </Grid>
+                        {card.title}
+                      </Typography>
+                      <Typography
+                        sx={{
+                          color: 'rgba(255,255,255,0.7)',
+                          mb: 2,
+                          fontSize: '0.9rem',
+                          height: '40px',
+                          overflow: 'hidden',
+                        }}
+                      >
+                        {card.description}
+                      </Typography>
+                    
+                        <Box  sx={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                        }} >
+                          <Typography
+                            sx={{
+                              color: 'rgba(255,255,255,0.5)',
+                              textDecoration: 'line-through',
+                              fontSize: '0.9rem',
+                            }}
+                          >
+                            ${card.normalPrice}
+                          </Typography>
+                          <Typography
+                            sx={{
+                              color: '#6C5DD3',
+                              fontWeight: 'bold',
+                              fontSize: '1.2rem',
+                            }}
+                          >
+                            ${card.salePrice}
+                          </Typography>
+                        </Box>
+                        <Button
+                          onClick={() => handleCardClick(card.id)}
+                          variant="contained"
+                          fullWidth
+                          sx={{
+                            mt:1,
+                            background: 'linear-gradient(90deg, #6C5DD3, #8677E3)',
+                            color: 'white',
+                          }}
+                        >
+                          Open Box
+                        </Button>
+                    
+                    </Box>
+                  </Card>
+                </motion.div>
+              </Grid>
+            ))}
+          </Grid>
+        ) : (
+          renderMyDrops()
+        )}
 
         {/* Box Opening Animation Modal */}
         <BoxOpenAnimation
