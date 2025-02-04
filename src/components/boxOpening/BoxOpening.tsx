@@ -429,6 +429,20 @@ const gameCards: GameCard[] = [
   }
 ];
 
+// Renk değişiklikleri için stil güncellemeleri
+const commonStyles = {
+  primaryColor: '#6ed3ff',
+  primaryGradient: 'linear-gradient(90deg, #6ed3ff, #8ee9ff)',
+  bgGradient: 'linear-gradient(135deg, rgba(110, 211, 255, 0.3) 0%, rgba(110, 211, 255, 0.1) 100%)',
+  borderColor: 'rgba(110, 211, 255, 0.2)',
+  hoverBorderColor: 'rgba(110, 211, 255, 0.4)',
+  buttonShadow: '0 4px 12px rgba(110, 211, 255, 0.3)',
+  buttonHoverShadow: '0 6px 16px rgba(110, 211, 255, 0.4)',
+};
+
+// Tab değerlerini enum olarak tanımla
+type TabType = 'boxes' | 'drops' | 'craft';
+
 const BoxOpening: React.FC = () => {
   const navigate = useNavigate();
   const [userStats, setUserStats] = useState<UserStats | null>(null);
@@ -440,7 +454,7 @@ const BoxOpening: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortByPrice, setSortByPrice] = useState<'asc' | 'desc'>('asc');
-  const [currentTab, setCurrentTab] = useState<'boxes' | 'drops'>('boxes');
+  const [currentTab, setCurrentTab] = useState<TabType>('boxes');
   const [dropsSortBy, setDropsSortBy] = useState<'price' | 'rarity'>('price');
 
   // Filter and sort cards for Boxes tab
@@ -529,7 +543,67 @@ const BoxOpening: React.FC = () => {
   };
 
   const renderMyDrops = () => {
-    if (!userStats || !userStats.drops) return null;
+    // Drops verilerinin varlığını kontrol et
+    if (!userStats?.drops || Object.keys(userStats.drops).length === 0) {
+      return (
+        <Box
+          sx={{
+            textAlign: 'center',
+            py: 3,
+            px: 3,
+            background: commonStyles.bgGradient,
+            borderRadius: '15px',
+            border: `1px solid ${commonStyles.borderColor}`,
+            maxWidth: '600px',
+            margin: '0 auto'
+          }}
+        >
+          <Typography variant="h5" sx={{ 
+            color: 'white',
+            fontWeight: 'bold',
+       mt:-1,
+          }}>
+            No Items Found
+          </Typography>
+          
+          <Typography sx={{ 
+            color: 'rgba(255,255,255,0.7)',
+            fontSize: '1rem',
+            mb: 3,
+            maxWidth: '400px',
+            margin: '0 auto'
+          }}>
+            Start your collection by opening mystery boxes and discover amazing rewards!
+          </Typography>
+
+          <Box sx={{ 
+            display: 'flex', 
+         
+            justifyContent: 'center',
+            flexWrap: 'wrap'
+          }}>
+            <Button
+              onClick={() => setCurrentTab('boxes')}
+              variant="contained"
+              sx={{
+                background: commonStyles.primaryGradient,
+                color: 'black',
+                py: 1.5,
+                
+                fontSize: '0.95rem',
+                fontWeight: 'bold',
+                textTransform: 'none',
+                borderRadius: '8px',
+                boxShadow: commonStyles.buttonShadow,
+                mt:2,
+              }}
+            >
+              Open Boxes
+            </Button>
+          </Box>
+        </Box>
+      );
+    }
 
     let allDrops = Object.entries(userStats.drops).flatMap(([boxTitle, drops]) =>
       drops.map(drop => {
@@ -574,7 +648,13 @@ const BoxOpening: React.FC = () => {
     return (
       <Box>
         {/* Drops Summary */}
-        <Box sx={{ mb: 3, p: 3, borderRadius: '15px', background: 'rgba(108, 93, 211, 0.1)' }}>
+        <Box sx={{ 
+          mb: 3, 
+          p: 3, 
+          borderRadius: '15px', 
+          background: 'rgba(110, 211, 255, 0.05)',
+          border: `1px solid ${commonStyles.borderColor}`
+        }}>
           <Typography variant="h6" sx={{ color: 'white', mb: 2 }}>
             My Collection Summary
           </Typography>
@@ -584,7 +664,7 @@ const BoxOpening: React.FC = () => {
                 <Typography sx={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>
                   Total Items
                 </Typography>
-                <Typography sx={{ color: '#6C5DD3', fontWeight: 'bold', fontSize: '1.5rem' }}>
+                <Typography sx={{ color: commonStyles.primaryColor, fontWeight: 'bold', fontSize: '1.5rem' }}>
                   {allDrops.length}
                 </Typography>
               </Box>
@@ -594,7 +674,7 @@ const BoxOpening: React.FC = () => {
                 <Typography sx={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>
                   Total Value
                 </Typography>
-                <Typography sx={{ color: '#6C5DD3', fontWeight: 'bold', fontSize: '1.5rem' }}>
+                <Typography sx={{ color: commonStyles.primaryColor, fontWeight: 'bold', fontSize: '1.5rem' }}>
                   ${allDrops.reduce((sum, drop) => sum + parseFloat(drop.price) * drop.amount, 0).toFixed(2)}
                 </Typography>
               </Box>
@@ -604,7 +684,7 @@ const BoxOpening: React.FC = () => {
                 <Typography sx={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>
                   Unique Boxes
                 </Typography>
-                <Typography sx={{ color: '#6C5DD3', fontWeight: 'bold', fontSize: '1.5rem' }}>
+                <Typography sx={{ color: commonStyles.primaryColor, fontWeight: 'bold', fontSize: '1.5rem' }}>
                   {new Set(allDrops.map(drop => drop.boxTitle)).size}
                 </Typography>
               </Box>
@@ -634,10 +714,10 @@ const BoxOpening: React.FC = () => {
                 fullWidth
                 sx={{
                   color: dropsSortBy === sortType ? 'white' : 'rgba(255,255,255,0.7)',
-                  borderColor: 'rgba(255,255,255,0.2)',
-                  backgroundColor: dropsSortBy === sortType ? '#6C5DD3' : 'transparent',
+                  borderColor: commonStyles.borderColor,
+                  backgroundColor: dropsSortBy === sortType ? commonStyles.primaryColor : 'transparent',
                   '&:hover': {
-                    backgroundColor: dropsSortBy === sortType ? '#8677E3' : 'rgba(108,93,211,0.1)'
+                    backgroundColor: dropsSortBy === sortType ? '#8ee9ff' : 'rgba(110, 211, 255, 0.1)'
                   },
                   fontSize: '0.8rem',
                   letterSpacing: 0.1,
@@ -657,7 +737,7 @@ const BoxOpening: React.FC = () => {
             sx={{
               flex: 1,
               color: 'white',
-              borderColor: 'rgba(255,255,255,0.2)',
+              borderColor: commonStyles.borderColor,
               fontSize: '0.8rem',
               letterSpacing: 0.1,
               textTransform: 'none',
@@ -681,7 +761,7 @@ const BoxOpening: React.FC = () => {
                   background: 'linear-gradient(145deg, rgba(26,27,35,0.9) 0%, rgba(26,27,35,0.95) 100%)',
                   borderRadius: '15px',
                   overflow: 'hidden',
-                  border: '1px solid rgba(255,255,255,0.1)',
+                  border: `1px solid ${commonStyles.borderColor}`,
                   height: '100%',
                   transition: 'transform 0.2s',
                  
@@ -759,7 +839,7 @@ const BoxOpening: React.FC = () => {
                         <Typography sx={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem' }}>
                           Value
                         </Typography>
-                        <Typography sx={{ color: '#6C5DD3', fontWeight: 'bold', fontSize: '1.2rem' }}>
+                        <Typography sx={{ color: commonStyles.primaryColor, fontWeight: 'bold', fontSize: '1.2rem' }}>
                           ${drop.price}
                         </Typography>
                       </Box>
@@ -767,7 +847,7 @@ const BoxOpening: React.FC = () => {
                         <Typography sx={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem' }}>
                           Amount
                         </Typography>
-                        <Typography sx={{ color: '#6C5DD3', fontWeight: 'bold', fontSize: '1.2rem' }}>
+                        <Typography sx={{ color: commonStyles.primaryColor, fontWeight: 'bold', fontSize: '1.2rem' }}>
                           {drop.amount}x
                         </Typography>
                       </Box>
@@ -794,78 +874,182 @@ const BoxOpening: React.FC = () => {
 
   return (
     <Container maxWidth="lg">
-      <Box sx={{ py: 4 }}>
-        {/* Search Bar */}
-        <Box sx={{ mb: 4 }}>
-          <Box sx={{ display: 'flex', gap: 2, alignItems: 'stretch' }}>
-            <TextField
-              fullWidth
-              variant="outlined"
-              placeholder={currentTab === 'boxes' ? "Search boxes..." : "Search drops..."}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon sx={{ color: 'white' }} />
-                  </InputAdornment>
-                ),
-                sx: {
-                  color: 'white',
-                  height: '100%',
-                  '& .MuiOutlinedInput-root': {
-                    height: '100%'
-                  },
-                  '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'rgba(255,255,255,0.2)',
-                  },
-                },
-              }}
-              sx={{
-                '& .MuiInputBase-root': {
-                  height: '48px'
-                }
-              }}
-            />
-            {currentTab === 'boxes' && (
-              <Button
-                onClick={() => setSortByPrice(prev => prev === 'asc' ? 'desc' : 'asc')}
-                sx={{
-                  color: 'white',
-                  borderColor: 'rgba(255,255,255,0.2)',
-                  fontSize: '0.8rem',
-                  letterSpacing: 0.1,
-                  textTransform: 'none',
-                  minWidth: '120px',
-                  height: '48px'
-                }}
+      <Box sx={{ py: 4, pb: 25 }}>
+        {/* Search Bar - Only show for boxes and drops tabs */}
+        {currentTab !== 'craft' && (
+          <Box sx={{ mb: 4 }}>
+            <Box sx={{ display: 'flex', gap: 2, alignItems: 'stretch' }}>
+              <TextField
+                fullWidth
                 variant="outlined"
-              >
-                Price {sortByPrice === 'asc' ? '↑' : '↓'}
-              </Button>
-            )}
+                placeholder={currentTab === 'boxes' ? "Search boxes..." : "Search drops..."}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon sx={{ color: 'white' }} />
+                    </InputAdornment>
+                  ),
+                  sx: {
+                    color: 'white',
+                    height: '100%',
+                    '& .MuiOutlinedInput-root': {
+                      height: '100%'
+                    },
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'rgba(255,255,255,0.2)',
+                    },
+                  },
+                }}
+                sx={{
+                  '& .MuiInputBase-root': {
+                    height: '48px'
+                  }
+                }}
+              />
+              {currentTab === 'boxes' && (
+                <Button
+                  onClick={() => setSortByPrice(prev => prev === 'asc' ? 'desc' : 'asc')}
+                  sx={{
+                    color: 'white',
+                    borderColor: 'rgba(255,255,255,0.2)',
+                    fontSize: '0.8rem',
+                    letterSpacing: 0.1,
+                    textTransform: 'none',
+                    minWidth: '120px',
+                    height: '48px'
+                  }}
+                  variant="outlined"
+                >
+                  Price {sortByPrice === 'asc' ? '↑' : '↓'}
+                </Button>
+              )}
+            </Box>
           </Box>
-        </Box>
+        )}
+
+        {/* Games Banner */}
+        {currentTab !== 'craft' && (
+          <Box 
+            onClick={() => navigate('/latest-booba/games')}
+            sx={{ 
+              mb: 4,
+              background: commonStyles.bgGradient,
+              borderRadius: '15px',
+              overflow: 'hidden',
+              cursor: 'pointer',
+              position: 'relative',
+              border: `1px solid ${commonStyles.borderColor}`,
+              transition: 'all 0.3s ease',
+              p: 2.5,
+              '&:hover': {
+                border: `1px solid ${commonStyles.hoverBorderColor}`,
+                boxShadow: commonStyles.buttonHoverShadow,
+                '& .hover-effect': {
+                  transform: 'translateY(-2px)'
+                }
+              }
+            }}
+          >
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2.5, mb: 2 }}>
+              <Box sx={{ 
+                width: '52px', 
+                height: '52px', 
+                borderRadius: '12px',
+                background: commonStyles.primaryGradient,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+                boxShadow: commonStyles.buttonShadow
+              }}>
+                <Typography sx={{ 
+                  color: 'white', 
+                  fontWeight: 'bold', 
+                  fontSize: '1.8rem'
+                }}>
+                  💎
+                </Typography>
+              </Box>
+              <Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
+                  <Typography sx={{ 
+                    color: commonStyles.primaryColor,
+                    fontWeight: 'bold',
+                    fontSize: '1.2rem',
+                  }}>
+                    999,999 TON
+                  </Typography>
+                  <Typography sx={{
+                    color: 'black',
+                    fontSize: '0.8rem',
+                    background: commonStyles.primaryGradient,
+                    px: 1,
+                    py: 0.2,
+                    borderRadius: '4px',
+                    fontWeight: 'bold'
+                  }}>
+                    PRIZE POOL
+                  </Typography>
+                </Box>
+                <Typography sx={{ 
+                  color: 'rgba(255,255,255,0.8)',
+                  fontSize: '0.9rem',
+                  fontWeight: '500'
+                }}>
+                  Play games & win massive rewards!
+                </Typography>
+              </Box>
+            </Box>
+            <Box className="hover-effect" sx={{ 
+              width: '100%',
+              transition: 'transform 0.3s ease'
+            }}>
+              <Button
+                variant="contained"
+                fullWidth
+                sx={{
+                  background: commonStyles.primaryGradient,
+                    color: 'black',
+                  textTransform: 'none',
+                  py: 1.5,
+                  fontSize: '0.95rem',
+                  fontWeight: 'bold',
+                  boxShadow: commonStyles.buttonShadow,
+                  '&:hover': {
+                    background: 'linear-gradient(90deg, #8ee9ff, #6ed3ff)',
+                    boxShadow: commonStyles.buttonHoverShadow
+                  }
+                }}
+              >
+                Play Now →
+              </Button>
+            </Box>
+          </Box>
+        )}
 
         {/* Tab Bar */}
         <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
           <Tabs 
             value={currentTab} 
-            onChange={(_, newValue) => setCurrentTab(newValue)}
+            onChange={(_, newValue: TabType) => setCurrentTab(newValue)}
             sx={{
               '& .MuiTab-root': {
                 color: 'rgba(255,255,255,0.7)',
+                textTransform: 'none',
                 '&.Mui-selected': {
-                  color: '#6C5DD3'
+                  color: commonStyles.primaryColor
                 }
               },
               '& .MuiTabs-indicator': {
-                backgroundColor: '#6C5DD3'
+                backgroundColor: commonStyles.primaryColor
               }
             }}
           >
             <Tab label="Boxes" value="boxes" />
-            <Tab label="My Drops" value="drops" />
+            <Tab label="My Items" value="drops" />
+            <Tab label="Craft" value="craft" />
           </Tabs>
         </Box>
 
@@ -876,7 +1060,7 @@ const BoxOpening: React.FC = () => {
         )}
 
         {/* Content based on selected tab */}
-        {currentTab === 'boxes' ? (
+        {currentTab === 'boxes' && (
           <Grid container spacing={1}>
             {filteredCards.map((card) => (
               <Grid item xs={6} key={card.id}>
@@ -893,9 +1077,9 @@ const BoxOpening: React.FC = () => {
                       overflow: 'hidden',
                       cursor: 'pointer',
                       transition: 'transform 0.2s, box-shadow 0.2s',
-                      border: '1px solid rgba(255,255,255,0.1)',
+                      border: `1px solid ${commonStyles.borderColor}`,
                       height: '100%',
-                
+                      
                     }}
                   >
                     <Box
@@ -951,7 +1135,7 @@ const BoxOpening: React.FC = () => {
                           </Typography>
                           <Typography
                             sx={{
-                              color: '#6C5DD3',
+                              color: commonStyles.primaryColor,
                               fontWeight: 'bold',
                               fontSize: '1.2rem',
                             }}
@@ -965,8 +1149,12 @@ const BoxOpening: React.FC = () => {
                           fullWidth
                           sx={{
                             mt:1,
-                            background: 'linear-gradient(90deg, #6C5DD3, #8677E3)',
-                            color: 'white',
+                                            textTransform: 'none',
+
+                            background: commonStyles.primaryGradient,
+                                        color: 'black',
+
+                           
                           }}
                         >
                           Open Box
@@ -978,8 +1166,18 @@ const BoxOpening: React.FC = () => {
               </Grid>
             ))}
           </Grid>
-        ) : (
-          renderMyDrops()
+        )}
+
+        {currentTab === 'drops' && renderMyDrops()}
+
+        {currentTab === 'craft' && (
+          <Box sx={{ maxWidth: '600px', margin: '0 auto' }}>
+            <KeyCrafting
+              keyParts={userStats?.keyParts || 0}
+              onCraftKey={handleCraftKey}
+              isLoading={isCrafting}
+            />
+          </Box>
         )}
 
         {/* Box Opening Animation Modal */}
@@ -1000,13 +1198,6 @@ const BoxOpening: React.FC = () => {
             onClose={handleCloseReward}
           />
         )}
-
-        {/* Key Crafting Modal */}
-        <KeyCrafting
-          keyParts={userStats?.keyParts || 0}
-          onCraftKey={handleCraftKey}
-          isLoading={isCrafting}
-        />
       </Box>
     </Container>
   );

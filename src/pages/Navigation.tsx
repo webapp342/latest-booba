@@ -17,7 +17,7 @@ import {
   Typography
 } from '@mui/material';
 import { 
-  Gamepad2,
+
   Wallet,
   BarChart2,
   ListTodo,
@@ -39,11 +39,11 @@ const coinAnimation = keyframes`
 `;
 
 const navItems = [
-  { 
-    label: 'Play', 
-    icon: <Gamepad2 size={24} strokeWidth={1.5} />, 
-    path: '/latest-booba/games',
-    dataTour: 'play-nav'
+  {
+    label: 'Boxes',
+    icon: <Gift size={24} strokeWidth={1.5} />,
+    path: '/latest-booba/mystery-box',
+    dataTour: 'mystery-box-nav'
   },
   
   { 
@@ -76,12 +76,7 @@ const navItems = [
     path: '/latest-booba/stake',
     dataTour: 'earn-nav'
   },
-  {
-    label: 'Mystery Box',
-    icon: <Gift size={24} strokeWidth={1.5} />,
-    path: '/latest-booba/mystery-box',
-    dataTour: 'mystery-box-nav'
-  },
+ 
   { 
     label: 'Tasks', 
     icon: <ListTodo size={24} strokeWidth={1.5} />, 

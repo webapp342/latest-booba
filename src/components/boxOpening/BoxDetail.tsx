@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Button, Container, Grid, IconButton, CircularProgress, Drawer, ButtonGroup } from '@mui/material';
+import { Box, Typography, Button, Container, Grid, IconButton, CircularProgress, Drawer  } from '@mui/material';
 import { motion } from 'framer-motion';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -15,9 +15,10 @@ import CloseIcon from '@mui/icons-material/Close';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import axios from 'axios';
-import RefreshIcon from '@mui/icons-material/Refresh';
 import DepositDrawer from '../WalletDrawers/DepositDrawer';
 import SwapDrawer from '../WalletDrawers/SwapDrawer';
+import tonLogo from '../../assets/kucukTON.png';
+const usdtLogo = 'https://cryptologos.cc/logos/tether-usdt-logo.png';
 
 // Import all box images
 
@@ -45,6 +46,17 @@ interface DisplayReward {
   amount: number;
 }
 
+// Renk değişiklikleri için stil güncellemeleri
+const commonStyles = {
+  primaryColor: '#6ed3ff',
+  primaryGradient: 'linear-gradient(90deg, #6ed3ff, #8ee9ff)',
+  bgGradient: 'linear-gradient(135deg, rgba(110, 211, 255, 0.3) 0%, rgba(110, 211, 255, 0.1) 100%)',
+  borderColor: 'rgba(110, 211, 255, 0.2)',
+  hoverBorderColor: 'rgba(110, 211, 255, 0.4)',
+  buttonShadow: '0 4px 12px rgba(110, 211, 255, 0.3)',
+  buttonHoverShadow: '0 6px 16px rgba(110, 211, 255, 0.4)',
+};
+
 const BoxDetail: React.FC = () => {
   const navigate = useNavigate();
   const { boxId } = useParams<{ boxId: string }>();
@@ -59,7 +71,6 @@ const BoxDetail: React.FC = () => {
   const [quantity, setQuantity] = useState(1);
   const [tonPrice, setTonPrice] = useState<number | null>(null);
   const [selectedPayment, setSelectedPayment] = useState<'TON' | 'USDT'>('TON');
-  const [isRefreshing, setIsRefreshing] = useState(false);
   const [showDepositDrawer, setShowDepositDrawer] = useState(false);
   const [showSwapDrawer, setShowSwapDrawer] = useState(false);
   const [neededAmount, setNeededAmount] = useState<number>(0);
@@ -109,6 +120,13 @@ const BoxDetail: React.FC = () => {
 
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    if (canPurchase()) {
+      setError(null);
+      setNeededAmount(0);
+    }
+  }, [userStats, quantity, selectedPayment]);
 
   const updateUserStats = async (userId: string, reward: BoxReward) => {
     const userRef = doc(db, 'users', userId);
@@ -277,19 +295,13 @@ const BoxDetail: React.FC = () => {
     return usdPrice.toFixed(2);
   };
 
-  const handleRefreshTonPrice = async () => {
-    setIsRefreshing(true);
-    try {
-      const response = await axios.get(`https://api.binance.com/api/v3/ticker/price`, {
-        params: { symbol: 'TONUSDT' },
-      });
-      const newTonPrice = parseFloat(response.data.price);
-      setTonPrice(newTonPrice);
-    } catch (error) {
-      console.error('Error fetching TON price:', error);
-    } finally {
-      setTimeout(() => setIsRefreshing(false), 1000); // Keep animation for 1 second
-    }
+
+
+  const canPurchase = () => {
+    if (!userStats) return false;
+    const totalPrice = parseFloat(calculateTotal());
+    const userBalance = selectedPayment === 'TON' ? userStats.total : userStats.usdt;
+    return userBalance >= totalPrice;
   };
 
   if (!boxData) {
@@ -349,15 +361,17 @@ const BoxDetail: React.FC = () => {
       {/* Main Content */}
     
         {/* Box Info Section */}
-        <Box sx={{
-          background: 'linear-gradient(145deg, rgba(26,27,35,0.9) 0%, rgba(26,27,35,0.95) 100%)',
-          borderRadius: '20px',
-          overflow: 'hidden',
-    
-          border: '1px solid rgba(255,255,255,0.1)',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
-          backdropFilter: 'blur(10px)',
-     }}>
+        <Box sx={{ 
+          background: commonStyles.bgGradient,
+          borderRadius: '15px',
+          p: 3,
+      
+          border: `1px solid ${commonStyles.borderColor}`,
+          '&:hover': {
+            border: `1px solid ${commonStyles.hoverBorderColor}`,
+            boxShadow: commonStyles.buttonHoverShadow
+          }
+        }}>
           <Grid container spacing={4}>
             {/* Left Side - Image */}
             <Grid item xs={12} sx={{ textAlign: 'center' }}>
@@ -414,11 +428,10 @@ const BoxDetail: React.FC = () => {
                   </Typography>
                   <Typography
                     sx={{
-                      color: '#6C5DD3',
+                      color: '#89d9ff',
                       fontWeight: 'bold',
                       fontSize: '2.5rem',
                       position: 'relative',
-                      zIndex: 1
                     }}
                   >
                     ${salePrice}
@@ -437,19 +450,13 @@ const BoxDetail: React.FC = () => {
                     onClick={handleOpenBox}
                     disabled={!status.canOpen || isOpening}
                     sx={{
-                      background: status.canOpen ? 'linear-gradient(90deg, #6C5DD3, #8677E3)' : 'rgba(108, 93, 211, 0.15)',
-                      color: 'white',
-                      fontSize: '1.2rem',
-                      fontWeight: 'bold',
+                      textTransform: 'none',
+                      background: commonStyles.primaryGradient,
+                      color: 'black',
+                     
                       '&.Mui-disabled': {
-                        background: 'rgba(108, 93, 211, 0.15)',
-                        color: 'rgba(255,255,255,0.3)',
-                        border: '2px dashed rgba(108, 93, 211, 0.3)',
-                        backdropFilter: 'blur(4px)',
-                        cursor: 'not-allowed'
-                      },
-                      '&:not(.Mui-disabled):hover': {
-                        background: 'linear-gradient(90deg, #5a4ec0, #7566d0)',
+                        background: 'rgba(110, 211, 255, 0.1)',
+                        color: 'rgba(255, 255, 255, 0.4)'
                       }
                     }}
                   >
@@ -457,7 +464,7 @@ const BoxDetail: React.FC = () => {
                       <CircularProgress size={24} color="inherit" />
                     ) : (
                       <>
-                        {!status.canOpen ? 'LOCKED' : 'OPEN BOX'}
+                        {!status.canOpen ? 'Open Box' : 'Open Box'}
                       </>
                     )}
                   </Button>
@@ -471,14 +478,11 @@ const BoxDetail: React.FC = () => {
                         mt: 1,
                         background: 'linear-gradient(90deg, #4CAF50, #45a049)',
                         color: 'white',
-                        fontSize: '1.2rem',
-                        fontWeight: 'bold',
-                        '&:hover': {
-                          background: 'linear-gradient(90deg, #45a049, #3d8b40)',
-                        }
+                      textTransform: 'none',
+                        
                       }}
                     >
-                      BUY BOX
+                      Buy Box
                     </Button>
                   )}
 
@@ -660,6 +664,12 @@ borderBottom:'2px solid',                    borderColor: () => {
           setQuantity(1);
           setError(null);
         }}
+        sx={{
+          '& .MuiDrawer-paper': {
+            background: 'linear-gradient(145deg, rgba(26,27,35,0.95) 0%, rgba(26,27,35,0.98) 100%)',
+            borderLeft: `1px solid ${commonStyles.borderColor}`
+          }
+        }}
       >
         <Box sx={{
           bgcolor: '#1a1b23',
@@ -718,6 +728,7 @@ borderBottom:'2px solid',                    borderColor: () => {
             Number of boxes to purchase
           </Typography>
 
+          {/* Quantity Selection Buttons */}
           <Box sx={{ 
             display: 'flex', 
             alignItems: 'center', 
@@ -729,23 +740,44 @@ borderBottom:'2px solid',                    borderColor: () => {
               onClick={() => handleQuantityChange(-1)}
               sx={{ 
                 color: 'white',
-                border: '2px solid #6C5DD3',
-                borderRadius: 2,
+                background: 'rgba(110, 211, 255, 0.05)',
+                border: '1px solid rgba(110, 211, 255, 0.1)',
+                borderRadius: '12px',
                 width: { xs: 40, sm: 48 },
                 height: { xs: 40, sm: 48 },
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  background: 'rgba(110, 211, 255, 0.15)',
+                  border: '1px solid rgba(110, 211, 255, 0.3)',
+                  transform: 'scale(1.05)',
+                  boxShadow: '0 8px 32px rgba(110, 211, 255, 0.15)'
+                },
+                '&:active': {
+                  transform: 'scale(0.95)'
+                }
               }}
             >
-              <RemoveIcon sx={{ fontSize: { xs: '1.2rem', sm: '1.5rem' } }} />
+              <RemoveIcon sx={{ 
+                fontSize: { xs: '1.2rem', sm: '1.5rem' },
+                color: '#6ed3ff'
+              }} />
             </IconButton>
             <Typography 
               sx={{ 
-                color: 'white',
+                color: '#6ed3ff',
                 fontSize: { xs: '1.5rem', sm: '2rem' },
                 minWidth: { xs: '120px', sm: '150px' },
                 textAlign: 'center',
-                bgcolor: 'rgba(108, 93, 211, 0.1)',
-                borderRadius: 2,
+                background: 'rgba(110, 211, 255, 0.05)',
+                borderRadius: '12px',
                 py: { xs: 0.8, sm: 1 },
+                border: '1px solid rgba(110, 211, 255, 0.1)',
+                boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.1)',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  background: 'rgba(110, 211, 255, 0.08)',
+                  border: '1px solid rgba(110, 211, 255, 0.2)',
+                }
               }}
             >
               {quantity}
@@ -754,245 +786,562 @@ borderBottom:'2px solid',                    borderColor: () => {
               onClick={() => handleQuantityChange(1)}
               sx={{ 
                 color: 'white',
-                border: '2px solid #6C5DD3',
-                borderRadius: 2,
+                background: 'rgba(110, 211, 255, 0.05)',
+                border: '1px solid rgba(110, 211, 255, 0.1)',
+                borderRadius: '12px',
                 width: { xs: 40, sm: 48 },
                 height: { xs: 40, sm: 48 },
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  background: 'rgba(110, 211, 255, 0.15)',
+                  border: '1px solid rgba(110, 211, 255, 0.3)',
+                  transform: 'scale(1.05)',
+                  boxShadow: '0 8px 32px rgba(110, 211, 255, 0.15)'
+                },
+                '&:active': {
+                  transform: 'scale(0.95)'
+                }
               }}
             >
-              <AddIcon sx={{ fontSize: { xs: '1.2rem', sm: '1.5rem' } }} />
+              <AddIcon sx={{ 
+                fontSize: { xs: '1.2rem', sm: '1.5rem' },
+                color: '#6ed3ff'
+              }} />
             </IconButton>
           </Box>
 
-          <Box sx={{ mb: { xs: 3, sm: 4 } }}>
-            <Typography variant="h6" sx={{ 
-              color: 'white', 
-              textAlign: 'center',
-              mb: { xs: 1.5, sm: 2 },
-              fontSize: { xs: '1rem', sm: '1.25rem' },
-              opacity: 0.9
-            }}>
-              Select payment method
-            </Typography>
-
-            <ButtonGroup 
-              variant="contained" 
-              fullWidth 
-              sx={{ 
-                mb: { xs: 2, sm: 3 },
-                '& .MuiButton-root': {
-                  py: { xs: 1, sm: 1.5 },
-                  fontSize: { xs: '1rem', sm: '1.1rem' },
-                  fontWeight: 'bold',
+          {/* Payment Method Selection */}
+          <Box sx={{ 
+            display: 'flex',
+            gap: 2,
+            mb: 2
+          }}>
+            <Button
+              onClick={() => setSelectedPayment('TON')}
+              sx={{
+                flex: 1,
+                height: '64px',
+                background: selectedPayment === 'TON' 
+                  ? 'rgba(110, 211, 255, 0.15)'
+                  : 'rgba(110, 211, 255, 0.05)',
+                border: `1px solid ${selectedPayment === 'TON' ? 'rgba(110, 211, 255, 0.3)' : 'rgba(110, 211, 255, 0.1)'}`,
+                borderRadius: '12px',
+                transition: 'all 0.3s ease',
+                transform: selectedPayment === 'TON' ? 'scale(1.02)' : 'scale(1)',
+                boxShadow: selectedPayment === 'TON' ? '0 8px 32px rgba(110, 211, 255, 0.15)' : 'none',
+                '&:hover': {
+                  background: selectedPayment === 'TON'
+                    ? 'rgba(110, 211, 255, 0.2)'
+                    : 'rgba(110, 211, 255, 0.1)',
+                  transform: 'scale(1.02)',
+                  boxShadow: '0 8px 32px rgba(110, 211, 255, 0.2)'
                 }
               }}
             >
-              <Button 
-                onClick={() => setSelectedPayment('TON')}
-                sx={{ 
-                  background: selectedPayment === 'TON' 
-                    ? 'linear-gradient(90deg, #0088CC, #0099FF)'
-                    : 'rgba(0,136,204,0.3)',
-                  '&:hover': {
-                    background: 'linear-gradient(90deg, #0077BB, #0088EE)',
-                  }
-                }}
-              >
-                TON
-              </Button>
-              <Button 
-                onClick={() => setSelectedPayment('USDT')}
-                sx={{ 
-                  background: selectedPayment === 'USDT'
-                    ? 'linear-gradient(90deg, #26A17B, #2DC69D)'
-                    : 'rgba(38,161,123,0.3)',
-                  '&:hover': {
-                    background: 'linear-gradient(90deg, #219069, #25B58C)',
-                  }
-                }}
-              >
-                USDT
-              </Button>
-            </ButtonGroup>
+              <Box sx={{ textAlign: 'center' }}>
+                <Typography sx={{ 
+                  color: selectedPayment === 'TON' ? '#6ed3ff' : 'rgba(255,255,255,0.6)',
+                  fontSize: '1.2rem',
+                  fontWeight: 'bold',
+                  mb: 0.5
+                }}>
+                  TON
+                </Typography>
+                <Typography sx={{ 
+                  color: 'rgba(255,255,255,0.5)',
+                  fontSize: '0.8rem',
+                  textTransform: 'none'
+                }}>
+                  Balance: {userStats?.total.toFixed(2) || '0.00'}
+                </Typography>
+              </Box>
+            </Button>
 
-            <Typography variant="h6" sx={{ 
-              color: 'white', 
-              mb: 1,
-              fontSize: { xs: '1rem', sm: '1.25rem' },
-              opacity: 0.9,
+            <Button
+              onClick={() => setSelectedPayment('USDT')}
+              sx={{
+                flex: 1,
+                height: '64px',
+                background: selectedPayment === 'USDT' 
+                  ? 'rgba(110, 211, 255, 0.15)'
+                  : 'rgba(110, 211, 255, 0.05)',
+                border: `1px solid ${selectedPayment === 'USDT' ? 'rgba(110, 211, 255, 0.3)' : 'rgba(110, 211, 255, 0.1)'}`,
+                borderRadius: '12px',
+                transition: 'all 0.3s ease',
+                transform: selectedPayment === 'USDT' ? 'scale(1.02)' : 'scale(1)',
+                boxShadow: selectedPayment === 'USDT' ? '0 8px 32px rgba(110, 211, 255, 0.15)' : 'none',
+                '&:hover': {
+                  background: selectedPayment === 'USDT'
+                    ? 'rgba(110, 211, 255, 0.2)'
+                    : 'rgba(110, 211, 255, 0.1)',
+                  transform: 'scale(1.02)',
+                  boxShadow: '0 8px 32px rgba(110, 211, 255, 0.2)'
+                }
+              }}
+            >
+              <Box sx={{ textAlign: 'center' }}>
+                <Typography sx={{ 
+                  color: selectedPayment === 'USDT' ? '#6ed3ff' : 'rgba(255,255,255,0.6)',
+                  fontSize: '1.2rem',
+                  fontWeight: 'bold',
+                  mb: 0.5
+                }}>
+                  USDT
+                </Typography>
+                <Typography sx={{ 
+                  color: 'rgba(255,255,255,0.5)',
+                  fontSize: '0.8rem',
+                  textTransform: 'none'
+                }}>
+                  Balance: ${userStats?.usdt.toFixed(2) || '0.00'}
+                </Typography>
+              </Box>
+            </Button>
+          </Box>
+
+          {/* Error Messages with improved design */}
+          {error && !error.includes('Successfully') && (
+            <Box sx={{ 
+              width: '100%', 
+              mb: 3,
+              background: 'linear-gradient(135deg, rgba(244, 67, 54, 0.05), rgba(244, 67, 54, 0.02))',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(244, 67, 54, 0.2)',
+              borderRadius: '16px',
+              p: 3,
+              boxShadow: '0 8px 32px rgba(244, 67, 54, 0.1)',
+              animation: 'slideIn 0.3s ease',
               display: 'flex',
+              flexDirection: 'column',
               alignItems: 'center',
               gap: 2
             }}>
-              Total price in {selectedPayment}
-              {selectedPayment === 'TON' && tonPrice && (
-                <Box sx={{ 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  gap: 1,
-                  color: 'rgba(255,255,255,0.5)',
-                }}>
-                  <motion.div
-                    animate={{ 
-                      scale: isRefreshing ? [1, 1.1, 1] : 1,
-                      opacity: isRefreshing ? [1, 0.7, 1] : 1 
-                    }}
-                    transition={{ duration: 1 }}
-                  >
-                    <Typography component="span" sx={{ 
-                      fontSize: { xs: '0.8rem', sm: '0.9rem' },
-                    }}>
-                      (1 TON = ${tonPrice.toFixed(2)})
-                    </Typography>
-                  </motion.div>
-                  <IconButton
-                    onClick={handleRefreshTonPrice}
-                    size="small"
-                    sx={{ 
-                      color: 'rgba(255,255,255,0.5)',
-                      padding: 0.5,
-                      '&:hover': {
-                        color: 'rgba(255,255,255,0.8)',
-                      }
-                    }}
-                  >
-                    <RefreshIcon 
-                      sx={{ 
-                        fontSize: { xs: '0.9rem', sm: '1rem' },
-                        animation: isRefreshing ? 'spin 1s linear infinite' : 'none'
-                      }} 
-                    />
-                  </IconButton>
-                </Box>
-              )}
-            </Typography>
-            
-            <style>
-              {`
-                @keyframes spin {
-                  from {
-                    transform: rotate(0deg);
-                  }
-                  to {
-                    transform: rotate(360deg);
-                  }
-                }
-              `}
-            </style>
-
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
               <Typography sx={{ 
-                color: 'white', 
-                fontSize: { xs: '1.2rem', sm: '1.5rem' },
-                opacity: 0.9
+                color: '#ff4444',
+                textAlign: 'center',
+                fontSize: '1rem',
+                fontWeight: '500',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1
               }}>
-                Total
-              </Typography>
-              <Box>
-                <Typography sx={{ 
-                  color: '#6C5DD3', 
-                  fontSize: { xs: '1.5rem', sm: '2rem' }, 
-                  fontWeight: 'bold',
-                  lineHeight: 1,
+                <Box component="span" sx={{
+                  width: '24px',
+                  height: '24px',
+                  borderRadius: '50%',
+                  background: 'rgba(244, 67, 54, 0.1)',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 1
+                  justifyContent: 'center',
+                  fontSize: '16px'
                 }}>
-                  {calculateTotal()} {selectedPayment}
-                  {selectedPayment === 'TON' && (
-                    <Typography component="span" sx={{ 
-                      color: 'rgba(255,255,255,0.4)', 
-                      fontSize: { xs: '0.8rem', sm: '0.9rem' },
-                      fontWeight: 'normal'
-                    }}>
-                      (${(parseFloat(calculateTotal()) * (tonPrice || 0)).toFixed(2)})
-                    </Typography>
-                  )}
-                </Typography>
-              </Box>
-            </Box>
-          </Box>
-
-          {error && !error.includes('Successfully') && (
-            <Box sx={{ width: '100%', mb: 2 }}>
-              <Typography sx={{ 
-                color: '#f44336',
-                textAlign: 'center',
-                fontSize: { xs: '0.9rem', sm: '1rem' },
-                mb: 2
-              }}>
+                  !
+                </Box>
                 {error}
               </Typography>
               
-              {neededAmount > 0 && selectedPayment === 'TON' && (
-                <Button
-                  fullWidth
-                  onClick={() => setShowDepositDrawer(true)}
-                  sx={{
-                    background: 'linear-gradient(90deg, #0088CC, #0099FF)',
-                    color: 'white',
-                    py: 1.5,
-                    borderRadius: 2,
-                    fontSize: '1rem',
-                    mb: 1
-                  }}
-                >
-                  Deposit TON
-                </Button>
-              )}
-
-              {neededAmount > 0 && selectedPayment === 'USDT' && (
-                <Button
-                  fullWidth
-                  onClick={() => setShowSwapDrawer(true)}
-                  sx={{
-                    background: 'linear-gradient(90deg, #26A17B, #2DC69D)',
-                    color: 'white',
-                    py: 1.5,
-                    borderRadius: 2,
-                    fontSize: '1rem',
-                    mb: 1
-                  }}
-                >
-                  Swap to USDT
-                </Button>
+              {neededAmount > 0 && (
+                <Box sx={{ 
+                  display: 'flex',
+                  gap: 2,
+                  width: '100%',
+                  maxWidth: '400px'
+                }}>
+                  {selectedPayment === 'TON' ? (
+                    <Button
+                      fullWidth
+                      onClick={() => setShowDepositDrawer(true)}
+                      sx={{
+                        background: 'linear-gradient(135deg, #0088CC, #00A3FF)',
+                        color: 'white',
+                        py: 1.5,
+                        px: 4,
+                        borderRadius: '12px',
+                        fontSize: '1rem',
+                        fontWeight: 'bold',
+                        textTransform: 'none',
+                        transition: 'all 0.3s ease',
+                        boxShadow: '0 4px 15px rgba(0, 136, 204, 0.3)',
+                        '&:hover': {
+                          background: 'linear-gradient(135deg, #00A3FF, #0088CC)',
+                          transform: 'translateY(-2px)',
+                          boxShadow: '0 6px 20px rgba(0, 136, 204, 0.4)'
+                        },
+                        '&:active': {
+                          transform: 'translateY(0)'
+                        }
+                      }}
+                    >
+                      Deposit TON
+                    </Button>
+                  ) : (
+                    <Button
+                      fullWidth
+                      onClick={() => setShowSwapDrawer(true)}
+                      sx={{
+                        background: 'linear-gradient(135deg, #26A17B, #32D6A6)',
+                        color: 'white',
+                        py: 1.5,
+                        px: 4,
+                        borderRadius: '12px',
+                        fontSize: '1rem',
+                        fontWeight: 'bold',
+                        textTransform: 'none',
+                        transition: 'all 0.3s ease',
+                        boxShadow: '0 4px 15px rgba(38, 161, 123, 0.3)',
+                        '&:hover': {
+                          background: 'linear-gradient(135deg, #32D6A6, #26A17B)',
+                          transform: 'translateY(-2px)',
+                          boxShadow: '0 6px 20px rgba(38, 161, 123, 0.4)'
+                        },
+                        '&:active': {
+                          transform: 'translateY(0)'
+                        }
+                      }}
+                    >
+                      Get USDT
+                    </Button>
+                  )}
+                </Box>
               )}
             </Box>
           )}
 
+          {/* Success Message with improved design */}
+          {error && error.includes('Successfully') && (
+            <Box sx={{ 
+              width: '100%', 
+              mb: 3,
+              background: 'linear-gradient(135deg, rgba(76, 175, 80, 0.05), rgba(76, 175, 80, 0.02))',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(76, 175, 80, 0.2)',
+              borderRadius: '16px',
+              p: 3,
+              boxShadow: '0 8px 32px rgba(76, 175, 80, 0.1)',
+              animation: 'slideIn 0.3s ease',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 2
+            }}>
+              <Box component="span" sx={{
+                width: '24px',
+                height: '24px',
+                borderRadius: '50%',
+                background: 'rgba(76, 175, 80, 0.1)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#4CAF50',
+                fontSize: '16px'
+              }}>
+                ✓
+              </Box>
+              <Typography sx={{ 
+                color: '#4CAF50',
+                textAlign: 'center',
+                fontSize: '1rem',
+                fontWeight: '500'
+              }}>
+                {error}
+              </Typography>
+            </Box>
+          )}
+
+          <style>
+            {`
+              @keyframes slideIn {
+                from {
+                  opacity: 0;
+                  transform: translateY(-20px);
+                }
+                to {
+                  opacity: 1;
+                  transform: translateY(0);
+                }
+              }
+              @keyframes pulse {
+                0% {
+                  opacity: 0.5;
+                }
+                50% {
+                  opacity: 0.2;
+                }
+                100% {
+                  opacity: 0.5;
+                }
+              }
+            `}
+          </style>
+
+          {/* Total Price Display */}
+          <Box sx={{ 
+            display: 'flex', 
+            flexDirection: 'column',
+            mb: 3,
+            background: 'rgba(110, 211, 255, 0.02)',
+            backdropFilter: 'blur(10px)',
+            borderRadius: '20px',
+            position: 'relative',
+            overflow: 'hidden',
+          }}>
+            {/* Price Header */}
+            <Box sx={{
+              background: 'rgba(110, 211, 255, 0.05)',
+              borderBottom: '1px solid rgba(110, 211, 255, 0.1)',
+              p: 2,
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Box sx={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '8px',
+                  background: 'rgba(110, 211, 255, 0.1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '4px'
+                }}>
+                  <Box component="img"
+                    src={selectedPayment === 'TON' ? tonLogo : usdtLogo}
+                    alt={selectedPayment}
+                    sx={{
+                      width: '20px',
+                      height: '20px',
+                      objectFit: 'contain',
+                      filter: 'none'
+                    }}
+                  />
+                </Box>
+                <Typography sx={{ 
+                  color: 'rgba(255,255,255,0.7)',
+                  fontSize: '0.9rem',
+                  fontWeight: '500',
+                  textTransform: 'none'
+                }}>
+                  Total Amount
+                </Typography>
+              </Box>
+              {selectedPayment === 'TON' ? (
+                tonPrice && (
+                  <Typography sx={{ 
+                    color: 'rgba(255,255,255,0.5)',
+                    fontSize: '0.85rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 0.5
+                  }}>
+                    <Box component="span" sx={{ 
+                      color: '#6ed3ff',
+                      fontSize: '0.9rem',
+                      fontWeight: '500'
+                    }}>
+                      ${(parseFloat(calculateTotal()) * tonPrice).toFixed(2)}
+                    </Box>
+                    <Box component="span">USD</Box>
+                  </Typography>
+                )
+              ) : (
+                <Typography sx={{ 
+                  color: 'rgba(255,255,255,0.5)',
+                  fontSize: '0.85rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 0.5
+                }}>
+                  <Box component="span" sx={{ 
+                    color: '#6ed3ff',
+                    fontSize: '0.9rem',
+                    fontWeight: '500'
+                  }}>
+                    ${parseFloat(calculateTotal()).toFixed(2)}
+                  </Box>
+                  <Box component="span">USD</Box>
+                </Typography>
+              )}
+            </Box>
+
+            {/* Price Display */}
+            <Box sx={{
+              p: 3,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              position: 'relative',
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: '10%',
+                right: '10%',
+                height: '1px',
+                background: 'linear-gradient(90deg, transparent, rgba(110, 211, 255, 0.1), transparent)'
+              }
+            }}>
+              <Typography sx={{ 
+                color: '#6ed3ff',
+                fontSize: { xs: '2.2rem', sm: '2.8rem' },
+                fontWeight: '700',
+                letterSpacing: '0.5px',
+                textShadow: '0 0 20px rgba(110, 211, 255, 0.3)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1
+              }}>
+                {calculateTotal()}
+                <Box component="span" sx={{ 
+                  fontSize: { xs: '1.2rem', sm: '1.4rem' },
+                  color: 'rgba(255,255,255,0.6)',
+                  fontWeight: '500',
+                  ml: 1
+                }}>
+                  {selectedPayment}
+                </Box>
+              </Typography>
+            </Box>
+          </Box>
+
+          {/* Confirm Purchase Button */}
           <Button
             variant="contained"
             fullWidth
             onClick={handleConfirmPurchase}
-            disabled={!!error && !error.includes('Successfully')}
+            disabled={!canPurchase()}
             sx={{
-              background: error && !error.includes('Successfully')
-                ? 'rgba(76, 175, 80, 0.15)'
-                : 'linear-gradient(90deg, #4CAF50, #45a049)',
-              color: error && !error.includes('Successfully')
+              position: 'relative',
+              overflow: 'hidden',
+              background: !canPurchase()
+                ? 'rgba(110, 211, 255, 0.05)'
+                : 'linear-gradient(135deg, #6ed3ff 0%, #6ed3ff80 100%)',
+              color: !canPurchase()
                 ? 'rgba(255,255,255,0.3)'
                 : 'white',
-              fontSize: { xs: '1.2rem', sm: '1.5rem' },
+              fontSize: { xs: '1.2rem', sm: '1.4rem' },
               fontWeight: 'bold',
-              py: { xs: 1.5, sm: 2 },
-              borderRadius: 2,
-              border: error && !error.includes('Successfully')
-                ? '2px dashed rgba(76, 175, 80, 0.3)'
+              py: { xs: 2, sm: 2.5 },
+              borderRadius: '16px',
+              textTransform: 'none',
+              boxShadow: !canPurchase() 
+                ? 'none' 
+                : '0 8px 32px rgba(110, 211, 255, 0.2)',
+              border: !canPurchase()
+                ? '1px solid rgba(110, 211, 255, 0.1)'
                 : 'none',
-              '&:hover': {
-                background: error && !error.includes('Successfully')
-                  ? 'rgba(76, 175, 80, 0.15)'
-                  : 'linear-gradient(90deg, #45a049, #3d8b40)',
+              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              mb: !canPurchase() ? 2 : 0,
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: '-100%',
+                width: '200%',
+                height: '100%',
+                background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
+                transition: 'all 0.5s ease',
               },
-              '&.Mui-disabled': {
-                background: 'rgba(76, 175, 80, 0.15)',
-                color: 'rgba(255,255,255,0.3)',
-                border: '2px dashed rgba(76, 175, 80, 0.3)',
+              '&:hover': {
+                background: !canPurchase()
+                  ? 'rgba(110, 211, 255, 0.05)'
+                  : 'linear-gradient(135deg, #6ed3ff80 0%, #6ed3ff 100%)',
+                boxShadow: !canPurchase() 
+                  ? 'none' 
+                  : '0 12px 40px rgba(110, 211, 255, 0.3)',
+                transform: !canPurchase() ? 'none' : 'translateY(-2px)',
+                '&::before': {
+                  left: '100%'
+                }
               }
             }}
           >
-            CONFIRM PURCHASE
+            {!canPurchase() ? (
+              <Box sx={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: 1,
+                position: 'relative',
+                '&::before': {
+                  content: '""',
+                  position: 'absolute',
+                  top: '-2px',
+                  left: '-10px',
+                  right: '-10px',
+                  bottom: '-2px',
+                  background: 'linear-gradient(90deg, transparent, rgba(110, 211, 255, 0.1), transparent)',
+                  animation: 'pulse 2s infinite'
+                }
+              }}>
+                <Box component="span" sx={{
+                  width: '24px',
+                  height: '24px',
+                  borderRadius: '50%',
+                  background: 'rgba(110, 211, 255, 0.1)',
+                  border: '1px solid rgba(110, 211, 255, 0.2)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '14px',
+                  color: '#6ed3ff',
+                  fontWeight: 'bold'
+                }}>
+                  !
+                </Box>
+                <Box component="span" sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-start',
+                  gap: 0.2
+                }}>
+                  <Typography sx={{ 
+                    fontSize: { xs: '1rem', sm: '1.1rem' },
+                    color: 'rgba(255,255,255,0.5)',
+                    fontWeight: 'normal'
+                  }}>
+                    Insufficient Balance
+                  </Typography>
+                 
+                </Box>
+              </Box>
+            ) : (
+              'Confirm Purchase'
+            )}
           </Button>
+
+          {/* Quick Action Button - Only show if balance is insufficient */}
+          {!canPurchase() && (
+            <Button
+              fullWidth
+              onClick={() => selectedPayment === 'TON' ? setShowDepositDrawer(true) : setShowSwapDrawer(true)}
+              sx={{
+                background: selectedPayment === 'TON' 
+                  ? 'rgba(0, 136, 204, 0.1)'
+                  : 'rgba(38, 161, 123, 0.1)',
+                color: selectedPayment === 'TON' ? '#00A3FF' : '#32D6A6',
+                py: 1.5,
+                borderRadius: '12px',
+                fontSize: '1rem',
+                fontWeight: 'bold',
+                textTransform: 'none',
+                border: `1px solid ${selectedPayment === 'TON' 
+                  ? 'rgba(0, 136, 204, 0.2)' 
+                  : 'rgba(38, 161, 123, 0.2)'}`,
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  background: selectedPayment === 'TON'
+                    ? 'rgba(0, 136, 204, 0.15)'
+                    : 'rgba(38, 161, 123, 0.15)',
+                  transform: 'translateY(-2px)',
+                  boxShadow: selectedPayment === 'TON'
+                    ? '0 8px 32px rgba(0, 136, 204, 0.2)'
+                    : '0 8px 32px rgba(38, 161, 123, 0.2)'
+                }
+              }}
+            >
+              {selectedPayment === 'TON' ? 'Deposit TON' : 'Get USDT'}
+            </Button>
+          )}
         </Box>
       </Drawer>
 

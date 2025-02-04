@@ -1,14 +1,25 @@
 import React from 'react';
-import { Box, Button, Typography, CircularProgress } from '@mui/material';
+import { Box, Button, Typography, CircularProgress, IconButton } from '@mui/material';
 import { motion } from 'framer-motion';
 import KeyIcon from '@mui/icons-material/Key';
-import ExtensionIcon from '@mui/icons-material/Extension';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 interface KeyCraftingProps {
   keyParts: number;
   onCraftKey: () => void;
   isLoading: boolean;
 }
+
+// Renk paleti
+const commonStyles = {
+  primaryColor: '#6ed3ff',
+  primaryGradient: 'linear-gradient(90deg, #6ed3ff, #8ee9ff)',
+  bgGradient: 'linear-gradient(135deg, rgba(110, 211, 255, 0.3) 0%, rgba(110, 211, 255, 0.1) 100%)',
+  borderColor: 'rgba(110, 211, 255, 0.2)',
+  hoverBorderColor: 'rgba(110, 211, 255, 0.4)',
+  buttonShadow: '0 4px 12px rgba(110, 211, 255, 0.3)',
+  buttonHoverShadow: '0 6px 16px rgba(110, 211, 255, 0.4)',
+};
 
 const KeyCrafting: React.FC<KeyCraftingProps> = ({ keyParts, onCraftKey, isLoading }) => {
   const canCraftKey = keyParts >= 5;
@@ -24,16 +35,19 @@ const KeyCrafting: React.FC<KeyCraftingProps> = ({ keyParts, onCraftKey, isLoadi
         sx={{
           mt: 4,
           p: 3,
-          background: 'linear-gradient(145deg, rgba(26,27,35,0.9) 0%, rgba(26,27,35,0.95) 100%)',
-          borderRadius: '20px',
-          border: '1px solid rgba(255,255,255,0.1)',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
-          backdropFilter: 'blur(10px)',
+          background: commonStyles.bgGradient,
+          borderRadius: '15px',
+          border: `1px solid ${commonStyles.borderColor}`,
           position: 'relative',
           overflow: 'hidden',
+          transition: 'all 0.3s ease',
+          '&:hover': {
+            border: `1px solid ${commonStyles.hoverBorderColor}`,
+            boxShadow: commonStyles.buttonHoverShadow,
+          }
         }}
       >
-        {/* Background Glow Effect */}
+        {/* Background Animation Effect */}
         <Box
           sx={{
             position: 'absolute',
@@ -41,7 +55,7 @@ const KeyCrafting: React.FC<KeyCraftingProps> = ({ keyParts, onCraftKey, isLoadi
             left: '-50%',
             width: '200%',
             height: '200%',
-            background: 'radial-gradient(circle, rgba(108,93,211,0.1) 0%, rgba(108,93,211,0) 70%)',
+            background: `radial-gradient(circle, ${commonStyles.primaryColor}15 0%, ${commonStyles.primaryColor}00 70%)`,
             pointerEvents: 'none',
             opacity: canCraftKey ? 1 : 0,
             transition: 'opacity 0.3s ease',
@@ -49,33 +63,75 @@ const KeyCrafting: React.FC<KeyCraftingProps> = ({ keyParts, onCraftKey, isLoadi
         />
 
         <Box sx={{ position: 'relative', zIndex: 1 }}>
-          {/* Title Section */}
+          {/* Header Section */}
           <Box sx={{ 
             display: 'flex', 
             alignItems: 'center', 
-            gap: 1, 
-            mb: 3,
-            justifyContent: 'center'
+            justifyContent: 'space-between',
+            mb: 3
           }}>
-            <KeyIcon sx={{ 
-              color: canCraftKey ? '#6C5DD3' : 'rgba(255,255,255,0.5)',
-              fontSize: '2rem',
-              transition: 'color 0.3s ease'
-            }} />
-            <Typography
-              variant="h5"
-              sx={{
-                color: 'white',
-                fontWeight: 'bold',
-                textAlign: 'center',
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+              <Box sx={{ 
+                width: '48px',
+                height: '48px',
+                borderRadius: '12px',
+                background: commonStyles.primaryGradient,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: commonStyles.buttonShadow
+              }}>
+                <KeyIcon sx={{ 
+                  color: 'white',
+                  fontSize: '1.8rem'
+                }} />
+              </Box>
+              <Box>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    color: 'white',
+                    fontWeight: 'bold',
+                    lineHeight: 1.2
+                  }}
+                >
+                  Key Crafting
+                </Typography>
+                <Typography sx={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>
+                  Collect 5 parts to craft a key
+                </Typography>
+              </Box>
+            </Box>
+            <IconButton 
+              sx={{ 
+                color: 'rgba(255,255,255,0.7)',
+                '&:hover': { color: commonStyles.primaryColor }
               }}
             >
-              Anahtar Üretimi
-            </Typography>
+              <InfoOutlinedIcon />
+            </IconButton>
           </Box>
 
           {/* Progress Section */}
           <Box sx={{ mb: 3 }}>
+            <Box sx={{ 
+              display: 'flex', 
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              mb: 1
+            }}>
+              <Typography sx={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>
+                Progress
+              </Typography>
+              <Typography sx={{ 
+                color: canCraftKey ? commonStyles.primaryColor : 'rgba(255,255,255,0.7)',
+                fontWeight: 'bold',
+                fontSize: '0.9rem'
+              }}>
+                {keyParts}/5 parts
+              </Typography>
+            </Box>
+            
             {/* Progress Bar */}
             <Box sx={{ 
               width: '100%', 
@@ -83,7 +139,6 @@ const KeyCrafting: React.FC<KeyCraftingProps> = ({ keyParts, onCraftKey, isLoadi
               background: 'rgba(255,255,255,0.1)',
               borderRadius: '4px',
               overflow: 'hidden',
-              mb: 2
             }}>
               <motion.div
                 initial={{ width: 0 }}
@@ -92,42 +147,15 @@ const KeyCrafting: React.FC<KeyCraftingProps> = ({ keyParts, onCraftKey, isLoadi
                 style={{
                   height: '100%',
                   background: canCraftKey ? 
-                    'linear-gradient(90deg, #6C5DD3, #8677E3)' : 
+                    commonStyles.primaryGradient : 
                     'linear-gradient(90deg, rgba(255,255,255,0.2), rgba(255,255,255,0.3))',
                   borderRadius: '4px',
                 }}
               />
             </Box>
-
-            {/* Parts Counter */}
-            <Box sx={{ 
-              display: 'flex', 
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              px: 1
-            }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <ExtensionIcon sx={{ 
-                  color: 'rgba(255,255,255,0.7)',
-                  fontSize: '1.2rem'
-                }} />
-                <Typography sx={{ color: 'rgba(255,255,255,0.7)' }}>
-                  Parça Sayısı:
-                </Typography>
-              </Box>
-              <Typography 
-                sx={{ 
-                  color: canCraftKey ? '#6C5DD3' : 'white',
-                  fontWeight: 'bold',
-                  fontSize: '1.1rem'
-                }}
-              >
-                {keyParts}/5
-              </Typography>
-            </Box>
           </Box>
 
-          {/* Craft Button */}
+          {/* Action Button */}
           <motion.div
             whileHover={{ scale: canCraftKey ? 1.02 : 1 }}
             whileTap={{ scale: canCraftKey ? 0.98 : 1 }}
@@ -139,23 +167,23 @@ const KeyCrafting: React.FC<KeyCraftingProps> = ({ keyParts, onCraftKey, isLoadi
               fullWidth
               sx={{
                 py: 1.5,
-                background: canCraftKey ? 
-                  'linear-gradient(90deg, #6C5DD3, #8677E3)' : 
-                  'rgba(255,255,255,0.1)',
-                color: 'white',
+                background: canCraftKey ? commonStyles.primaryGradient : 'rgba(255,255,255,0.1)',
+                color: canCraftKey ? 'black' : 'rgba(255,255,255,0.5)',
                 fontWeight: 'bold',
-                fontSize: '1.1rem',
-                borderRadius: '10px',
+                fontSize: '0.95rem',
+                borderRadius: '8px',
                 textTransform: 'none',
                 position: 'relative',
-                overflow: 'hidden',
+                boxShadow: canCraftKey ? commonStyles.buttonShadow : 'none',
                 '&:hover': {
                   background: canCraftKey ? 
-                    'linear-gradient(90deg, #8677E3, #6C5DD3)' : 
+                    'linear-gradient(90deg, #8ee9ff, #6ed3ff)' : 
                     'rgba(255,255,255,0.1)',
+                  boxShadow: canCraftKey ? commonStyles.buttonHoverShadow : 'none'
                 },
                 '&:disabled': {
-                  color: 'rgba(255,255,255,0.5)',
+                  background: 'rgba(255,255,255,0.1)',
+                  color: 'rgba(255,255,255,0.3)',
                 }
               }}
             >
@@ -163,15 +191,12 @@ const KeyCrafting: React.FC<KeyCraftingProps> = ({ keyParts, onCraftKey, isLoadi
                 <CircularProgress 
                   size={24} 
                   sx={{ 
-                    color: 'white',
-                    position: 'absolute',
-                    left: '50%',
-                    marginLeft: '-12px'
+                    color: canCraftKey ? 'black' : 'rgba(255,255,255,0.5)',
                   }} 
                 />
               ) : (
                 <>
-                  {canCraftKey ? 'Anahtar Üret' : 'Yetersiz Parça'}
+                  {canCraftKey ? 'Craft Key' : 'Insufficient Parts'}
                 </>
               )}
             </Button>

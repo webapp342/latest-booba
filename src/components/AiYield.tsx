@@ -4,11 +4,13 @@ import { Typography } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 
 const navItems = [
-  { label: 'Play', path: '/latest-booba/games' },
+  { label: 'Boxes', path: '/latest-booba/mystery-box' },
+    { label: 'Games', path: '/latest-booba/games' },
+
   { label: 'Invest', path: '/latest-booba/stake' },
   { label: 'Stats', path: '/latest-booba/' },
   { label: 'Tasks', path: '/latest-booba/tasks' },
-  { label: 'Wallet', path: '/latest-booba/spin' },
+  { label: 'Wallet', path: '/latest-booba/spin' }, 
 ];
 
 function Brand() {
