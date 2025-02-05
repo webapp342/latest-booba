@@ -55,7 +55,7 @@ const navItems = [
   { 
     label: 'Earn', 
     icon: (isSelected: boolean) => (
-      <Box
+      <Box // @ts-ignore
         sx={{
           display: 'flex',
           alignItems: 'center',
