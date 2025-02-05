@@ -3,11 +3,11 @@ import { generateRandomNumber } from './utils/random';
 import SlotDisplay from './SlotDisplay';
 import BalanceSelector from './BalanceSelector';
 import SpinAndDepositButtons from './SpinAndDepositButtons';
-import DepositDrawer from './DepositDrawer';
+import DepositDrawer from '../../components/WalletDrawers/DepositDrawer';
 import { keyframes } from "@emotion/react";
 import InfoIcon from "@mui/icons-material/Info";
 import StarIcon from '@mui/icons-material/Star';
-import backgroundImage from '../../assets/bg.png'; // PNG dosyasını import edin
+import backgroundImage from '../../assets/Artboard 1.png'; // PNG dosyasını import edin
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import SnackbarComponent from './SnackbarComponent';
 import {IconButton, Box, Button,  Modal, Typography, List, ListItem, ListItemText, } from '@mui/material';
@@ -881,7 +881,7 @@ const [, setShowConfetti] = useState(false);
         </Box>
 
 
-        <Box
+        <Box // @ts-ignore
           sx={{
             padding: 0,
             mx: 4,
@@ -1064,8 +1064,10 @@ color:'#FFC107',
 
     
 
-      <DepositDrawer drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} setSnackbarOpen={setSnackbarOpen} />
-      <SnackbarComponent snackbarOpen={snackbarOpen} setSnackbarOpen={setSnackbarOpen} />
+  <DepositDrawer
+    open={drawerOpen}
+    onClose={() => setDrawerOpen(false)}
+  />      <SnackbarComponent snackbarOpen={snackbarOpen} setSnackbarOpen={setSnackbarOpen} />
       </Box>
     </Box>
         </ThemeProvider>

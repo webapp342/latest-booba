@@ -14,7 +14,8 @@ const StyledDrawer = styled(Drawer)(({  }) => ({
     background: 'linear-gradient(180deg, rgba(26, 33, 38, 0.99) 0%, rgba(26, 33, 38, 0.95) 100%)',
     borderRadius: '24px 24px 0 0',
     padding: '24px',
-    maxHeight: '85vh',
+     maxHeight: '80vh',
+    minHeight: '60vh',
     height: 'auto',
     border: '1px solid rgba(110, 211, 255, 0.1)',
     overflow: 'visible',
@@ -84,7 +85,8 @@ const SwapDrawer: React.FC<SwapDrawerProps> = ({ open, onClose, defaultAmount, o
         >
           Swap Assets
         </Typography>
-        <Box sx={{ width: 40 }} />
+        <Box //@ts-ignore
+        sx={{ width: 40 }} />
       </DrawerHeader>
       <DrawerContent m={-2}>
         <TokenSwap 

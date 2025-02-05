@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Button, Tabs, Tab, AppBar, Typography, Box } from '@mui/material';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
-import { useNavigate } from 'react-router-dom';
 import logo5 from '../../assets/logo5.jpg'
 
 
@@ -40,15 +39,15 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
   bblip,
   selectedSpinType,
   handleSpin,
-
+  openDepositDrawer,
   handleSpinTypeChange,
 }) => {
   const [loading, setLoading] = useState(false);
   const [prevTotal, setPrevTotal] = useState(total);
   const [prevTickets, setPrevTickets] = useState(tickets);
   const [prevBblip, setPrevBblip] = useState(bblip);
-    const navigate = useNavigate();
   const [amountStyle, setAmountStyle] = useState({});
+
 
   // useEffect to update previous values when actual values change
   useEffect(() => {
@@ -99,9 +98,7 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
     setTimeout(() => setLoading(false), 2300); // 20 saniye sonra loading durumunu kaldır
   };
 
-    const handleNavigate = () => {
-    navigate('/latest-booba/spin');
-  };
+ 
 
   // Dinamik Spin Button Text
   let spinButtonText = '';
@@ -126,7 +123,7 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
   return (
     <ThemeProvider theme={theme}>
 
-    <Box
+    <Box // @ts-ignore
     sx={{
       margin: '0 ',
       borderRadius: 1,
@@ -247,7 +244,7 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
         </Button>
       ) : (
         <Button
-      onClick={handleNavigate}         
+                onClick={() => openDepositDrawer()} 
        sx={{
             background: "#6f0101",
             color: '#FF6666',

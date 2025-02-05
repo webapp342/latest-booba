@@ -22,7 +22,7 @@ const StyledDrawer = styled(Drawer)(({  }) => ({
     borderRadius: '24px 24px 0 0',
     padding: '20px 16px',
     height: 'auto',
-    maxHeight: '90vh',
+    maxHeight: '80vh',
     minHeight: '60vh',
     border: '1px solid rgba(110, 211, 255, 0.1)',
     '@media (max-width: 600px)': {
@@ -115,7 +115,8 @@ const DepositDrawer: React.FC<DepositDrawerProps> = ({ open, onClose }) => {
         open={open}
         onClose={onClose}
       >
-        <Box sx={{ position: 'relative', height: '100%' }}>
+        <Box // @ts-ignore
+         sx={{ position: 'relative', height: '100%' }}>
           <Snackbar
             open={snackbarOpen}
             autoHideDuration={2000}

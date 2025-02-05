@@ -88,7 +88,12 @@ const BoxDetail: React.FC = () => {
       doc(db, 'users', telegramUserId),
       (doc) => {
         if (doc.exists()) {
-          setUserStats(doc.data() as UserStats);
+          const data = doc.data();
+          // Initialize usdt with 0 if it doesn't exist
+          setUserStats({
+            ...data,
+            usdt: data.usdt ?? 0,
+          } as UserStats);
         } else {
           setError('Kullanıcı verisi bulunamadı');
         }
@@ -248,7 +253,9 @@ const BoxDetail: React.FC = () => {
     }
 
     const totalPrice = parseFloat(calculateTotal());
-    const userBalance = selectedPayment === 'TON' ? userStats.total : userStats.usdt;
+    const userBalance = selectedPayment === 'TON' ? 
+      (typeof userStats.total === 'number' ? userStats.total : 0) : 
+      (typeof userStats.usdt === 'number' ? userStats.usdt : 0);
     const needed = totalPrice - userBalance;
 
     if (userBalance < totalPrice) {
@@ -300,19 +307,28 @@ const BoxDetail: React.FC = () => {
     return usdPrice.toFixed(2);
   };
 
+  const formatBalance = (value: number | undefined | null): string => {
+    if (typeof value !== 'number') return '0.00';
+    return value.toFixed(2);
+  };
 
+  const getUserBalance = (stats: UserStats | null, paymentType: 'TON' | 'USDT'): number => {
+    if (!stats) return 0;
+    return paymentType === 'TON' ? (stats.total || 0) : (stats.usdt || 0);
+  };
 
   const canPurchase = () => {
     if (!userStats) return false;
     const totalPrice = parseFloat(calculateTotal());
-    const userBalance = selectedPayment === 'TON' ? userStats.total : userStats.usdt;
+    const userBalance = getUserBalance(userStats, selectedPayment);
     return userBalance >= totalPrice;
   };
 
   if (!boxData) {
     return (
       <Container maxWidth="lg">
-        <Box sx={{ py: 4, textAlign: 'center' }}>
+        <Box //@ts-ignore
+         sx={{ py: 4, textAlign: 'center' }}>
           <Typography variant="h4" sx={{ color: 'white' }}>
             Box not found
           </Typography>
@@ -859,7 +875,7 @@ borderBottom:'2px solid',                    borderColor: () => {
                   fontSize: '0.8rem',
                   textTransform: 'none'
                 }}>
-                  Balance: {userStats?.total.toFixed(2) || '0.00'}
+                  Balance: {formatBalance(userStats?.total)}
                 </Typography>
               </Box>
             </Button>
@@ -900,7 +916,7 @@ borderBottom:'2px solid',                    borderColor: () => {
                   fontSize: '0.8rem',
                   textTransform: 'none'
                 }}>
-                  Balance: ${userStats?.usdt.toFixed(2) || '0.00'}
+                  Balance: ${formatBalance(userStats?.usdt)}
                 </Typography>
               </Box>
             </Button>

@@ -22,7 +22,8 @@ const StyledDrawer = styled(Drawer)(({ }) => ({
     borderRadius: '24px 24px 0 0',
   
     
-    maxHeight: '90vh',
+     maxHeight: '80vh',
+    minHeight: '60vh',
     height: 'auto',
     border: '1px solid rgba(110, 211, 255, 0.1)',
     overflow: 'visible',
@@ -107,6 +108,8 @@ const StarsModalContent = styled(Box)({
   flexDirection: 'column',
   alignItems: 'center',
   gap: '24px',
+  position: 'relative',
+  zIndex: 9999
 });
 
 interface TwoFieldsComponentProps {
@@ -160,6 +163,7 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
   const [address, setAddress] = useState('');
   const [userData, setUserData] = useState<any>(null);
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const [] = useState<string>('');
   const [tonPrice, setTonPrice] = useState<number>(0);
   const [step, setStep] = useState(1);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -169,6 +173,7 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
   const [isUpgrading, setIsUpgrading] = useState(false);
   const [showLevelUpSuccess, setShowLevelUpSuccess] = useState(false);
   const [showSwapDrawer, setShowSwapDrawer] = useState(false);
+  const [ticketError, setTicketError] = useState<string>('');
 
   useEffect(() => {
     if (!open) {
@@ -221,6 +226,39 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
     return () => unsubscribe();
   }, []);
 
+  // Modify the useEffect for validation
+  useEffect(() => {
+    if (!amount || amount === '0') {
+      setErrorMessage('');
+      return;
+    }
+
+    const withdrawAmount = Number(amount);
+    
+    // Check if it's a valid number
+    if (isNaN(withdrawAmount)) {
+      setErrorMessage('Please enter a valid amount');
+      return;
+    }
+
+    // Check if amount is less than or equal to 1
+    if (withdrawAmount <= 1) {
+      setErrorMessage('Minimum withdrawal amount is 1 TON');
+      return;
+    }
+
+    const enteredAmount = withdrawAmount * 1000;
+    
+    // Check balance requirement
+    if (userData?.total < enteredAmount) {
+      setErrorMessage('Insufficient Balance');
+      return;
+    }
+
+    // Clear error if all validations pass
+    setErrorMessage('');
+  }, [amount, userData?.total]);
+
   const handleNumberClick = (num: string) => {
     if (num === 'backspace') {
       setAmount(prev => prev.slice(0, -1));
@@ -246,28 +284,14 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
 
   const handleContinue = () => {
     if (!amount || isNaN(Number(amount))) {
-      setErrorMessage('Please enter a valid amount');
       return;
     }
 
-    const enteredAmount = Number(amount);
-
-    // Check for amounts less than or equal to 1
-    if (enteredAmount <= 1) {
-      setErrorMessage('Please enter a valid amount');
-      return;
-    }
-
-    // Convert to nanoTON for balance check
-    const enteredAmountNano = enteredAmount * 1000;
-
-    if (userData?.total < enteredAmountNano) {
-      setErrorMessage('Insufficient Balance');
+    if (errorMessage) {
       return;
     }
 
     setStep(2);
-    setErrorMessage('');
   };
 
 
@@ -288,11 +312,11 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
 
   const handleLevelUpgrade = async () => {
     setIsUpgrading(true);
-    setErrorMessage('');
+    setTicketError('');
 
     const telegramUserId = localStorage.getItem("telegramUserId");
     if (!telegramUserId) {
-      setErrorMessage('User ID not found');
+      setTicketError('User ID not found');
       setIsUpgrading(false);
       return;
     }
@@ -302,7 +326,7 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
       const userDoc = await getDoc(userRef);
       
       if (!userDoc.exists()) {
-        setErrorMessage('User data not found');
+        setTicketError('User data not found');
         setIsUpgrading(false);
         return;
       }
@@ -313,7 +337,7 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
       const requiredTickets = nextLevel;
       
       if (!userData.tickets || userData.tickets < requiredTickets) {
-        setErrorMessage(`Not enough tickets. Need ${requiredTickets} tickets for level ${nextLevel}`);
+        setTicketError(`Not enough tickets. Need ${requiredTickets} tickets for level ${nextLevel}`);
         setIsUpgrading(false);
         return;
       }
@@ -331,18 +355,16 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
         }
       });
 
-      // Show level up success animation
       setShowStarsModal(false);
       setShowLevelUpSuccess(true);
       
-      // Hide success animation after 2 seconds
       setTimeout(() => {
         setShowLevelUpSuccess(false);
       }, 2000);
 
     } catch (error) {
       console.error("Error processing level upgrade:", error);
-      setErrorMessage('Failed to process upgrade. Please try again.');
+      setTicketError('Failed to process upgrade. Please try again.');
     } finally {
       setIsUpgrading(false);
     }
@@ -360,10 +382,18 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
     }
 
     const withdrawAmount = Number(amount);
+    const enteredAmount = withdrawAmount * 1000;
+    
+    // Check balance requirement first
+    if (userData?.total < enteredAmount) {
+      setErrorMessage('Insufficient Balance');
+      return;
+    }
+
+    // If balance is sufficient, then check level requirement
     const { requiredLevel } = getLevelRequirements(withdrawAmount);
     const currentLevel = userData?.level || 0;
     
-    // Level kontrolü
     if (currentLevel < requiredLevel) {
       setShowStarsModal(true);
       return;
@@ -375,7 +405,6 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
       return;
     }
 
-    const enteredAmount = withdrawAmount * 1000;
     const newTotal = userData.total - enteredAmount;
     const processId = new Date().getTime().toString();
 
@@ -409,7 +438,8 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
   const usdValue = Number(amount) * tonPrice;
 
   const content = (
-    <Box sx={{
+    <Box // @ts-ignore
+    sx={{
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
@@ -621,6 +651,29 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
               </Button>
             </Box>
 
+            {errorMessage && step === 1 && !showStarsModal && (
+              <Typography 
+                sx={{ 
+                  color: '#ff4d4d',
+                  fontSize: '0.85rem',
+                  mb: 2,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 0.5,
+                  padding: '8px 12px',
+                  borderRadius: '8px',
+                  backgroundColor: 'rgba(255, 77, 77, 0.1)',
+                  width: '90%',
+                  textAlign: 'center',
+                  position: 'relative',
+                  zIndex: 1
+                }}
+              >
+                {errorMessage}
+              </Typography>
+            )}
+
             <Typography sx={{ 
               fontSize: '0.85rem',
               color: 'rgba(255, 255, 255, 0.7)',
@@ -729,27 +782,6 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
           </>
         )}
 
-        {errorMessage && (
-          <Typography 
-            sx={{ 
-              color: '#ff4d4d',
-              fontSize: '0.85rem',
-              mt: 2,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 0.5,
-              padding: '8px 12px',
-              borderRadius: '8px',
-              backgroundColor: 'rgba(255, 77, 77, 0.1)',
-              width: '90%',
-              textAlign: 'center'
-            }}
-          >
-            {errorMessage}
-          </Typography>
-        )}
-
         {step === 2 && (
           <>
             <Typography sx={{ 
@@ -772,7 +804,6 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
             <Box sx={{
               width: '98%',
               mb: 3,
-         
               backgroundColor: 'rgba(110, 211, 255, 0.05)',
               borderRadius: '12px',
               border: '1px solid rgba(110, 211, 255, 0.1)',
@@ -780,7 +811,6 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
             }}>
               <TextField
                 fullWidth
-                
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 placeholder="Enter TON wallet address"
@@ -845,6 +875,29 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
                 Paste
               </Button>
             </Box>
+
+            {errorMessage && step === 2 && !showStarsModal && (
+              <Typography 
+                sx={{ 
+                  color: '#ff4d4d',
+                  fontSize: '0.85rem',
+                  mb: 3,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 0.5,
+                  padding: '8px 12px',
+                  borderRadius: '8px',
+                  backgroundColor: 'rgba(255, 77, 77, 0.1)',
+                  width: '90%',
+                  textAlign: 'center',
+                  position: 'relative',
+                  zIndex: 1
+                }}
+              >
+                {errorMessage}
+              </Typography>
+            )}
 
             <Typography sx={{ 
               fontSize: '0.85rem',
@@ -1272,7 +1325,7 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
             </Box>
 
             {/* Error Message */}
-            {errorMessage && (
+            {ticketError && (
               <Typography sx={{ 
                 color: '#ff4d4d', 
                 fontSize: '14px',
@@ -1282,7 +1335,7 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
                 borderRadius: '8px',
                 width: '100%'
               }}>
-                {errorMessage}
+                {ticketError}
               </Typography>
             )}
 

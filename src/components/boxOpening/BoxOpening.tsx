@@ -20,25 +20,17 @@ import rolexSubmarinerImage from '../../assets/boxes/06_ROLEX_SUBMARINER-Box-moc
 import donaldTrumpImage from '../../assets/boxes/06-DONALD_TRUMP-Box-mock_box_1_Mtw3P4X.png';
 import rolexYachtmasterImage from '../../assets/boxes/07_ROLEX_YACHTMASTER-Box-mock_box_1_AWKQOtA.png';
 import rolexImage from '../../assets/boxes/19_ROLEX-Box-mock_box_Mf79Eyz.png';
-import bbcImage from '../../assets/boxes/21-BBC-Box-mock_box_1_PJXKvVL.png';
 import chanelImage from '../../assets/boxes/22-CHANEL-Box-mock_box_1_LJJWWSE.png';
-import jordanImage from '../../assets/boxes/JORDAN_EXCLUSIVE-mock_box_aQCGLp6.png';
 import louisVuittonImage from '../../assets/boxes/LOUIS_VUITTON-Deluxe-mock_box.png';
-import winterImage from '../../assets/boxes/newwintererrer_OPdiwGJ.png';
 import bmwImage from '../../assets/boxes/05-BMW-Box-mock_box_1_tcGgWnJ.png';
 import primeImage from '../../assets/boxes/PRIME-Box-BLUE-mock_box_1_1_i1bhp4C.png';
 import sneakersImage from '../../assets/boxes/SNEAKERS-Box-mock_box_1_1_XJ6yoyi.png';
-import wolfImage from '../../assets/boxes/The-Wolf-of-Wall-Street_tRg4lgr.png';
-import ufcImage from '../../assets/boxes/UFC_2_1_Qr3aLhG.png';
-import victoriaImage from '../../assets/boxes/Victorias-Secret_X2kHKwy.png';
 import rolexDaytonaImage from '../../assets/boxes/01_ROLEX_DAYTONA-Box-mock_box_tgFf3C6.png';
 import corsairImage from '../../assets/boxes/02-CORSAIR-Box-mock_box_1_9ex9nau.png';
 import versaceImage from '../../assets/boxes/02-VERSACE-Box-mock_box_1_Eh0sKbn.png';
-import fortniteImage from '../../assets/boxes/03-FORTNITE-Box-mock_box_1_UANiWgs.png';
 import rollsRoyceImage from '../../assets/boxes/04_ROLLS_ROYCE-Box-mock_box_lEnAQxE.png';
 import footballImage from '../../assets/boxes/08_FOOTBALL_FRENZY-Box-mock_box_xTGy6uS.png';
 import maseratiImage from '../../assets/boxes/09_MASERATI-Box-mock_box_nNGuE9m.png';
-import mercedesImage from '../../assets/boxes/09_MERCEDES-Box-mock_box_YrkBf6x.png';
 import topgImage from '../../assets/boxes/09-TOPG-Box-mock_box_1_DYOk6ka.png';
 import porscheImage from '../../assets/boxes/11_PORSCHE-Box-mock_box_GsB1OjI.png';
 import ferrariImage from '../../assets/boxes/12_FERRARI-Box-mock_box_1_gxu1E5e.png';
@@ -46,11 +38,9 @@ import rolexDayDateImage from '../../assets/boxes/15_DAY_DATE_VS_DAYJUST-Box-moc
 import ralphLaurenImage from '../../assets/boxes/15-RALPH_LAUREN-Box-mock_box_U3Pc619.png';
 import oldMoneyImage from '../../assets/boxes/28_OLD_MONEY-Box-mock_box_1_NbdcPuo.png';
 import appleImage from '../../assets/boxes/APPLE-Budget-mock_box_1_1_BNZNwNg.png';
-import barbieImage from '../../assets/boxes/Barbie_1_JgeLffJ.png';
 import cartierImage from '../../assets/boxes/Cartier_lC54zo9.png';
 import diamondImage from '../../assets/boxes/Diamond-Vault_1_rL3pUUO.png';
 import hublotImage from '../../assets/boxes/Hublot_wua9Wr6.png';
-import highRollerImage from '../../assets/boxes/05_HIGH_ROLLER-Box-mock_box_bxw602J.png';
 
 interface UserStats {
   usdt: number;
@@ -148,15 +138,8 @@ const gameCards: GameCard[] = [
     description: 'Premium Rolex collection box',
     brand: 'Luxury'
   },
-  {
-    id: 'bbc',
-    image: bbcImage,
-    title: 'BBC Box',
-    normalPrice: '29.99',
-    salePrice: '24.99',
-    description: 'British Broadcasting themed box',
-    brand: 'Media'
-  },
+
+
   {
     id: 'chanel',
     image: chanelImage,
@@ -166,15 +149,7 @@ const gameCards: GameCard[] = [
     description: 'Luxury fashion box featuring Chanel items',
     brand: 'Luxury'
   },
-  {
-    id: 'jordan',
-    image: jordanImage,
-    title: 'Jordan Exclusive',
-    normalPrice: '149.99',
-    salePrice: '129.99',
-    description: 'Exclusive Jordan sneakers and apparel',
-    brand: 'Sports'
-  },
+
   {
     id: 'louis-vuitton',
     image: louisVuittonImage,
@@ -184,15 +159,7 @@ const gameCards: GameCard[] = [
     description: 'Premium Louis Vuitton fashion items',
     brand: 'Luxury'
   },
-  {
-    id: 'winter',
-    image: winterImage,
-    title: 'Winter Collection',
-    normalPrice: '79.99',
-    salePrice: '69.99',
-    description: 'Winter themed mystery box',
-    brand: 'Seasonal'
-  },
+
   {
     id: 'bmw',
     image: bmwImage,
@@ -220,33 +187,8 @@ const gameCards: GameCard[] = [
     description: 'Premium sneaker collection box',
     brand: 'Fashion'
   },
-  {
-    id: 'wolf-of-wall-street',
-    image: wolfImage,
-    title: 'Wolf of Wall Street',
-    normalPrice: '199.99',
-    salePrice: '169.99',
-    description: 'Luxury lifestyle themed box',
-    brand: 'Lifestyle'
-  },
-  {
-    id: 'ufc',
-    image: ufcImage,
-    title: 'UFC Box',
-    normalPrice: '89.99',
-    salePrice: '79.99',
-    description: 'Ultimate Fighting Championship themed box',
-    brand: 'Sports'
-  },
-  {
-    id: 'victoria-secret',
-    image: victoriaImage,
-    title: "Victoria's Secret",
-    normalPrice: '99.99',
-    salePrice: '89.99',
-    description: 'Luxury lingerie and beauty box',
-    brand: 'Fashion'
-  },
+
+
   {
     id: 'rolex-daytona',
     image: rolexDaytonaImage,
@@ -274,15 +216,7 @@ const gameCards: GameCard[] = [
     description: 'Luxury Italian fashion box',
     brand: 'Luxury'
   },
-  {
-    id: 'fortnite',
-    image: fortniteImage,
-    title: 'Fortnite',
-    normalPrice: '39.99',
-    salePrice: '34.99',
-    description: 'Fortnite gaming themed box',
-    brand: 'Gaming'
-  },
+
   {
     id: 'rolls-royce',
     image: rollsRoyceImage,
@@ -310,15 +244,7 @@ const gameCards: GameCard[] = [
     description: 'Italian luxury automotive box',
     brand: 'Automotive'
   },
-  {
-    id: 'mercedes',
-    image: mercedesImage,
-    title: 'Mercedes',
-    normalPrice: '299.99',
-    salePrice: '249.99',
-    description: 'German luxury automotive box',
-    brand: 'Automotive'
-  },
+
   {
     id: 'topg',
     image: topgImage,
@@ -382,15 +308,7 @@ const gameCards: GameCard[] = [
     description: 'Apple tech themed box',
     brand: 'Tech'
   },
-  {
-    id: 'barbie',
-    image: barbieImage,
-    title: 'Barbie',
-    normalPrice: '49.99',
-    salePrice: '39.99',
-    description: 'Barbie collectibles box',
-    brand: 'Toys'
-  },
+
   {
     id: 'cartier',
     image: cartierImage,
@@ -417,16 +335,8 @@ const gameCards: GameCard[] = [
     salePrice: '349.99',
     description: 'Luxury Swiss watch themed box',
     brand: 'Luxury'
-  },
-  {
-    id: 'high-roller',
-    image: highRollerImage,
-    title: 'High Roller',
-    normalPrice: '1999.99',
-    salePrice: '1799.99',
-    description: 'Ultra-premium luxury items box',
-    brand: 'Luxury'
   }
+
 ];
 
 // Renk değişiklikleri için stil güncellemeleri
@@ -546,7 +456,7 @@ const BoxOpening: React.FC = () => {
     // Drops verilerinin varlığını kontrol et
     if (!userStats?.drops || Object.keys(userStats.drops).length === 0) {
       return (
-        <Box
+        <Box //@ts-ignore
           sx={{
             textAlign: 'center',
             py: 3,
@@ -554,7 +464,7 @@ const BoxOpening: React.FC = () => {
             background: commonStyles.bgGradient,
             borderRadius: '15px',
             border: `1px solid ${commonStyles.borderColor}`,
-            maxWidth: '600px',
+            maxWidth: '600px', 
             margin: '0 auto'
           }}
         >
@@ -805,7 +715,8 @@ const BoxOpening: React.FC = () => {
                   </Box>
 
                   {/* Content */}
-                  <Box sx={{ p: 2 }}>
+                  <Box //ts-ignore
+                  sx={{ p: 2 }}>
                     {/* Title and Source */}
                     <Box sx={{ mb: 2 }}>
                       <Typography variant="h6" sx={{ 
@@ -866,7 +777,8 @@ const BoxOpening: React.FC = () => {
   if (loading) {
     return (
       <Container maxWidth="lg">
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+        <Box  //ts-ignore  
+      sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
           <CircularProgress />
         </Box>
       </Container>

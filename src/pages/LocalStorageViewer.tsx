@@ -7,9 +7,9 @@ import OutboundIcon from '@mui/icons-material/Outbound';
 import { CheckCircleOutline } from '@mui/icons-material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';import { useNavigate } from 'react-router-dom';
 import TokenSwap from "./SwapComponent"; // TokenSwap bileşenini eklediğiniz yer
-import logo5 from '../assets/darkLogo.png';
+import logo5 from '../assets/booba-logo.png';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { doc, onSnapshot, getFirestore, getDoc } from "firebase/firestore";
+import { doc, onSnapshot, getFirestore, getDoc } from "firebase/firestore"; 
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './firebaseConfig';
 import WebApp from "@twa-dev/sdk";
@@ -408,10 +408,11 @@ const GradientBox = styled(Box)(() => ({
   return (
     <WithTourSection sectionId="wallet-section">
       <ThemeProvider theme={theme}>
-        <Box mt={"5vh"}>
+        <Box // @ts-ignore
+         mt={"5vh"}>
           <Box px={1} >
             <GradientBox>
-              <Box 
+              <Box // @ts-ignore
                 sx={{ 
                   display: 'flex', 
                   flexDirection: 'column',
@@ -679,7 +680,7 @@ const GradientBox = styled(Box)(() => ({
   <DepositDrawer
     open={openDepositDrawer}
     onClose={() => setOpenDepositDrawer(false)}
-  />
+  /> 
 
   <WithdrawDrawer
     open={openWithdrawDrawer}
