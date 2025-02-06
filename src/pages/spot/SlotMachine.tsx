@@ -7,7 +7,6 @@ import SpinAndDepositButtons from './SpinAndDepositButtons';
 import DepositDrawer from '../../components/WalletDrawers/DepositDrawer';
 import { keyframes } from "@emotion/react";
 import StarIcon from '@mui/icons-material/Star';
-import backgroundImage from '../../assets/Artboard 1.png'; // PNG dosyasını import edin
 import SnackbarComponent from './SnackbarComponent';
 import {Box, Button,  Modal, Typography,  Paper } from '@mui/material';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
