@@ -87,7 +87,14 @@ const navigate = useNavigate();
           setTelegramUserId(user.id.toString());
           console.log(`Telegram User ID initialized: ${user.id}`);
         } else {
-          console.error('Telegram User ID not found.');
+          // Attempt to retrieve from local storage if WebApp user ID is not found
+          const localUserId = localStorage.getItem("telegramUserId");
+          if (localUserId) {
+            setTelegramUserId(localUserId);
+            console.log(`Telegram User ID retrieved from local storage: ${localUserId}`);
+          } else {
+            console.error('Telegram User ID not found in local storage.');
+          }
         }
       };
       initTelegramUserId();
