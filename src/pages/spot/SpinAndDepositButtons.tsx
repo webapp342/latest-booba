@@ -111,7 +111,7 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
       case 'ticket':
         return '1 Ticket';
       case 'bblip':
-        return '5 BBLIP';
+        return '25 BBLIP';
       default:
         return '';
     }
@@ -210,8 +210,8 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
         >
           {showTopUpButton ? (
             <>
-              <Box
-                sx={{
+              <Box //@ts-ignore
+                sx={{ 
                   width: '4px',
                   height: '4px',
                   backgroundColor: '#FF6B6B',
@@ -253,7 +253,7 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
                 : selectedSpinType === 'bblip'
                 ? 'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)'
                 : 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
-              color: '#ffffff',
+              color: 'black',
               fontSize: '1rem',
               fontWeight: 'bold',
               borderRadius: '8px',

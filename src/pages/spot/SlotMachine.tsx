@@ -300,7 +300,7 @@ export const SlotMachine: FC = () => {
       if (gameState.selectedSpinType === 'total' && userData.total < 200) {
         setUiState({ type: 'SET_DRAWER', payload: true });
         return;
-      } else if (gameState.selectedSpinType === 'bblip' && userData.bblip < 5000) {
+      } else if (gameState.selectedSpinType === 'bblip' && userData.bblip < 25000) {
         setUiState({ type: 'SET_DRAWER', payload: true });
         return;
       } else if (gameState.selectedSpinType === 'ticket' && userData.tickets < 1) {
@@ -316,7 +316,7 @@ export const SlotMachine: FC = () => {
         });
       } else if (gameState.selectedSpinType === 'bblip') {
         await updateDoc(userRef, {
-          bblip: increment(-5000),
+          bblip: increment(-25000),
           hasSpinned: true
         });
       } else if (gameState.selectedSpinType === 'ticket') {
@@ -788,7 +788,7 @@ useEffect(() => {
                       showTopUpButton={
                         (gameState.selectedSpinType === 'ticket' && gameState.tickets === 0) ||
                         (gameState.selectedSpinType === 'total' && gameState.total < 200) ||
-                        (gameState.selectedSpinType === 'bblip' && gameState.bblip < 5000)
+                        (gameState.selectedSpinType === 'bblip' && gameState.bblip < 25000)
                       }
                     />
 
