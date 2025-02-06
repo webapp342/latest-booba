@@ -11,6 +11,8 @@ const navItems = [
   { label: 'Stats', path: '/latest-booba/' },
   { label: 'Tasks', path: '/latest-booba/tasks' },
   { label: 'Wallet', path: '/latest-booba/spin' }, 
+    { label: '999x Crash', path: '/latest-booba/slot' }, 
+
 ];
 
 function Brand() {
@@ -78,7 +80,7 @@ function Brand() {
         }
       }
     }}>
-      <Box 
+      <Box //@ts-ignore
         alignItems="center" 
         sx={{
           backgroundColor: 'transparent', 

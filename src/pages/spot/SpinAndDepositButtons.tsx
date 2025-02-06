@@ -29,6 +29,8 @@ interface SpinAndDepositButtonsProps {
   handleSpinTypeChange: (event: React.ChangeEvent<{}>, value: string) => void;
   isSpinning: boolean;
   showTopUpButton: boolean;
+  openSwapDrawer?: () => void;
+  navigateToTasks?: () => void;
 }
 
 const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
@@ -40,7 +42,9 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
   openDepositDrawer,
   handleSpinTypeChange,
   isSpinning,
-  showTopUpButton
+  showTopUpButton,
+  openSwapDrawer,
+  navigateToTasks
 }) => {
   const [prevTotal, setPrevTotal] = useState(total);
   const [prevTickets, setPrevTickets] = useState(tickets);
@@ -224,12 +228,31 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
 
         {showTopUpButton ? (
           <Button
-            onClick={openDepositDrawer}
+            onClick={() => {
+              switch (selectedSpinType) {
+                case 'ticket':
+                  if (openSwapDrawer) { 
+                    openSwapDrawer();
+                  }
+                  break;
+                case 'bblip':
+                  if (navigateToTasks) {
+                    navigateToTasks();
+                  }
+                  break;
+                default:
+                  openDepositDrawer();
+              }
+            }}
             variant="contained"
             sx={{
               width: '100%',
               py: 1.5,
-              background: 'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)',
+              background: selectedSpinType === 'total' 
+                ? 'linear-gradient(135deg, #FF4B4B 0%, #FF0000 100%)'
+                : selectedSpinType === 'bblip'
+                ? 'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)'
+                : 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
               color: '#ffffff',
               fontSize: '1rem',
               fontWeight: 'bold',
@@ -237,7 +260,11 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
               textTransform: 'none',
             }}
           >
-            Top Up Now
+            {selectedSpinType === 'ticket' 
+              ? 'Buy Ticket'
+              : selectedSpinType === 'bblip'
+              ? 'Earn BBLIP'
+              : 'Deposit TON'}
           </Button>
         ) : (
           <Button

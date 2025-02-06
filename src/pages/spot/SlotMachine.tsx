@@ -5,13 +5,14 @@ import type { CounterRef } from './SlotDisplay';
 import BalanceSelector from './BalanceSelector';
 import SpinAndDepositButtons from './SpinAndDepositButtons';
 import DepositDrawer from '../../components/WalletDrawers/DepositDrawer';
+import SwapDrawer from '../../components/WalletDrawers/SwapDrawer';
 import { keyframes } from "@emotion/react";
 import StarIcon from '@mui/icons-material/Star';
 import SnackbarComponent from './SnackbarComponent';
 import {Box, Button,  Modal, Typography,  Paper } from '@mui/material';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { motion } from "framer-motion";
-import { doc, onSnapshot,  getDoc } from 'firebase/firestore';
+import { doc, onSnapshot,  getDoc, updateDoc, increment } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 import { useWindowSize } from 'react-use';
 import { useFirebaseSync } from '../../hooks/useFirebaseSync';
@@ -19,6 +20,7 @@ import WinNotifications from './WinNotifications';
 import boobaLogo from '../../assets/booba-logo.png';
 import ticketLogo from '../../assets/ticket.png';
 import tonLogo from '../../assets/ton_symbol.png';
+import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme({
   typography: {
@@ -44,6 +46,7 @@ interface GameState {
 
 interface UIState {
   drawerOpen: boolean;
+  swapDrawerOpen: boolean;
   snackbarOpen: boolean;
   winModalOpen: boolean;
   winAmount: string;
@@ -66,6 +69,7 @@ type GameAction =
 
 type UIAction =
   | { type: 'SET_DRAWER'; payload: boolean }
+  | { type: 'SET_SWAP_DRAWER'; payload: boolean }
   | { type: 'SET_SNACKBAR'; payload: boolean }
   | { type: 'SET_WIN_MODAL'; payload: boolean }
   | { type: 'SET_POWER'; payload: boolean }
@@ -108,6 +112,8 @@ const uiReducer = (state: UIState, action: UIAction): UIState => {
   switch (action.type) {
     case 'SET_DRAWER':
       return { ...state, drawerOpen: action.payload };
+    case 'SET_SWAP_DRAWER':
+      return { ...state, swapDrawerOpen: action.payload };
     case 'SET_SNACKBAR':
       return { ...state, snackbarOpen: action.payload };
     case 'SET_WIN_MODAL':
@@ -174,6 +180,7 @@ const getTokenLogo = (token: string) => {
 };
 
 export const SlotMachine: FC = () => {
+  const navigate = useNavigate();
   // Local state for UI
   const [gameState, dispatch] = React.useReducer(gameReducer, {
     numbers: '000000',
@@ -187,6 +194,7 @@ export const SlotMachine: FC = () => {
 
   const [uiState, setUiState] = React.useReducer(uiReducer, {
     drawerOpen: false,
+    swapDrawerOpen: false,
     snackbarOpen: false,
     winModalOpen: false,
     winAmount: '',
@@ -275,78 +283,67 @@ export const SlotMachine: FC = () => {
 
   // Handle spin with both local and Firestore updates
   const handleSpin = useCallback(async () => {
-    console.log('Spin başladı');
+    console.log('=== SPIN BAŞLADI ===');
     
-    // Immediately set spinning state to prevent multiple clicks
-    setUiState({ type: 'SET_SPINNING', payload: true });
-    
-    // Validation checks using local state
-    if (gameState.selectedSpinType === 'ticket' && gameState.tickets === 0) {
-      setUiState({ type: 'SET_SPINNING', payload: false });
-      setUiState({ type: 'SET_DRAWER', payload: true });
-      return;
-    }
-    if (gameState.selectedSpinType === 'total' && gameState.total < 200) {
-      setUiState({ type: 'SET_SPINNING', payload: false });
-      setUiState({ type: 'SET_DRAWER', payload: true });
-      return;
-    }
-    if (gameState.selectedSpinType === 'bblip' && gameState.bblip < 5000) {
-      setUiState({ type: 'SET_SPINNING', payload: false });
-      setUiState({ type: 'SET_DRAWER', payload: true });
-      return;
-    }
-
     try {
-      // STEP 1: Immediately decrease local balance
-      if (gameState.selectedSpinType === 'ticket') {
-        dispatch({ type: 'DECREASE_TICKETS', payload: 1 });
-      } else if (gameState.selectedSpinType === 'total') {
-        dispatch({ type: 'DECREASE_TOTAL', payload: 200 });
-      } else if (gameState.selectedSpinType === 'bblip') {
-        dispatch({ type: 'DECREASE_BBLIP', payload: 5000 });
-      }
+      // 1. ADIM: Firebase'den kullanıcı bilgilerini al
+      const userRef = doc(db, 'users', telegramUserId!);
+      const userSnap = await getDoc(userRef);
+      if (!userSnap.exists()) throw new Error('User not found');
+      const userData = userSnap.data();
 
-      // STEP 2: Update Firebase
-      try {
-        if (gameState.selectedSpinType === 'ticket') {
-          await updateBalance('tickets', gameState.tickets - 1);
-        } else if (gameState.selectedSpinType === 'total') {
-          await updateBalance('total', gameState.total - 200);
-        } else if (gameState.selectedSpinType === 'bblip') {
-          await updateBalance('bblip', gameState.bblip - 5000);
-        }
-      } catch (error) {
-        // If Firebase update fails, revert local state
-        console.error('Firebase update error:', error);
-        if (gameState.selectedSpinType === 'ticket') {
-          dispatch({ type: 'UPDATE_BALANCES', payload: { tickets: gameState.tickets + 1 } });
-        } else if (gameState.selectedSpinType === 'total') {
-          dispatch({ type: 'UPDATE_BALANCES', payload: { total: gameState.total + 200 } });
-        } else if (gameState.selectedSpinType === 'bblip') {
-          dispatch({ type: 'UPDATE_BALANCES', payload: { bblip: gameState.bblip + 5000 } });
-        }
-        setUiState({ type: 'SET_SPINNING', payload: false });
+      // İlk spin kontrolü
+      const isFirstSpin = !userData.hasSpinned;
+      console.log('İlk spin mi?:', isFirstSpin);
+
+      // Bakiye kontrolü
+      if (gameState.selectedSpinType === 'total' && userData.total < 200) {
+        setUiState({ type: 'SET_DRAWER', payload: true });
+        return;
+      } else if (gameState.selectedSpinType === 'bblip' && userData.bblip < 5000) {
+        setUiState({ type: 'SET_DRAWER', payload: true });
+        return;
+      } else if (gameState.selectedSpinType === 'ticket' && userData.tickets < 1) {
+        setUiState({ type: 'SET_DRAWER', payload: true });
         return;
       }
 
-      // STEP 3: Start animation process
+      // 2. ADIM: Direkt Firebase'den ücreti düş
+      if (gameState.selectedSpinType === 'total') {
+        await updateDoc(userRef, {
+          total: increment(-200),
+          hasSpinned: true // İlk spin işaretini güncelle
+        });
+      } else if (gameState.selectedSpinType === 'bblip') {
+        await updateDoc(userRef, {
+          bblip: increment(-5000),
+          hasSpinned: true
+        });
+      } else if (gameState.selectedSpinType === 'ticket') {
+        await updateDoc(userRef, {
+          tickets: increment(-1),
+          hasSpinned: true
+        });
+      }
+
+      // 3. ADIM: Animasyonları başlat
+      setUiState({ type: 'SET_SPINNING', payload: true });
       setUiState({ type: 'SET_WIN_MODAL', payload: false });
       dispatch({ type: 'SET_WIN_AMOUNT', payload: '000000' });
       dispatch({ type: 'SET_NUMBERS', payload: '000000' });
 
-      // Generate new numbers and animate
-      const newNumbers = generateSpinNumbers(gameState.selectedBalance, gameState.selectedSpinType);
+      // Kazanç hesaplama
+      const newNumbers = generateSpinNumbers(gameState.selectedBalance, gameState.selectedSpinType, isFirstSpin);
       const winningNumber = newNumbers.join('');
-      console.log('Üretilen kazanç:', winningNumber);
+      console.log('Üretilen kazanç:', winningNumber, isFirstSpin ? '(İlk spin bonusu!)' : '');
       
-      // Enhanced animation timing configuration
+      // Animation timing
       const baseSpinDuration = 2.5;
       const spinVariation = 0.3;
       const delayBetweenDigits = 0.15;
       const minSpinDuration = 1.5;
 
-      // Start animations with enhanced timing
+      // Start animations
       displayRef.current.forEach((ref, index) => {
         if (!ref) return;
         
@@ -363,7 +360,6 @@ export const SlotMachine: FC = () => {
           return;
         }
 
-        // Calculate dynamic duration and delay for each digit
         const randomVariation = Math.random() * spinVariation;
         const spinDelay = index * delayBetweenDigits;
         const duration = Math.max(minSpinDuration, baseSpinDuration + randomVariation + (index * 0.15));
@@ -377,29 +373,28 @@ export const SlotMachine: FC = () => {
             easingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
           });
 
-          // Handle win when the last digit finishes
+          // 4. ADIM: En son kazancı direkt Firebase'e ekle
           if (index === 5) {
             setTimeout(async () => {
               const winValue = Number(winningNumber);
               dispatch({ type: 'SET_NUMBERS', payload: winningNumber });
               dispatch({ type: 'SET_WIN_AMOUNT', payload: winningNumber });
               
-              // Update balance with win amount
               if (winValue > 0) {
                 try {
-                  // Update Firebase directly
                   if (gameState.selectedBalance === 'total') {
-                    await updateBalance('total', gameState.total + winValue);
+                    await updateDoc(userRef, {
+                      total: increment(winValue)
+                    });
                   } else if (gameState.selectedBalance === 'bblip') {
-                    await updateBalance('bblip', gameState.bblip + winValue);
+                    await updateDoc(userRef, {
+                      bblip: increment(winValue)
+                    });
                   }
-                  // Local state will be updated by the Firebase listener
                 } catch (error) {
                   console.error('Error updating win balance:', error);
                 }
               }
-              
-              // handleAnimationComplete fonksiyonu çağrılacak ve orada spinning state false olacak
             }, duration * 1000);
           }
         }, spinDelay * 1000);
@@ -408,9 +403,11 @@ export const SlotMachine: FC = () => {
     } catch (error) {
       console.error('Error during spin:', error);
       setUiState({ type: 'SET_SPINNING', payload: false });
-      // Show error message to user
     }
-  }, [gameState, updateBalance, setUiState, dispatch]);
+  }, [gameState, updateBalance, setUiState, dispatch, telegramUserId]);
+
+  // İlk spin için özel kazanç hesaplama fonksiyonu
+ 
 
   // Modal close handler
   const handleCloseModal = useCallback(() => {
@@ -781,6 +778,11 @@ useEffect(() => {
                       selectedSpinType={gameState.selectedSpinType}
                       handleSpin={handleSpin}
                       openDepositDrawer={() => setUiState({ type: 'SET_DRAWER', payload: true })}
+                      openSwapDrawer={() => setUiState({ type: 'SET_SWAP_DRAWER', payload: true })}
+                      navigateToTasks={() => {
+                        // Navigate to tasks tab using useNavigate
+                        navigate('/latest-booba/tasks');
+                      }}
                       handleSpinTypeChange={handleSpinTypeChange}
                       isSpinning={uiState.isSpinning}
                       showTopUpButton={
@@ -994,6 +996,11 @@ useEffect(() => {
         <DepositDrawer
           open={uiState.drawerOpen}
           onClose={() => setUiState({ type: 'SET_DRAWER', payload: false })}
+        />
+
+        <SwapDrawer
+          open={uiState.swapDrawerOpen}
+          onClose={() => setUiState({ type: 'SET_SWAP_DRAWER', payload: false })}
         />
 
         <SnackbarComponent 
