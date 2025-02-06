@@ -1,24 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Tabs, Tab, AppBar, Typography, Box } from '@mui/material';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import WarningAmberIcon from '@mui/icons-material/WarningAmber';
-import logo5 from '../../assets/logo5.jpg'
-
+import boobaLogo from '../../assets/booba-logo.png';
+import ticketLogo from '../../assets/ticket.png';
+import tonLogo from '../../assets/ton_symbol.png';
 
 const theme = createTheme({
   typography: {
     fontFamily: "monospace",
   },
-
 });
 
-
-// Sayıyı 6 haneli formatta (000.000) göstermek için fonksiyon
+// Format amount function
 const formatAmount = (amount: number) => {
-  const paddedAmount = amount.toString().padStart(6, '0'); // En az 6 haneli yapmak için başına sıfır ekler
-  const integerPart = paddedAmount.slice(0, 3); // İlk 3 haneli kısmı alır
-  const decimalPart = paddedAmount.slice(3); // Sonraki 3 haneli kısmı alır
-  return `${parseInt(integerPart, 10)}.${decimalPart}`; // Tam sayı kısmındaki sıfırları kaldırır
+  const paddedAmount = amount.toString().padStart(6, '0');
+  const integerPart = paddedAmount.slice(0, 3);
+  const decimalPart = paddedAmount.slice(3);
+  return `${parseInt(integerPart, 10)}.${decimalPart}`;
 };
 
 interface SpinAndDepositButtonsProps {
@@ -28,10 +26,10 @@ interface SpinAndDepositButtonsProps {
   selectedSpinType: string;
   handleSpin: () => void;
   openDepositDrawer: () => void;
-  handleSpinTypeChange: (event: React.SyntheticEvent, value: string) => void;
+  handleSpinTypeChange: (event: React.ChangeEvent<{}>, value: string) => void;
+  isSpinning: boolean;
+  showTopUpButton: boolean;
 }
-
-
 
 const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
   total,
@@ -41,249 +39,255 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
   handleSpin,
   openDepositDrawer,
   handleSpinTypeChange,
+  isSpinning,
+  showTopUpButton
 }) => {
-  const [loading, setLoading] = useState(false);
   const [prevTotal, setPrevTotal] = useState(total);
   const [prevTickets, setPrevTickets] = useState(tickets);
   const [prevBblip, setPrevBblip] = useState(bblip);
   const [amountStyle, setAmountStyle] = useState({});
 
-
-  // useEffect to update previous values when actual values change
+  // Balance change effects
   useEffect(() => {
-    // Check if the total has increased or decreased
     if (total > prevTotal) {
-      setAmountStyle({ color: 'green' });
-      setTimeout(() => setAmountStyle({}), 500); // Reset the color after a short time
+      setAmountStyle({ color: '#4CAF50' });
+      setTimeout(() => setAmountStyle({}), 500);
     } else if (total < prevTotal) {
-      setAmountStyle({ color: 'red' });
-      setTimeout(() => setAmountStyle({}), 500); // Reset the color after a short time
+      setAmountStyle({ color: '#FF6B6B' });
+      setTimeout(() => setAmountStyle({}), 500);
     }
-    setPrevTotal(total); // Update prevTotal after checking
+    setPrevTotal(total);
   }, [total, prevTotal]);
 
   useEffect(() => {
-    // Check if tickets have increased or decreased
     if (tickets > prevTickets) {
-      setAmountStyle({ color: 'green' });
-      setTimeout(() => setAmountStyle({}), 500); // Reset the color after a short time
+      setAmountStyle({ color: '#4CAF50' });
+      setTimeout(() => setAmountStyle({}), 500);
     } else if (tickets < prevTickets) {
-      setAmountStyle({ color: 'red' });
-      setTimeout(() => setAmountStyle({}), 500); // Reset the color after a short time
+      setAmountStyle({ color: '#FF6B6B' });
+      setTimeout(() => setAmountStyle({}), 500);
     }
-    setPrevTickets(tickets); // Update prevTickets after checking
+    setPrevTickets(tickets);
   }, [tickets, prevTickets]);
 
   useEffect(() => {
-    // Check if bblip has increased or decreased
     if (bblip > prevBblip) {
-      setAmountStyle({ color: 'green' });
-      setTimeout(() => setAmountStyle({}), 500); // Reset the color after a short time
+      setAmountStyle({ color: '#4CAF50' });
+      setTimeout(() => setAmountStyle({}), 500);
     } else if (bblip < prevBblip) {
-      setAmountStyle({ color: 'red' });
-      setTimeout(() => setAmountStyle({}), 500); // Reset the color after a short time
+      setAmountStyle({ color: '#FF6B6B' });
+      setTimeout(() => setAmountStyle({}), 500);
     }
-    setPrevBblip(bblip); // Update prevBblip after checking
+    setPrevBblip(bblip);
   }, [bblip, prevBblip]);
 
-  // Spin etkinlik durumu
-  const isSpinEnabled =
-    (selectedSpinType === 'total' && total >= 200) ||
-    (selectedSpinType === 'ticket' && tickets >= 1) ||
-    (selectedSpinType === 'bblip' && bblip >= 5000);
-
   const handleSpinClick = () => {
-    setLoading(true);
     handleSpin();
-    setTimeout(() => setLoading(false), 2300); // 20 saniye sonra loading durumunu kaldır
   };
 
- 
+  // Format available amount text
+  const getAvailableAmount = () => {
+    switch (selectedSpinType) {
+      case 'total':
+        return `Available: ${formatAmount(total)} TON`;
+      case 'ticket':
+        return `Available: ${tickets} Tickets`;
+      case 'bblip':
+        return `Available: ${formatAmount(bblip)} BBLIP`;
+      default:
+        return '';
+    }
+  };
 
-  // Dinamik Spin Button Text
-  let spinButtonText = '';
-  if (selectedSpinType === 'total') {
-    spinButtonText = `Spin with 0.2 TON`;
-  } else if (selectedSpinType === 'ticket') {
-    spinButtonText = `Spin with 1 Ticket`;
-  } else if (selectedSpinType === 'bblip') {
-    spinButtonText = `Spin with 5 BBLIP`;
-  }
-
-  // Miktarları formatlayarak göster
-  let availableAmount = '';
-  if (selectedSpinType === 'total') {
-    availableAmount = `Available : ${formatAmount(total)} $TON available`;
-  } else if (selectedSpinType === 'ticket') {
-    availableAmount = `Available : ${tickets} Tickets available`;
-  } else if (selectedSpinType === 'bblip') {
-    availableAmount = `Available : ${formatAmount(bblip)}  $BBLIP `;
-  }
+  // Get minimum required amount text
+  const getMinimumRequired = () => {
+    switch (selectedSpinType) {
+      case 'total':
+        return '0.2 TON';
+      case 'ticket':
+        return '1 Ticket';
+      case 'bblip':
+        return '5 BBLIP';
+      default:
+        return '';
+    }
+  };
 
   return (
     <ThemeProvider theme={theme}>
-
-    <Box // @ts-ignore
-    sx={{
-      margin: '0 ',
-      borderRadius: 1,
-      textAlign: 'center',
-      color: 'black',
-    }}
-  >
-    
-
-
-
-
-      <AppBar position="static" color="default" sx={{backgroundColor: '#282828',   borderRadius: 3 ,     boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)', // Hafif gölge
-}}>
-      <Tabs
-  value={selectedSpinType}
-  onChange={handleSpinTypeChange}
-  indicatorColor="primary"
-  textColor="primary"
-  variant="fullWidth"
-  
-  aria-label="spin type tabs"
-  sx={{
-    borderRadius: 3,
-
-    boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)', // Hafif gölge
-    '& .MuiTabs-indicator': {
-      backgroundColor: '#f7cf6d',
-      height: '4px', // Gösterge çizgisini biraz kalın yapar
-      borderRadius: 2,
-    },
-    '& .MuiTab-root': {
-      fontSize: '0.8rem',
-      fontWeight: 'bold',
-      color: '#333',
-       
-      transition: 'all 0.3s ease',
-      padding: 1,
-      '&:hover': {
-        backgroundColor: '#f7cf6d', // Hover sırasında hafif yeşil bir arka plan
-  
-
-      },
-    },
-    '& .MuiTab-root.Mui-selected': {
-      backgroundColor: '#f7cf6d', // Seçili sekme için daha belirgin bir renk
-      boxShadow:'0px 0px 32px rgba(255, 215, 0, 0.8)',
-      borderRadius: 1,
-
-    },
-  }}
->
-  <Tab
-    value="ticket"
-    icon={
-      <img
-        src="https://cryptologos.cc/logos/telcoin-tel-logo.png?v=040"
-        alt="Bitcoin Logo"
-        style={{ width: '30px', height: '30px' }}
-      />
-    }
-    aria-label="Ticket"
-  />
-  <Tab
-    value="total"
-    icon={
-      <img
-        src="https://cryptologos.cc/logos/toncoin-ton-logo.png?v=040"
-        alt="Autonio Logo"
-        style={{ width: '30px', height: '30px' }}
-      />
-    }
-    aria-label="TON"
-  />
-  <Tab
-    value="bblip"
-    icon={
-      <img
-        src={logo5}
-        alt="TON Logo"
-        style={{borderRadius:'50%', width: '30px', height: '30px' }}
-      />
-    }
-    aria-label="BBlip"
-  />
-</Tabs>
-
-      </AppBar>
-
-      {/* Seçilen Spin Türü ve Miktarının Gösterilmesi */}
-      <Typography variant="body2" sx={{color: 'white',fontSize:'0.7rem', marginTop: '12px', fontWeight: 'light', ...amountStyle }}>
-        {availableAmount}
-      </Typography>
-
-
-
-        {/* Minimum Required Subtitle */}
-       
-
-      {/* Spin ve Deposit Butonları */}
-      {isSpinEnabled || loading ? (
-        <Button
-          onClick={handleSpinClick}
-          disabled={loading}
+      <Box //@ts-ignore
+        sx={{
+          margin: '0',
+          borderRadius: 2,
+          textAlign: 'center',
+        }}
+      >
+        <AppBar 
+          position="static" 
           sx={{
-            backgroundColor: loading ? '#f7cf6d' : '#f7cf6d', // Yüklenme sırasında gri renk
-            color: 'black',
-            mt: 1,
-            
+            backgroundColor: 'rgba(26,31,46,0.9)',
             borderRadius: 2,
-            fontWeight: 'bold',
-            padding: '10px 20px',
-            cursor: loading ? 'not-allowed' : 'pointer',
-            position: 'relative',
+            boxShadow: 'none',
           }}
         >
-          {loading ? 'Spinning...' : spinButtonText}
-        </Button>
-      ) : (
-        <Button
-                onClick={() => openDepositDrawer()} 
-       sx={{
-            background: "#6f0101",
-            color: '#FF6666',
-            mt: 2,
-            textTransform: 'none', // Harflerin büyük görünmesini engeller
-            width: '100%',
-            padding: '10px 20px',
-            cursor: 'pointer',
+          <Tabs
+            value={selectedSpinType}
+            onChange={handleSpinTypeChange}
+            variant="fullWidth"
+            sx={{
+              minHeight: '50px',
+              '& .MuiTabs-indicator': {
+                backgroundColor: '#FFD700',
+                height: '2px',
+              },
+              '& .MuiTabs-flexContainer': {
+                gap: '4px',
+                padding: '4px',
+              },
+              '& .MuiTab-root': {
+                minHeight: '50px',
+                borderRadius: '8px',
+                color: 'rgba(255, 255, 255, 0.7)',
+                transition: 'all 0.2s ease',
+                '&.Mui-selected': {
+                  color: '#FFD700',
+                  background: 'rgba(13,15,23,0.8)',
+                },
+              },
+            }}
+          >
+            <Tab
+              value="ticket"
+              icon={
+                <img
+                  src={ticketLogo}
+                  alt="Ticket"
+                  style={{ width: '24px', height: '24px' }}
+                />
+              }
+            />
+            <Tab
+              value="total"
+              icon={
+                <img
+                  src={tonLogo}
+                  alt="TON"
+                  style={{ width: '24px', height: '24px' }}
+                />
+              }
+            />
+            <Tab
+              value="bblip"
+              icon={
+                <img
+                  src={boobaLogo}
+                  alt="BBLIP"
+                  style={{ width: '24px', height: '24px', borderRadius: '50%' }}
+                />
+              }
+            />
+          </Tabs>
+        </AppBar>
+
+        <Typography
+          variant="body2"
+          sx={{
+            color: showTopUpButton ? '#FF6B6B' : 'white',
+            fontSize: '0.8rem',
+            mt: 1.5,
+            mb: 1.5,
+            fontWeight: 500,
+            ...(!showTopUpButton && amountStyle),
+            transition: 'color 0.3s ease',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
-            <WarningAmberIcon sx={{ marginRight: '8px', fontSize: '20px' }} />
-          Top Up & Keep Spinning ! 
-        </Button>
-      )}
+          {showTopUpButton ? (
+            <>
+              <Box
+                sx={{
+                  width: '4px',
+                  height: '4px',
+                  backgroundColor: '#FF6B6B',
+                  borderRadius: '50%',
+                  mr: 1,
+                }}
+              />
+              You need at least {getMinimumRequired()} to spin
+            </>
+          ) : (
+            getAvailableAmount()
+          )}
+        </Typography>
 
-      {!isSpinEnabled && !loading && (
-  <Typography
-    variant="body2"
-    sx={{
-      color: '#FF6666',
-      fontSize: '0.8rem',
-      marginTop: '10px',
-      fontWeight: 'light',
-    }}
-  >
-    You need at least{' '}
-    {selectedSpinType === 'total'
-      ? '0.2 TON'
-      : selectedSpinType === 'ticket'
-      ? '1 Ticket'
-      : '5 BBLIP'}{' '}
-    to spin
-  </Typography>
-)}
-
-      
-    </Box>
+        {showTopUpButton ? (
+          <Button
+            onClick={openDepositDrawer}
+            variant="contained"
+            sx={{
+              width: '100%',
+              py: 1.5,
+              background: 'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)',
+              color: '#ffffff',
+              fontSize: '1rem',
+              fontWeight: 'bold',
+              borderRadius: '8px',
+              textTransform: 'none',
+            }}
+          >
+            Top Up Now
+          </Button>
+        ) : (
+          <Button
+            onClick={handleSpinClick}
+            disabled={isSpinning}
+            variant="contained"
+            sx={{
+              width: '100%',
+              py: 1.5,
+              background: isSpinning 
+                ? 'rgba(102,102,102,0.9)'
+                : 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
+              color: isSpinning ? '#999999' : '#000000',
+              fontSize: '1rem',
+              fontWeight: 'bold',
+              borderRadius: '8px',
+              textTransform: 'none',
+              opacity: isSpinning ? 0.7 : 1,
+              '&:disabled': {
+                background: 'rgba(102,102,102,0.9)',
+                color: '#999999',
+                opacity: 0.7,
+              },
+            }}
+          >
+            {isSpinning ? (
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
+                <Box
+                  sx={{
+                    width: '16px',
+                    height: '16px',
+                    border: '2px solid rgba(255,255,255,0.3)',
+                    borderTop: '2px solid #ffffff',
+                    borderRadius: '50%',
+                    animation: 'spin 1s linear infinite',
+                    '@keyframes spin': {
+                      '0%': { transform: 'rotate(0deg)' },
+                      '100%': { transform: 'rotate(360deg)' },
+                    },
+                  }}
+                />
+                Spinning...
+              </Box>
+            ) : (
+              'Spin Now'
+            )}
+          </Button>
+        )}
+      </Box>
     </ThemeProvider>
-
   );
 };
 

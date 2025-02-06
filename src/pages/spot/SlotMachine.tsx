@@ -1,410 +1,449 @@
-import React, { FC, useState, useRef, useEffect } from 'react';
-import { generateRandomNumber } from './utils/random';
+import React, { FC, useState, useRef, useEffect, useCallback } from 'react';
+import { generateSpinNumbers } from '../../utils/spinNumbers';
 import SlotDisplay from './SlotDisplay';
+import type { CounterRef } from './SlotDisplay';
 import BalanceSelector from './BalanceSelector';
 import SpinAndDepositButtons from './SpinAndDepositButtons';
 import DepositDrawer from '../../components/WalletDrawers/DepositDrawer';
 import { keyframes } from "@emotion/react";
-import InfoIcon from "@mui/icons-material/Info";
 import StarIcon from '@mui/icons-material/Star';
 import backgroundImage from '../../assets/Artboard 1.png'; // PNG dosyasını import edin
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import SnackbarComponent from './SnackbarComponent';
-import {IconButton, Box, Button,  Modal, Typography, List, ListItem, ListItemText, } from '@mui/material';
+import {Box, Button,  Modal, Typography,  Paper } from '@mui/material';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { motion } from "framer-motion";
-import { doc, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
+import { doc, onSnapshot,  getDoc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
-import WebApp from '@twa-dev/sdk'; // Telegram WebApp SDK
-
 import { useWindowSize } from 'react-use';
-import { useNavigate } from 'react-router-dom';
-
-
+import { useFirebaseSync } from '../../hooks/useFirebaseSync';
+import WinNotifications from './WinNotifications';
+import boobaLogo from '../../assets/booba-logo.png';
+import ticketLogo from '../../assets/ticket.png';
+import tonLogo from '../../assets/ton_symbol.png';
 
 const theme = createTheme({
   typography: {
     fontFamily: "monospace",
   },
-
 });
 
+// Memoize child components
+const MemoizedSlotDisplay = React.memo(SlotDisplay);
+const MemoizedBalanceSelector = React.memo(BalanceSelector);
+const MemoizedSpinAndDepositButtons = React.memo(SpinAndDepositButtons);
+
+// Game State Types
+interface GameState {
+  numbers: string;
+  total: number;
+  tickets: number;
+  bblip: number;
+  selectedSpinType: string;
+  selectedBalance: string;
+  winAmount: string;
+}
+
+interface UIState {
+  drawerOpen: boolean;
+  snackbarOpen: boolean;
+  winModalOpen: boolean;
+  winAmount: string;
+  open: boolean;
+  openWinningToken: boolean;
+  isSpinning: boolean;
+}
+
+type GameAction = 
+  | { type: 'SET_NUMBERS'; payload: string }
+  | { type: 'UPDATE_BALANCES'; payload: { total?: number; bblip?: number; tickets?: number } }
+  | { type: 'SET_SPIN_TYPE'; payload: string }
+  | { type: 'SET_BALANCE'; payload: string }
+  | { type: 'DECREASE_TICKETS'; payload: number }
+  | { type: 'DECREASE_TOTAL'; payload: number }
+  | { type: 'DECREASE_BBLIP'; payload: number }
+  | { type: 'INCREASE_TOTAL'; payload: number }
+  | { type: 'INCREASE_BBLIP'; payload: number }
+  | { type: 'SET_WIN_AMOUNT'; payload: string };
+
+type UIAction =
+  | { type: 'SET_DRAWER'; payload: boolean }
+  | { type: 'SET_SNACKBAR'; payload: boolean }
+  | { type: 'SET_WIN_MODAL'; payload: boolean }
+  | { type: 'SET_POWER'; payload: boolean }
+  | { type: 'SET_WINNING_TOKEN'; payload: boolean }
+  | { type: 'SET_SPINNING'; payload: boolean };
+
+const gameReducer = (state: GameState, action: GameAction): GameState => {
+  switch (action.type) {
+    case 'SET_NUMBERS':
+      return { ...state, numbers: action.payload };
+    case 'UPDATE_BALANCES':
+      return {
+        ...state,
+        total: action.payload.total ?? state.total,
+        bblip: action.payload.bblip ?? state.bblip,
+        tickets: action.payload.tickets ?? state.tickets,
+      };
+    case 'SET_SPIN_TYPE':
+      return { ...state, selectedSpinType: action.payload };
+    case 'SET_BALANCE':
+      return { ...state, selectedBalance: action.payload };
+    case 'DECREASE_TICKETS':
+      return { ...state, tickets: state.tickets - action.payload };
+    case 'DECREASE_TOTAL':
+      return { ...state, total: state.total - action.payload };
+    case 'DECREASE_BBLIP':
+      return { ...state, bblip: state.bblip - action.payload };
+    case 'INCREASE_TOTAL':
+      return { ...state, total: state.total + action.payload };
+    case 'INCREASE_BBLIP':
+      return { ...state, bblip: state.bblip + action.payload };
+    case 'SET_WIN_AMOUNT':
+      return { ...state, winAmount: action.payload };
+    default:
+      return state;
+  }
+};
+
+const uiReducer = (state: UIState, action: UIAction): UIState => {
+  switch (action.type) {
+    case 'SET_DRAWER':
+      return { ...state, drawerOpen: action.payload };
+    case 'SET_SNACKBAR':
+      return { ...state, snackbarOpen: action.payload };
+    case 'SET_WIN_MODAL':
+      return { ...state, winModalOpen: action.payload };
+    case 'SET_POWER':
+      return { ...state, open: action.payload };
+    case 'SET_WINNING_TOKEN':
+      return { ...state, openWinningToken: action.payload };
+    case 'SET_SPINNING':
+      return { ...state, isSpinning: action.payload };
+    default:
+      return state;
+  }
+};
+
+// Add cache interface
+
+
+// Add these new animations
+
+const pulseAnimation = keyframes`
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+`;
+
+
+
+// Update the border animation
+
+// Update the border gradient animation
+const gradientBorder = keyframes`
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+`;
+
+// Add continuous hover animation
+
+
+// Add getTokenLogo function
+const getTokenLogo = (token: string) => {
+  switch (token) {
+    case 'total':
+      return tonLogo;
+    case 'bblip':
+      return boobaLogo;
+    case 'ticket':
+      return ticketLogo;
+    default:
+      return tonLogo;
+  }
+};
 
 export const SlotMachine: FC = () => {
-  const [numbers, setNumbers] = useState<string>('999999');
-  const [total, setTotal] = useState<number>(0); // Default value
-  const [tickets, setTickets] = useState<number>(5); // Default value
-  const [bblip, setBblip] = useState<number>(10000); // Default value
+  // Local state for UI
+  const [gameState, dispatch] = React.useReducer(gameReducer, {
+    numbers: '000000',
+    total: 0,
+    tickets: 5,
+    bblip: 10000,
+    selectedSpinType: 'total',
+    selectedBalance: 'total',
+    winAmount: '',
+  });
+
+  const [uiState, setUiState] = React.useReducer(uiReducer, {
+    drawerOpen: false,
+    snackbarOpen: false,
+    winModalOpen: false,
+    winAmount: '',
+    open: false,
+    openWinningToken: false,
+    isSpinning: false,
+  });
+
   const [telegramUserId, setTelegramUserId] = useState<string | null>(null);
+  const {  updateBalance } = useFirebaseSync(db, telegramUserId);
 
-  const [selectedSpinType, setSelectedSpinType] = useState<string>('total');
-  const [selectedBalance, setSelectedBalance] = useState<string>('total');
-  const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
-  const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
-  const [winAmount, setWinAmount] = useState<string>('');  // To store the win amount
-  const [winModalOpen, setWinModalOpen] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [openWinningToken, setOpenWinningToken] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const handleOpenWinningToken = () => setOpenWinningToken(true);
-  const handleCloseWinningToken = () => setOpenWinningToken(false);
-
-  const [, setHistory] = useState<{ spinType: string; balanceType: string; amount: string }[]>([]);
-  
-const navigate = useNavigate();
-
-
+  // Initialize telegramUserId from localStorage
   useEffect(() => {
-      const backButton = WebApp.BackButton;
-  
-      // BackButton'u görünür yap ve tıklanma işlevi ekle
-      backButton.show();
-      backButton.onClick(() => {
-        navigate("/latest-booba/top");
-      });
-  
-      // Cleanup: Bileşen unmount olduğunda butonu gizle ve event handler'ı kaldır
-      return () => {
-        backButton.hide();
-        backButton.offClick(() => {
-          navigate("/latest-booba/top"); // Buraya tekrar aynı callback sağlanmalıdır.
-        });
-      };
-    }, [navigate]);
+    const storedId = localStorage.getItem("telegramUserId");
+    if (!storedId) {
+      console.error("Telegram User ID not found in localStorage!");
+      return;
+    }
+    setTelegramUserId(storedId);
+  }, []);
 
+  // Initial data fetch from Firestore
+  useEffect(() => {
+    const initializeData = async () => {
+      if (!telegramUserId) return;
 
-
-  const counterRefs = Array(6)
-    .fill(null)
-    .map(() => useRef<any>(null));
-
- 
-    useEffect(() => {
-      const initTelegramUserId = () => {
-        const user = WebApp.initDataUnsafe?.user;
-        if (user?.id) {
-          setTelegramUserId(user.id.toString());
-          console.log(`Telegram User ID initialized: ${user.id}`);
-        } else {
-          // Attempt to retrieve from local storage if WebApp user ID is not found
-          const localUserId = localStorage.getItem("telegramUserId");
-          if (localUserId) {
-            setTelegramUserId(localUserId);
-            console.log(`Telegram User ID retrieved from local storage: ${localUserId}`);
-          } else {
-            console.error('Telegram User ID not found in local storage.');
-          }
-        }
-      };
-      initTelegramUserId();
-    }, []);
-  
-    useEffect(() => {
-      if (telegramUserId) {
-        const userRef = doc(db, 'users', telegramUserId);
-  
-        const unsubscribe = onSnapshot(userRef, async (docSnapshot) => {
-          console.log(`Listening to Firestore document: ${telegramUserId}`);
-  
-          if (docSnapshot.exists()) {
-            const data = docSnapshot.data();
-            console.log('Fetched Firestore data:', data);
-  
-            setTotal(data.total || 0);
-            setBblip(data.bblip || 0);
-            setTickets(data.tickets || 0);
-          } else {
-            console.warn(`Document does not exist for ID: ${telegramUserId}`);
-            try {
-              await setDoc(userRef, {
-                total: 600,
-                bblip: 10000,
-                tickets: 5,
-              });
-              console.log('Default Firestore document created:', {
-                total: 600,
-                bblip: 10000,
-                tickets: 5,
-              });
-            } catch (error) {
-              console.error('Error creating Firestore document:', error);
-            }
-          }
-        });
-  
-        return () => {
-          console.log(`Unsubscribed from Firestore listener for ID: ${telegramUserId}`);
-          unsubscribe();
-        };
-      }
-    }, [telegramUserId]);
-  
-    const updateFirestoreBalance = async (field: 'total' | 'bblip' | 'tickets', value: number) => {
-      if (!telegramUserId) {
-        console.error('Telegram User ID is not available for Firestore update.');
-        return;
-      }
-  
-      console.log(`Updating Firestore field: ${field} with value: ${value} for user: ${telegramUserId}`);
-    
-      const userRef = doc(db, 'users', telegramUserId);
       try {
-        await updateDoc(userRef, { [field]: value });
-        console.log(`Firestore update successful: ${field} = ${value}`);
+        const userRef = doc(db, 'users', telegramUserId);
+        const docSnap = await getDoc(userRef);
+        
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          // Update local state with Firestore data
+          dispatch({
+            type: 'UPDATE_BALANCES',
+            payload: {
+              total: data.total,
+              bblip: data.bblip,
+              tickets: data.tickets
+            }
+          });
+        }
       } catch (error) {
-        console.error(`Error updating Firestore field: ${field}`, error);
+        console.error('Error fetching initial data:', error);
       }
     };
+
+    initializeData();
+  }, [telegramUserId]);
+
+  // Listen to Firestore changes - update local state with ALL changes
+  useEffect(() => {
+    if (!telegramUserId) return;
+
+    const userRef = doc(db, 'users', telegramUserId);
+    const unsubscribe = onSnapshot(userRef, (docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const data = docSnapshot.data();
+        
+        // Always update local state with Firebase values
+        dispatch({
+          type: 'UPDATE_BALANCES',
+          payload: {
+            total: data.total,
+            bblip: data.bblip,
+            tickets: data.tickets
+          }
+        });
+      }
+    });
+
+    return () => unsubscribe();
+  }, [telegramUserId]);
+
+  // Update ref with proper typing
+  const displayRef = useRef<Array<CounterRef>>(Array(6).fill(null));
+
+  // Add event handlers with proper typing
+  const handleBalanceChange = useCallback((_event: React.ChangeEvent<{}>, value: string) => {
+    dispatch({ type: 'SET_BALANCE', payload: value });
+  }, []);
+
+  const handleSpinTypeChange = useCallback((_event: React.ChangeEvent<{}>, value: string) => {
+    dispatch({ type: 'SET_SPIN_TYPE', payload: value });
+  }, []);
+
+  // Handle spin with both local and Firestore updates
+  const handleSpin = useCallback(async () => {
+    console.log('Spin başladı');
     
-
+    // Immediately set spinning state to prevent multiple clicks
+    setUiState({ type: 'SET_SPINNING', payload: true });
     
-
-
-
-  const handleSpinTypeChange = (_event: React.ChangeEvent<{}>, value: string) => {
-    
-    setSelectedSpinType(value);
-  };
-  
-  const handleBalanceChange = (_event: React.ChangeEvent<{}>, value: string) => {
-    setSelectedBalance(value); // Yeni seçimi ayarla
-  };
-  
-
-  
-
-  const handleSpin = async () => {
-    if (selectedSpinType === 'ticket' && tickets === 0) {
-      console.warn('Spin failed: Not enough tickets.');
+    // Validation checks using local state
+    if (gameState.selectedSpinType === 'ticket' && gameState.tickets === 0) {
+      setUiState({ type: 'SET_SPINNING', payload: false });
+      setUiState({ type: 'SET_DRAWER', payload: true });
       return;
     }
-    if (selectedSpinType === 'total' && total < 200) {
-      console.warn('Spin failed: Not enough total balance.');
+    if (gameState.selectedSpinType === 'total' && gameState.total < 200) {
+      setUiState({ type: 'SET_SPINNING', payload: false });
+      setUiState({ type: 'SET_DRAWER', payload: true });
       return;
     }
-    if (selectedSpinType === 'bblip' && bblip < 1000) {
-      console.warn('Spin failed: Not enough BBLIP balance.');
+    if (gameState.selectedSpinType === 'bblip' && gameState.bblip < 5000) {
+      setUiState({ type: 'SET_SPINNING', payload: false });
+      setUiState({ type: 'SET_DRAWER', payload: true });
       return;
     }
-
-    console.log(`Spin initiated with type: ${selectedSpinType}`);
 
     try {
-     
-      console.log('Spin sound played.');
+      // STEP 1: Immediately decrease local balance
+      if (gameState.selectedSpinType === 'ticket') {
+        dispatch({ type: 'DECREASE_TICKETS', payload: 1 });
+      } else if (gameState.selectedSpinType === 'total') {
+        dispatch({ type: 'DECREASE_TOTAL', payload: 200 });
+      } else if (gameState.selectedSpinType === 'bblip') {
+        dispatch({ type: 'DECREASE_BBLIP', payload: 5000 });
+      }
+
+      // STEP 2: Update Firebase
+      try {
+        if (gameState.selectedSpinType === 'ticket') {
+          await updateBalance('tickets', gameState.tickets - 1);
+        } else if (gameState.selectedSpinType === 'total') {
+          await updateBalance('total', gameState.total - 200);
+        } else if (gameState.selectedSpinType === 'bblip') {
+          await updateBalance('bblip', gameState.bblip - 5000);
+        }
+      } catch (error) {
+        // If Firebase update fails, revert local state
+        console.error('Firebase update error:', error);
+        if (gameState.selectedSpinType === 'ticket') {
+          dispatch({ type: 'UPDATE_BALANCES', payload: { tickets: gameState.tickets + 1 } });
+        } else if (gameState.selectedSpinType === 'total') {
+          dispatch({ type: 'UPDATE_BALANCES', payload: { total: gameState.total + 200 } });
+        } else if (gameState.selectedSpinType === 'bblip') {
+          dispatch({ type: 'UPDATE_BALANCES', payload: { bblip: gameState.bblip + 5000 } });
+        }
+        setUiState({ type: 'SET_SPINNING', payload: false });
+        return;
+      }
+
+      // STEP 3: Start animation process
+      setUiState({ type: 'SET_WIN_MODAL', payload: false });
+      dispatch({ type: 'SET_WIN_AMOUNT', payload: '000000' });
+      dispatch({ type: 'SET_NUMBERS', payload: '000000' });
+
+      // Generate new numbers and animate
+      const newNumbers = generateSpinNumbers(gameState.selectedBalance, gameState.selectedSpinType);
+      const winningNumber = newNumbers.join('');
+      console.log('Üretilen kazanç:', winningNumber);
+      
+      // Enhanced animation timing configuration
+      const baseSpinDuration = 2.5;
+      const spinVariation = 0.3;
+      const delayBetweenDigits = 0.15;
+      const minSpinDuration = 1.5;
+
+      // Start animations with enhanced timing
+      displayRef.current.forEach((ref, index) => {
+        if (!ref) return;
+        
+        const isRed = (gameState.selectedSpinType === 'total' && index === 0) ||
+                     (gameState.selectedSpinType === 'bblip' && index < 2);
+        
+        if (isRed) {
+          ref.startAnimation({
+            duration: 0,
+            dummyCharacterCount: 0,
+            direction: 'none',
+            value: newNumbers[index],
+          });
+          return;
+        }
+
+        // Calculate dynamic duration and delay for each digit
+        const randomVariation = Math.random() * spinVariation;
+        const spinDelay = index * delayBetweenDigits;
+        const duration = Math.max(minSpinDuration, baseSpinDuration + randomVariation + (index * 0.15));
+        
+        setTimeout(() => {
+          ref.startAnimation({
+            duration: duration,
+            dummyCharacterCount: Math.floor(duration * 25),
+            direction: 'top-down',
+            value: newNumbers[index],
+            easingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+          });
+
+          // Handle win when the last digit finishes
+          if (index === 5) {
+            setTimeout(async () => {
+              const winValue = Number(winningNumber);
+              dispatch({ type: 'SET_NUMBERS', payload: winningNumber });
+              dispatch({ type: 'SET_WIN_AMOUNT', payload: winningNumber });
+              
+              // Update balance with win amount
+              if (winValue > 0) {
+                try {
+                  // Update Firebase directly
+                  if (gameState.selectedBalance === 'total') {
+                    await updateBalance('total', gameState.total + winValue);
+                  } else if (gameState.selectedBalance === 'bblip') {
+                    await updateBalance('bblip', gameState.bblip + winValue);
+                  }
+                  // Local state will be updated by the Firebase listener
+                } catch (error) {
+                  console.error('Error updating win balance:', error);
+                }
+              }
+              
+              // handleAnimationComplete fonksiyonu çağrılacak ve orada spinning state false olacak
+            }, duration * 1000);
+          }
+        }, spinDelay * 1000);
+      });
+
     } catch (error) {
-      console.error('Audio play error:', error);
+      console.error('Error during spin:', error);
+      setUiState({ type: 'SET_SPINNING', payload: false });
+      // Show error message to user
     }
+  }, [gameState, updateBalance, setUiState, dispatch]);
 
-    if (selectedSpinType === 'ticket') {
-      setTickets((prev) => {
-        const newTickets = prev - 1;
-        console.log(`Tickets decreased: ${prev} -> ${newTickets}`);
-        updateFirestoreBalance('tickets', newTickets);
-        return newTickets;
-      });
-    } else if (selectedSpinType === 'total') {
-      setTotal((prev) => {
-        const newTotal = prev - 200;
-        console.log(`Total decreased: ${prev} -> ${newTotal}`);
-        updateFirestoreBalance('total', newTotal);
-        return newTotal;
-      });
-    } else if (selectedSpinType === 'bblip') {
-      setBblip((prev) => {
-        const newBblip = prev - 5000;
-        console.log(`BBLIP decreased: ${prev} -> ${newBblip}`);
-        updateFirestoreBalance('bblip', newBblip);
-        return newBblip;
-      });
-    }
+  // Modal close handler
+  const handleCloseModal = useCallback(() => {
+    setUiState({ type: 'SET_WIN_MODAL', payload: false });
+    setUiState({ type: 'SET_SPINNING', payload: false }); // Enable spin button
+    dispatch({ type: 'SET_WIN_AMOUNT', payload: '000000' });
+    dispatch({ type: 'SET_NUMBERS', payload: '000000' });
+  }, [setUiState, dispatch]);
 
+  // Animasyon tamamlandığında çağrılacak fonksiyon
+  const handleAnimationComplete = useCallback(() => {
+    console.log('handleAnimationComplete çağrıldı');
     
-  
-    const newNumbers: string[] = [...Array(6)].map((_, index) => {
-      // Kombinasyona göre sayı aralıkları
-      if (selectedBalance === 'total' && selectedSpinType === 'total') {
-        switch (index) {
-          case 0:
-            return '0'; // Kırmızı kutu
-          case 1:
-            return generateRandomNumber(0, 0).toString();
-          case 2:
-            return generateRandomNumber(0, 0).toString();
-          case 3:
-            return generateRandomNumber(0, 1).toString();
-          case 4:
-            return generateRandomNumber(7, 9).toString();
-          case 5:
-            return generateRandomNumber(4, 9).toString();
-          default:
-            return generateRandomNumber(0, 9).toString();
-        }
+    // Eğer modal zaten açıksa işlemi tekrarlama
+    if (uiState.winModalOpen) {
+      console.log('Modal zaten açık, işlem iptal edildi');
+      return;
+    }
+
+    // Modalı aç
+    setUiState({ type: 'SET_WIN_MODAL', payload: true });
+    // Modal açıldıktan sonra spinning state'ini false yap
+    setUiState({ type: 'SET_SPINNING', payload: false });
+    
+    console.log('Modal açıldı, son durum:', {
+      kazanilanSayi: gameState.numbers,
+      bakiyeler: {
+        total: gameState.total,
+        bblip: gameState.bblip
       }
-  
-      if (selectedBalance === 'total' && selectedSpinType === 'bblip') {
-        switch (index) {
-          case 0:
-            return '0'; // Kırmızı kutu
-          case 1:
-            return '0'; // Kırmızı kutu
-          case 2:
-            return generateRandomNumber(0, 0).toString();
-          case 3:
-            return generateRandomNumber(0, 0).toString();
-          case 4:
-            return generateRandomNumber(0, 2).toString();
-          case 5:
-            return generateRandomNumber(7, 9).toString();
-          default:
-            return generateRandomNumber(0, 9).toString();
-        }
-      }
-  
-      if (selectedBalance === 'total' && selectedSpinType === 'ticket') {
-        switch (index) {
-          case 0:
-            return generateRandomNumber(0, 0).toString();
-          case 1:
-            return generateRandomNumber(0, 0).toString();
-          case 2:
-            return generateRandomNumber(1, 1).toString();
-          case 3:
-            return generateRandomNumber(5, 9).toString();
-          case 4:
-            return generateRandomNumber(6, 9).toString();
-          case 5:
-            return generateRandomNumber(0, 9).toString();
-          default:
-            return generateRandomNumber(0, 9).toString();
-        }
-      }
-  
-      if (selectedBalance === 'bblip' && selectedSpinType === 'total') {
-        switch (index) {
-          case 0:
-            return '0'; // Kırmızı kutular
-  
-          case 1:
-            return generateRandomNumber(0, 0).toString();
-          case 2:
-            return generateRandomNumber(0, 9).toString();
-          case 3:
-            return generateRandomNumber(0, 1).toString();
-          case 4:
-            return generateRandomNumber(0, 9).toString();
-          case 5:
-            return generateRandomNumber(6, 9).toString();
-          default:
-            return generateRandomNumber(0, 9).toString();
-        }
-      }
-  
-      if (selectedBalance === 'bblip' && selectedSpinType === 'bblip') {
-        switch (index) {
-          case 0:
-          case 1:
-            return '0'; // Kırmızı kutular
-          case 2:
-            return generateRandomNumber(1, 6).toString();
-          case 3:
-            return generateRandomNumber(8, 9).toString();
-          case 4:
-            return generateRandomNumber(8, 9).toString();
-          case 5:
-            return generateRandomNumber(7, 9).toString();
-          default:
-            return generateRandomNumber(0, 9).toString();
-        }
-      }
-  
-      if (selectedBalance === 'bblip' && selectedSpinType === 'ticket') {
-        switch (index) {
-          case 0:
-            return generateRandomNumber(0, 3).toString();
-  
-          case 1:
-            return generateRandomNumber(0, 4).toString();
-          case 2:
-            return generateRandomNumber(0, 7).toString();
-          case 3:
-            return generateRandomNumber(0, 7).toString();
-          case 4:
-            return generateRandomNumber(0, 0).toString();
-          case 5:
-            return generateRandomNumber(7, 9).toString();
-          default:
-            return generateRandomNumber(0, 9).toString();
-        }
-      }
-  
-      // Varsayılan durumda 0-9 aralığı
-      return generateRandomNumber(0, 9).toString();
     });
-  
-    const newNumberString = newNumbers.join('');
-    setNumbers(newNumberString);
-
-    console.log(`Generated spin result: ${newNumberString}`);
-  
-    counterRefs.forEach((ref, index) => {
-      const isRed =
-        (selectedSpinType === 'total' && index === 0) ||
-        (selectedSpinType === 'bblip' && index < 2);
-  
-      setTimeout(() => {
-        if (isRed) return; // Skip animation for red boxes
-        ref.current?.startAnimation({
-          duration: 2,
-          dummyCharacterCount: 800,
-          direction: 'top-down',
-          value: newNumberString[index],
-        });
-      }, index * 100);
-    });
-  
-     // Spin sonucuna göre kazanç hesapla
-  
-     setTimeout(() => {
-      const newNumberValue = parseInt(newNumberString, 10);
-      console.log(`Spin result parsed: ${newNumberValue}`);
-
-      if (selectedBalance === 'total') {
-        setTotal((prev) => {
-          const updatedTotal = prev + newNumberValue;
-          console.log(`Total increased: ${prev} -> ${updatedTotal}`);
-          updateFirestoreBalance('total', updatedTotal);
-          return updatedTotal;
-        });
-      } else if (selectedBalance === 'bblip') {
-        setBblip((prev) => {
-          const updatedBblip = prev + newNumberValue;
-          console.log(`BBLIP increased: ${prev} -> ${updatedBblip}`);
-          updateFirestoreBalance('bblip', updatedBblip);
-          return updatedBblip;
-        });
-      }
-
-      if (newNumberValue > 0) {
-     
-        console.log('Win sound played.');
-        setWinAmount(newNumberString);
-        setWinModalOpen(true);
-        console.log(`Win modal opened with amount: ${newNumberString}`);
-        // Add history entry
-        setHistory((prevHistory) => [
-          ...prevHistory,
-          {
-            spinType: selectedSpinType.toUpperCase(),
-            balanceType: selectedBalance.toUpperCase(),
-            amount: newNumberString,
-          },
-        ]);
-      }
-    }, 2500); // Wait for animation to finish before showing win modal
-  };
-
+  }, [gameState, setUiState, uiState.winModalOpen]);
 
   // Animasyon keyframe tanımı
 const bounceAnimation = keyframes`
@@ -416,668 +455,561 @@ const bounceAnimation = keyframes`
 }
 `;
 
-const [animatedValue, setAnimatedValue] = useState(0);
 const [, setShowConfetti] = useState(false);
-  useWindowSize(); // Pencere boyutlarını almak için
+useWindowSize(); // Pencere boyutlarını almak için
 
-  useEffect(() => {
-    const targetValue = Number(winAmount);
-    const duration = 2500; // 2 saniye
-    const steps = 60; // Animasyon karesi
-    const increment = targetValue / steps;
+useEffect(() => {
+  if (!uiState.winModalOpen) return;
 
-    let currentValue = 0;
-    setShowConfetti(true); // Konfeti animasyonu başlasın
-    const interval = setInterval(() => {
-      currentValue += increment;
-      if (currentValue >= targetValue) {
-        currentValue = targetValue; // Hedef değeri aşmamak için sınırla
-        clearInterval(interval);
-        setTimeout(() => setShowConfetti(false), 2500); // Konfetiyi 3 saniye sonra durdur
-      }
-      setAnimatedValue(Math.floor(currentValue));
-    }, duration / steps);
-
-    return () => clearInterval(interval); // Cleanup
-  }, [winAmount]);
-
-  // Formatlama fonksiyonu
-  const formatWinAmount = (amount: number): string => {
-    const numString = String(amount).padStart(4, '0');
-    return numString.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-  };
-
-
+  const winAmount = gameState.winAmount;
+  console.log('Modal açılıyor, kazanç miktarı:', winAmount);
   
+  const targetValue = parseInt(winAmount, 10);
+  const duration = 2000;
+  const steps = 60;
+  const increment = targetValue / steps;
+
+  let currentValue = 0;
+  setShowConfetti(true);
+  
+  const interval = setInterval(() => {
+    currentValue += increment;
+    if (currentValue >= targetValue) {
+      currentValue = targetValue;
+      clearInterval(interval);
+      setTimeout(() => setShowConfetti(false), 2000);
+    }
+  }, duration / steps);
+
+  return () => clearInterval(interval);
+}, [uiState.winModalOpen, gameState.winAmount]);
+
+  // Formatlama fonksiyonunu güncelleyelim
+  const formatWinAmount = (amount: number): string => {
+    // Sayıyı string'e çevirip 6 haneli yap
+    const numString = String(amount).padStart(6, '0');
+
+    // Son 3 haneyi decimal olarak ayır
+    const integerPart = numString.slice(0, -3);
+    const decimalPart = numString.slice(-3);
+
+    // Başındaki sıfırları kaldır ama en az bir rakam kalsın
+    const cleanIntegerPart = integerPart.replace(/^0+/, '') || '0';
+  
+    // Formatı oluştur
+    return `${cleanIntegerPart}.${decimalPart}`;
+  };
 
   // Aktif kutulara göre stil belirleme
 
   return (
     <ThemeProvider theme={theme}>
-      
-
-    <Box // @ts-ignore
-    sx={{
-      mt:-2,
-      backgroundColor: "#1a2126",
-      backgroundmage: 'radial-gradient( circle 780px at 37.8% 100.3%,  rgba(19,55,115,1) 2.2%, rgba(32,7,80,1) 20.2%, rgba(27,88,111,1) 58.6%, rgba(115,88,44,1) 75%, rgba(99,19,90,1) 89.6%, rgba(12,51,76,1) 96.1% )',      color: "white",
-      textAlign: "center",
-      backgroundImage: `url(${backgroundImage})`, // PNG yolu
-        backgroundSize: "cover", // Görüntüyü tam kapla
-        backgroundRepeat: "no-repeat", // Tekrar etmesin
-        backgroundPosition: "center", // Ortala
-        width: "100vw", // Tam genişlik
-       
+      <Box //@ts-ignore
+        sx={{ 
+          
+          backgroundImage: `
+            radial-gradient(circle at 10% 20%, rgba(255, 215, 0, 0.05) 0%, transparent 20%),
+            radial-gradient(circle at 90% 80%, rgba(255, 215, 0, 0.05) 0%, transparent 20%),
+            radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.8) 0%, transparent 100%),
+            url(${backgroundImage})
+          `,
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          backgroundAttachment: "fixed",
+          width: "100vw",
+          mb:14,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "flex-start",
       position: "relative",
-      overflow: "hidden",
-      minHeight: "100vh",
+          top: 0,
+          left: 0,
+                minHeight: "100vh",
 
-    }}
-  >    
+          overflow: "auto",
+          willChange: "transform",
+          backdropFilter: "blur(10px)",
+          "&::before": {
+            content: '""',
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 0,
+          }
+        }}
+      >
+        <Box
+          sx={{
+            width: "100%",
+            minWidth: "320px",
+            maxWidth: "420px",
+            minHeight: "100%",
+            position: "relative",
+            zIndex: 1,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            pt: 2,
+            px: 2,
+            pb: 4,
+            overflowX: "hidden",
+          }}
+        >
+          {/* Max Win Display - Moved to top */}
+          <Paper
+            elevation={24}
+            sx={{
+              background: 'transparent',
+              borderRadius: '20px',
+              p: 2,
+              mb: -3,
+              width: '100%',
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 1,
+                position: 'relative',
+                '&::before': {
+                  content: '""',
+                  position: 'absolute',
+                  top: '50%',
+                  left: 0,
+                  right: 0,
+                  height: '2px',
+                  background: 'linear-gradient(90deg, transparent, rgba(255,215,0,0.2), transparent)',
+                  transform: 'translateY(-50%)',
+                  zIndex: 0,
+                }
+              }}
+            >
+              {[16, 20, 24].map((size, index) => (
+                <StarIcon
+                  key={`left-star-${index}`}
+                  sx={{
+                    fontSize: size * 0.8,
+                    color: "#FFD700",
+                    filter: "drop-shadow(0 0 5px rgba(255,215,0,0.5))",
+                    animation: `${bounceAnimation} ${1 + index * 0.2}s infinite`,
+                    zIndex: 1,
+                  }}
+                />
+              ))}
 
+              <Typography
+                variant="h4"
+                sx={{
+                  color: "#fff",
+                  fontWeight: "900",
+                  mx: 1,
+                  fontSize: '1.8rem',
+                  textShadow: '0 0 20px rgba(255,215,0,0.5)',
+                  zIndex: 1,
+                  position: 'relative',
+                }}
+              >
+                999 TON
+              </Typography>
 
-  <Box sx={{       border: "0px dotted #FFC107",
-}}>
+              {[24, 20, 16].map((size, index) => (
+                <StarIcon
+                  key={`right-star-${index}`}
+                  sx={{
+                    fontSize: size * 0.8,
+                    color: "#FFD700",
+                    filter: "drop-shadow(0 0 5px rgba(255,215,0,0.5))",
+                    animation: `${bounceAnimation} ${1 + index * 0.2}s infinite`,
+                    zIndex: 1,
+                  }}
+                />
+              ))}
+            </Box>
+          </Paper>
 
-  
+          {/* Main Game Container */}
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 2,
+            }}
+          >
+            {/* Slot Display */}
+            <Box
+              sx={{
+                borderRadius: '20px',
+             
+              }}
+            >
+              <MemoizedSlotDisplay 
+                ref={displayRef}
+                numbers={gameState.numbers}
+                selectedSpinType={gameState.selectedSpinType}
+                onAnimationComplete={handleAnimationComplete}
+              />
+            </Box>
 
-             {/* Win Modal */}
+            {/* Controls */}
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 2,
+                width: '100%',
+              }}
+            >
+              {/* Game Controls Container */}
+              <Paper
+                elevation={24}
+                sx={{
+                  background: 'linear-gradient(145deg, rgba(26,31,46,0.9) 0%, rgba(13,15,23,0.9) 100%)',
+                  backdropFilter: 'blur(10px)',
+                  borderRadius: '20px',
+                  overflow: 'hidden',
+                  border: '1px solid rgba(255,215,0,0.1)',
+                  boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
+                }}
+              >
+                {/* Winning Token Section */}
+                <Box
+                  sx={{
+                    position: 'relative',
+                    p: 2,
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: '1px',
+                      background: 'linear-gradient(90deg, transparent, rgba(255,215,0,0.2), transparent)',
+                    },
+                    '&::after': {
+                      content: '""',
+                      position: 'absolute',
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      height: '1px',
+                      background: 'linear-gradient(90deg, transparent, rgba(255,215,0,0.1), transparent)',
+                    }
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: 1,
+                      mb: 1,
+                    }}
+                  >
+                    <StarIcon sx={{ color: '#FFD700', fontSize: '0.9rem' }} />
+                    <Typography
+                      sx={{
+                        color: "#FFD700",
+                        fontSize: '1.1rem',
+                        fontWeight: "bold",
+                        textAlign: "center",
+                        textShadow: '0 0 10px rgba(255,215,0,0.3)',
+                        letterSpacing: '1px',
+                        textTransform: 'uppercase',
+                      }}
+                    >
+                      Winning Token
+                    </Typography>
+                    <StarIcon sx={{ color: '#FFD700', fontSize: '0.9rem' }} />
+                  </Box>
 
+                  <MemoizedBalanceSelector 
+                    selectedBalance={gameState.selectedBalance} 
+                    onChange={handleBalanceChange}
+                  />
+                </Box>
+
+                {/* Spin Power Section */}
+                <Box
+                  sx={{
+                    position: 'relative',
+                    p: 2,
+                    background: 'linear-gradient(180deg, rgba(26,31,46,0) 0%, rgba(13,15,23,0.5) 100%)',
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: 1,
+                      mb: 1,
+                    }}
+                  >
+                    <StarIcon sx={{ color: '#FFD700', fontSize: '0.9rem' }} />
+                    <Typography
+                      sx={{
+                        color: "#FFD700",
+                        fontSize: '1.1rem',
+                        fontWeight: "bold",
+                        textAlign: "center",
+                        textShadow: '0 0 10px rgba(255,215,0,0.3)',
+                        letterSpacing: '1px',
+                        textTransform: 'uppercase',
+                      }}
+                    >
+                      Spin Power
+                    </Typography>
+                    <StarIcon sx={{ color: '#FFD700', fontSize: '0.9rem' }} />
+                  </Box>
+
+                  <Box
+                    sx={{
+                      position: 'relative',
+                      mt: -1,
+                      '&::before': {
+                        content: '""',
+                        position: 'absolute',
+                        top: -5,
+                        left: 0,
+                        right: 0,
+                        height: '1px',
+                        background: 'linear-gradient(90deg, transparent, rgba(255,215,0,0.1), transparent)',
+                      }
+                    }}
+                  >
+                    <MemoizedSpinAndDepositButtons
+                      total={gameState.total}
+                      tickets={gameState.tickets}
+                      bblip={gameState.bblip}
+                      selectedSpinType={gameState.selectedSpinType}
+                      handleSpin={handleSpin}
+                      openDepositDrawer={() => setUiState({ type: 'SET_DRAWER', payload: true })}
+                      handleSpinTypeChange={handleSpinTypeChange}
+                      isSpinning={uiState.isSpinning}
+                      showTopUpButton={
+                        (gameState.selectedSpinType === 'ticket' && gameState.tickets === 0) ||
+                        (gameState.selectedSpinType === 'total' && gameState.total < 200) ||
+                        (gameState.selectedSpinType === 'bblip' && gameState.bblip < 5000)
+                      }
+                    />
+
+                    {/* Win Notifications */}
+                    <Box sx={{ mt: 2 }}>
+                      <WinNotifications />
+                    </Box>
+                  </Box>
+                </Box>
+              </Paper>
+            </Box>
+          </Box>
+        </Box>
+
+        {/* Win Modal */}
+        <Modal 
+          open={uiState.winModalOpen} 
+          onClose={handleCloseModal}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            p: 2,
+            '& .MuiBackdrop-root': {
+              backgroundColor: 'rgba(0, 0, 0, 0.85)',
+            },
+          }}
+        >
+          <Box
+            component={motion.div}
+            initial={{ opacity: 0, scale: 0.5, y: 50 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.5, y: 50 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            sx={{
+              width: "100%",
+              maxWidth: "340px",
+              background: 'linear-gradient(145deg, rgba(26,31,46,0.95) 0%, rgba(13,15,23,0.95) 100%)',
+              backdropFilter: "blur(20px)",
+              borderRadius: "20px",
+              p: 3,
+              position: 'relative',
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                inset: '-2px',
+                borderRadius: '22px',
+                padding: '2px',
+                background: 'linear-gradient(90deg, #FFD700, #FFA500, #FFD700)',
+                backgroundSize: '200% 100%',
+                animation: `${gradientBorder} 4s linear infinite`,
+                WebkitMask: 
+                  'linear-gradient(#fff 0 0) content-box, ' +
+                  'linear-gradient(#fff 0 0)',
+                WebkitMaskComposite: 'xor',
+                maskComposite: 'exclude',
+              },
+              boxShadow: '0 0 30px rgba(0,0,0,0.5)',
+              outline: 'none',
+              overflow: 'hidden',
+            }}
+          >
+            {/* Header Section */}
+            <Box sx={{ 
+              display: 'flex', 
+              flexDirection: 'column',
+              alignItems: 'center',
+              textAlign: 'center',
+              mb: 2.5,
+              pb: 2.5,
+              borderBottom: '1px solid rgba(255,255,255,0.1)'
+            }}>
+              {/* Token Icon */}
            
 
-       {/* Jackpot Section */}
+              {/* Win Text */}
+              <Typography
+                sx={{
+                  color: "rgba(255,255,255,0.7)",
+                  fontSize: '0.85rem',
+                  fontWeight: "500",
+                  letterSpacing: '1px',
+                  textTransform: 'uppercase',
+                  mb: 0.5,
+                }}
+              >
+                Congratulations
+              </Typography>
+              <Typography
+                sx={{
+                  color: "#FFD700",
+                  fontSize: '1.2rem',
+                  fontWeight: "700",
+                  letterSpacing: '1px',
+                  textTransform: 'uppercase',
+                }}
+              >
+                You Won
+              </Typography>
+            </Box>
 
-  
-
-          {/* Jackpot Section */}
-          <Box
-          sx={{
-           mt:"14vh",
-           width:"95%",
-            mx:1,
-            borderRadius: 1,
-          }}
-        >
-          <Typography fontWeight={'bold'} fontSize={'1.5rem'} >
-            999x CRASH
-          </Typography>
-        
-          <SlotDisplay  numbers={numbers} counterRefs={counterRefs} selectedSpinType={selectedSpinType} />
-
-        </Box>
-
-     
-
-      <Button
-        style={{
-          background: "#f7cf6d",
-          borderRadius: 12,
-          padding:10,
-          marginTop: -13,
-          
-          color: "black",
-          textTransform: "none",
-          fontWeight: "bold",
-          position: "relative",
-        }}
-      >
-        Pick Your Winning Token
-        <IconButton
-          sx={{
-            position: "absolute",
-            right: -40, // Adjust this value for proper positioning
-            top: "50%",
-            transform: "translateY(-50%)",
-            color: "#f7cf6d",
-          }}
-          onClick={handleOpenWinningToken}
-        >
-          <InfoIcon />
-        </IconButton>
-      </Button>
-
-        <Box>
-               {/* Aşağı yönlendirme ikonu */}
-      <ArrowDownwardIcon
-        sx={{
-          color: "#ffd700",
-          fontSize: "1rem",
-          animation: `${bounceAnimation} 1.5s infinite`,
-        }}
-      />
-
-
-
-        </Box>
-
-          {/* Modal for Pick Your Winning Token */}
-          <Modal open={openWinningToken} onClose={handleCloseWinningToken}>
-          <Box
-        sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          bgcolor: 'background.paper',
-          boxShadow: 24,
-          p: { xs: 2, sm: 4 },
-          width: { xs: '80%', sm: '80%', md: '60%' },
-          maxWidth: '600px',
-          borderRadius: 2,
-          maxHeight: '80vh',
-          overflowY: 'auto',
-        }}
-      >
-        <Typography variant="body2" gutterBottom sx={{color:'black', textAlign:'center', fontSize: '1rem'}}>
-          How to pick your winning token
-        </Typography>
-        <List sx={{color: 'black' }}>
-          <ListItem>
-            <ListItemText
-              primary={
-                <Typography variant="body2" sx={{ display: 'inline', fontWeight: 'bold' }}>
-                  Choose Your Preferred Token:
-                </Typography>
-              }
-              secondary={ 
-                <>
-                  <ul>
-                    <li>You have two options to select from: <strong>BBLIP</strong> or <strong>TON</strong>.</li>
-                    <li>This choice determines the type of reward you will receive after each spin.</li>
-                  </ul>
-                </>
-              }
+            {/* Win Amount Section */}
+            <Box
               sx={{
-                textAlign: 'left', // Sola hizala
-                ml:-2
+                background: 'linear-gradient(145deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 100%)',
+                borderRadius: '16px',
+                p: 3,
+                mb: 3,
+                border: '1px solid rgba(255,215,0,0.15)',
+                position: 'relative',
+                overflow: 'hidden',
               }}
-            />
-          </ListItem>
+            >
+              {/* Win Amount Display */}
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 2,
+                  position: 'relative',
+                  zIndex: 1,
+                }}
+              >
+                <Box
+                  sx={{
+                    width: '32px',
+                    height: '32px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: gameState.selectedBalance === 'bblip' ? '50%' : '0',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <img
+                    src={getTokenLogo(gameState.selectedBalance)}
+                    alt="Token"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      borderRadius: gameState.selectedBalance === 'bblip' ? '50%' : '0',
+                    }}
+                  />
+                </Box>
 
-          <ListItem>
-            <ListItemText
-              primary={
-                <Typography variant="body2" sx={{ display: 'inline', fontWeight: 'bold' }}>
-                  Winning with BBLIP:
+                <Typography
+                  variant="h3"
+                  sx={{
+                    color: "#FFD700",
+                    fontWeight: "900",
+                    fontSize: '2.4rem',
+                    textShadow: '0 0 20px rgba(255,215,0,0.5)',
+                    lineHeight: 1.2,
+                    fontFamily: "'Digital-7', monospace",
+                    letterSpacing: '1px',
+                    animation: `${pulseAnimation} 1.5s ease-in-out infinite`,
+                  }}
+                >
+                  {formatWinAmount(parseInt(gameState.winAmount, 10))}
                 </Typography>
-              }
-              secondary={
-                <>
-                  <ul>
-                    <li>If you select <strong>BBLIP</strong>, every spin will reward you with BBLIP tokens.</li>
-                    <li>These tokens can be used to enhance your gaming experience or saved for future benefits.</li>
-                  </ul>
-                </>
-              }
-              sx={{
-                textAlign: 'left', // Sola hizala
-                ml:-2
-              }}  
-            />
-          </ListItem>
+              </Box>
 
-          <ListItem>
-            <ListItemText
-              primary={
-                <Typography variant="body2" sx={{ display: 'inline', fontWeight: 'bold' }}>
-                  Winning with TON:
-                </Typography>
-              }
-              secondary={
-                <>
-                  <ul>
-                    <li>By selecting <strong>TON</strong>, your spins will yield TON coins as rewards.</li>
-                    <li>TON coins offer unique advantages and can be utilized in various aspects of the ecosystem.</li>
-                  </ul>
-                </>
-              }
-              sx={{
-                textAlign: 'left', // Sola hizala
-                ml:-2
-              }}  
-            />
-          </ListItem>
+              {/* Lucky Message */}
+              <Typography
+                sx={{
+                  color: "rgba(255,255,255,0.6)",
+                  fontSize: '0.8rem',
+                  fontWeight: "500",
+                  textAlign: 'center',
+                  fontStyle: 'italic',
+                  mt: 2,
+                }}
+              >
+                Your lucky spin paid off! 🍀
+              </Typography>
+            </Box>
 
-          <ListItem>
-            <ListItemText
-              primary={
-                <Typography variant="body2" sx={{ display: 'inline', fontWeight: 'bold' }}>
-                  Key Things to Remember:
-                </Typography>
-              }
-              secondary={
-                <>
-                  <ul>
-                    <li>The token you choose directly influences the type of prize you will earn.</li>
-                    <li>This decision is made before each spin, so select wisely based on your current goals.</li>
-                    <li>Switching between tokens is seamless, allowing you to adapt your strategy at any time.</li>
-                  </ul>
-                </>
-              }
+            {/* Play Again Button */}
+            <Button
+              onClick={handleCloseModal}
+              variant="contained"
               sx={{
-                textAlign: 'left', // Sola hizala
-                ml:-2
-              }}  
-            />
-          </ListItem>
+                width: "100%",
+                py: 1.5,
+                background: "linear-gradient(135deg, #FFD700 0%, #FFA500 100%)",
+                color: "#000",
+                fontSize: '0.95rem',
+                fontWeight: "700",
+                borderRadius: "10px",
+                textTransform: "uppercase",
+                letterSpacing: '1px',
+                transition: 'all 0.3s ease',
+                "&:active": {
+                  transform: 'translateY(1px)',
+                }
+              }}
+            >
+              Continue Playing
+            </Button>
+          </Box>
+        </Modal>
 
-          <ListItem>
-            <ListItemText
-              primary={
-                <Typography variant="body2" sx={{ display: 'inline', fontWeight: 'bold' }}>
-                  Plan Your Strategy:
-                </Typography>
-              }
-              secondary={
-                <>
-                  <ul>
-                    <li>For those who prefer a steady accumulation of BBLIP, selecting BBLIP ensures consistent token rewards.</li>
-                    <li>If you're looking for potential advantages with TON, choosing TON aligns your rewards with your goals.</li>
-                  </ul>
-                </>
-              }
-              sx={{
-                textAlign: 'left', // Sola hizala
-                ml:-2
-              }}  
-            />
-          </ListItem>
-        </List>
-        
-        <Button
-          variant="contained"
-          sx={{
-            mt: 3,
-            width: '100%',
-            background: '#f7cf6d',
-            color: 'black',
-            textTransform: 'none',
-            fontWeight: 'bold',
-          }}
-          onClick={handleCloseWinningToken}
-        >
-          Understand
-        </Button>
+        <DepositDrawer
+          open={uiState.drawerOpen}
+          onClose={() => setUiState({ type: 'SET_DRAWER', payload: false })}
+        />
+
+        <SnackbarComponent 
+          snackbarOpen={uiState.snackbarOpen} 
+          setSnackbarOpen={(value) => setUiState({ type: 'SET_SNACKBAR', payload: value })} 
+        />
       </Box>
-    </Modal>
-        <Box
-          sx={{
-            py: 0,
-            mx: 4,
-            borderRadius: 1,
-
-          }}
-        >
-           <BalanceSelector selectedBalance={selectedBalance} onChange={handleBalanceChange} />
-
-        </Box>
-
-          {/* Buttons */}
-           {/* Buttons */}
-           <Button
-        style={{
-          background: "#f7cf6d",
-          borderRadius: 12,
-          padding:10,
-          marginTop: -10,
-          
-          color: "black",
-          textTransform: "none",
-          fontWeight: "bold",
-          position: "relative",
-        }}
-      >
-        Pick Your Spin Power
-        <IconButton
-          sx={{
-            position: "absolute",
-            right: -40, // Adjust this value for proper positioning
-            top: "50%",
-            transform: "translateY(-50%)",
-            color: "#f7cf6d",
-          }}
-          onClick={handleOpen}
-        >
-          <InfoIcon />
-        </IconButton>
-      </Button>
-
-      {/* Modal */}
-      <Modal open={open} onClose={handleClose}>
-      <Box
-        sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          bgcolor: 'background.paper',
-          boxShadow: 24,
-          p: { xs: 2, sm: 4 },
-          width: { xs: '80%', sm: '80%', md: '60%' },
-          maxWidth: '600px',
-          borderRadius: 2,
-          maxHeight: '80vh',
-          overflowY: 'auto',
-        }}
-      >
-        <Typography variant="body2" gutterBottom sx={{color:'black', textAlign:'center', fontSize: '1rem'}}>
-        Pick Your Power !
-        </Typography>
-
-        <List sx={{color:'black'}}>
-          <ListItem>
-            <ListItemText
-              primary={<strong>Choose Your Spin Type:</strong>}
-              secondary={
-                <>
-                  <ul>
-                    <li>
-                      You can spin with three options: <strong>Ticket</strong>, <strong>TON</strong>, or <strong>BBLIP</strong>.
-                    </li>
-                    <li>Each option provides different rewards and maximum prize values based on your choice.</li>
-                  </ul>
-                </>
-              }
-              sx={{
-                textAlign: 'left', // Sola hizala
-                ml:-2
-              }}            />
-          </ListItem>
-
-          <ListItem>
-            <ListItemText
-              primary={<strong>Ticket Spin:</strong>}
-              secondary={
-                <>
-                  <ul>
-                    <li>If you select <strong>Ticket</strong>, you can spin for the maximum prize of <strong>999.999</strong>.</li>
-                    <li>For this, you must own at least <strong>1 Ticket</strong> to participate.</li>
-                    <li>Your prize depends on your luck and can be any amount up to the max value.</li>
-                  </ul>
-                </>
-              }
-              sx={{
-                textAlign: 'left', // Sola hizala
-                ml:-2
-              }}              />
-          </ListItem>
-
-          <ListItem>
-            <ListItemText
-              primary={<strong>TON Spin:</strong>}
-              secondary={
-                <>
-                  <ul>
-                    <li>If you choose <strong>TON</strong>, your spin will yield a reward of up to <strong>99.999</strong> TON.</li>
-                    <li>You must own at least <strong>0.2 TON</strong> to participate in a TON spin.</li>
-                    <li>This gives you a higher reward potential compared to other spin types.</li>
-                  </ul>
-                </>
-              }
-              sx={{
-                textAlign: 'left', // Sola hizala
-                ml:-2
-              }}              />
-          </ListItem>
-
-          <ListItem>
-            <ListItemText
-              primary={<strong>BBLIP Spin:</strong>}
-              secondary={
-                <>
-                  <ul>
-                    <li>With a <strong>BBLIP</strong> spin, your maximum prize is <strong>9.999</strong> BBLIP.</li>
-                    <li>You must own at least <strong>1 BBLIP</strong> to participate in a BBLIP spin.</li>
-                    <li>This option provides a smaller, more consistent reward compared to others.</li>
-                  </ul>
-                </>
-              }
-              sx={{
-                textAlign: 'left', // Sola hizala
-                ml:-2
-              }}              />
-          </ListItem>
-
-          <ListItem>
-            <ListItemText
-              primary={<strong>Important Things to Remember:</strong>}
-              secondary={
-                <>
-                  <ul>
-                    <li>Your chosen spin type determines the maximum prize value and the reward type.</li>
-                    <li>Each option is based on a random chance, so choose wisely depending on your current goals.</li>
-                    <li>You can easily switch between spin types at any time for a different experience.</li>
-                    <li>Make sure you have the required tokens to participate in your chosen spin.</li>
-                  </ul>
-                </>
-              }
-              sx={{
-                textAlign: 'left', // Sola hizala
-                ml:-2
-              }}              />
-          </ListItem>
-        </List>
-
-        <Button
-          variant="contained"
-          sx={{
-            mt: 3,
-            width: '100%',
-            background: '#f7cf6d',
-            color: 'black',
-            textTransform: 'none',
-            fontWeight: 'bold',
-          }}
-          onClick={handleClose}
-        >
-          Understand
-        </Button>
-      </Box>
-      </Modal>
-
-        <Box>
-               {/* Aşağı yönlendirme ikonu */}
-      <ArrowDownwardIcon
-        sx={{
-          color: "#ffd700",
-          fontSize: "1rem",
-          animation: `${bounceAnimation} 1.5s infinite`,
-        }}
-      />
-
-        </Box>
-
-
-        <Box // @ts-ignore
-          sx={{
-            padding: 0,
-            mx: 4,
-            borderRadius: 1,
-
-
-          }}
-        >
-         <SpinAndDepositButtons
-        total={total}
-        tickets={tickets}
-        bblip={bblip}
-        selectedSpinType={selectedSpinType}
-        handleSpin={handleSpin}
-        openDepositDrawer={() => setDrawerOpen(true)}
-        handleSpinTypeChange={handleSpinTypeChange}
-      />
-        </Box>
-
-
-        <Box
-      sx={{
-        width: '90%',
-        margin: '0 auto',
-      
-        textAlign: 'center',
-        padding: '16px',
-        borderRadius: '8px',
-      }}
-    >
-      {/* "WIN UP TO" text */}
-      <Typography
-        variant="h6"
-        sx={{
-          color:'#FFC107',             
-          fontSize: '16px',
-        }}
-      >
-        WIN UP TO
-      </Typography>
-
-      {/* Stars and Text */}
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        {/* Left Stars */}
-        {[20, 25, 30].map((size, index) => (
-          <StarIcon
-            key={`left-star-${index}`}
-            sx={{
-              fontSize: size,
-              color:'#FFC107',             
-              WebkitBackgroundClip: 'text',
-              backgroundClip: 'text',
-              margin: '0 4px',
-            }}
-          />
-        ))}
-
-        {/* Center Text */}
-        <Typography
-          variant="h6"
-          sx={{
-            fontSize: '20px',
-            color: '#fff',
-            margin: '0 12px',
-          }}
-        >
-          999 TON
-        </Typography>
-
-        {/* Right Stars */}
-        {[30, 25, 20].map((size, index) => (
-          <StarIcon
-            key={`right-star-${index}`}
-            sx={{
-              fontSize: size,
-color:'#FFC107',             
- WebkitBackgroundClip: 'text',
-              backgroundClip: 'text',
-              margin: '0 4px',
-            }}
-          />
-        ))}
-      </Box>
-    </Box>
-
-
-        <Box
-          sx={{
-            background: "linear-gradient(to bottom, #ffd700, #ffffff)",
-            padding: 0,
-            mx: 4,
-            borderRadius: 1,
-
-
-          }}
-        >
-      {/* HistoryDisplay bileşenini ekledik */}
-
-      </Box>
-
-     
-      
-       
-      
-    
-
- <Modal open={winModalOpen} onClose={() => setWinModalOpen(false)} aria-labelledby="win-modal" aria-describedby="win-description">
- <Box
-  component={motion.div}
-  initial={{ opacity: 0, scale: 0.8 }}
-  animate={{ opacity: 1, scale: 1 }}
-  exit={{ opacity: 0, scale: 0.8 }}
-  transition={{ duration: 0.4, ease: "easeOut" }}
-  sx={{
-    mt: "35vh",
-    mx: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.6)", // Şeffaf arka plan
-    backdropFilter: "blur(2px)", // Glass efekti
-    borderRadius: "10px", // Border radius ekledim
-    textAlign: "center",
-    p: 3,
-      boxShadow: "10px 10px 60px rgba(255, 215, 0, 0.9), inset 5px 5px 15px rgba(255, 215, 0, 0.6)", // Hoverda daha derin gölge efekti
-    border: "3px solid linear-gradient(45deg, rgba(255, 215, 0, 0.7), rgba(255, 255, 255, 0.7))", 
-      transform: "perspective(1000px) rotateX(5deg) rotateY(5deg) scale(1.05)", // Hoverda biraz büyütme
-   
-  }}
->
-        <Typography
-          id="win-description"
-          variant="h5"
-          sx={{
-            color: "#FFD700",
-            fontWeight: "bold",
-            textShadow: "0px 0px 10px rgba(255, 215, 0, 0.8)", // Parlayan yazı efekti
-            mb: 2,
-          }}
-        >
-          YOU WIN
-        </Typography>
-        <Typography
-          variant="h4"
-          sx={{
-            color: "white",
-            fontWeight: "bold",
-            textShadow: "0px 0px 5px rgba(255, 255, 255, 0.7)",
-          }}
-        >
-          {formatWinAmount(animatedValue)} {selectedBalance === "total" ? "TON" : "BBLIP"}
-        </Typography>
-        <Button
-          onClick={() => setWinModalOpen(false)}
-          variant="contained"
-          sx={{
-            mt: 3,
-            backgroundColor: "#FFD700",
-            color: "black",
-            fontWeight: "bold",
-            fontSize: "1.2rem",
-            textTransform: "uppercase",
-            boxShadow: "0px 0px 15px rgba(255, 215, 0, 0.8)", // Neon buton efekti
-            "&:hover": {
-              backgroundColor: "#FFC107",
-              boxShadow: "0px 0px 20px rgba(255, 193, 7, 1)",
-            },
-            width: "100%",
-            borderRadius: "12px",
-          }}
-        >
-          Play Again 🚀
-        </Button>
-      </Box>
-    </Modal>
-
-
-    
-
-  <DepositDrawer
-    open={drawerOpen}
-    onClose={() => setDrawerOpen(false)}
-  />      <SnackbarComponent snackbarOpen={snackbarOpen} setSnackbarOpen={setSnackbarOpen} />
-      </Box>
-    </Box>
-        </ThemeProvider>
-
+    </ThemeProvider>
   );
 };
