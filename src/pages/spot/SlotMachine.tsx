@@ -507,16 +507,8 @@ useEffect(() => {
       <Box //@ts-ignore
         sx={{ 
           
-          backgroundImage: `
-            radial-gradient(circle at 10% 20%, rgba(255, 215, 0, 0.05) 0%, transparent 20%),
-            radial-gradient(circle at 90% 80%, rgba(255, 215, 0, 0.05) 0%, transparent 20%),
-            radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.8) 0%, transparent 100%),
-            url(${backgroundImage})
-          `,
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center",
-          backgroundAttachment: "fixed",
+         
+   
           width: "100vw",
           mb:14,
           display: "flex",
@@ -562,6 +554,7 @@ useEffect(() => {
           <Paper
             elevation={24}
             sx={{
+              boxShadow:'none',
               background: 'transparent',
               borderRadius: '20px',
               p: 2,
@@ -583,7 +576,6 @@ useEffect(() => {
                   left: 0,
                   right: 0,
                   height: '2px',
-                  background: 'linear-gradient(90deg, transparent, rgba(255,215,0,0.2), transparent)',
                   transform: 'translateY(-50%)',
                   zIndex: 0,
                 }
