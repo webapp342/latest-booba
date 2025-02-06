@@ -77,9 +77,9 @@ function App() {
                     {loading && <Loading />}
 
                     {/* Ana içerik */}
-                    <div className={`main-content ${loading ? "hidden" : ""}`} style={{ paddingTop: '64px', overflowX: 'hidden' }}>
+                    <div className={`main-content ${loading ? "hidden" : ""}`} style={{marginBottom:"13vh", paddingTop: '64px', overflowX: 'hidden' }}>
                         <Brand />
-                        <Outlet />
+                        <Outlet  />
                     </div>
                     
 

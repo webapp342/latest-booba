@@ -140,10 +140,7 @@ export default function Navigation() {
     },
   });
 
-  const shouldHideBottomNav = location.pathname === '/latest-booba/spin';
-  if (shouldHideBottomNav) {
-    return null;
-  }
+
 
   return (
     <ThemeProvider theme={theme}>

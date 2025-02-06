@@ -19,7 +19,8 @@ import SwapVertRoundedIcon from '@mui/icons-material/SwapVertRounded';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
 import axios from "axios";
-import logo5 from '../assets/logo5.png';
+import logo5 from '../assets/booba-logo.png';     
+import ticket from '../assets/ticket.png'; 
 import { doc, onSnapshot, getFirestore, updateDoc } from "firebase/firestore";
 import { initializeApp } from 'firebase/app';
 
@@ -278,7 +279,7 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ defaultAmount, onClose }) => {
   });
 
   const tokens: TokenInfo[] = [
-    { name: "TICKET", icon: "https://cryptologos.cc/logos/telcoin-tel-logo.png?v=040" },
+    { name: "TICKET", icon: ticket },
     { name: "TON", icon: "https://s3-symbol-logo.tradingview.com/crypto/XTVCTON--big.svg" },
     { name: "USDT", icon: "https://s3-symbol-logo.tradingview.com/crypto/XTVCUSDT--big.svg" },
     { name: "BBLIP", icon: logo5 },
@@ -788,7 +789,8 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ defaultAmount, onClose }) => {
   return (
     <WithTourSection sectionId="swap-section">
       <ThemeProvider theme={theme}>
-        <Box sx={{ 
+        <Box //@ts-ignore
+        sx={{ 
           color: 'white', 
           display: 'flex',
           flexDirection: 'column',

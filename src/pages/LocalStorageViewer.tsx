@@ -8,6 +8,8 @@ import { CheckCircleOutline } from '@mui/icons-material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';import { useNavigate } from 'react-router-dom';
 import TokenSwap from "./SwapComponent"; // TokenSwap bileşenini eklediğiniz yer
 import logo5 from '../assets/booba-logo.png';
+import ticket from '../assets/ticket.png';
+
 import SettingsIcon from '@mui/icons-material/Settings';
 import { doc, onSnapshot, getFirestore, getDoc } from "firebase/firestore"; 
 import { initializeApp } from 'firebase/app';
@@ -93,7 +95,7 @@ const initialData: Asset[] = [
     active: true
   },
   {
-    logo: "https://cryptologos.cc/logos/telcoin-tel-logo.png?v=040",
+    logo: ticket,
     symbol: "TICKET",
     name: "Ticket",
         view:"Booba Blip",
