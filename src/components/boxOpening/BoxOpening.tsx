@@ -699,7 +699,8 @@ const BoxOpening: React.FC = () => {
                       }}
                     />
                     {/* Rarity Badge */}
-                    <Box sx={{
+                    <Box //ts-ignore
+                    sx={{
                       position: 'absolute',
                       top: 10,
                       right: 10,
@@ -739,7 +740,8 @@ const BoxOpening: React.FC = () => {
                     </Box>
 
                     {/* Price and Amount */}
-                    <Box sx={{
+                    <Box //ts-ignore
+                     sx={{
                       display: 'flex',
                       justifyContent: 'space-between',
                       alignItems: 'center',
@@ -777,8 +779,15 @@ const BoxOpening: React.FC = () => {
   if (loading) {
     return (
       <Container maxWidth="lg">
-        <Box  //ts-ignore  
-      sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+        <Box 
+        //@ts-ignore
+        sx={{
+           display: 'flex', 
+           justifyContent: 'center', 
+           alignItems: 'center', 
+           minHeight: '60vh' 
+           }}>
+
           <CircularProgress />
         </Box>
       </Container>
