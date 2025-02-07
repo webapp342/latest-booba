@@ -346,29 +346,27 @@ const BoxOpening: React.FC = () => {
   const [currentTab, setCurrentTab] = useState<TabType>('boxes');
   const [dropsSortBy, setDropsSortBy] = useState<'price' | 'rarity'>('price');
   const [showLevelModal, setShowLevelModal] = useState(false);
-  const [ 
-    , setSelectedDrop] = useState<any>(null);
+  const [, setSelectedDrop] = useState<any>(null);
   const [isUpgrading, setIsUpgrading] = useState(false);
   const [ticketError, setTicketError] = useState('');
   const [showLevelUpSuccess, setShowLevelUpSuccess] = useState(false);
   const [showSwapDrawer, setShowSwapDrawer] = useState(false);
 
-  // Box title mapping cache
-  const boxTitleMapping = React.useMemo(() => {
-    return Object.values(boxesData).reduce((acc, box) => {
-      acc[box.title.toLowerCase()] = box.title;
-      return acc;
-    }, {} as Record<string, string>);
-  }, []);
-
   // Get box count helper function
   const getBoxCount = React.useCallback((card: GameCard) => {
+    if (!userStats) return 0;
     if (card.id === 'mystery-gift') {
-      return userStats?.giftBox || 0;
+      return userStats.giftBox || 0;
     }
-    const boxTitle = boxTitleMapping[card.title.toLowerCase()];
-    return userStats?.boxes?.[boxTitle] || 0;
-  }, [userStats, boxTitleMapping]);
+    
+    const boxData = boxesData[card.id];
+    if (!boxData) {
+      console.log('Box not found:', card.id);
+      return 0;
+    }
+    
+    return userStats.boxes?.[boxData.title] || 0;
+  }, [userStats]);
 
   useEffect(() => {
     // defaultTab state'i geldiğinde currentTab'i güncelle
@@ -386,19 +384,26 @@ const BoxOpening: React.FC = () => {
       return;
     }
 
-    const docRef = doc(db, "users", telegramUserId);
-    const unsubscribe = onSnapshot(docRef, (docSnap) => {
-      if (docSnap.exists()) {
-        setUserStats(docSnap.data() as UserStats);
-      } else {
-        setError('User data not found');
+    const unsubscribe = onSnapshot(
+      doc(db, 'users', telegramUserId),
+      (doc) => {
+        if (doc.exists()) {
+          const userData = doc.data() as UserStats;
+          setUserStats(userData);
+          // Debug için boxes verilerini konsola yazdır
+          console.log('Firebase Boxes:', userData.boxes);
+          console.log('Game Cards:', gameCards.map(card => card.title));
+        } else {
+          setError('Kullanıcı verisi bulunamadı');
+        }
+        setLoading(false);
+      },
+      (error) => {
+        console.error('Error fetching user stats:', error);
+        setError('Veriler yüklenirken hata oluştu');
+        setLoading(false);
       }
-      setLoading(false);
-    }, (error) => {
-      console.error('Error fetching user stats:', error);
-      setError('Error loading data');
-      setLoading(false);
-    });
+    );
 
     return () => unsubscribe();
   }, [navigate]);
@@ -1158,14 +1163,14 @@ const BoxOpening: React.FC = () => {
                           right: 10,
                           background: 'linear-gradient(90deg, #6C7BDC, #6C7BDC80)',
                           color: 'white',
-                          px: 2,
+                          px: 1,
                           py: 0.5,
                           borderRadius: '20px',
                           fontSize: '0.8rem',
                           fontWeight: 'bold',
                           zIndex: 1
                         }}>
-                          FREE BOX
+                          FREE
                         </Box>
                       )}
                       <Box
@@ -1483,7 +1488,7 @@ const BoxOpening: React.FC = () => {
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px'
                   }}>
-                    Available Tickets
+                    Tickets
                   </Typography>
                   <Typography sx={{ 
                     color: '#6ed3ff',
@@ -1493,7 +1498,7 @@ const BoxOpening: React.FC = () => {
                   }}>
                     {userStats?.tickets || 0}
                   </Typography>
-                </Box>
+                </Box>  
               </Box>
 
               {/* Error Message */}

@@ -19,7 +19,8 @@ import { useNavigate } from 'react-router-dom';
 import { PackageOpenIcon, KeyIcon } from 'lucide-react';
 
 // Box ID'lerini bir array'e al
-const boxIds = Object.keys(boxesData);
+const boxIds = Object.keys(boxesData).filter(id => id !== 'mystery-gift');
+console.log('Available box IDs:', boxIds);
 
 // Sola kayma animasyonu - daha hızlı
 const slideLeft = keyframes`
@@ -236,7 +237,8 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
           background: 'linear-gradient(90deg, rgba(110,211,255,0.1), rgba(142,233,255,0.05))',
           borderBottom: '1px solid rgba(255,255,255,0.1)'
         }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Box 
+          sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <Typography variant="h6" sx={{ 
               background: 'linear-gradient(90deg, #6ed3ff, #8ee9ff)',
               WebkitBackgroundClip: 'text',
@@ -254,9 +256,7 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
             disabled={isProcessing}
             sx={{
               color: 'rgba(255,255,255,0.5)',
-              '&:hover': {
-                color: '#6ed3ff',
-              },
+              
             }}
           >
             <CloseIcon />
