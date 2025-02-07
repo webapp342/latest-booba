@@ -14,6 +14,7 @@ import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
 import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
 import ControlPointDuplicateIcon from '@mui/icons-material/ControlPointDuplicate';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import CreatePoolModal from './CreatePool/CreatePoolModal';
 
 const StatItem = ({ title, value, change, isRightAligned = false }: { 
   title: string; 
@@ -441,6 +442,7 @@ const CryptoCard = ({
 const Statistics: React.FC = () => {
   const hasUserPools = false;
   const [showAllPools, setShowAllPools] = useState(false);
+  const [isCreatePoolModalOpen, setIsCreatePoolModalOpen] = useState(false);
 
   // Pool data array to make it easier to manage
   const poolData = [
@@ -561,7 +563,8 @@ const Statistics: React.FC = () => {
   const displayedPools = showAllPools ? poolData : poolData.slice(0, 2);
 
   return (
-    <Box mx={-1} mb={10}>
+    <Box //@ts-ignore
+    mx={-1} mb={10}>
       {/* Dashboard Card */}
       <Box sx={{ mb: 4 }}>
         <Box sx={{ 
@@ -828,6 +831,7 @@ const Statistics: React.FC = () => {
             <Button
             fullWidth
               startIcon={<AddCircleOutlineIcon />}
+              onClick={() => setIsCreatePoolModalOpen(true)}
               sx={{
                 backgroundColor: '#6ed3ff',
                 color: '#000',
@@ -839,7 +843,9 @@ const Statistics: React.FC = () => {
                 textTransform: 'none',
                 whiteSpace: 'nowrap',
                 transition: 'all 0.2s ease-in-out',
-               
+                '&:hover': {
+                  backgroundColor: '#89d9ff',
+                }
               }}
             >
               Create Pool
@@ -1094,6 +1100,28 @@ const Statistics: React.FC = () => {
           </Box>
         </Grid>
       </Grid>
+
+      <CreatePoolModal 
+        open={isCreatePoolModalOpen}
+        onClose={() => setIsCreatePoolModalOpen(false)}
+      />
+      
+      {/* Add button to open modal */}
+      <Button
+        variant="contained"
+        onClick={() => setIsCreatePoolModalOpen(true)}
+        startIcon={<AddCircleOutlineIcon />}
+        sx={{
+          bgcolor: '#6ed3ff',
+          color: '#000',
+          '&:hover': {
+            bgcolor: '#89d9ff',
+          },
+          mb: 2,
+        }}
+      >
+        Create Pool
+      </Button>
     </Box>
   );
 };

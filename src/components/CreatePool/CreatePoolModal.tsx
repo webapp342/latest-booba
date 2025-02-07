@@ -7,7 +7,7 @@ import {
   Select,
   MenuItem,
   FormControl,
-  InputLabel,
+  
   Button,
   Slider,
   InputAdornment,
@@ -21,11 +21,27 @@ import {
   CircularProgress,
   Switch,
   FormControlLabel,
+  Paper,
+  Checkbox,
 } from '@mui/material';
 import { X as CloseIconLucide } from 'lucide-react';
 import { 
   Sparkles,
   DollarSign,
+  ShieldCheck,
+  Activity,
+  Rocket,
+  Brain,
+  Network,
+  Cpu,
+  Clock1,
+  Calendar,
+  CalendarDays,
+  CalendarRange,
+  Mail,
+  Bell,
+  Send,
+  MessageCircle,
 } from 'lucide-react';
 import { styled } from '@mui/material/styles';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
@@ -40,55 +56,205 @@ interface CreatePoolModalProps {
   onClose: () => void;
 }
 
+// Add type definitions
+type RiskLevel = 'conservative' | 'moderate' | 'aggressive';
+type AIModel = 'conservative' | 'balanced' | 'aggressive';
+type RebalancingFrequency = 'hourly' | 'daily' | 'weekly' | 'monthly';
+type NotificationChannel = 'email' | 'push' | 'telegram' | 'discord';
+type TradingStrategy = 'momentum' | 'balanced' | 'value';
+
+// Update the formData interface
+type FormData = {
+  investmentAmount: string;
+  riskLevel: RiskLevel;
+  tradingStrategy: TradingStrategy;
+  aiModel: AIModel;
+  rebalancingFrequency: RebalancingFrequency;
+  stopLoss: string;
+  takeProfit: string;
+  maxDrawdown: string;
+  maxLeverage: string;
+  automatedReporting: boolean;
+  notificationPreferences: NotificationChannel[];
+  profitSharing: {
+    poolCreator: number;
+    investors: number;
+  };
+  poolName: string;
+  poolDescription: string;
+  selectedDuration: '1d' | '7d' | '14d' | '30d';
+  acknowledgments: {
+    investment: boolean;
+    strategy: boolean;
+    rebalancing: boolean;
+    riskManagement: boolean;
+    leverage: boolean;
+    reporting: boolean;
+    profitSharing: boolean;
+  };
+};
+
+// Add new interface for form errors
+interface FormErrors {
+  investmentAmount?: string;
+  riskLevel?: string;
+  tradingStrategy?: string;
+  aiModel?: string;
+  rebalancingFrequency?: string;
+  stopLoss?: string;
+  takeProfit?: string;
+  maxDrawdown?: string;
+  maxLeverage?: string;
+  notificationPreferences?: string;
+  acknowledgment?: string;
+}
+
+// Add new interface for estimated earnings
+interface EstimatedEarnings {
+  amount: number;
+  percentage: number;
+  dailyAmount: number;
+  dailyPercentage: number;
+}
+
+// Add new interface for selected percentages
+interface SelectedPercentages {
+  duration: number;
+  risk: number;
+  strategy: number;
+  aiModel: number;
+  leverage: number;
+}
+
+
 // Styled Components
 const StyledTextField = styled(TextField)({
   '& .MuiOutlinedInput-root': {
     borderRadius: '12px',
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    backgroundColor: 'rgba(26, 33, 38, 0.6)',
+    backdropFilter: 'blur(10px)',
+    transition: 'all 0.2s ease-in-out',
     '& fieldset': {
       borderColor: 'rgba(255, 255, 255, 0.1)',
+      transition: 'all 0.2s ease-in-out',
     },
     '&:hover fieldset': {
       borderColor: '#6ed3ff',
     },
     '&.Mui-focused fieldset': {
       borderColor: '#6ed3ff',
+      borderWidth: '1px',
+    },
+    '&:hover': {
+      backgroundColor: 'rgba(26, 33, 38, 0.8)',
     },
   },
   '& .MuiInputBase-input': {
     color: '#ffffff',
+    padding: '16px',
+    fontSize: '0.95rem',
   },
   '& .MuiInputLabel-root': {
     color: 'rgba(255, 255, 255, 0.7)',
+    fontSize: '0.95rem',
     '&.Mui-focused': {
       color: '#6ed3ff',
     },
   },
+  '& .MuiInputAdornment-root': {
+    '& .MuiSvgIcon-root': {
+      color: '#6ed3ff',
+    }
+  }
 });
 
 const StyledSelect = styled(Select)({
   borderRadius: '12px',
-  backgroundColor: 'rgba(255, 255, 255, 0.05)',
+  backgroundColor: 'rgba(26, 33, 38, 0.6)',
+  backdropFilter: 'blur(10px)',
+  transition: 'all 0.2s ease-in-out',
+  height: '56px',
   '& .MuiOutlinedInput-notchedOutline': {
-    borderColor: 'rgba(255, 255, 255, 0.1)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    transition: 'all 0.2s ease-in-out',
   },
-  '&:hover .MuiOutlinedInput-notchedOutline': {
-    borderColor: '#6ed3ff',
+  '&:hover': {
+    backgroundColor: 'rgba(26, 33, 38, 0.8)',
+    '& .MuiOutlinedInput-notchedOutline': {
+      borderColor: '#6ed3ff',
+    },
   },
-  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-    borderColor: '#6ed3ff',
+  '&.Mui-focused': {
+    '& .MuiOutlinedInput-notchedOutline': {
+      borderColor: '#6ed3ff',
+      borderWidth: '1px',
+    },
+  },
+  '& .MuiSelect-select': {
+    padding: '16px',
+    color: '#ffffff',
+    fontSize: '0.95rem',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
   },
   '& .MuiSelect-icon': {
     color: '#6ed3ff',
+    transition: 'transform 0.2s ease-in-out',
+    right: '16px',
+  },
+  '&.Mui-focused .MuiSelect-icon': {
+    transform: 'rotate(180deg)',
+  },
+  '& + .MuiFormLabel-root': {
+    color: 'rgba(255, 255, 255, 0.7)',
+    fontSize: '0.95rem',
+    top: '-6px',
+    '&.Mui-focused': {
+      color: '#6ed3ff',
+    },
+    '&.MuiFormLabel-filled': {
+      color: 'rgba(255, 255, 255, 0.7)',
+    }
+  },
+  '& .MuiPaper-root': {
+    backgroundColor: 'transparent !important'
+  },
+  '& .MuiMenu-paper': {
+    backgroundColor: 'rgba(18, 22, 25, 0.98) !important',
+    backdropFilter: 'blur(10px)',
+    border: '1px solid rgba(110, 211, 255, 0.1)',
+    borderRadius: '12px',
+    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+  },
+  '& .MuiList-root': {
+    backgroundColor: 'transparent !important',
+    padding: '8px',
+  },
+  '& .MuiMenuItem-root': {
+    backgroundColor: 'rgba(26, 33, 38, 0.95)',
+    '&:hover': {
+      backgroundColor: 'rgba(110, 211, 255, 0.1)',
+    },
+    '&.Mui-selected': {
+      backgroundColor: 'rgba(110, 211, 255, 0.15)',
+      '&:hover': {
+        backgroundColor: 'rgba(110, 211, 255, 0.25)',
+      }
+    }
   }
 });
 
 const StyledCard = styled(Card)({
-  background: 'rgba(255, 255, 255, 0.02)',
+  background: 'linear-gradient(180deg, rgba(26, 33, 38, 0.8) 0%, rgba(26, 33, 38, 0.6) 100%)',
   backdropFilter: 'blur(10px)',
-  borderRadius: '12px',
+  borderRadius: '16px',
+  border: '1px solid rgba(255, 255, 255, 0.1)',
   padding: '16px',
   transition: 'all 200ms ease-in-out',
+  '&:hover': {
+    border: '1px solid rgba(110, 211, 255, 0.2)',
+  }
 });
 
 const StyledButton = styled(Button)(({ variant }) => ({
@@ -97,7 +263,7 @@ const StyledButton = styled(Button)(({ variant }) => ({
   padding: '8px 24px',
   ...(variant === 'contained' && {
     backgroundColor: '#6ed3ff',
-    color: '#1A2126',
+    color: '#ffffff',
     '&:hover': {
       backgroundColor: '#8edbff',
     },
@@ -121,34 +287,100 @@ const StyledButton = styled(Button)(({ variant }) => ({
 }));
 
 const StyledSwitch = styled(Switch)({
+  width: 54,
+  height: 32,
+  padding: 0,
   '& .MuiSwitch-switchBase': {
+    padding: 4,
     '&.Mui-checked': {
-      color: '#6ed3ff',
+      transform: 'translateX(22px)',
+      color: '#fff',
       '& + .MuiSwitch-track': {
         backgroundColor: '#6ed3ff',
+        opacity: 1,
+        border: 0,
+      },
+      '&.Mui-disabled + .MuiSwitch-track': {
         opacity: 0.5,
       },
     },
+    '&.Mui-focusVisible .MuiSwitch-thumb': {
+      color: '#6ed3ff',
+      border: '6px solid #fff',
+    },
+    '&.Mui-disabled .MuiSwitch-thumb': {
+      color: 'rgba(255, 255, 255, 0.3)',
+    },
+    '&.Mui-disabled + .MuiSwitch-track': {
+      opacity: 0.3,
+    },
+  },
+  '& .MuiSwitch-thumb': {
+    boxSizing: 'border-box',
+    width: 24,
+    height: 24,
+    color: '#fff',
+    transition: 'transform 0.2s ease-in-out',
   },
   '& .MuiSwitch-track': {
+    borderRadius: 32,
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    opacity: 1,
+    transition: 'background-color 0.2s ease-in-out',
   },
 });
 
 const StyledSlider = styled(Slider)({
-  color: '#6ed3ff',
-  '& .MuiSlider-thumb': {
-    '&:hover, &.Mui-focusVisible': {
-      boxShadow: '0 0 0 8px rgba(110, 211, 255, 0.2)',
-    },
-  },
+  height: 8,
+  borderRadius: 4,
   '& .MuiSlider-rail': {
-    opacity: 0.3,
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    opacity: 1,
   },
   '& .MuiSlider-track': {
-    backgroundColor: '#6ed3ff',
+    background: 'linear-gradient(90deg, #6ed3ff 0%, #89d9ff 100%)',
+    border: 'none',
+    height: 8,
   },
+  '& .MuiSlider-thumb': {
+    height: 24,
+    width: 24,
+    backgroundColor: '#fff',
+    border: '2px solid #6ed3ff',
+    boxShadow: '0 0 10px rgba(110, 211, 255, 0.3)',
+    '&:focus, &:hover, &.Mui-active': {
+      boxShadow: '0 0 15px rgba(110, 211, 255, 0.5)',
+    },
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      width: '8px',
+      height: '8px',
+      borderRadius: '50%',
+      backgroundColor: '#6ed3ff',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+    }
+  },
+  '& .MuiSlider-valueLabel': {
+    backgroundColor: '#6ed3ff',
+    borderRadius: '8px',
+    padding: '4px 8px',
+    fontSize: '0.85rem',
+    fontWeight: 600,
+    '&::before': {
+      borderBottom: '8px solid #6ed3ff',
+    }
+  },
+  '& .MuiSlider-mark': {
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+    height: 8,
+    width: 2,
+    '&.MuiSlider-markActive': {
+      backgroundColor: '#fff',
+    }
+  }
 });
 
 const StyledStarsModal = styled(Modal)({
@@ -178,11 +410,95 @@ const StyledSwapDrawer = styled(SwapDrawer)({
   }
 });
 
+const StyledMenuItem = styled(MenuItem)({
+  padding: '12px 16px',
+  color: '#ffffff',
+  fontSize: '0.95rem',
+  transition: 'all 0.2s ease-in-out',
+  backgroundColor: 'rgba(26, 33, 38, 0.95) !important',
+  backdropFilter: 'blur(10px)',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '12px',
+  minHeight: '48px',
+  borderRadius: '8px',
+  marginBottom: '4px',
+  '&:last-child': {
+    marginBottom: 0
+  },
+  '&:hover': {
+    backgroundColor: 'rgba(110, 211, 255, 0.1) !important',
+  },
+  '&.Mui-selected': {
+    backgroundColor: 'rgba(110, 211, 255, 0.15) !important',
+    color: '#6ed3ff',
+    fontWeight: 500,
+    '&:hover': {
+      backgroundColor: 'rgba(110, 211, 255, 0.25) !important',
+    },
+    '&::after': {
+      content: '""',
+      position: 'absolute',
+      right: '16px',
+      width: '6px',
+      height: '6px',
+      borderRadius: '50%',
+      backgroundColor: '#6ed3ff',
+    }
+  }
+});
+
+const StyledFormControlLabel = styled(FormControlLabel)({
+  '& .MuiFormControlLabel-label': {
+    color: '#fff',
+    fontSize: '0.95rem',
+  }
+});
+
+const StyledChip = styled(Chip)({
+  backgroundColor: 'rgba(110, 211, 255, 0.1)',
+  color: '#6ed3ff',
+  borderRadius: '8px',
+  height: '32px',
+  fontSize: '0.9rem',
+  fontWeight: 500,
+  border: '1px solid rgba(110, 211, 255, 0.2)',
+  '& .MuiChip-label': {
+    padding: '0 12px',
+  },
+  '& .MuiChip-deleteIcon': {
+    color: '#6ed3ff',
+    '&:hover': {
+      color: '#89d9ff',
+    }
+  },
+  '&:hover': {
+    backgroundColor: 'rgba(110, 211, 255, 0.2)',
+  }
+});
+
+// Update StyledPaper styles
+const StyledPaper = styled(Paper)({
+  backgroundColor: 'rgba(18, 22, 25, 0.98) !important',
+  backdropFilter: 'blur(10px)',
+  border: '1px solid rgba(110, 211, 255, 0.1)',
+  borderRadius: '12px',
+  marginTop: '8px',
+  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+  '& .MuiList-root': {
+    padding: '8px',
+    backgroundColor: 'transparent !important',
+  },
+  '& .MuiMenuItem-root + .MuiMenuItem-root': {
+    marginTop: '4px',
+  }
+});
+
 const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [formData, setFormData] = useState({
-    investmentAmount: '',
+  const [formData, setFormData] = useState<FormData>({
+    investmentAmount: '1000', // Default investment amount
     riskLevel: 'moderate',
     tradingStrategy: 'balanced',
     aiModel: 'conservative',
@@ -190,16 +506,25 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
     stopLoss: '10',
     takeProfit: '20',
     maxDrawdown: '15',
-    leverageEnabled: false,
-    maxLeverage: '2',
+    maxLeverage: '10',
     automatedReporting: true,
     notificationPreferences: ['email'],
     profitSharing: {
-      poolCreator: 20,
-      investors: 80
+      poolCreator: 55,
+      investors: 45
     },
     poolName: '',
     poolDescription: '',
+    selectedDuration: '7d', // Default duration
+    acknowledgments: {
+      investment: false,
+      strategy: false,
+      rebalancing: false,
+      riskManagement: false,
+      leverage: false,
+      reporting: false,
+      profitSharing: false
+    }
   });
   const [showStarsModal, setShowStarsModal] = useState(false);
   const [showLevelUpSuccess, setShowLevelUpSuccess] = useState(false);
@@ -207,6 +532,50 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [userData, setUserData] = useState<any>(null);
   const [showSwapDrawer, setShowSwapDrawer] = useState(false);
+  const [formErrors, setFormErrors] = useState<FormErrors>({});
+  const [estimatedEarnings, setEstimatedEarnings] = useState<EstimatedEarnings>({
+    amount: 0,
+    percentage: 0,
+    dailyAmount: 0,
+    dailyPercentage: 0
+  });
+
+  // Add state for selected percentages
+  const [selectedPercentages, setSelectedPercentages] = useState<SelectedPercentages>({
+    duration: 45,     // Default 7d percentage (45%)
+    risk: 32,        // Default moderate percentage
+    strategy: 20,    // Default balanced percentage
+    aiModel: 15,     // Default conservative percentage
+    leverage: 1      // Default leverage percentage (10x = 1%)
+  });
+
+  // Update risk level multipliers for daily returns
+  const riskPercentages = {
+    conservative: 20,
+    moderate: 32,
+    aggressive: 60
+  };
+
+  // Update risk multipliers with strategy and model combinations
+  const strategyPercentages = {
+    momentum: 40,
+    balanced: 20,
+    value: 10
+  };
+
+  const aiModelPercentages = {
+    conservative: 15,
+    balanced: 35,
+    aggressive: 60
+  };
+
+  // Add duration percentages mapping
+  const durationPercentages = {
+    '1d': 20,
+    '7d': 45,
+    '14d': 60,
+    '30d': 73
+  } as const;
 
   useEffect(() => {
     const telegramUserId = localStorage.getItem("telegramUserId");
@@ -227,11 +596,71 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
     return () => unsubscribe();
   }, []);
 
+    // Initial calculation effect
+    useEffect(() => {
+      calculateEstimatedEarnings();
+    }, []); // Run once on component mount
+
+  // Update handleChange to track percentages
   const handleChange = (field: string) => (event: any) => {
-    setFormData({
+    const newFormData = {
       ...formData,
       [field]: event.target.value
-    });
+    };
+    setFormData(newFormData);
+
+    // Update selected percentages based on the field
+    if (field === 'riskLevel') {
+      setSelectedPercentages(prev => {
+        const newPercentages = {
+          ...prev,
+          risk: riskPercentages[event.target.value as RiskLevel]
+        };
+        calculateEstimatedEarnings(newPercentages);
+        return newPercentages;
+      });
+    } else if (field === 'tradingStrategy') {
+      setSelectedPercentages(prev => {
+        const newPercentages = {
+          ...prev,
+          strategy: strategyPercentages[event.target.value as TradingStrategy]
+        };
+        calculateEstimatedEarnings(newPercentages);
+        return newPercentages;
+      });
+    } else if (field === 'aiModel') {
+      setSelectedPercentages(prev => {
+        const newPercentages = {
+          ...prev,
+          aiModel: aiModelPercentages[event.target.value as AIModel]
+        };
+        calculateEstimatedEarnings(newPercentages);
+        return newPercentages;
+      });
+    } else if (field === 'maxLeverage') {
+      const leverageValue = parseFloat(event.target.value) || 0;
+      setSelectedPercentages(prev => {
+        const newPercentages = {
+          ...prev,
+          leverage: leverageValue / 10 // Convert leverage to percentage (10x = 1%)
+        };
+        calculateEstimatedEarnings(newPercentages);
+        return newPercentages;
+      });
+    } else if (field === 'investmentAmount') {
+      // Direkt olarak mevcut yüzdelerle hesaplama yap
+      const investment = parseFloat(event.target.value) || 0;
+      const totalPercentage = Object.values(selectedPercentages).reduce((sum, percentage) => sum + percentage, 0);
+      const earnings = investment * (totalPercentage / 100);
+      const totalRepay = investment + earnings;
+      
+      setEstimatedEarnings({
+        amount: earnings,
+        percentage: totalPercentage,
+        dailyAmount: totalRepay,
+        dailyPercentage: totalPercentage
+      });
+    }
   };
 
   const handleStepClick = (step: number) => {
@@ -242,9 +671,157 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
     }, 300);
   };
 
+  const validateCurrentStep = (): boolean => {
+    const errors: FormErrors = {};
+    let isValid = true;
+
+    const scrollToError = (elementId: string) => {
+      const element = document.getElementById(elementId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    };
+
+    switch (activeStep) {
+      case 0: // Investment
+        const investmentAmount = parseFloat(formData.investmentAmount);
+        if (!formData.investmentAmount || investmentAmount < 50) {
+          errors.investmentAmount = 'Minimum investment amount is 50';
+          isValid = false;
+          scrollToError('investment-amount-field');
+        }
+        // Check for 1d duration minimum investment
+        if (formData.selectedDuration === '1d' && investmentAmount < 2500) {
+          errors.investmentAmount = 'For 1-day duration, minimum investment amount is $2,500';
+          isValid = false;
+          scrollToError('investment-amount-field');
+        }
+        if (!formData.riskLevel) {
+          errors.riskLevel = 'Please select a risk level';
+          isValid = false;
+          scrollToError('risk-level-field');
+        }
+        if (!formData.acknowledgments.investment) {
+          errors.acknowledgment = 'Please acknowledge the investment terms';
+          isValid = false;
+          scrollToError('investment-acknowledgment');
+        }
+        break;
+
+      case 1: // AI Strategy
+        if (!formData.tradingStrategy) {
+          errors.tradingStrategy = 'Please select a trading strategy';
+          isValid = false;
+          scrollToError('trading-strategy-field');
+        }
+        if (!formData.aiModel) {
+          errors.aiModel = 'Please select an AI model';
+          isValid = false;
+          scrollToError('ai-model-field');
+        }
+        if (!formData.acknowledgments.strategy) {
+          errors.acknowledgment = 'Please acknowledge the strategy terms';
+          isValid = false;
+          scrollToError('strategy-acknowledgment');
+        }
+        break;
+
+      case 2: // Rebalancing
+        if (!formData.rebalancingFrequency) {
+          errors.rebalancingFrequency = 'Please select a rebalancing frequency';
+          isValid = false;
+          scrollToError('rebalancing-frequency-field');
+        }
+        if (!formData.acknowledgments.rebalancing) {
+          errors.acknowledgment = 'Please acknowledge the rebalancing terms';
+          isValid = false;
+          scrollToError('rebalancing-acknowledgment');
+        }
+        break;
+
+      case 3: // Risk Management
+        if (!formData.stopLoss || parseFloat(formData.stopLoss) > 1) {
+          errors.stopLoss = 'Stop loss must be between 0.1% and 1%';
+          isValid = false;
+          scrollToError('stop-loss-field');
+        } else if (parseFloat(formData.stopLoss) < 0.1) {
+          errors.stopLoss = 'Stop loss cannot be less than 0.1%';
+          isValid = false;
+          scrollToError('stop-loss-field');
+        }
+
+        if (!formData.takeProfit || parseFloat(formData.takeProfit) <= 0) {
+          errors.takeProfit = 'Take profit must be greater than 0%';
+          isValid = false;
+          scrollToError('take-profit-field');
+        } else if (parseFloat(formData.takeProfit) < parseFloat(formData.stopLoss)) {
+          errors.takeProfit = 'Take profit must be greater than stop loss';
+          isValid = false;
+          scrollToError('take-profit-field');
+        }
+
+        if (!formData.maxDrawdown || parseFloat(formData.maxDrawdown) <= 0) {
+          errors.maxDrawdown = 'Maximum drawdown must be greater than 0%';
+          isValid = false;
+          scrollToError('max-drawdown-field');
+        } else if (parseFloat(formData.maxDrawdown) > 50) {
+          errors.maxDrawdown = 'Maximum drawdown cannot exceed 50%';
+          isValid = false;
+          scrollToError('max-drawdown-field');
+        }
+
+        if (!formData.acknowledgments.riskManagement) {
+          errors.acknowledgment = 'Please acknowledge that you understand the risk management parameters';
+          isValid = false;
+          scrollToError('risk-management-acknowledgment');
+        }
+        break;
+
+      case 4: // Leverage
+        const leverage = parseFloat(formData.maxLeverage);
+        if (!leverage || leverage < 10 || leverage > 120) {
+          errors.maxLeverage = 'Leverage must be between 10x and 120x';
+          isValid = false;
+          scrollToError('leverage-field');
+        }
+        if (!formData.acknowledgments.leverage) {
+          errors.acknowledgment = 'Please acknowledge the leverage trading terms';
+          isValid = false;
+          scrollToError('leverage-acknowledgment');
+        }
+        break;
+
+      case 5: // Reporting
+        if (formData.notificationPreferences.length === 0) {
+          errors.notificationPreferences = 'Please select at least one notification channel';
+          isValid = false;
+          scrollToError('notification-preferences-field');
+        }
+        if (!formData.acknowledgments.reporting) {
+          errors.acknowledgment = 'Please acknowledge the reporting terms';
+          isValid = false;
+          scrollToError('reporting-acknowledgment');
+        }
+        break;
+
+      case 6: // Profit Sharing
+        if (!formData.acknowledgments.profitSharing) {
+          errors.acknowledgment = 'Please acknowledge the profit sharing terms';
+          isValid = false;
+          scrollToError('profit-sharing-acknowledgment');
+        }
+        break;
+    }
+
+    setFormErrors(errors);
+    return isValid;
+  };
+
   const handleNext = () => {
-    if (activeStep < steps.length - 1) {
-      handleStepClick(activeStep + 1);
+    if (validateCurrentStep()) {
+      if (activeStep < steps.length - 1) {
+        handleStepClick(activeStep + 1);
+      }
     }
   };
 
@@ -333,58 +910,134 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
     setShowSwapDrawer(true);
   };
 
-  const steps = [
-    {
-      label: 'Basic Info',
-      content: (
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <StyledCard>
-              <CardContent>
-                <Stack spacing={4}>
-                  <Box>
-                    <Typography variant="h5" sx={{ 
-                      color: '#6ed3ff',
-                      fontWeight: 600,
-                      mb: 1,
-                      textAlign: 'center'
-                    }}>
-                      Pool Information
-                    </Typography>
-                    <Typography sx={{ 
-                      color: 'rgba(255, 255, 255, 0.6)',
-                      textAlign: 'center',
-                      fontSize: '0.95rem'
-                    }}>
-                      Set up your AI fund manager pool
-                    </Typography>
-                  </Box>
+  const handleProfitSharingChange = (_event: Event, newValue: number | number[]) => {
+    const creatorShare = Math.max(55, newValue as number);
+    setFormData({
+      ...formData,
+      profitSharing: {
+        poolCreator: creatorShare,
+        investors: 100 - creatorShare
+      }
+    });
+  };
 
-                  <Stack spacing={3}>
-                    <StyledTextField
-                      fullWidth
-                      label="Pool Name"
-                      value={formData.poolName}
-                      onChange={handleChange('poolName')}
-                      placeholder="Enter a unique name for your pool"
-                    />
-                    <StyledTextField
-                      fullWidth
-                      multiline
-                      rows={3}
-                      label="Pool Description"
-                      value={formData.poolDescription}
-                      onChange={handleChange('poolDescription')}
-                      placeholder="Describe your pool's investment strategy and goals"
-                    />
-                  </Stack>
-                </Stack>
-              </CardContent>
-            </StyledCard>
-          </Grid>
-        </Grid>
-      )
-    },
+  // Update earnings calculation function to accept percentages parameter
+  const calculateEstimatedEarnings = (percentages: SelectedPercentages = selectedPercentages) => {
+    const investment = parseFloat(formData.investmentAmount) || 0;
+    
+    // Calculate total percentage from all selections
+    const totalPercentage = Object.values(percentages).reduce((sum, percentage) => sum + percentage, 0);
+    
+    // Calculate earnings based on total percentage
+    const earnings = investment * (totalPercentage / 100);
+    
+    // Calculate total repay (initial investment + earnings)
+    const totalRepay = investment + earnings;
+    
+    setEstimatedEarnings({
+      amount: earnings,
+      percentage: totalPercentage,
+      dailyAmount: totalRepay,
+      dailyPercentage: totalPercentage
+    });
+  };
+
+  // Update duration button click handler
+  const handleDurationClick = (duration: '1d' | '7d' | '14d' | '30d', percentage: number) => {
+    setFormData(prev => ({ ...prev, selectedDuration: duration }));
+    setSelectedPercentages(prev => {
+      const newPercentages = {
+        ...prev,
+        duration: percentage
+      };
+      calculateEstimatedEarnings(newPercentages);
+      return newPercentages;
+    });
+  };
+
+  // Update EstimatedEarningsDisplay component
+  const EstimatedEarningsDisplay: React.FC = () => {
+    return (
+      <Box //@ts-ignore
+       sx={{ mb: 2 }}>
+        <Stack spacing={2}>
+          <Box>
+            <Typography sx={{ 
+              color: 'rgba(255, 255, 255, 0.7)',
+              fontSize: '0.9rem',
+              mb: 1
+            }}>
+              Duration
+            </Typography>
+            <Box sx={{ 
+              display: 'flex', 
+              gap: 1,
+              '& button': {
+                flex: 1,
+                padding: '8px',
+                borderRadius: '8px',
+                border: '1px solid rgba(110, 211, 255, 0.2)',
+                backgroundColor: 'rgba(26, 33, 38, 0.6)',
+                color: 'rgba(255, 255, 255, 0.7)',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+                '&:hover': {
+                  backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                },
+                '&.selected': {
+                  backgroundColor: 'rgba(110, 211, 255, 0.2)',
+                  borderColor: '#6ed3ff',
+                  color: '#6ed3ff',
+                } as any
+              }
+            }}>
+              {Object.entries(durationPercentages).map(([duration, percentage]) => (
+                <button
+                  key={duration}
+                  type="button"
+                  className={formData.selectedDuration === duration ? 'selected' : ''}
+                  onClick={() => handleDurationClick(duration as '1d' | '7d' | '14d' | '30d', percentage)}
+                >
+                  <Typography sx={{ fontSize: '0.9rem', fontWeight: 500 }}>
+                    {duration}
+                  </Typography>
+                  <Typography sx={{ fontSize: '0.8rem', opacity: 0.8 }}>
+                    {percentage}%
+                  </Typography>
+                </button>
+              ))}
+            </Box>
+          </Box>
+          
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Typography sx={{ 
+              color: '#6ed3ff',
+              fontSize: '0.9rem'
+            }}>
+              Total Repay:
+            </Typography>
+            <Box sx={{ textAlign: 'right' }}>
+              <Typography sx={{ 
+                color: '#22C55E',
+                fontSize: '1.1rem',
+                fontWeight: 600
+              }}>
+                ${estimatedEarnings.dailyAmount.toFixed(2)}
+              </Typography>
+              <Typography sx={{ 
+                color: 'rgba(34, 197, 94, 0.7)',
+                fontSize: '0.8rem'
+              }}>
+               +{estimatedEarnings.percentage.toFixed(2)}%
+              </Typography>
+            </Box>
+          </Box>
+        </Stack>
+      </Box>
+    );
+  };
+
+  const steps = [
     {
       label: 'Investment',
       content: (
@@ -413,6 +1066,7 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
 
                   <Box sx={{ position: 'relative' }}>
                     <StyledTextField
+                      id="investment-amount-field"
                       fullWidth
                       type="number"
                       value={formData.investmentAmount}
@@ -423,22 +1077,98 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
                             <DollarSign size={24} style={{ color: '#6ed3ff' }} />
                           </InputAdornment>
                         ),
+                        inputProps: { min: 50 }
                       }}
-                      label="Initial Investment"
+                      label="Initial Investment (Min: $50)"
+                      error={!!formErrors.investmentAmount}
+                      helperText={formErrors.investmentAmount}
                     />
                   </Box>
 
-                  <FormControl fullWidth>
-                    <InputLabel>Risk Level</InputLabel>
+                  <FormControl id="risk-level-field" fullWidth error={!!formErrors.riskLevel}>
+                    <Typography sx={{ 
+                      color: formErrors.riskLevel ? '#ff4d4d' : 'rgba(255, 255, 255, 0.7)',
+                      fontSize: '0.9rem',
+                      mb: 1,
+                      ml: 0.5,
+                      fontWeight: 500
+                    }}>
+                      Risk Level
+                    </Typography>
                     <StyledSelect
                       value={formData.riskLevel}
                       onChange={handleChange('riskLevel')}
+                      MenuProps={{
+                        PaperProps: {
+                          component: StyledPaper
+                        }
+                      }}
+                      renderValue={(value) => (
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          {(value as RiskLevel) === 'conservative' && <ShieldCheck size={20} />}
+                          {(value as RiskLevel) === 'moderate' && <Activity size={20} />}
+                          {(value as RiskLevel) === 'aggressive' && <Rocket size={20} />}
+                          {String(value).charAt(0).toUpperCase() + String(value).slice(1)}
+                        </Box>
+                      )}
                     >
-                      <MenuItem value="conservative">Conservative</MenuItem>
-                      <MenuItem value="moderate">Moderate</MenuItem>
-                      <MenuItem value="aggressive">Aggressive</MenuItem>
+                      <StyledMenuItem value="conservative">
+                        <ShieldCheck size={20} />
+                        Conservative
+                      </StyledMenuItem>
+                      <StyledMenuItem value="moderate">
+                        <Activity size={20} />
+                        Moderate
+                      </StyledMenuItem>
+                      <StyledMenuItem value="aggressive">
+                        <Rocket size={20} />
+                        Aggressive
+                      </StyledMenuItem>
                     </StyledSelect>
+                    {formErrors.riskLevel && (
+                      <Typography sx={{ 
+                        color: '#ff4d4d',
+                        fontSize: '0.75rem',
+                        mt: 0.5,
+                        ml: 1
+                      }}>
+                        {formErrors.riskLevel}
+                      </Typography>
+                    )}
                   </FormControl>
+
+                  <Box id="investment-acknowledgment" sx={{ mt: 2 }}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={formData.acknowledgments.investment}
+                          onChange={(e) => setFormData({
+                            ...formData,
+                            acknowledgments: {
+                              ...formData.acknowledgments,
+                              investment: e.target.checked
+                            }
+                          })}
+                          sx={{
+                            color: 'rgba(110, 211, 255, 0.5)',
+                            '&.Mui-checked': {
+                              color: '#6ed3ff',
+                            },
+                          }}
+                        />
+                      }
+                      label={
+                        <Typography sx={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '0.9rem' }}>
+                          I understand the investment terms and associated risks
+                        </Typography>
+                      }
+                    />
+                    {formErrors.acknowledgment && (
+                      <Typography sx={{ color: '#ff4d4d', fontSize: '0.75rem', mt: 1, ml: 1 }}>
+                        {formErrors.acknowledgment}
+                      </Typography>
+                    )}
+                  </Box>
                 </Stack>
               </CardContent>
             </StyledCard>
@@ -473,30 +1203,163 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
                   </Box>
 
                   <FormControl fullWidth>
-                    <InputLabel>Trading Strategy</InputLabel>
-                    <Select
+                    <Typography sx={{ 
+                      color: 'rgba(255, 255, 255, 0.7)',
+                      fontSize: '0.9rem',
+                      mb: 1,
+                      ml: 0.5,
+                      fontWeight: 500
+                    }}>
+                      Trading Strategy
+                    </Typography>
+                    <StyledSelect
                       value={formData.tradingStrategy}
                       onChange={handleChange('tradingStrategy')}
-                      label="Trading Strategy"
+                      MenuProps={{
+                        PaperProps: {
+                          component: StyledPaper
+                        }
+                      }}
                     >
-                      <MenuItem value="momentum">Momentum Trading</MenuItem>
-                      <MenuItem value="balanced">Balanced Growth</MenuItem>
-                      <MenuItem value="value">Value Investing</MenuItem>
-                    </Select>
+                      <StyledMenuItem value="momentum">
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <Activity size={20} />
+                          <Box>
+                            <Typography>Momentum Trading</Typography>
+                            <Typography sx={{ fontSize: '0.75rem', color: '#6ed3ff' }}>
+                              +40% Extra Returns
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </StyledMenuItem>
+                      <StyledMenuItem value="balanced">
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <Network size={20} />
+                          <Box>
+                            <Typography>Balanced Growth</Typography>
+                            <Typography sx={{ fontSize: '0.75rem', color: '#6ed3ff' }}>
+                              +20% Extra Returns
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </StyledMenuItem>
+                      <StyledMenuItem value="value">
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <ShieldCheck size={20} />
+                          <Box>
+                            <Typography>Value Investing</Typography>
+                            <Typography sx={{ fontSize: '0.75rem', color: '#6ed3ff' }}>
+                              +10% Extra Returns
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </StyledMenuItem>
+                    </StyledSelect>
+                  </FormControl>
+
+                  <FormControl id="trading-strategy-field" fullWidth error={!!formErrors.tradingStrategy}>
+                    {/* ... existing trading strategy code ... */}
                   </FormControl>
 
                   <FormControl fullWidth>
-                    <InputLabel>AI Model Type</InputLabel>
-                    <Select
+                    <Typography sx={{ 
+                      color: 'rgba(255, 255, 255, 0.7)',
+                      fontSize: '0.9rem',
+                      mb: 1,
+                      ml: 0.5,
+                      fontWeight: 500
+                    }}>
+                      AI Model Type
+                    </Typography>
+                    <StyledSelect
                       value={formData.aiModel}
                       onChange={handleChange('aiModel')}
-                      label="AI Model Type"
+                      MenuProps={{
+                        PaperProps: {
+                          component: StyledPaper
+                        }
+                      }}
+                      renderValue={(value) => (
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          {(value as AIModel) === 'conservative' && <Brain size={20} />}
+                          {(value as AIModel) === 'balanced' && <Network size={20} />}
+                          {(value as AIModel) === 'aggressive' && <Cpu size={20} />}
+                          {String(value).split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                        </Box>
+                      )}
                     >
-                      <MenuItem value="conservative">Conservative ML</MenuItem>
-                      <MenuItem value="balanced">Balanced Neural Network</MenuItem>
-                      <MenuItem value="aggressive">Aggressive Deep Learning</MenuItem>
-                    </Select>
+                      <StyledMenuItem value="conservative">
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <Brain size={20} />
+                          <Box>
+                            <Typography>Conservative ML</Typography>
+                            <Typography sx={{ fontSize: '0.75rem', color: '#6ed3ff' }}>
+                              +15% Extra Returns
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </StyledMenuItem>
+                      <StyledMenuItem value="balanced">
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <Network size={20} />
+                          <Box>
+                            <Typography>Balanced Neural Network</Typography>
+                            <Typography sx={{ fontSize: '0.75rem', color: '#6ed3ff' }}>
+                              +35% Extra Returns
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </StyledMenuItem>
+                      <StyledMenuItem value="aggressive">
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <Cpu size={20} />
+                          <Box>
+                            <Typography>Aggressive Deep Learning</Typography>
+                            <Typography sx={{ fontSize: '0.75rem', color: '#6ed3ff' }}>
+                              +60% Extra Returns
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </StyledMenuItem>
+                    </StyledSelect>
                   </FormControl>
+
+                  <FormControl id="ai-model-field" fullWidth error={!!formErrors.aiModel}>
+                    {/* ... existing AI model code ... */}
+                  </FormControl>
+
+                  <Box id="strategy-acknowledgment" sx={{ mt: 2 }}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={formData.acknowledgments.strategy}
+                          onChange={(e) => setFormData({
+                            ...formData,
+                            acknowledgments: {
+                              ...formData.acknowledgments,
+                              strategy: e.target.checked
+                            }
+                          })}
+                          sx={{
+                            color: 'rgba(110, 211, 255, 0.5)',
+                            '&.Mui-checked': {
+                              color: '#6ed3ff',
+                            },
+                          }}
+                        />
+                      }
+                      label={
+                        <Typography sx={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '0.9rem' }}>
+                          I understand that AI strategies may vary in performance and risk levels
+                        </Typography>
+                      }
+                    />
+                    {formErrors.acknowledgment && (
+                      <Typography sx={{ color: '#ff4d4d', fontSize: '0.75rem', mt: 1, ml: 1 }}>
+                        {formErrors.acknowledgment}
+                      </Typography>
+                    )}
+                  </Box>
                 </Stack>
               </CardContent>
             </StyledCard>
@@ -531,18 +1394,107 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
                   </Box>
 
                   <FormControl fullWidth>
-                    <InputLabel>Rebalancing Frequency</InputLabel>
-                    <Select
+                    <Typography sx={{ 
+                      color: 'rgba(255, 255, 255, 0.7)',
+                      fontSize: '0.9rem',
+                      mb: 1,
+                      ml: 0.5,
+                      fontWeight: 500
+                    }}>
+                      Rebalancing Frequency
+                    </Typography>
+                    <StyledSelect
                       value={formData.rebalancingFrequency}
                       onChange={handleChange('rebalancingFrequency')}
-                      label="Rebalancing Frequency"
+                      MenuProps={{
+                        PaperProps: {
+                          component: StyledPaper
+                        }
+                      }}
                     >
-                      <MenuItem value="hourly">Hourly</MenuItem>
-                      <MenuItem value="daily">Daily</MenuItem>
-                      <MenuItem value="weekly">Weekly</MenuItem>
-                      <MenuItem value="monthly">Monthly</MenuItem>
-                    </Select>
+                      <StyledMenuItem value="hourly">
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <Clock1 size={20} />
+                          <Box>
+                            <Typography>Hourly Rebalancing</Typography>
+                            <Typography sx={{ fontSize: '0.75rem', color: '#6ed3ff' }}>
+                              +45% Extra Returns
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </StyledMenuItem>
+                      <StyledMenuItem value="daily">
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <Calendar size={20} />
+                          <Box>
+                            <Typography>Daily Rebalancing</Typography>
+                            <Typography sx={{ fontSize: '0.75rem', color: '#6ed3ff' }}>
+                              +30% Extra Returns
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </StyledMenuItem>
+                      <StyledMenuItem value="weekly">
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <CalendarDays size={20} />
+                          <Box>
+                            <Typography>Weekly Rebalancing</Typography>
+                            <Typography sx={{ fontSize: '0.75rem', color: '#6ed3ff' }}>
+                              +20% Extra Returns
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </StyledMenuItem>
+                      <StyledMenuItem value="monthly">
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <CalendarRange size={20} />
+                          <Box>
+                            <Typography>Monthly Rebalancing</Typography>
+                            <Typography sx={{ fontSize: '0.75rem', color: '#6ed3ff' }}>
+                              +10% Extra Returns
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </StyledMenuItem>
+                    </StyledSelect>
                   </FormControl>
+
+                  <FormControl id="rebalancing-frequency-field" fullWidth error={!!formErrors.rebalancingFrequency}>
+                    {/* ... existing rebalancing frequency code ... */}
+                  </FormControl>
+
+                  <Box id="rebalancing-acknowledgment" sx={{ mt: 2 }}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={formData.acknowledgments.rebalancing}
+                          onChange={(e) => setFormData({
+                            ...formData,
+                            acknowledgments: {
+                              ...formData.acknowledgments,
+                              rebalancing: e.target.checked
+                            }
+                          })}
+                          sx={{
+                            color: 'rgba(110, 211, 255, 0.5)',
+                            '&.Mui-checked': {
+                              color: '#6ed3ff',
+                            },
+                          }}
+                        />
+                      }
+                      label={
+                        <Typography sx={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '0.9rem' }}>
+                          I understand that rebalancing frequency affects returns and may incur additional fees
+                        </Typography>
+                      }
+                    />
+                    {formErrors.acknowledgment && (
+                      <Typography sx={{ color: '#ff4d4d', fontSize: '0.75rem', mt: 1, ml: 1 }}>
+                        {formErrors.acknowledgment}
+                      </Typography>
+                    )}
+                  </Box>
                 </Stack>
               </CardContent>
             </StyledCard>
@@ -582,6 +1534,15 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
                     label="Stop Loss (%)"
                     value={formData.stopLoss}
                     onChange={handleChange('stopLoss')}
+                    error={!!formErrors.stopLoss}
+                    helperText={formErrors.stopLoss}
+                    InputProps={{
+                      inputProps: { 
+                        min: 0.1,
+                        max: 1,
+                        step: 0.1
+                      }
+                    }}
                   />
 
                   <StyledTextField
@@ -590,6 +1551,14 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
                     label="Take Profit (%)"
                     value={formData.takeProfit}
                     onChange={handleChange('takeProfit')}
+                    error={!!formErrors.takeProfit}
+                    helperText={formErrors.takeProfit}
+                    InputProps={{
+                      inputProps: { 
+                        min: 0.1,
+                        step: 0.1
+                      }
+                    }}
                   />
 
                   <StyledTextField
@@ -598,7 +1567,49 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
                     label="Maximum Drawdown (%)"
                     value={formData.maxDrawdown}
                     onChange={handleChange('maxDrawdown')}
+                    error={!!formErrors.maxDrawdown}
+                    helperText={formErrors.maxDrawdown}
+                    InputProps={{
+                      inputProps: { 
+                        min: 0.1,
+                        max: 50,
+                        step: 0.1
+                      }
+                    }}
                   />
+
+                  <Box sx={{ mt: 2 }}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={formData.acknowledgments.riskManagement}
+                          onChange={(e) => setFormData({
+                            ...formData,
+                            acknowledgments: {
+                              ...formData.acknowledgments,
+                              riskManagement: e.target.checked
+                            }
+                          })}
+                          sx={{
+                            color: 'rgba(110, 211, 255, 0.5)',
+                            '&.Mui-checked': {
+                              color: '#6ed3ff',
+                            },
+                          }}
+                        />
+                      }
+                      label={
+                        <Typography sx={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '0.9rem' }}>
+                          I acknowledge the risk management parameters and their implications
+                        </Typography>
+                      }
+                    />
+                    {formErrors.acknowledgment && (
+                      <Typography sx={{ color: '#ff4d4d', fontSize: '0.75rem', mt: 1, ml: 1 }}>
+                        {formErrors.acknowledgment}
+                      </Typography>
+                    )}
+                  </Box>
                 </Stack>
               </CardContent>
             </StyledCard>
@@ -628,32 +1639,55 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
                       textAlign: 'center',
                       fontSize: '0.95rem'
                     }}>
-                      Configure leverage options for the AI manager
+                      Configure leverage options (Required: 10x-120x)
                     </Typography>
                   </Box>
 
-                  <FormControlLabel
-                    control={
-                      <StyledSwitch
-                        checked={formData.leverageEnabled}
-                        onChange={(e) => setFormData({
-                          ...formData,
-                          leverageEnabled: e.target.checked
-                        })}
-                      />
-                    }
-                    label="Enable Leverage Trading"
+                  <StyledTextField
+                    fullWidth
+                    type="number"
+                    label="Leverage (x)"
+                    value={formData.maxLeverage}
+                    onChange={handleChange('maxLeverage')}
+                    error={!!formErrors.maxLeverage}
+                    helperText={formErrors.maxLeverage}
+                    InputProps={{
+                      inputProps: { min: 10, max: 120 }
+                    }}
                   />
 
-                  {formData.leverageEnabled && (
-                    <StyledTextField
-                      fullWidth
-                      type="number"
-                      label="Maximum Leverage (x)"
-                      value={formData.maxLeverage}
-                      onChange={handleChange('maxLeverage')}
+                  <Box sx={{ mt: 2 }}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={formData.acknowledgments.leverage}
+                          onChange={(e) => setFormData({
+                            ...formData,
+                            acknowledgments: {
+                              ...formData.acknowledgments,
+                              leverage: e.target.checked
+                            }
+                          })}
+                          sx={{
+                            color: 'rgba(110, 211, 255, 0.5)',
+                            '&.Mui-checked': {
+                              color: '#6ed3ff',
+                            },
+                          }}
+                        />
+                      }
+                      label={
+                        <Typography sx={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '0.9rem' }}>
+                          I understand the risks associated with leveraged trading
+                        </Typography>
+                      }
                     />
-                  )}
+                    {formErrors.acknowledgment && (
+                      <Typography sx={{ color: '#ff4d4d', fontSize: '0.75rem', mt: 1, ml: 1 }}>
+                        {formErrors.acknowledgment}
+                      </Typography>
+                    )}
+                  </Box>
                 </Stack>
               </CardContent>
             </StyledCard>
@@ -687,7 +1721,7 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
                     </Typography>
                   </Box>
 
-                  <FormControlLabel
+                  <StyledFormControlLabel
                     control={
                       <StyledSwitch
                         checked={formData.automatedReporting}
@@ -701,40 +1735,99 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
                   />
 
                   <FormControl fullWidth>
-                    <InputLabel>Notification Preferences</InputLabel>
-                    <Select
+                    <Typography sx={{ 
+                      color: 'rgba(255, 255, 255, 0.7)',
+                      fontSize: '0.9rem',
+                      mb: 1,
+                      ml: 0.5,
+                      fontWeight: 500
+                    }}>
+                      Notification Preferences
+                    </Typography>
+                    <StyledSelect
                       multiple
                       value={formData.notificationPreferences}
                       onChange={handleChange('notificationPreferences')}
-                      label="Notification Preferences"
-                      renderValue={(selected) => (
+                      MenuProps={{
+                        PaperProps: {
+                          component: StyledPaper
+                        }
+                      }}
+                      renderValue={(value) => (
                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                          {selected.map((value) => (
-                            <Chip
-                              key={value}
-                              label={value}
-                              sx={{
-                                bgcolor: '#6ed3ff15',
-                                color: '#6ed3ff',
-                                borderRadius: '8px',
-                                '& .MuiChip-label': {
-                                  px: 1.5,
-                                },
-                                '&:hover': {
-                                  bgcolor: '#6ed3ff25',
-                                }
-                              }}
+                          {(value as NotificationChannel[]).map((channel) => (
+                            <StyledChip
+                              key={channel}
+                              label={
+                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                  {channel === 'email' && <Mail size={16} />}
+                                  {channel === 'push' && <Bell size={16} />}
+                                  {channel === 'telegram' && <Send size={16} />}
+                                  {channel === 'discord' && <MessageCircle size={16} />}
+                                  {channel}
+                                </Box>
+                              }
+                              onDelete={() => handleChange('notificationPreferences')(channel)}
                             />
                           ))}
                         </Box>
                       )}
                     >
-                      <MenuItem value="email">Email</MenuItem>
-                      <MenuItem value="push">Push Notifications</MenuItem>
-                      <MenuItem value="telegram">Telegram</MenuItem>
-                      <MenuItem value="discord">Discord</MenuItem>
-                    </Select>
+                      <StyledMenuItem value="email">
+                        <Mail size={20} />
+                        Email
+                      </StyledMenuItem>
+                      <StyledMenuItem value="push">
+                        <Bell size={20} />
+                        Push Notifications
+                      </StyledMenuItem>
+                      <StyledMenuItem value="telegram">
+                        <Send size={20} />
+                        Telegram
+                      </StyledMenuItem>
+                      <StyledMenuItem value="discord">
+                        <MessageCircle size={20} />
+                        Discord
+                      </StyledMenuItem>
+                    </StyledSelect>
                   </FormControl>
+
+                  <FormControl id="notification-preferences-field" fullWidth error={!!formErrors.notificationPreferences}>
+                    {/* ... existing notification preferences code ... */}
+                  </FormControl>
+
+                  <Box sx={{ mt: 2 }}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={formData.acknowledgments.reporting}
+                          onChange={(e) => setFormData({
+                            ...formData,
+                            acknowledgments: {
+                              ...formData.acknowledgments,
+                              reporting: e.target.checked
+                            }
+                          })}
+                          sx={{
+                            color: 'rgba(110, 211, 255, 0.5)',
+                            '&.Mui-checked': {
+                              color: '#6ed3ff',
+                            },
+                          }}
+                        />
+                      }
+                      label={
+                        <Typography sx={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '0.9rem' }}>
+                          I agree to receive notifications and reports as per my selected preferences
+                        </Typography>
+                      }
+                    />
+                    {formErrors.acknowledgment && (
+                      <Typography sx={{ color: '#ff4d4d', fontSize: '0.75rem', mt: 1, ml: 1 }}>
+                        {formErrors.acknowledgment}
+                      </Typography>
+                    )}
+                  </Box>
                 </Stack>
               </CardContent>
             </StyledCard>
@@ -770,11 +1863,20 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
 
                   <Box>
                     <Typography sx={{ color: 'grey.400', mb: 1 }}>
-                      Pool Creator Share
+                      Pool Creator Share (Minimum 55%)
                     </Typography>
                     <StyledSlider
                       value={formData.profitSharing.poolCreator}
-                      onChange={handleChange('profitSharing.poolCreator')}
+                      onChange={handleProfitSharingChange}
+                      min={55}
+                      max={100}
+                      step={1}
+                      valueLabelDisplay="auto"
+                      valueLabelFormat={(value) => `${value}%`}
+                      marks={[
+                        { value: 55, label: '55%' },
+                        { value: 100, label: '100%' }
+                      ]}
                       sx={{
                         '& .MuiSlider-thumb': {
                           '&:hover, &.Mui-focusVisible': {
@@ -788,10 +1890,14 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
                           backgroundColor: '#64748b',
                         },
                         '& .MuiSlider-markLabel': {
-                          color: 'gray',
+                          color: 'rgba(255, 255, 255, 0.5)',
+                          fontSize: '0.75rem',
                         }
                       }}
                     />
+                    <Typography sx={{ color: '#fff', textAlign: 'center', mt: 1 }}>
+                      {formData.profitSharing.poolCreator}%
+                    </Typography>
                   </Box>
 
                   <Box>
@@ -801,6 +1907,39 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
                     <Typography variant="h6" sx={{ color: '#fff', textAlign: 'center' }}>
                       {formData.profitSharing.investors}%
                     </Typography>
+                  </Box>
+
+                  <Box sx={{ mt: 2 }}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={formData.acknowledgments.profitSharing}
+                          onChange={(e) => setFormData({
+                            ...formData,
+                            acknowledgments: {
+                              ...formData.acknowledgments,
+                              profitSharing: e.target.checked
+                            }
+                          })}
+                          sx={{
+                            color: 'rgba(110, 211, 255, 0.5)',
+                            '&.Mui-checked': {
+                              color: '#6ed3ff',
+                            },
+                          }}
+                        />
+                      }
+                      label={
+                        <Typography sx={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '0.9rem' }}>
+                          I understand and agree to the profit sharing arrangement
+                        </Typography>
+                      }
+                    />
+                    {formErrors.acknowledgment && (
+                      <Typography sx={{ color: '#ff4d4d', fontSize: '0.75rem', mt: 1, ml: 1 }}>
+                        {formErrors.acknowledgment}
+                      </Typography>
+                    )}
                   </Box>
                 </Stack>
               </CardContent>
@@ -836,17 +1975,22 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
                   </Box>
 
                   <Stack spacing={2}>
-                    {Object.entries(formData).map(([key, value]) => (
-                      <Box key={key}>
-                        <Typography sx={{ color: 'grey.400', fontSize: '0.9rem' }}>
-                          {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
-                        </Typography>
-                        <Typography sx={{ color: '#fff' }}>
-                          {typeof value === 'object' ? JSON.stringify(value) : value.toString()}
-                        </Typography>
-                        <Divider sx={{ mt: 1 }} />
-                      </Box>
-                    ))}
+                    {Object.entries(formData).map(([key, value]) => {
+                      // Skip rendering acknowledgments in review
+                      if (key === 'acknowledgments') return null;
+                      
+                      return (
+                        <Box key={key}>
+                          <Typography sx={{ color: 'grey.400', fontSize: '0.9rem' }}>
+                            {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
+                          </Typography>
+                          <Typography sx={{ color: '#fff' }}>
+                            {typeof value === 'object' ? JSON.stringify(value) : value.toString()}
+                          </Typography>
+                          <Divider sx={{ mt: 1 }} />
+                        </Box>
+                      );
+                    })}
                   </Stack>
                 </Stack>
               </CardContent>
@@ -915,7 +2059,8 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
           display: 'flex',
           alignItems: 'flex-end',
           '& .MuiBackdrop-root': {
-            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            backdropFilter: 'blur(4px)'
           }
         }}
       >
@@ -926,6 +2071,8 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
               height: '85vh',
               borderRadius: '24px 24px 0 0',
               background: 'linear-gradient(180deg, rgba(26, 33, 38, 0.99) 0%, rgba(26, 33, 38, 0.95) 100%)',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
               display: 'flex',
               flexDirection: 'column',
             }}
@@ -937,6 +2084,8 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
               alignItems: 'center',
               p: 3,
               borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+              background: 'linear-gradient(180deg, rgba(26, 33, 38, 0.99) 0%, rgba(26, 33, 38, 0.95) 100%)',
+              backdropFilter: 'blur(10px)',
             }}>
               <Button
                 onClick={onClose}
@@ -956,7 +2105,8 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
                   left: '50%',
                   transform: 'translateX(-50%)',
                   color: '#fff',
-                  opacity: 0.7,
+                  fontSize: '1.1rem',
+                  fontWeight: 600,
                   textAlign: 'center',
                   whiteSpace: 'nowrap'
                 }}
@@ -972,8 +2122,19 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
               overflow: 'auto',
               p: 3,
               '&::-webkit-scrollbar': {
-                display: 'none'
+                width: '8px',
               },
+              '&::-webkit-scrollbar-track': {
+                background: 'rgba(255, 255, 255, 0.05)',
+                borderRadius: '4px',
+              },
+              '&::-webkit-scrollbar-thumb': {
+                background: 'rgba(110, 211, 255, 0.1)',
+                borderRadius: '4px',
+                '&:hover': {
+                  background: 'rgba(110, 211, 255, 0.2)',
+                }
+              }
             }}>
               {isTransitioning ? (
                 <Box sx={{
@@ -990,12 +2151,15 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
             </Box>
 
             {/* Fixed Bottom Buttons */}
-            <Box // @ts-ignore
-            sx={{ 
+            <Box sx={{ 
               p: 3,
               borderTop: '1px solid rgba(255, 255, 255, 0.05)',
               background: 'linear-gradient(180deg, rgba(26, 33, 38, 0.95) 0%, rgba(26, 33, 38, 0.99) 100%)',
+              backdropFilter: 'blur(10px)',
             }}>
+              {(formData.investmentAmount && parseFloat(formData.investmentAmount) > 0) && 
+                <EstimatedEarningsDisplay />
+              }
               <Box sx={{ 
                 display: 'flex', 
                 justifyContent: 'space-between',
