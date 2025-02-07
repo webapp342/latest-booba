@@ -8,7 +8,6 @@ import { db } from '../../pages/firebase';
 import { generateReward, BoxReward } from '../../utils/randomizer';
 import BoxOpenAnimation from './BoxOpenAnimation';
 import RewardDisplay from './RewardDisplay';
-import LockIcon from '@mui/icons-material/Lock';
 import KeyIcon from '@mui/icons-material/Key';
 import { boxesData } from '../../data/boxesData';
 import CloseIcon from '@mui/icons-material/Close';
@@ -18,6 +17,7 @@ import axios from 'axios';
 import DepositDrawer from '../WalletDrawers/DepositDrawer';
 import SwapDrawer from '../WalletDrawers/SwapDrawer';
 import tonLogo from '../../assets/kucukTON.png';
+import { PackageOpenIcon } from 'lucide-react';
 const usdtLogo = 'https://cryptologos.cc/logos/tether-usdt-logo.png';
 
 // Import all box images
@@ -33,6 +33,7 @@ interface UserStats {
   keyParts: number;
   totalBoxes: number;
   distributedBoxes: number;
+  giftBox: number;
   boxes: Record<string, number>;
   drops: Record<string, { code: string; amount: number; }[]>;
 }
@@ -139,28 +140,42 @@ const BoxDetail: React.FC = () => {
     const userRef = doc(db, 'users', userId);
     
     const updates: any = {
-      keys: increment(-1),
-      [`boxes.${boxData?.title}`]: increment(-1)
+      keys: increment(-1)
     };
 
-    // Kullanıcının drops listesini güncelle
-    const userDoc = await getDoc(doc(db, 'users', userId));
-    const userData = userDoc.data() as UserStats;
-    const existingDrops = userData.drops || {};
-    const userDrops = existingDrops[boxData?.title || ''] || [];
-    
-    // Aynı koda sahip drop var mı kontrol et
-    const existingDropIndex = userDrops.findIndex(drop => drop.code === reward.code);
-    
-    if (existingDropIndex !== -1) {
-      // Varsa miktarını artır
-      userDrops[existingDropIndex].amount += 1;
+    // Mystery Gift Box için özel güncelleme
+    if (boxId === 'mystery-gift') {
+      updates.giftBox = increment(-1);
+      
+      // Key parts için özel artış
+      if (reward.code === '1key') {
+        updates.keyParts = increment(1);
+      } else if (reward.code === '5key') {
+        updates.keyParts = increment(5);
+      }
     } else {
-      // Yoksa yeni ekle
-      userDrops.push(reward);
+      // Normal kutular için standart işlem
+      updates[`boxes.${boxData?.title}`] = increment(-1);
+      
+      // Kullanıcının drops listesini güncelle
+      const userDoc = await getDoc(doc(db, 'users', userId));
+      const userData = userDoc.data() as UserStats;
+      const existingDrops = userData.drops || {};
+      const userDrops = existingDrops[boxData?.title || ''] || [];
+      
+      // Aynı koda sahip drop var mı kontrol et
+      const existingDropIndex = userDrops.findIndex(drop => drop.code === reward.code);
+      
+      if (existingDropIndex !== -1) {
+        // Varsa miktarını artır
+        userDrops[existingDropIndex].amount += 1;
+      } else {
+        // Yoksa yeni ekle
+        userDrops.push(reward);
+      }
+      
+      updates[`drops.${boxData?.title}`] = userDrops;
     }
-    
-    updates[`drops.${boxData?.title}`] = userDrops;
     
     await updateDoc(userRef, updates);
   };
@@ -168,6 +183,39 @@ const BoxDetail: React.FC = () => {
   const getBoxOpeningStatus = (stats: UserStats | null) => {
     if (!stats) return { canOpen: false, message: 'Veriler yükleniyor...' };
     
+    // Mystery Gift Box için özel kontrol
+    if (boxId === 'mystery-gift') {
+      const hasGiftBox = stats.giftBox > 0;
+      const hasKeys = stats.keys > 0;
+
+      if (!hasGiftBox && !hasKeys) {
+        return { 
+          canOpen: false, 
+          message: 'Kutu açmak için Gift Box ve anahtarınız olması gerekiyor' 
+        };
+      }
+      
+      if (!hasGiftBox) {
+        return { 
+          canOpen: false, 
+          message: `${stats.keys} anahtarınız var fakat Gift Box'ınız yok` 
+        };
+      }
+      
+      if (!hasKeys) {
+        return { 
+          canOpen: false, 
+          message: `${stats.giftBox} Gift Box'ınız var fakat anahtarınız yok` 
+        };
+      }
+      
+      return { 
+        canOpen: true, 
+        message: `${stats.giftBox} Gift Box ve ${stats.keys} anahtarınız var` 
+      };
+    }
+
+    // Diğer kutular için normal kontrol
     const boxCount = stats.boxes?.[boxData?.title || ''] || 0;
     const hasKeys = stats.keys > 0;
 
@@ -422,8 +470,19 @@ const BoxDetail: React.FC = () => {
                   {title} 
                 </Typography>
 
-                <Typography sx={{ color: 'rgba(255,255,255,0.7)', textAlign: 'center', maxWidth: '800px', margin: '0 auto', px: 2 }}>
-                  {description}
+                <Typography sx={{ 
+                  color: 'rgba(255,255,255,0.7)', 
+                  textAlign: 'center', 
+                  maxWidth: '800px', 
+                  margin: '0 auto', 
+                  px: 2,
+                  fontSize: boxId === 'mystery-gift' ? '0.8rem' : '1rem',
+                  lineHeight: boxId === 'mystery-gift' ? '1.6' : '1.5'
+                }}>
+                  {boxId === 'mystery-gift' 
+                    ? "Deposit TON and collect FREE Mystery Box. Start collecting now and join thousands of winners." 
+                    : description
+                  }
                 </Typography>
 
                 <Box sx={{ 
@@ -491,26 +550,76 @@ const BoxDetail: React.FC = () => {
                   </Button>
 
                   {!status.canOpen && (
-                    <Button
-                      variant="contained"
-                      fullWidth
-                      onClick={handleBuyBox}
-                      sx={{
-                        mt: 1,
-                        background: 'linear-gradient(90deg, #4CAF50, #45a049)',
-                        color: 'white',
-                      textTransform: 'none',
-                        
-                      }}
-                    >
-                      Buy Box
-                    </Button>
+                    <>
+                      {boxId === 'mystery-gift' ? 
+                        (userStats?.giftBox && userStats.giftBox > 0 && !userStats?.keys) ? (
+                          <Button
+                            variant="contained"
+                            fullWidth
+                            onClick={() => navigate('/latest-booba/mystery-box', { state: { defaultTab: 'craft' } })}
+                            sx={{
+                              mt: 1,
+                              background: 'linear-gradient(90deg, #6C7BDC, #6C7BDC80)',
+                              color: 'white',
+                              textTransform: 'none',
+                            }}
+                          >
+                            Craft Key
+                          </Button>
+                        ) : (
+                          <Button
+                            variant="contained"
+                            fullWidth
+                            onClick={() => setShowDepositDrawer(true)}
+                            sx={{
+                              mt: 1,
+                              background: 'linear-gradient(90deg, #0088CC, #00A3FF)',
+                              color: 'white',
+                              textTransform: 'none',
+                            }}
+                          >
+                            Deposit Now
+                          </Button>
+                        )
+                      : // Normal kutular için
+                        ((userStats?.boxes?.[boxData?.title] || 0) > 0 && !userStats?.keys) ? (
+                          <Button
+                            variant="contained"
+                            fullWidth
+                            onClick={() => navigate('/latest-booba/mystery-box', { state: { defaultTab: 'craft' } })}
+                            sx={{
+                              mt: 1,
+                              background: 'linear-gradient(90deg, #6C7BDC, #6C7BDC80)',
+                              color: 'white',
+                              textTransform: 'none',
+                            }}
+                          >
+                            Craft Key
+                          </Button>
+                        ) : (
+                          <Button
+                            variant="contained"
+                            fullWidth
+                            onClick={handleBuyBox}
+                            sx={{
+                              mt: 1,
+                              background: 'linear-gradient(90deg, #4CAF50, #45a049)',
+                              color: 'white',
+                              textTransform: 'none',
+                            }}
+                          >
+                            Buy Box
+                          </Button>
+                        )
+                      }
+                    </>
                   )}
 
                    <Typography sx={{ color: 'rgba(255,255,255,0.7)', mt: 1, textAlign: 'center' }}>
                     {status.message}
                   </Typography>
-                  <Box sx={{ 
+                  <Box
+                    sx={{ 
                     display: 'flex', 
                     justifyContent: 'center', 
                     gap: 2, 
@@ -524,9 +633,9 @@ const BoxDetail: React.FC = () => {
                       borderRadius: '8px',
                       px: 2,
                     }}>
-                      <LockIcon sx={{ color: 'white', fontSize: '1.2rem' }} />
+                      <PackageOpenIcon />
                       <Typography color="white" fontSize="0.9rem">
-                        {userStats?.boxes?.[boxData?.title] || 0}
+                        {boxId === 'mystery-gift' ? userStats?.giftBox || 0 : userStats?.boxes?.[boxData?.title] || 0}
                       </Typography>
                     </Box>
                     <Box sx={{ 

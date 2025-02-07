@@ -5,7 +5,7 @@ import gsap from 'gsap';
 import BoxOpenAnimation from './BoxOpenAnimation';
 import RewardDisplay from './RewardDisplay';
 import KeyCrafting from './KeyCrafting';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { db } from '../../pages/firebase';
 import { doc, updateDoc, increment, onSnapshot } from 'firebase/firestore';
 import { boxesData } from '../../data/boxesData';
@@ -41,6 +41,7 @@ import appleImage from '../../assets/boxes/APPLE-Budget-mock_box_1_1_BNZNwNg.png
 import cartierImage from '../../assets/boxes/Cartier_lC54zo9.png';
 import diamondImage from '../../assets/boxes/Diamond-Vault_1_rL3pUUO.png';
 import hublotImage from '../../assets/boxes/Hublot_wua9Wr6.png';
+import giftboxImage from '../../assets/giftbox.png';
 
 interface UserStats {
   usdt: number;
@@ -73,8 +74,15 @@ interface DisplayReward {
 }
 
 const gameCards: GameCard[] = [
-
- 
+  {
+    id: 'mystery-gift',
+    image: giftboxImage,
+    title: 'Mystery Gift Box',
+    normalPrice: 'FREE',
+    salePrice: 'FREE',
+    description: 'Get free boxes for every deposits',
+    brand: 'Special'
+  },
   {
     id: 'alienware',
     image: alienwareImage,
@@ -105,7 +113,7 @@ const gameCards: GameCard[] = [
   {
     id: 'rolex-submariner',
     image: rolexSubmarinerImage,
-    title: 'Rolex Submariner',
+    title: 'Submariner',
     normalPrice: '299.99',
     salePrice: '249.99',
     description: 'Luxury diving watch themed box',
@@ -123,7 +131,7 @@ const gameCards: GameCard[] = [
   {
     id: 'rolex-yachtmaster',
     image: rolexYachtmasterImage,
-    title: 'Rolex Yachtmaster',
+    title: 'Yachtmaster',
     normalPrice: '299.99',
     salePrice: '249.99',
     description: 'Luxury yacht watch themed box',
@@ -153,7 +161,7 @@ const gameCards: GameCard[] = [
   {
     id: 'louis-vuitton',
     image: louisVuittonImage,
-    title: 'Louis Vuitton Deluxe',
+    title: 'Louis Vuitton',
     normalPrice: '299.99',
     salePrice: '249.99',
     description: 'Premium Louis Vuitton fashion items',
@@ -275,7 +283,7 @@ const gameCards: GameCard[] = [
   {
     id: 'rolex-day-date',
     image: rolexDayDateImage,
-    title: 'Rolex Day-Date vs Datejust',
+    title: 'Rolex Day-Date',
     normalPrice: '299.99',
     salePrice: '249.99',
     description: 'Classic Rolex watches themed box',
@@ -355,6 +363,7 @@ type TabType = 'boxes' | 'drops' | 'craft';
 
 const BoxOpening: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [userStats, setUserStats] = useState<UserStats | null>(null);
   const [isOpening, setIsOpening] = useState(false);
   const [currentReward, setCurrentReward] = useState<DisplayReward | null>(null);
@@ -367,17 +376,14 @@ const BoxOpening: React.FC = () => {
   const [currentTab, setCurrentTab] = useState<TabType>('boxes');
   const [dropsSortBy, setDropsSortBy] = useState<'price' | 'rarity'>('price');
 
-  // Filter and sort cards for Boxes tab
-  const filteredCards = gameCards.filter(card => {
-    const matchesSearch = card.title.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesSearch;
-  }).sort((a, b) => {
-    if (sortByPrice === 'asc') {
-      return parseFloat(a.salePrice) - parseFloat(b.salePrice);
-    } else {
-      return parseFloat(b.salePrice) - parseFloat(a.salePrice);
+  useEffect(() => {
+    // defaultTab state'i geldiğinde currentTab'i güncelle
+    if (location.state?.defaultTab) {
+      setCurrentTab(location.state.defaultTab);
+      // State'i temizle ki geri geldiğinde yine boxes tab'inde başlasın
+      navigate(location.pathname, { replace: true });
     }
-  });
+  }, [location.state]);
 
   useEffect(() => {
     const telegramUserId = localStorage.getItem("telegramUserId");
@@ -406,9 +412,9 @@ const BoxOpening: React.FC = () => {
     return () => unsubscribe();
   }, [navigate]);
 
-
-
-
+  const handleCardClick = (cardId: string) => {
+    navigate(`/latest-booba/box/${cardId}`);
+  };
 
   const handleCloseReward = () => {
     setShowReward(false);
@@ -446,10 +452,6 @@ const BoxOpening: React.FC = () => {
     } finally {
       setIsCrafting(false);
     }
-  };
-
-  const handleCardClick = (cardId: string) => {
-    navigate(`/latest-booba/box/${cardId}`);
   };
 
   const renderMyDrops = () => {
@@ -669,13 +671,14 @@ const BoxOpening: React.FC = () => {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 <Card sx={{
+                  position: 'relative',
                   background: 'linear-gradient(145deg, rgba(26,27,35,0.9) 0%, rgba(26,27,35,0.95) 100%)',
                   borderRadius: '15px',
                   overflow: 'hidden',
                   border: `1px solid ${commonStyles.borderColor}`,
                   height: '100%',
                   transition: 'transform 0.2s',
-                 
+                  minHeight: '420px',
                 }}>
                   {/* Image Container */}
                   <Box sx={{ 
@@ -984,7 +987,7 @@ const BoxOpening: React.FC = () => {
         {/* Content based on selected tab */}
         {currentTab === 'boxes' && (
           <Grid container spacing={1}>
-            {filteredCards.map((card) => (
+            {gameCards.map((card) => (
               <Grid item xs={6} key={card.id}>
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -994,16 +997,38 @@ const BoxOpening: React.FC = () => {
                   <Card
                     onClick={() => handleCardClick(card.id)}
                     sx={{
-                      background: 'linear-gradient(145deg, rgba(26,27,35,0.9) 0%, rgba(26,27,35,0.95) 100%)',
+                      position: 'relative',
+                      background: card.id === 'mystery-gift' 
+                        ? 'linear-gradient(145deg, rgba(108,93,211,0.2) 0%, rgba(108,93,211,0.3) 100%)'
+                        : 'linear-gradient(145deg, rgba(26,27,35,0.9) 0%, rgba(26,27,35,0.95) 100%)',
                       borderRadius: '15px',
                       overflow: 'hidden',
                       cursor: 'pointer',
                       transition: 'transform 0.2s, box-shadow 0.2s',
-                      border: `1px solid ${commonStyles.borderColor}`,
+                      border: card.id === 'mystery-gift'
+                        ? '1px solid rgba(108,93,211,0.4)'
+                        : `1px solid ${commonStyles.borderColor}`,
                       height: '100%',
-                      
+                      minHeight: '330px',
                     }}
                   >
+                    {card.id === 'mystery-gift' && (
+                      <Box sx={{
+                        position: 'absolute',
+                        top: 10,
+                        right: 10,
+                        background: 'linear-gradient(90deg, #6C7BDC, #6C7BDC80)',
+                        color: 'white',
+                        px: 2,
+                        py: 0.5,
+                        borderRadius: '20px',
+                        fontSize: '0.8rem',
+                        fontWeight: 'bold',
+                        zIndex: 1
+                      }}>
+                        FREE BOX
+                      </Box>
+                    )}
                     <Box
                       component="img"
                       src={card.image}
@@ -1023,7 +1048,6 @@ const BoxOpening: React.FC = () => {
                         sx={{
                           color: 'white',
                           fontWeight: 'bold',
-                        
                           fontSize: '1rem',
                         }}
                       >
@@ -1041,47 +1065,51 @@ const BoxOpening: React.FC = () => {
                         {card.description}
                       </Typography>
                     
-                        <Box  sx={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                        }} >
-                          <Typography
-                            sx={{
-                              color: 'rgba(255,255,255,0.5)',
-                              textDecoration: 'line-through',
-                              fontSize: '0.9rem',
-                            }}
-                          >
-                            ${card.normalPrice}
-                          </Typography>
-                          <Typography
-                            sx={{
-                              color: commonStyles.primaryColor,
-                              fontWeight: 'bold',
-                              fontSize: '1.2rem',
-                            }}
-                          >
-                            ${card.salePrice}
-                          </Typography>
-                        </Box>
-                        <Button
-                          onClick={() => handleCardClick(card.id)}
-                          variant="contained"
-                          fullWidth
-                          sx={{
-                            mt:1,
-                                            textTransform: 'none',
-
-                            background: commonStyles.primaryGradient,
-                                        color: 'black',
-
-                           
-                          }}
-                        >
-                          Open Box
-                        </Button>
-                    
+                      <Box sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                      }}>
+                        {card.id === 'mystery-gift' ? (
+                          <Box sx={{ width: '100%', height: '24px' }} />
+                        ) : (
+                          <>
+                            <Typography
+                              sx={{
+                                color: 'rgba(255,255,255,0.5)',
+                                textDecoration: 'line-through',
+                                fontSize: '0.9rem',
+                              }}
+                            >
+                              ${card.normalPrice}
+                            </Typography>
+                            <Typography
+                              sx={{
+                                color: commonStyles.primaryColor,
+                                fontWeight: 'bold',
+                                fontSize: '1.2rem',
+                              }}
+                            >
+                              ${card.salePrice}
+                            </Typography>
+                          </>
+                        )}
+                      </Box>
+                      <Button
+                        onClick={() => handleCardClick(card.id)}
+                        variant="contained"
+                        fullWidth
+                        sx={{
+                          mt: 1,
+                          textTransform: 'none',
+                          background: card.id === 'mystery-gift'
+                            ? 'linear-gradient(90deg, #0088CC, #00A3FF)'
+                            : commonStyles.primaryGradient,
+                          color: 'white',
+                        }}
+                      >
+                        {card.id === 'mystery-gift' ? 'Open Free Box' : 'Open Box'}
+                      </Button>
                     </Box>
                   </Card>
                 </motion.div>

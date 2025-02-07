@@ -894,14 +894,14 @@ import maseratiBoxImage18 from '../assets/boxes/maserati/1 (18).png';
 import maseratiBoxImage19 from '../assets/boxes/maserati/1 (19).png';
 import maseratiBoxImage20 from '../assets/boxes/maserati/1 (20).png';
 
+import giftboxImage from '../assets/giftbox.png';
+import artboard1Image from '../assets/boxes/giftbox/Artboard 1.png';
+import sdsdsdsdImage from '../assets/boxes/giftbox/sdsdsdsd.png';
+import sdsImage from '../assets/boxes/giftbox/sds.png';
+import dsdImage from '../assets/boxes/giftbox/dsd.png';
+import sdsdsdImage from '../assets/boxes/giftbox/sdsdsd.png';
 
-
-
-
-
-
-
-export const boxesData: Record<string, BoxData> = {
+export const boxesData: Record<string, BoxData> = { 
   'alienware': {
     title: 'ALIENWARE',
     image: alienwareBoxImage,
@@ -2015,6 +2015,198 @@ export const boxesData: Record<string, BoxData> = {
       { name: 'Premium Accessories', image: maseratiBoxImage18, price: '5000.00', rarity: 25.5, code: 'MS0018' },
       { name: 'Exclusive Merchandise', image: maseratiBoxImage19, price: '2500.00', rarity: 35.5, code: 'MS0019' },
       { name: 'Brand Collection', image: maseratiBoxImage20, price: '1000.00', rarity: 45.5, code: 'MS0020' },
+    ]
+  },
+  'mystery-gift': {
+    title: 'Mystery Gift Box',
+    description: 'A mysterious gift box with random valuable rewards!',
+    image: giftboxImage,
+    normalPrice: '24.99',
+    salePrice: '19.99',
+    drops: [
+      {
+        code: '1key',
+        name: '1 KEY PART',
+        image: artboard1Image,
+        price: '100.00',
+        rarity: 0.2
+      },
+      
+      {
+        code: '5key',
+        name: '5 KEY PART',
+        image: sdsdsdsdImage,
+        price: '200.00',
+        rarity: 0.1
+      },
+      {
+        code: 'GIFT4',
+        name: 'Mystery Gift 4',
+        image: sdsImage,
+        price: '250.00',
+        rarity: 0.08
+      },
+      {
+        code: 'GIFT5',
+        name: '500 BBLIP',
+        image: dsdImage,
+        price: '300.00',
+        rarity: 0.05
+      },
+      {
+        code: 'GIFT6',
+        name: 'Mystery Gift 6',
+        image: sdsdsdImage,
+        price: '350.00',
+        rarity: 0.03
+      },
+      {
+        code: 'GIFT4',
+        name: 'Mystery Gift 4',
+        image: sdsImage,
+        price: '250.00',
+        rarity: 0.08
+      },
+      {
+        code: 'GIFT5',
+        name: '150.000 BBLIP',
+        image: dsdImage,
+        price: '300.00',
+        rarity: 0.05
+      },
+      {
+        code: 'GIFT6',
+        name: 'Mystery Gift 6',
+        image: sdsdsdImage,
+        price: '350.00',
+        rarity: 0.03
+      },
+      {
+        code: 'GIFT4',
+        name: 'Mystery Gift 4',
+        image: sdsImage,
+        price: '250.00',
+        rarity: 0.08
+      },
+      {
+        code: 'GIFT5',
+        name: '50.000 BBLIP',
+        image: dsdImage,
+        price: '300.00',
+        rarity: 0.05
+      },
+      {
+        code: 'GIFT6',
+        name: 'Mystery Gift 6',
+        image: sdsdsdImage,
+        price: '350.00',
+        rarity: 0.03
+      },
+      {
+        code: 'GIFT4',
+        name: 'Mystery Gift 4',
+        image: sdsImage,
+        price: '250.00',
+        rarity: 0.08
+      },
+      {
+        code: 'GIFT5',
+        name: '25.000 BBLIP',
+        image: dsdImage,
+        price: '300.00',
+        rarity: 0.05
+      },
+      {
+        code: 'GIFT6',
+        name: 'Mystery Gift 6',
+        image: sdsdsdImage,
+        price: '350.00',
+        rarity: 0.03
+      },
+      {
+        code: 'GIFT4',
+        name: 'Mystery Gift 4',
+        image: sdsImage,
+        price: '250.00',
+        rarity: 0.08
+      },
+      {
+        code: 'GIFT5',
+        name: '5.000 BBLIP',
+        image: dsdImage,
+        price: '300.00',
+        rarity: 0.05
+      },
+      {
+        code: 'GIFT6',
+        name: 'Mystery Gift 6',
+        image: sdsdsdImage,
+        price: '350.00',
+        rarity: 0.03
+      },
+      {
+        code: 'GIFT4',
+        name: 'Mystery Gift 4',
+        image: sdsImage,
+        price: '250.00',
+        rarity: 0.08
+      },
+      {
+        code: 'GIFT5',
+        name: '100.000 BBLIP',
+        image: dsdImage,
+        price: '300.00',
+        rarity: 0.05
+      },
+      {
+        code: 'GIFT6',
+        name: 'Mystery Gift 6',
+        image: sdsdsdImage,
+        price: '350.00',
+        rarity: 0.03
+      },
+      {
+        code: 'GIFT4',
+        name: 'Mystery Gift 4',
+        image: sdsImage,
+        price: '250.00',
+        rarity: 0.08
+      },
+      {
+        code: 'GIFT5',
+        name: '10.000 BBLIP',
+        image: dsdImage,
+        price: '300.00',
+        rarity: 0.05
+      },
+      {
+        code: 'GIFT6',
+        name: 'Mystery Gift 6',
+        image: sdsdsdImage,
+        price: '350.00',
+        rarity: 0.03
+      },
+      {
+        code: 'GIFT4',
+        name: 'Mystery Gift 4',
+        image: sdsImage,
+        price: '250.00',
+        rarity: 0.08
+      },
+      {
+        code: 'GIFT5',
+        name: '1.000 BBLIP',
+        image: dsdImage,
+        price: '300.00',
+        rarity: 0.05
+      },
+      {
+        code: 'GIFT6',
+        name: 'Mystery Gift 6',
+        image: sdsdsdImage,
+        price: '350.00',
+        rarity: 0.03
+      },
     ]
   }
 }; 

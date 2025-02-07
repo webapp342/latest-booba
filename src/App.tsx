@@ -1,11 +1,11 @@
 import "./App.css";
-import { useState, useEffect, useLayoutEffect } from "react";
+import { useState,  useLayoutEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import SimpleBottomNavigation from "./pages/Navigation";
-import Loading from "./pages/Loading"; // Loading bileşenini import edin
-import "./index.css"; // Global stil dosyasını import edin
-import "slick-carousel/slick/slick.css"; // Basic styles for the slider
-import "slick-carousel/slick/slick-theme.css"; // Theme styles for the slider
+import Loading from "./pages/Loading";
+import "./index.css";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import { TonConnectUIProvider } from "@tonconnect/ui-react";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Brand from './components/AiYield';
@@ -41,15 +41,6 @@ function App() {
     const manifestUrl = "https://webapp342.github.io/latest-booba/tonconnect-manifest.json";
     const location = useLocation();
 
-    useEffect(() => {
-        // İlk yüklemede loading göstermek için zamanlayıcı
-        const timer = setTimeout(() => {
-            setLoading(false);
-        }, 3000); // 3 saniye bekleme süresi
-
-        return () => clearTimeout(timer);
-    }, []);
-
     // Use both useEffect and useLayoutEffect for more aggressive scroll handling
     useLayoutEffect(() => {
         const scrollToTop = () => {
@@ -73,19 +64,14 @@ function App() {
                 twaReturnUrl: 'https://t.me/BoobaBlipBot'
             }}>
                 <div id="root">
-                    {/* Loading ekranı */}
-                    {loading && <Loading />}
+                    {loading && <Loading onLoadComplete={() => setLoading(false)} />}
 
-                    {/* Ana içerik */}
                     <div className={`main-content ${loading ? "hidden" : ""}`} style={{marginBottom:"13vh", paddingTop: '64px', overflowX: 'hidden' }}>
                         <Brand />
-                        <Outlet  />
+                        <Outlet />
                     </div>
-                    
 
-                    {/* Alt gezinme */}
                     <SimpleBottomNavigation />
-                    
                 </div>
             </TonConnectUIProvider>
         </ThemeProvider>
