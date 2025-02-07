@@ -9,6 +9,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { TonConnectUIProvider } from "@tonconnect/ui-react";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Brand from './components/AiYield';
+import WelcomeModal from './components/WelcomeModal';
 
 // MUI theme configuration
 const muiTheme = createTheme({
@@ -67,6 +68,10 @@ function App() {
                     {loading && <Loading onLoadComplete={() => setLoading(false)} />}
 
                     <div className={`main-content ${loading ? "hidden" : ""}`} style={{marginBottom:"13vh", paddingTop: '64px', overflowX: 'hidden' }}>
+                        <WelcomeModal onClose={() => {
+                            // Modal kapandığında yapılacak işlemler (gerekirse)
+                            console.log('Welcome modal closed');
+                        }} />
                         <Brand />
                         <Outlet />
                     </div>

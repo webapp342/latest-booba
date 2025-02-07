@@ -3,7 +3,6 @@ import { Box, Typography, Grid, Button } from '@mui/material';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 import TONIcon from '../assets/kucukTON.png';
-import AluminumIcon from '../assets/aluminum.png';
 import HistoryIcon from '@mui/icons-material/History';
 import AnimationIcon from '@mui/icons-material/Animation';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
@@ -15,6 +14,7 @@ import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
 import ControlPointDuplicateIcon from '@mui/icons-material/ControlPointDuplicate';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import CreatePoolModal from './CreatePool/CreatePoolModal';
+import { useNavigate } from 'react-router-dom';
 
 const StatItem = ({ title, value, change, isRightAligned = false }: { 
   title: string; 
@@ -22,7 +22,8 @@ const StatItem = ({ title, value, change, isRightAligned = false }: {
   change?: number;
   isRightAligned?: boolean;
 }) => (
-  <Box sx={{ 
+  <Box //@ts-ignore
+  sx={{ 
     textAlign: isRightAligned ? 'right' : 'left',
   }}>
     <Typography sx={{ 
@@ -70,8 +71,7 @@ const CryptoCard = ({
   icon2,
   apy, 
   tvl, 
-  price, 
- 
+  price,
   poolStats = {
     volume24h: '$1.2M',
     fees24h: '$3.2K',
@@ -100,6 +100,7 @@ const CryptoCard = ({
     maxCapacity: number;
   };
 }) => {
+  const navigate = useNavigate();
   const capacityPercentage = (poolStats.currentCapacity / poolStats.maxCapacity) * 100;
   const remainingCapacity = poolStats.maxCapacity - poolStats.currentCapacity;
   const formatNumber = (num: number) => {
@@ -134,18 +135,25 @@ const CryptoCard = ({
     }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
         <Box sx={{ display: 'flex', position: 'relative' }}>
-            <img src={icon1} alt={symbol} style={{ width: 36, height: 36 }} />
-          <img 
-            src={icon2} 
-            alt="USDC" 
-            style={{ 
+            <img src={icon1} alt={symbol} style={{ 
+              width: 36, 
+              height: 36,
+              borderRadius: '50%',
+              padding: '2px'
+            }} />
+            <img 
+              src={icon2} 
+              alt="USDC" 
+              style={{ 
                 width: 36, 
                 height: 36,
-              position: 'relative',
+                position: 'relative',
                 left: -12,
-                marginRight: -12
-            }} 
-          />
+                marginRight: -12,
+                borderRadius: '50%',
+                padding: '2px'
+              }} 
+            />
         </Box>
           <Box>
             <Typography sx={{ 
@@ -188,7 +196,7 @@ const CryptoCard = ({
             fontSize: '0.75rem',
             mt: 0.5
           }}>
-            Last 30 days avg.
+            Last 24h avg.
         </Typography>
       </Box>
     </Box>
@@ -315,8 +323,8 @@ const CryptoCard = ({
       </Box>
         <Button
           sx={{
-        backgroundColor: '#6ed3ff',
-        color: '#000',
+            backgroundColor: '#6ed3ff',
+            color: '#000',
             px: 3,
             py: 1,
             borderRadius: '10px',
@@ -330,13 +338,15 @@ const CryptoCard = ({
               boxShadow: '0 4px 8px rgba(110, 211, 255, 0.2)'
             }
           }}
+          onClick={() => navigate('/latest-booba/stake')}
         >
           Subscribe
         </Button>
       </Box>
 
       {/* Pool Stats */}
-      <Box sx={{ 
+      <Box //@ts-ignore
+       sx={{ 
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -362,7 +372,8 @@ const CryptoCard = ({
       </Box>
 
       {/* Pool Capacity Section */}
-      <Box sx={{ 
+      <Box //@ts-ignore
+       sx={{ 
         mt: 2,
         pt: 2,
         borderTop: '1px solid rgba(255, 255, 255, 0.1)'
@@ -389,7 +400,8 @@ const CryptoCard = ({
               {formatNumber(poolStats.currentCapacity)} TON Locked
             </Typography>
     </Box>
-          <Box sx={{ textAlign: 'right' }}>
+          <Box //@ts-ignore
+          sx={{ textAlign: 'right' }}>
             <Typography sx={{ 
               color: 'rgba(255, 255, 255, 0.6)',
               fontSize: '0.75rem',
@@ -407,7 +419,8 @@ const CryptoCard = ({
         </Typography>
       </Box>
         </Box>
-        <Box sx={{ position: 'relative', mt:2, }}>
+        <Box //@ts-ignore
+         sx={{ position: 'relative', mt:2, }}>
           <LinearProgress
             variant="determinate"
             value={capacityPercentage}
@@ -447,114 +460,114 @@ const Statistics: React.FC = () => {
   // Pool data array to make it easier to manage
   const poolData = [
     {
-      symbol: "TONUSDT",
-      apy: 1533.32,
-      tvl: "$1.73M",
+      symbol: "TON/USDT",
+      apy: 1247.89,
+      tvl: "$3.12M",
+      price: "7 Day",
+      poolStats: {
+        volume24h: '$2.8M',
+        fees24h: '$8.4K',
+        change24h: 12.8,
+        totalUsers: '38.2K',
+        currentCapacity: 934827,
+        maxCapacity: 1100000
+      }
+    },
+    {
+      symbol: "TON/USDT",
+      apy: 968.45,
+      tvl: "$1.85M",
+      price: "14 Day",
+      poolStats: {
+        volume24h: '$1.9M',
+        fees24h: '$5.7K',
+        change24h: -3.2,
+        totalUsers: '2.13K',
+        currentCapacity: 756392,
+        maxCapacity: 1000000
+      }
+    },
+    {
+      symbol: "TON/USDT",
+      apy: 886.32,
+      tvl: "$942.5K",
       price: "30 Day",
       poolStats: {
         volume24h: '$1.2M',
-        fees24h: '$3.2K',
-        change24h: 2.5,
-        totalUsers: '1.2K',
-        currentCapacity: 750000,
+        fees24h: '$3.6K',
+        change24h: 5.7,
+        totalUsers: '1.8K',
+        currentCapacity: 478563,
         maxCapacity: 1000000
       }
     },
     {
-      symbol: "ETHUSDC",
-      apy: 1324.91,
-      tvl: "$373.36k",
-      price: "14 Day",
+      symbol: "TON/USDT",
+      apy: 754.18,
+      tvl: "$685.2K",
+      price: "90 Day",
       poolStats: {
-        volume24h: '$1.2M',
-        fees24h: '$3.2K',
-        change24h: 2.5,
-        totalUsers: '1.2K',
-        currentCapacity: 850000,
+        volume24h: '$980.5K',
+        fees24h: '$2.9K',
+        change24h: -1.8,
+        totalUsers: '1.4K',
+        currentCapacity: 623847,
         maxCapacity: 1000000
       }
     },
     {
-      symbol: "ETHUSDC",
-      apy: 1127.80,
-      tvl: "$296.21k",
-      price: "14 Day",
+      symbol: "TON/USDT",
+      apy: 692.75,
+      tvl: "$524.8K",
+      price: "3 Day",
       poolStats: {
-        volume24h: '$1.2M',
-        fees24h: '$3.2K',
-        change24h: 2.5,
-        totalUsers: '1.2K',
-        currentCapacity: 650000,
+        volume24h: '$845.2K',
+        fees24h: '$2.5K',
+        change24h: 7.2,
+        totalUsers: '1.1K',
+        currentCapacity: 892436,
         maxCapacity: 1000000
       }
     },
     {
-      symbol: "ETHUSDC",
-      apy: 1068.40,
-      tvl: "$164.18k",
-      price: "14 Day",
-      poolStats: {
-        volume24h: '$1.2M',
-        fees24h: '$3.2K',
-        change24h: 2.5,
-        totalUsers: '1.2K',
-        currentCapacity: 920000,
-        maxCapacity: 1000000
-      }
-    },
-    {
-      symbol: "ETHUSDC",
-      apy: 789.12,
-      tvl: "$92.95k",
+      symbol: "TON/USDT",
+      apy: 578.90,
+      tvl: "$398.4K",
       price: "1 Day",
       poolStats: {
-        volume24h: '$1.2M',
-        fees24h: '$3.2K',
-        change24h: 2.5,
-        totalUsers: '1.2K',
-        currentCapacity: 450000,
+        volume24h: '$632.8K',
+        fees24h: '$1.9K',
+        change24h: -2.4,
+        totalUsers: '928',
+        currentCapacity: 267893,
         maxCapacity: 1000000
       }
     },
     {
-      symbol: "ETHUSDC",
-      apy: 789.12,
-      tvl: "$79.51k",
+      symbol: "TON/USDT",
+      apy: 486.45,
+      tvl: "$286.6K",
       price: "1 Day",
       poolStats: {
-        volume24h: '$1.2M',
-        fees24h: '$3.2K',
-        change24h: 2.5,
-        totalUsers: '1.2K',
-        currentCapacity: 550000,
-        maxCapacity: 1000000
+        volume24h: '$485.3K',
+        fees24h: '$1.4K',
+        change24h: 4.3,
+        totalUsers: '880',
+        currentCapacity: 745218,
+        maxCapacity: 100000
       }
     },
     {
-      symbol: "ETHUSDC",
-      apy: 789.12,
-      tvl: "$60.49k",
+      symbol: "TON/USDT",
+      apy: 423.30,
+      tvl: "$195.2K",
       price: "1 Day",
       poolStats: {
-        volume24h: '$1.2M',
-        fees24h: '$3.2K',
-        change24h: 2.5,
-        totalUsers: '1.2K',
-        currentCapacity: 350000,
-        maxCapacity: 1000000
-      }
-    },
-    {
-      symbol: "ETHUSDC",
-      apy: 789.12,
-      tvl: "$56.87k",
-      price: "1 Day",
-      poolStats: {
-        volume24h: '$1.2M',
-        fees24h: '$3.2K',
-        change24h: 2.5,
-        totalUsers: '1.2K',
-        currentCapacity: 250000,
+        volume24h: '$324.5K',
+        fees24h: '$972',
+        change24h: -0.8,
+        totalUsers: '647',
+        currentCapacity: 534692,
         maxCapacity: 1000000
       }
     }
@@ -566,7 +579,8 @@ const Statistics: React.FC = () => {
     <Box //@ts-ignore
     mx={-1} mb={10}>
       {/* Dashboard Card */}
-      <Box sx={{ mb: 4 }}>
+      <Box //@ts-ignore
+      sx={{ mb: 4 }}>
         <Box sx={{ 
           display: 'flex', 
           justifyContent: 'space-between', 
@@ -915,7 +929,7 @@ const Statistics: React.FC = () => {
               </Typography>
             </Box>
           </Box>
-          <Box 
+          <Box //@ts-ignore
             sx={{ 
               display: 'flex',
               alignItems: 'center',
@@ -925,10 +939,7 @@ const Statistics: React.FC = () => {
               padding: { xs: '6px 12px', sm: '6px 14px' },
               cursor: 'pointer',
               transition: 'all 0.2s ease',
-              '&:hover': {
-                background: 'rgba(54, 162, 235, 0.15)',
-                transform: 'translateY(-1px)'
-              }
+             
             }}
           >
             <InfoOutlinedIcon sx={{ 
@@ -939,7 +950,8 @@ const Statistics: React.FC = () => {
           </Box>
 
           {/* Popular Pool Cards */}
-          <Box sx={{ 
+          <Box 
+           sx={{ 
             maxHeight: showAllPools ? 'calc(100vh - 300px)' : 'auto',
             overflowY: showAllPools ? 'auto' : 'visible',
             pr: 2,
@@ -956,30 +968,28 @@ const Statistics: React.FC = () => {
               background: 'rgba(110, 211, 255, 0.1)',
               borderRadius: '4px',
               border: '2px solid rgba(110, 211, 255, 0.05)',
-              '&:hover': {
-                background: 'rgba(110, 211, 255, 0.2)',
-              }
+             
             }
           }}>
             {displayedPools.map((pool, index) => (
-      <CryptoCard
+              <CryptoCard
                 key={index}
                 symbol={pool.symbol}
-        icon1={TONIcon}
-        icon2={AluminumIcon}
+                icon1={TONIcon}
+                icon2="https://s3-symbol-logo.tradingview.com/crypto/XTVCUSDT--big.svg"
                 apy={pool.apy}
                 tvl={pool.tvl}
                 price={pool.price}
-        myEarnings="$0.00"
-        dailyEarnings="$0.00"
-        dailyEarningsPercentage={0.00}
-        mlpBalance="$0.00"
+                myEarnings="$0.00"
+                dailyEarnings="$0.00"
+                dailyEarningsPercentage={0.00}
+                mlpBalance="$0.00"
                 poolStats={pool.poolStats}
               />
             ))}
 
             {!showAllPools && (
-              <Box
+              <Box //@ts-ignore
                 onClick={() => setShowAllPools(true)}
                 sx={{
                   borderRadius: '16px',
@@ -1031,7 +1041,7 @@ const Statistics: React.FC = () => {
               mb: 2
             }}>
               <Box display="flex" alignItems="center" gap={1.5}>
-                <Box
+                <Box //@ts-ignore
                   sx={{
                     background: 'linear-gradient(135deg, rgba(110, 211, 255, 0.1), rgba(140, 230, 255, 0.1))',
                     borderRadius: '8px',
@@ -1114,9 +1124,7 @@ const Statistics: React.FC = () => {
         sx={{
           bgcolor: '#6ed3ff',
           color: '#000',
-          '&:hover': {
-            bgcolor: '#89d9ff',
-          },
+         
           mb: 2,
         }}
       >

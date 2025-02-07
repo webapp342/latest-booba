@@ -9,6 +9,7 @@ import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalance
 import { WithTourSection } from './TourGuide/withTourSection';
 import AddIcon from '@mui/icons-material/Add';
 import CreatePoolModal from './CreatePool/CreatePoolModal';
+import { useNavigate } from 'react-router-dom';
 
 interface StatsProps {
   totalLockedTon: number;
@@ -25,6 +26,7 @@ const Stats: React.FC<StatsProps> = ({
   const [chartType, setChartType] = useState<'tvl' | 'earnings'>('tvl');
   const [timeRange, setTimeRange] = useState<'w' | 'm' | 'all'>('all');
   const [isCreatePoolModalOpen, setIsCreatePoolModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   // Get current UTC date
   const currentUTCDate = new Date();
@@ -166,7 +168,7 @@ const Stats: React.FC<StatsProps> = ({
       change: Number(tvlChange.toFixed(2)),
     },
     volume: {
-      value: '51.16B',
+      value: '51.16M',
       change: 11.90,
     },
     openInterest: {
@@ -183,13 +185,19 @@ const Stats: React.FC<StatsProps> = ({
     },
   };
 
+  const handlePoolClick = () => {
+    navigate('/latest-booba/stake');
+  };
+
   return (
     <WithTourSection sectionId="stats-section">
-      <Box mx={-1} data-tour="stats-section">
+      <Box 
+       mx={-1} data-tour="stats-section">
         <Dashboard data={dashboardData} />
 
         {/* Chart Section */}
-        <Box sx={{ mt: 8}}>
+        <Box //@ts-ignore
+        sx={{ mt: 8}}>
           <Box sx={{ 
             display: 'flex', 
             flexDirection: 'column',
@@ -389,40 +397,46 @@ const Stats: React.FC<StatsProps> = ({
         {/* Pool Kartları */}
         <Grid container spacing={1} justifyContent="center">
           {/* 1 Günlük Havuz */}
-          <Grid item xs={6} sm={3} >
-            <PoolStats poolName="Pools" totalPools={totalPools} apy={25.21} fillPercentage={12} tvl='53.22M'  badgeText="Daily" leverage={125}/>
+          <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
+            <PoolStats poolName="Pools" totalPools={totalPools} apy={109.21} fillPercentage={49.72} tvl='53.84K' badgeText="Daily" leverage={220}/>
           </Grid>
+          
           {/* 14 Günlük Havuz */}
-          <Grid item xs={6} sm={3} >
-            <PoolStats poolName="Pools" totalPools={totalPools} apy={30.44} fillPercentage={65} tvl='53.22M' badgeText="14D" leverage={125}/>
+          <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
+            <PoolStats poolName="Pools" totalPools={totalPools} apy={129.44} fillPercentage={64.11} tvl='106.02K' badgeText="30D" leverage={220}/>
           </Grid>
           {/* 30 Günlük Havuz */}
         
           {/* 90 Günlük Havuz - Full olarak göster */}
-          <Grid item xs={6} sm={3} sx={{mt:2}} >
-            <PoolStats poolName="Pools" totalPools={totalPools} apy={40.68} fillPercentage={80} tvl='53.22M' badgeText="90D" leverage={125} />
+          <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
+            <PoolStats poolName="Pools" totalPools={totalPools} apy={220.68} fillPercentage={91.79} tvl='251.53K' badgeText="1D" leverage={75} />
           </Grid>
-            <Grid item xs={6} sm={3} sx={{mt:2}} >
-            <PoolStats poolName="Pools" totalPools={12} apy={35.99} fillPercentage={100} tvl='100.22M' badgeText="30D" leverage={125} />
+          <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
+            <PoolStats poolName="Pools" totalPools={totalPools} apy={167.99} fillPercentage={79.53} tvl='183.22K' badgeText="1D" leverage={75} />
           </Grid>
-            <Grid item xs={6} sm={3} sx={{mt:2}} >
-            <PoolStats poolName="Pools" totalPools={12} apy={35.99} fillPercentage={100} tvl='100.22M' badgeText="30D" leverage={125}/>
+          <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
+            <PoolStats poolName="Pools" totalPools={totalPools} apy={108.52} fillPercentage={26.21} tvl='37.81K' badgeText="1D" leverage={75} />
           </Grid>
-            <Grid item xs={6} sm={3} sx={{mt:2}} >
-            <PoolStats poolName="Pools" totalPools={12} apy={35.99} fillPercentage={100} tvl='100.22M' badgeText="30D" leverage={125} />
+            <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
+            <PoolStats poolName="Pools" totalPools={12} apy={178.99} fillPercentage={100} tvl='294.73K' badgeText="30D" leverage={200} />
           </Grid>
-            <Grid item xs={6} sm={3} sx={{mt:2}} >
-            <PoolStats poolName="Pools" totalPools={12} apy={35.99} fillPercentage={100} tvl='100.22M' badgeText="30D" leverage={125}/>
+            <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
+            <PoolStats poolName="Pools" totalPools={12} apy={152.87} fillPercentage={100} tvl='89.62K' badgeText="14D" leverage={75}/>
           </Grid>
-            <Grid item xs={6} sm={3} sx={{mt:2}} >
-            <PoolStats poolName="Pools" totalPools={12} apy={35.99} fillPercentage={100} tvl='100.22M' badgeText="30D" leverage={125}/>
+            <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
+            <PoolStats poolName="Pools" totalPools={12} apy={221.07} fillPercentage={100} tvl='231.62K' badgeText="1D" leverage={220} />
           </Grid>
-            <Grid item xs={6} sm={3} sx={{mt:2}} >
-            <PoolStats poolName="Pools" totalPools={12} apy={35.99} fillPercentage={100} tvl='100.22M' badgeText="30D" leverage={125}/>
+            <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
+            <PoolStats poolName="Pools" totalPools={12} apy={204.51} fillPercentage={100} tvl='189.52K' badgeText="1D" leverage={20}/>
           </Grid>
-            <Grid item xs={6} sm={3} sx={{mt:2}} >
-            <PoolStats poolName="Pools" totalPools={1.08} apy={35.99} fillPercentage={100} tvl='100.22M' badgeText="30D"   leverage={125}
-/>
+            <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
+            <PoolStats poolName="Pools" totalPools={12} apy={163.80} fillPercentage={100} tvl='87.18K' badgeText="90D" leverage={220}/>
+          </Grid>
+            <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
+            <PoolStats poolName="Pools" totalPools={12} apy={132.72} fillPercentage={100} tvl='132.22K' badgeText="14D" leverage={100}/>
+          </Grid>
+            <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
+            <PoolStats poolName="Pools" totalPools={1.08} apy={363.01} fillPercentage={100} tvl='2.83M' badgeText="1D" leverage={75}/>
           </Grid>
         </Grid>
 

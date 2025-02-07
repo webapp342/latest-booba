@@ -24,32 +24,6 @@ import chanelBoxImage12 from '../assets/boxes/chanel/1 (12).png';
 import chanelBoxImage13 from '../assets/boxes/chanel/1 (13).png';
 import chanelBoxImage14 from '../assets/boxes/chanel/1 (14).png';
 
-import jordanBoxImage from '../assets/boxes/JORDAN_EXCLUSIVE-mock_box_aQCGLp6.png';
-import jordanBoxImage1 from '../assets/boxes/jordan/1 (1).png';
-import jordanBoxImage2 from '../assets/boxes/jordan/1 (2).png';
-import jordanBoxImage3 from '../assets/boxes/jordan/1 (3).png';
-import jordanBoxImage4 from '../assets/boxes/jordan/1 (4).png';
-import jordanBoxImage5 from '../assets/boxes/jordan/1 (5).png';
-import jordanBoxImage6 from '../assets/boxes/jordan/1 (6).png';
-import jordanBoxImage7 from '../assets/boxes/jordan/1 (7).png';
-import jordanBoxImage8 from '../assets/boxes/jordan/1 (8).png';
-import jordanBoxImage9 from '../assets/boxes/jordan/1 (9).png';
-import jordanBoxImage10 from '../assets/boxes/jordan/1 (10).png';
-import jordanBoxImage11 from '../assets/boxes/jordan/1 (11).png';
-import jordanBoxImage12 from '../assets/boxes/jordan/1 (12).png';
-import jordanBoxImage13 from '../assets/boxes/jordan/1 (13).png';
-import jordanBoxImage14 from '../assets/boxes/jordan/1 (14).png';
-import jordanBoxImage15 from '../assets/boxes/jordan/1 (15).png';
-import jordanBoxImage16 from '../assets/boxes/jordan/1 (16).png';
-import jordanBoxImage17 from '../assets/boxes/jordan/1 (17).png';
-import jordanBoxImage18 from '../assets/boxes/jordan/1 (18).png';
-import jordanBoxImage19 from '../assets/boxes/jordan/1 (19).png';
-import jordanBoxImage20 from '../assets/boxes/jordan/1 (20).png';
-import jordanBoxImage21 from '../assets/boxes/jordan/1 (21).png';
-import jordanBoxImage22 from '../assets/boxes/jordan/1 (22).png';
-import jordanBoxImage23 from '../assets/boxes/jordan/1 (23).png';
-import jordanBoxImage24 from '../assets/boxes/jordan/1 (24).png';
-import jordanBoxImage25 from '../assets/boxes/jordan/1 (25).png';
 import louisVuittonBoxImage from '../assets/boxes/LOUIS_VUITTON-Deluxe-mock_box.png';
 import bmwBoxImage from '../assets/boxes/05-BMW-Box-mock_box_1_tcGgWnJ.png';
 import primeBoxImage from '../assets/boxes/PRIME-Box-BLUE-mock_box_1_1_i1bhp4C.png';
@@ -58,16 +32,12 @@ import sneakersBoxImage from '../assets/boxes/SNEAKERS-Box-mock_box_1_1_XJ6yoyi.
 import rolexDaytonaBoxImage from '../assets/boxes/19_ROLEX-Box-mock_box_Mf79Eyz.png';
 import corsairBoxImage from '../assets/boxes/02-CORSAIR-Box-mock_box_1_9ex9nau.png';
 import versaceBoxImage from '../assets/boxes/02-VERSACE-Box-mock_box_1_Eh0sKbn.png';
-import rollsRoyceBoxImage from '../assets/boxes/04_ROLLS_ROYCE-Box-mock_box_lEnAQxE.png';
 import footballBoxImage from '../assets/boxes/08_FOOTBALL_FRENZY-Box-mock_box_xTGy6uS.png';
 import maseratiBoxImage from '../assets/boxes/09_MASERATI-Box-mock_box_nNGuE9m.png';
 import topgBoxImage from '../assets/boxes/09-TOPG-Box-mock_box_1_DYOk6ka.png';
 import porscheBoxImage from '../assets/boxes/11_PORSCHE-Box-mock_box_GsB1OjI.png';
 import ferrariBoxImage from '../assets/boxes/12_FERRARI-Box-mock_box_1_gxu1E5e.png';
-import rolexDayDateBoxImage from '../assets/boxes/15_DAY_DATE_VS_DAYJUST-Box-mock_box_1_APubmFH.png';
-import ralphLaurenBoxImage from '../assets/boxes/15-RALPH_LAUREN-Box-mock_box_U3Pc619.png';
 import oldMoneyBoxImage from '../assets/boxes/28_OLD_MONEY-Box-mock_box_1_NbdcPuo.png';
-import appleBoxImage from '../assets/boxes/APPLE-Budget-mock_box_1_1_BNZNwNg.png';
 import cartierBoxImage from '../assets/boxes/Cartier_lC54zo9.png';
 import diamondBoxImage from '../assets/boxes/Diamond-Vault_1_rL3pUUO.png';
 import hublotBoxImage from '../assets/boxes/Hublot_wua9Wr6.png';
@@ -158,15 +128,6 @@ import rolexYachtmasterBoxImage20 from '../assets/boxes/rolex-yachtmaster/1 (20)
 import rolexYachtmasterBoxImage21 from '../assets/boxes/rolex-yachtmaster/1 (21).png';
 import rolexYachtmasterBoxImage22 from '../assets/boxes/rolex-yachtmaster/1 (22).png';
 import rolexYachtmasterBoxImage23 from '../assets/boxes/rolex-yachtmaster/1 (23).png';
-import rolexYachtmasterBoxImage24 from '../assets/boxes/rolex-yachtmaster/1 (24).png';
-import rolexYachtmasterBoxImage25 from '../assets/boxes/rolex-yachtmaster/1 (25).png';
-import rolexYachtmasterBoxImage26 from '../assets/boxes/rolex-yachtmaster/1 (26).png';
-import rolexYachtmasterBoxImage28 from '../assets/boxes/rolex-yachtmaster/1 (28).png';
-import rolexYachtmasterBoxImage27 from '../assets/boxes/rolex-yachtmaster/1 (27).png';
-import rolexYachtmasterBoxImage30 from '../assets/boxes/rolex-yachtmaster/1 (30).png';
-import rolexYachtmasterBoxImage29 from '../assets/boxes/rolex-yachtmaster/1 (29).png';
-import rolexYachtmasterBoxImage32 from '../assets/boxes/rolex-yachtmaster/1 (32).png';
-import rolexYachtmasterBoxImage31 from '../assets/boxes/rolex-yachtmaster/1 (31).png';
 
 import rolexBoxImage1 from '../assets/boxes/rolex/1 (1).png';
 import rolexBoxImage2 from '../assets/boxes/rolex/1 (2).png';
@@ -206,7 +167,6 @@ import louisVuittonBoxImage20 from '../assets/boxes/louis/1 (20).png';
 import louisVuittonBoxImage21 from '../assets/boxes/louis/1 (21).png';
 import louisVuittonBoxImage22 from '../assets/boxes/louis/1 (22).png';
 import louisVuittonBoxImage23 from '../assets/boxes/louis/1 (23).png';
-import louisVuittonBoxImage24 from '../assets/boxes/louis/1 (24).png';
 
 import bmwBoxImage1 from '../assets/boxes/bmw/1 (1).png';
 import bmwBoxImage2 from '../assets/boxes/bmw/1 (2).png';
@@ -272,22 +232,7 @@ import ferrariBoxImage17 from '../assets/boxes/ferrari/1 (17).png';
 import ferrariBoxImage18 from '../assets/boxes/ferrari/1 (18).png';
 import ferrariBoxImage19 from '../assets/boxes/ferrari/1 (19).png';
 import ferrariBoxImage20 from '../assets/boxes/ferrari/1 (20).png';
-  import ferrariBoxImage21 from '../assets/boxes/ferrari/1 (21).png';
-  import ferrariBoxImage22 from '../assets/boxes/ferrari/1 (22).png';
-  import ferrariBoxImage23 from '../assets/boxes/ferrari/1 (23).png';
-  import ferrariBoxImage24 from '../assets/boxes/ferrari/1 (24).png'; 
-  import ferrariBoxImage25 from '../assets/boxes/ferrari/1 (25).png'; 
-  import ferrariBoxImage26 from '../assets/boxes/ferrari/1 (26).png'; 
-  import ferrariBoxImage27 from '../assets/boxes/ferrari/1 (27).png'; 
-  import ferrariBoxImage28 from '../assets/boxes/ferrari/1 (28).png'; 
-  import ferrariBoxImage29 from '../assets/boxes/ferrari/1 (29).png'; 
-  import ferrariBoxImage30 from '../assets/boxes/ferrari/1 (30).png';
-  import ferrariBoxImage31 from '../assets/boxes/ferrari/1 (31).png';
-  import ferrariBoxImage32 from '../assets/boxes/ferrari/1 (32).png';
-  import ferrariBoxImage33 from '../assets/boxes/ferrari/1 (33).png';
-  import ferrariBoxImage34 from '../assets/boxes/ferrari/1 (34).png';
-  import ferrariBoxImage35 from '../assets/boxes/ferrari/1 (35).png';
-  import ferrariBoxImage36 from '../assets/boxes/ferrari/1 (36).png';
+import ferrariBoxImage21 from '../assets/boxes/ferrari/1 (21).png';
 
 import primeBoxImage1 from '../assets/boxes/prime/1 (1).png';
 import primeBoxImage2 from '../assets/boxes/prime/1 (2).png';
@@ -362,6 +307,7 @@ import corsairBoxImage17 from '../assets/boxes/corsair/1 (17).png';
 import corsairBoxImage18 from '../assets/boxes/corsair/1 (18).png';
 import corsairBoxImage19 from '../assets/boxes/corsair/1 (19).png';
 import corsairBoxImage20 from '../assets/boxes/corsair/1 (20).png';
+import corsairBoxImage21 from '../assets/boxes/corsair/1 (21).png';
 
 import topgBoxImage1 from '../assets/boxes/top-g/1 (1).png';
 import topgBoxImage2 from '../assets/boxes/top-g/1 (2).png';
@@ -382,6 +328,8 @@ import topgBoxImage16 from '../assets/boxes/top-g/1 (16).png';
 import topgBoxImage17 from '../assets/boxes/top-g/1 (17).png';
 import topgBoxImage18 from '../assets/boxes/top-g/1 (18).png';
 import topgBoxImage19 from '../assets/boxes/top-g/1 (19).png';
+import topgBoxImage20 from '../assets/boxes/top-g/1 (20).png';
+import topgBoxImage21 from '../assets/boxes/top-g/1 (21).png';
 
 import porscheBoxImage1 from '../assets/boxes/porche/1 (1).png';
 import porscheBoxImage2 from '../assets/boxes/porche/1 (2).png';
@@ -401,6 +349,9 @@ import porscheBoxImage15 from '../assets/boxes/porche/1 (15).png';
 import porscheBoxImage16 from '../assets/boxes/porche/1 (16).png';
 import porscheBoxImage17 from '../assets/boxes/porche/1 (17).png';
 import porscheBoxImage18 from '../assets/boxes/porche/1 (18).png';
+import porscheBoxImage19 from '../assets/boxes/porche/1 (19).png';
+import porscheBoxImage20 from '../assets/boxes/porche/1 (20).png';
+import porscheBoxImage21 from '../assets/boxes/porche/1 (21).png';
 
 import cartierBoxImage1 from '../assets/boxes/cartier/1 (1).png';
 import cartierBoxImage2 from '../assets/boxes/cartier/1 (2).png';
@@ -446,20 +397,6 @@ import diamondBoxImage18 from '../assets/boxes/diamond/1 (18).png';
 import diamondBoxImage19 from '../assets/boxes/diamond/1 (19).png'; 
 import diamondBoxImage20 from '../assets/boxes/diamond/1 (20).png'; 
 import diamondBoxImage21 from '../assets/boxes/diamond/1 (21).png'; 
-import diamondBoxImage22 from '../assets/boxes/diamond/1 (22).png';     
-import diamondBoxImage23 from '../assets/boxes/diamond/1 (23).png';     
-import diamondBoxImage24 from '../assets/boxes/diamond/1 (24).png';     
-import diamondBoxImage25 from '../assets/boxes/diamond/1 (25).png';
-import diamondBoxImage26 from '../assets/boxes/diamond/1 (26).png';
-import diamondBoxImage27 from '../assets/boxes/diamond/1 (27).png';
-import diamondBoxImage28 from '../assets/boxes/diamond/1 (28).png';
-import diamondBoxImage29 from '../assets/boxes/diamond/1 (29).png';
-import diamondBoxImage30 from '../assets/boxes/diamond/1 (30).png';
-import diamondBoxImage31 from '../assets/boxes/diamond/1 (31).png';
-import diamondBoxImage32 from '../assets/boxes/diamond/1 (32).png';
-import diamondBoxImage33 from '../assets/boxes/diamond/1 (33).png';
-import diamondBoxImage34 from '../assets/boxes/diamond/1 (34).png';
-import diamondBoxImage35 from '../assets/boxes/diamond/1 (35).png';
 
 
 import hublotBoxImage1 from '../assets/boxes/hublot/1 (1).png';
@@ -510,92 +447,9 @@ import oldMoneyBoxImage21 from '../assets/boxes/old-money/1 (21).png';
 import oldMoneyBoxImage22 from '../assets/boxes/old-money/1 (22).png';
 
 
-import appleBoxImage1 from '../assets/boxes/apple/1 (1).png';
-import appleBoxImage2 from '../assets/boxes/apple/1 (2).png';
-import appleBoxImage3 from '../assets/boxes/apple/1 (3).png';
-import appleBoxImage4 from '../assets/boxes/apple/1 (4).png';
-import appleBoxImage5 from '../assets/boxes/apple/1 (5).png';
-import appleBoxImage6 from '../assets/boxes/apple/1 (6).png';
-import appleBoxImage7 from '../assets/boxes/apple/1 (7).png';
-import appleBoxImage8 from '../assets/boxes/apple/1 (8).png';
-import appleBoxImage9 from '../assets/boxes/apple/1 (9).png';
-import appleBoxImage10 from '../assets/boxes/apple/1 (10).png';
-import appleBoxImage11 from '../assets/boxes/apple/1 (11).png';
-import appleBoxImage12 from '../assets/boxes/apple/1 (12).png';
-import appleBoxImage13 from '../assets/boxes/apple/1 (13).png';
-import appleBoxImage14 from '../assets/boxes/apple/1 (14).png';
-import appleBoxImage15 from '../assets/boxes/apple/1 (15).png';
-import appleBoxImage16 from '../assets/boxes/apple/1 (16).png';
-import appleBoxImage17 from '../assets/boxes/apple/1 (17).png';
-import appleBoxImage18 from '../assets/boxes/apple/1 (18).png';
-import appleBoxImage19 from '../assets/boxes/apple/1 (19).png';
-import appleBoxImage20 from '../assets/boxes/apple/1 (20).png';
-import appleBoxImage21 from '../assets/boxes/apple/1 (21).png';
 
-import rolexDayDateBoxImage1 from '../assets/boxes/rolex/1 (1).png';
-import rolexDayDateBoxImage2 from '../assets/boxes/rolex/1 (2).png';
-import rolexDayDateBoxImage3 from '../assets/boxes/rolex/1 (3).png';
-import rolexDayDateBoxImage4 from '../assets/boxes/rolex/1 (4).png';
-import rolexDayDateBoxImage5 from '../assets/boxes/rolex/1 (5).png';
-import rolexDayDateBoxImage6 from '../assets/boxes/rolex/1 (6).png';
-import rolexDayDateBoxImage7 from '../assets/boxes/rolex/1 (7).png';
-import rolexDayDateBoxImage8 from '../assets/boxes/rolex/1 (8).png';
-import rolexDayDateBoxImage9 from '../assets/boxes/rolex/1 (9).png';
-import rolexDayDateBoxImage10 from '../assets/boxes/rolex/1 (10).png';
-import rolexDayDateBoxImage11 from '../assets/boxes/rolex/1 (11).png';
-import rolexDayDateBoxImage12 from '../assets/boxes/rolex/1 (12).png';
-import rolexDayDateBoxImage13 from '../assets/boxes/rolex/1 (13).png';
-import rolexDayDateBoxImage14 from '../assets/boxes/rolex/1 (14).png';
-import rolexDayDateBoxImage15 from '../assets/boxes/rolex/1 (15).png';
-import rolexDayDateBoxImage16 from '../assets/boxes/rolex/1 (16).png';
-import rolexDayDateBoxImage17 from '../assets/boxes/rolex/1 (17).png';
-import rolexDayDateBoxImage18 from '../assets/boxes/rolex/1 (18).png';
-import rolexDayDateBoxImage19 from '../assets/boxes/rolex/1 (19).png';
-import rolexDayDateBoxImage20 from '../assets/boxes/rolex/1 (20).png';
-import rolexDayDateBoxImage21 from '../assets/boxes/rolex/1 (21).png';
-import rolexDayDateBoxImage22 from '../assets/boxes/rolex/1 (22).png';
-import rolexDayDateBoxImage23 from '../assets/boxes/rolex/1 (23).png';
-import rolexDayDateBoxImage24 from '../assets/boxes/rolex/1 (24).png';
-import rolexDayDateBoxImage25 from '../assets/boxes/rolex/1 (25).png';
-import rolexDayDateBoxImage26 from '../assets/boxes/rolex/1 (26).png';
-import rolexDayDateBoxImage27 from '../assets/boxes/rolex/1 (27).png';
-import rolexDayDateBoxImage28 from '../assets/boxes/rolex/1 (28).png';
-import rolexDayDateBoxImage29 from '../assets/boxes/rolex/1 (29).png';
-import rolexDayDateBoxImage30 from '../assets/boxes/rolex/1 (30).png';
-import rolexDayDateBoxImage31 from '../assets/boxes/rolex/1 (31).png';
-import rolexDayDateBoxImage32 from '../assets/boxes/rolex/1 (32).png';
-import rolexDayDateBoxImage33 from '../assets/boxes/rolex/1 (33).png';
-import rolexDayDateBoxImage34 from '../assets/boxes/rolex/1 (34).png';
-import rolexDayDateBoxImage35 from '../assets/boxes/rolex/1 (35).png';
 
-import ralphLaurenBoxImage1 from '../assets/boxes/ralph/1 (1).png';
-  import ralphLaurenBoxImage2 from '../assets/boxes/ralph/1 (2).png';
-import ralphLaurenBoxImage3 from '../assets/boxes/ralph/1 (3).png';
-import ralphLaurenBoxImage4 from '../assets/boxes/ralph/1 (4).png';
-import ralphLaurenBoxImage5 from '../assets/boxes/ralph/1 (5).png';
-import ralphLaurenBoxImage6 from '../assets/boxes/ralph/1 (6).png';
-import ralphLaurenBoxImage7 from '../assets/boxes/ralph/1 (7).png';
-import ralphLaurenBoxImage8 from '../assets/boxes/ralph/1 (8).png';
-import ralphLaurenBoxImage9 from '../assets/boxes/ralph/1 (9).png';
-import ralphLaurenBoxImage10 from '../assets/boxes/ralph/1 (10).png';
-import ralphLaurenBoxImage11 from '../assets/boxes/ralph/1 (11).png';
-import ralphLaurenBoxImage12 from '../assets/boxes/ralph/1 (12).png';
 
-import rollsRoyceBoxImage1 from '../assets/boxes/rolls-royce/1 (1).png';
-import rollsRoyceBoxImage2 from '../assets/boxes/rolls-royce/1 (2).png';
-import rollsRoyceBoxImage3 from '../assets/boxes/rolls-royce/1 (3).png';
-import rollsRoyceBoxImage4 from '../assets/boxes/rolls-royce/1 (4).png';
-import rollsRoyceBoxImage5 from '../assets/boxes/rolls-royce/1 (5).png';
-import rollsRoyceBoxImage6 from '../assets/boxes/rolls-royce/1 (6).png';
-import rollsRoyceBoxImage7 from '../assets/boxes/rolls-royce/1 (7).png';
-import rollsRoyceBoxImage8 from '../assets/boxes/rolls-royce/1 (8).png';
-import rollsRoyceBoxImage9 from '../assets/boxes/rolls-royce/1 (9).png';
-import rollsRoyceBoxImage10 from '../assets/boxes/rolls-royce/1 (10).png';
-import rollsRoyceBoxImage11 from '../assets/boxes/rolls-royce/1 (11).png';
-import rollsRoyceBoxImage12 from '../assets/boxes/rolls-royce/1 (12).png';
-import rollsRoyceBoxImage13 from '../assets/boxes/rolls-royce/1 (13).png';
-import rollsRoyceBoxImage14 from '../assets/boxes/rolls-royce/1 (14).png';
-import rollsRoyceBoxImage15 from '../assets/boxes/rolls-royce/1 (15).png';
 
 import footballBoxImage1 from '../assets/boxes/football/1 (1).png';
 import footballBoxImage2 from '../assets/boxes/football/1 (2).png';
@@ -615,22 +469,6 @@ import footballBoxImage15 from '../assets/boxes/football/1 (15).png';
 import footballBoxImage16 from '../assets/boxes/football/1 (16).png';
 import footballBoxImage17 from '../assets/boxes/football/1 (17).png';
 import footballBoxImage18 from '../assets/boxes/football/1 (18).png';
-import footballBoxImage19 from '../assets/boxes/football/1 (19).png';
-import footballBoxImage20 from '../assets/boxes/football/1 (20).png';
-import footballBoxImage21 from '../assets/boxes/football/1 (21).png';
-import footballBoxImage22 from '../assets/boxes/football/1 (22).png';
-import footballBoxImage23 from '../assets/boxes/football/1 (23).png';
-import footballBoxImage24 from '../assets/boxes/football/1 (24).png';
-import footballBoxImage25 from '../assets/boxes/football/1 (25).png';
-import footballBoxImage26 from '../assets/boxes/football/1 (26).png';
-import footballBoxImage27 from '../assets/boxes/football/1 (27).png';
-import footballBoxImage28 from '../assets/boxes/football/1 (28).png';
-import footballBoxImage29 from '../assets/boxes/football/1 (29).png';
-import footballBoxImage30 from '../assets/boxes/football/1 (30).png';
-import footballBoxImage31 from '../assets/boxes/football/1 (31).png';
-import footballBoxImage32 from '../assets/boxes/football/1 (32).png';
-import footballBoxImage33 from '../assets/boxes/football/1 (33).png';
-import footballBoxImage34 from '../assets/boxes/football/1 (34).png';
 
 
 import maseratiBoxImage1 from '../assets/boxes/maserati/1 (1).png';
@@ -666,14 +504,14 @@ export const boxesData: Record<string, BoxData> = {
     title: 'ALIENWARE',
     image: alienwareBoxImage,
     description: 'Gaming gear from Alienware',
-    normalPrice: '29.99',
-    salePrice: '24.99',                       
+    normalPrice: '16.89',
+    salePrice: '14.49',                     
     drops: [
-      { name: 'Alienware Gaming Laptop', image: alienwareLaptop, price: '2499.99', rarity: 0.0001, code: 'AW0001' },
-      { name: 'Alienware Gaming Mouse', image: alienwareGamingMouse, price: '19.99', rarity: 0.9, code: 'AW0002' },
-      { name: 'Alienware Professional Chair', image: alienwareProfessionalChair, price: '1299.99', rarity: 0.001, code: 'AW0003' },
-      { name: 'Alienware Gaming Headset', image: alienwareHeadset, price: '179.99', rarity: 0.08, code: 'AW0004' },
-      { name: 'Alienware Gaming Keyboard', image: alienwareKeyboard, price: '249.99', rarity: 0.0189, code: 'AW0005' }
+      { name: 'AG-PLATINUM-LAPTOP-01', image: alienwareLaptop, price: '150.00', rarity: 0.001, code: 'AG-PLATINUM-LAPTOP-01' },
+      { name: 'AG-BASIC-MOUSE-02', image: alienwareGamingMouse, price: '8.00', rarity: 0.45, code: 'AG-BASIC-MOUSE-02' },
+      { name: 'AG-RARE-CHAIR-03', image: alienwareProfessionalChair, price: '45.00', rarity: 0.01, code: 'AG-RARE-CHAIR-03' },
+      { name: 'AG-PRO-HEADSET-04', image: alienwareHeadset, price: '15.00', rarity: 0.25, code: 'AG-PRO-HEADSET-04' },
+      { name: 'AG-PRO-KEYBOARD-05', image: alienwareKeyboard, price: '20.00', rarity: 0.289, code: 'AG-PRO-KEYBOARD-05' }
     ]
   },
   'amazon': {
@@ -683,149 +521,143 @@ export const boxesData: Record<string, BoxData> = {
     normalPrice: '10.49',
     salePrice: '8.89',
     drops: [
-      { name: 'Meta Quest 3', image: amazonRemoval527, price: '599.99', rarity: 0.000029, code: 'AM0002' },
-      { name: 'Amazon Basics Smart A19 LED', image: amazonRemoval8f26, price: '14.99', rarity: 0.023311, code: 'AM0003' },
-      { name: 'Amazon Basics3-Button Wired Usb...', image: amazonRemoval336, price: '10.99', rarity: 0.0321, code: 'AM0004' },
-      { name: 'Fire TV Stick 4K', image: amazonRemovald736, price: '7.99', rarity: 0.92, code: 'AM0005' }
+      { name: 'AM-PLATINUM-VR-01', image: amazonRemoval527, price: '120.00', rarity: 0.001, code: 'AM-PLATINUM-VR-01' },
+      { name: 'AM-RARE-LIGHT-02', image: amazonRemoval8f26, price: '25.00', rarity: 0.01, code: 'AM-RARE-LIGHT-02' },
+      { name: 'AM-BASIC-MOUSE-03', image: amazonRemoval336, price: '5.00', rarity: 0.45, code: 'AM-BASIC-MOUSE-03' },
+      { name: 'AM-PRO-STREAM-04', image: amazonRemovald736, price: '2.50', rarity: 0.539, code: 'AM-PRO-STREAM-04' }
     ]
   },
   'landrover': {
     title: 'Land Rover',
     image: landRoverBoxImage,
     description: 'Embark on an adventure with the Land Rover Mystery Box! Inside, youll find exclusive Land Rover merchandise and the chance to win a luxury Land Rover vehicle',
-    normalPrice: '729.99',
-    salePrice: '649.99',
+    normalPrice: '199.99',
+    salePrice: '169.99',
     drops: [
-      { name: 'Land Rover Defender OCTA', image: landRoverBoxImage6, price: '153624.99', rarity: 0.000034, code: 'LR0002' },
-      { name: 'Land Rover Discovery Sport S', image: landRoverBoxImage1, price: '50174.99', rarity: 0.000325, code: 'LR0001' },
-      { name: 'Land Rover Velar S', image: landRoverBoxImage2, price: '62874.99', rarity: 0.000284, code: 'LR0002' },
-      { name: 'Land Rover Sport SE', image: landRoverBoxImage3, price: '85324.99', rarity: 0.000166, code: 'LR0003' },
-      { name: 'Land Rover 130 Defender X', image: landRoverBoxImage4, price: '102524.99', rarity: 0.000118, code: 'LR0004' },
-      { name: 'Land Rover SE', image: landRoverBoxImage5, price: '116524.99', rarity: 0.000074, code: 'LR0001' },
-      { name: 'Land Rover Metropolitan', image: landRoverBoxImage7, price: '81424.99', rarity: 0.000206, code: 'LR0003' },
-      { name: 'Land Rover Luggage Set', image: landRoverBoxImage8, price: '279.99', rarity: 0.165466, code: 'LR0004' },
-      { name: 'Elliot Brown Land Rover Trophy', image: landRoverBoxImage9, price: '764.99', rarity: 0.01267, code: 'LR0004' },
-      { name: 'Land Rover x Bamford Black Dial', image: landRoverBoxImage10, price: '1704.99', rarity: 0.003865, code: 'LR0005' }
+      { name: 'LR-PLATINUM-DEFENDER-01', image: landRoverBoxImage6, price: '2500.00', rarity: 0.0001, code: 'LR-PLATINUM-DEFENDER-01' },
+      { name: 'LR-PLATINUM-SPORT-02', image: landRoverBoxImage3, price: '2200.00', rarity: 0.0002, code: 'LR-PLATINUM-SPORT-02' },
+      { name: 'LR-PLATINUM-VELAR-03', image: landRoverBoxImage2, price: '2000.00', rarity: 0.0003, code: 'LR-PLATINUM-VELAR-03' },
+      { name: 'LR-PLATINUM-130X-04', image: landRoverBoxImage4, price: '1800.00', rarity: 0.0004, code: 'LR-PLATINUM-130X-04' },
+      { name: 'LR-PLATINUM-SE-05', image: landRoverBoxImage5, price: '1600.00', rarity: 0.0005, code: 'LR-PLATINUM-SE-05' },
+      { name: 'LR-PLATINUM-METRO-06', image: landRoverBoxImage7, price: '1400.00', rarity: 0.0006, code: 'LR-PLATINUM-METRO-06' },
+      { name: 'LR-PLATINUM-DISCO-07', image: landRoverBoxImage1, price: '1200.00', rarity: 0.0007, code: 'LR-PLATINUM-DISCO-07' },
+      { name: 'LR-RARE-WATCH-08', image: landRoverBoxImage9, price: '450.00', rarity: 0.01, code: 'LR-RARE-WATCH-08' },
+      { name: 'LR-RARE-WATCH2-09', image: landRoverBoxImage10, price: '350.00', rarity: 0.02, code: 'LR-RARE-WATCH2-09' },
+      { name: 'LR-PRO-JACKET-10', image: landRoverBoxImage2, price: '180.00', rarity: 0.15, code: 'LR-PRO-JACKET-10' },
+      { name: 'LR-PRO-BAG-11', image: landRoverBoxImage8, price: '120.00', rarity: 0.25, code: 'LR-PRO-BAG-11' },
+      { name: 'LR-BASIC-CAP-12', image: landRoverBoxImage1, price: '45.00', rarity: 0.5672, code: 'LR-BASIC-CAP-12' }
     ]
   },
   'rolex-submariner': {
     title: 'Rolex Submariner',
     image: rolexSubmarinerBoxImage,
     description: 'Luxury diving watch themed box',
-    normalPrice: '989.99',
-    salePrice: '849.99',
+    normalPrice: '89.99',
+    salePrice: '85.45',
     drops: [
-      { name: 'RSB-PLATINUM-ELITE-01', image: rolexSubmarinerBoxImage1, price: '7919.92', rarity: 0.001, code: 'RSB001' },
-      { name: 'RSB-WHITEGOLD-PRO-02', image: rolexSubmarinerBoxImage2, price: '7623.92', rarity: 0.002, code: 'RSB002' },
-      { name: 'RSB-YELLOWGOLD-LUX-03', image: rolexSubmarinerBoxImage3, price: '7327.93', rarity: 0.003, code: 'RSB003' },
-      { name: 'RSB-TWOTONE-ELITE-04', image: rolexSubmarinerBoxImage4, price: '7031.93', rarity: 0.004, code: 'RSB004' },
-      { name: 'RSB-HULK-SPECIAL-05', image: rolexSubmarinerBoxImage5, price: '6735.93', rarity: 0.005, code: 'RSB005' },
-      { name: 'RSB-STARBUCKS-PRO-06', image: rolexSubmarinerBoxImage6, price: '6439.93', rarity: 0.01, code: 'RSB006' },
-      { name: 'RSB-BLACK-PREMIUM-07', image: rolexSubmarinerBoxImage7, price: '6143.93', rarity: 0.015, code: 'RSB007' },
-      { name: 'RSB-DATE-SPECIAL-08', image: rolexSubmarinerBoxImage8, price: '5847.94', rarity: 0.02, code: 'RSB008' },
-      { name: 'RSB-NODATE-ELITE-09', image: rolexSubmarinerBoxImage9, price: '5551.94', rarity: 0.025, code: 'RSB009' },
-      { name: 'RSB-CLASSIC-PRO-10', image: rolexSubmarinerBoxImage10, price: '5255.94', rarity: 0.03, code: 'RSB010' },
-      { name: 'RSB-VINTAGE-LUX-11', image: rolexSubmarinerBoxImage11, price: '4959.95', rarity: 0.035, code: 'RSB011' },
-      { name: 'RSB-TWOTONE-VIN-12', image: rolexSubmarinerBoxImage12, price: '4663.95', rarity: 0.04, code: 'RSB012' },
-      { name: 'RSB-TRANS-SPECIAL-13', image: rolexSubmarinerBoxImage13, price: '4367.95', rarity: 0.045, code: 'RSB013' },
-      { name: 'RSB-TRIPLE-ZERO-14', image: rolexSubmarinerBoxImage14, price: '4071.95', rarity: 0.05, code: 'RSB014' },
-      { name: 'RSB-VINTAGE-PRO-15', image: rolexSubmarinerBoxImage15, price: '3775.96', rarity: 0.055, code: 'RSB015' },
-      { name: 'RSB-REDSUB-ELITE-16', image: rolexSubmarinerBoxImage16, price: '3479.96', rarity: 0.06, code: 'RSB016' },
-      { name: 'RSB-VINTAGE-LTD-17', image: rolexSubmarinerBoxImage17, price: '3371.96', rarity: 0.065, code: 'RSB017' },
-      { name: 'RSB-DATE-CLASSIC-18', image: rolexSubmarinerBoxImage18, price: '3273.97', rarity: 0.07, code: 'RSB018' },
-      { name: 'RSB-NODATE-PRO-19', image: rolexSubmarinerBoxImage19, price: '3175.97', rarity: 0.075, code: 'RSB019' },
-      { name: 'RSB-COMEX-SPECIAL-20', image: rolexSubmarinerBoxImage20, price: '3077.97', rarity: 0.08, code: 'RSB020' },
-      { name: 'RSB-BIGCROWN-LUX-21', image: rolexSubmarinerBoxImage21, price: '2979.97', rarity: 0.085, code: 'RSB021' },
-      { name: 'RSB-SMALLCROWN-22', image: rolexSubmarinerBoxImage22, price: '2975.97', rarity: 0.09, code: 'RSB022' },
-      { name: 'RSB-FIRSTMODEL-23', image: rolexSubmarinerBoxImage23, price: '2971.97', rarity: 0.095, code: 'RSB023' },
-      { name: 'RSB-EXPLORER-DIAL-24', image: rolexSubmarinerBoxImage24, price: '2969.97', rarity: 0.165, code: 'RSB024' }
+      { name: 'RSB-PLATINUM-ELITE-01', image: rolexSubmarinerBoxImage1, price: '1200.00', rarity: 0.001, code: 'RSB-PLATINUM-ELITE-01' },
+      { name: 'RSB-WHITEGOLD-PRO-02', image: rolexSubmarinerBoxImage2, price: '1000.00', rarity: 0.002, code: 'RSB-WHITEGOLD-PRO-02' },
+      { name: 'RSB-YELLOWGOLD-LUX-03', image: rolexSubmarinerBoxImage3, price: '900.00', rarity: 0.003, code: 'RSB-YELLOWGOLD-LUX-03' },
+      { name: 'RSB-TWOTONE-ELITE-04', image: rolexSubmarinerBoxImage4, price: '800.00', rarity: 0.004, code: 'RSB-TWOTONE-ELITE-04' },
+      { name: 'RSB-HULK-SPECIAL-05', image: rolexSubmarinerBoxImage5, price: '700.00', rarity: 0.005, code: 'RSB-HULK-SPECIAL-05' },
+      { name: 'RSB-STARBUCKS-PRO-06', image: rolexSubmarinerBoxImage6, price: '600.00', rarity: 0.01, code: 'RSB-STARBUCKS-PRO-06' },
+      { name: 'RSB-BLACK-PREMIUM-07', image: rolexSubmarinerBoxImage7, price: '500.00', rarity: 0.015, code: 'RSB-BLACK-PREMIUM-07' },
+      { name: 'RSB-DATE-SPECIAL-08', image: rolexSubmarinerBoxImage8, price: '400.00', rarity: 0.02, code: 'RSB-DATE-SPECIAL-08' },
+      { name: 'RSB-NODATE-ELITE-09', image: rolexSubmarinerBoxImage9, price: '300.00', rarity: 0.025, code: 'RSB-NODATE-ELITE-09' },
+      { name: 'RSB-CLASSIC-PRO-10', image: rolexSubmarinerBoxImage10, price: '200.00', rarity: 0.03, code: 'RSB-CLASSIC-PRO-10' },
+      { name: 'RSB-VINTAGE-LUX-11', image: rolexSubmarinerBoxImage11, price: '150.00', rarity: 0.035, code: 'RSB-VINTAGE-LUX-11' },
+      { name: 'RSB-TWOTONE-VIN-12', image: rolexSubmarinerBoxImage12, price: '120.00', rarity: 0.04, code: 'RSB-TWOTONE-VIN-12' },
+      { name: 'RSB-TRANS-SPECIAL-13', image: rolexSubmarinerBoxImage13, price: '110.00', rarity: 0.045, code: 'RSB-TRANS-SPECIAL-13' },
+      { name: 'RSB-TRIPLE-ZERO-14', image: rolexSubmarinerBoxImage14, price: '100.00', rarity: 0.05, code: 'RSB-TRIPLE-ZERO-14' },
+      { name: 'RSB-VINTAGE-PRO-15', image: rolexSubmarinerBoxImage15, price: '90.00', rarity: 0.055, code: 'RSB-VINTAGE-PRO-15' },
+      { name: 'RSB-REDSUB-ELITE-16', image: rolexSubmarinerBoxImage16, price: '80.00', rarity: 0.06, code: 'RSB-REDSUB-ELITE-16' },
+      { name: 'RSB-VINTAGE-LTD-17', image: rolexSubmarinerBoxImage17, price: '70.00', rarity: 0.065, code: 'RSB-VINTAGE-LTD-17' },
+      { name: 'RSB-DATE-CLASSIC-18', image: rolexSubmarinerBoxImage18, price: '60.00', rarity: 0.07, code: 'RSB-DATE-CLASSIC-18' },
+      { name: 'RSB-NODATE-PRO-19', image: rolexSubmarinerBoxImage19, price: '50.00', rarity: 0.075, code: 'RSB-NODATE-PRO-19' },
+      { name: 'RSB-COMEX-SPECIAL-20', image: rolexSubmarinerBoxImage20, price: '45.00', rarity: 0.08, code: 'RSB-COMEX-SPECIAL-20' },
+      { name: 'RSB-BIGCROWN-LUX-21', image: rolexSubmarinerBoxImage21, price: '40.00', rarity: 0.085, code: 'RSB-BIGCROWN-LUX-21' },
+      { name: 'RSB-SMALLCROWN-22', image: rolexSubmarinerBoxImage22, price: '35.00', rarity: 0.09, code: 'RSB-SMALLCROWN-22' },
+      { name: 'RSB-FIRSTMODEL-23', image: rolexSubmarinerBoxImage23, price: '30.00', rarity: 0.095, code: 'RSB-FIRSTMODEL-23' },
+      { name: 'RSB-EXPLORER-DIAL-24', image: rolexSubmarinerBoxImage24, price: '25.00', rarity: 0.165, code: 'RSB-EXPLORER-DIAL-24' }
     ]
   },
   'donald-trump': {
     title: 'Donald Trump',
     image: donaldTrumpBoxImage,
     description: 'Political memorabilia box',
-    normalPrice: '9.99',
-    salePrice: '7.59',
+    normalPrice: '6.99',
+    salePrice: '5.45',
     drops: [
-      { name: '$1000 MAGA Coin', image: donaldTrumpBoxImage3, price: '1000.00', rarity: 0.0001, code: 'DT0003' },
-      { name: 'Trump Flag Blanket', image: donaldTrumpBoxImage1, price: '189.90', rarity: 0.001, code: 'DT0001' },
-      { name: 'Louis Vuitton Capsule Tie - Red', image: donaldTrumpBoxImage2, price: '300.00', rarity: 0.0005, code: 'DT0002' },
-      { name: 'Needlepoint Trump Flag Bifold Wallet', image: donaldTrumpBoxImage14, price: '154.49', rarity: 0.002, code: 'DT0004' },
-      { name: 'V1 Custom Golf Balls', image: donaldTrumpBoxImage13, price: '104.99', rarity: 0.005, code: 'DT0003' },
-      { name: 'Trump Umbrella', image: donaldTrumpBoxImage12, price: '79.99', rarity: 0.01, code: 'DT0002' },
-      { name: 'Signed MAGA Hat', image: donaldTrumpBoxImage11, price: '64.70', rarity: 0.02, code: 'DT0001' },
-      { name: 'Trump Stars & Stripes Flip Flops', image: donaldTrumpBoxImage10, price: '59.90', rarity: 0.03, code: 'DT0005' },
-      { name: 'Trump Flag Tee - White', image: donaldTrumpBoxImage9, price: '39.90', rarity: 0.05, code: 'DT0004' },
-      { name: 'Mimi Collection', image: donaldTrumpBoxImage8, price: '24.99', rarity: 0.08, code: 'DT0003' },
-      { name: 'Trump: The Art of the Deal', image: donaldTrumpBoxImage7, price: '18.99', rarity: 0.1, code: 'DT0002' },
-      { name: 'Trump Wallet', image: donaldTrumpBoxImage6, price: '12.20', rarity: 0.15, code: 'DT0001' },
-      { name: 'Donald Trump Novelty Socks', image: donaldTrumpBoxImage5, price: '9.99', rarity: 0.25, code: 'DT0005' },
-      { name: 'Donald Trump Smiling Sticker', image: donaldTrumpBoxImage4, price: '1.39', rarity: 0.3014, code: 'DT0004' }
+      { name: 'DT-PREMIUM-ELITE-01', image: donaldTrumpBoxImage3, price: '80.00', rarity: 0.001, code: 'DT-PREMIUM-ELITE-01' },
+      { name: 'DT-LUXURY-PRO-02', image: donaldTrumpBoxImage1, price: '60.00', rarity: 0.002, code: 'DT-LUXURY-PRO-02' },
+      { name: 'DT-SPECIAL-MAX-03', image: donaldTrumpBoxImage2, price: '40.00', rarity: 0.003, code: 'DT-SPECIAL-MAX-03' },
+      { name: 'DT-COLLECTOR-04', image: donaldTrumpBoxImage14, price: '30.00', rarity: 0.004, code: 'DT-COLLECTOR-04' },
+      { name: 'DT-LIMITED-05', image: donaldTrumpBoxImage13, price: '25.00', rarity: 0.01, code: 'DT-LIMITED-05' },
+      { name: 'DT-RARE-06', image: donaldTrumpBoxImage12, price: '20.00', rarity: 0.02, code: 'DT-RARE-06' },
+      { name: 'DT-SPECIAL-07', image: donaldTrumpBoxImage11, price: '15.00', rarity: 0.03, code: 'DT-SPECIAL-07' },
+      { name: 'DT-PREMIUM-08', image: donaldTrumpBoxImage10, price: '12.00', rarity: 0.04, code: 'DT-PREMIUM-08' },
+      { name: 'DT-CLASSIC-09', image: donaldTrumpBoxImage9, price: '10.00', rarity: 0.05, code: 'DT-CLASSIC-09' },
+      { name: 'DT-BASIC-10', image: donaldTrumpBoxImage8, price: '8.00', rarity: 0.06, code: 'DT-BASIC-10' },
+      { name: 'DT-COMMON-11', image: donaldTrumpBoxImage7, price: '6.00', rarity: 0.07, code: 'DT-COMMON-11' },
+      { name: 'DT-STANDARD-12', image: donaldTrumpBoxImage6, price: '5.00', rarity: 0.08, code: 'DT-STANDARD-12' },
+      { name: 'DT-NORMAL-13', image: donaldTrumpBoxImage5, price: '4.00', rarity: 0.09, code: 'DT-NORMAL-13' },
+      { name: 'DT-STARTER-14', image: donaldTrumpBoxImage4, price: '3.00', rarity: 0.592, code: 'DT-STARTER-14' }
     ]
   },
   'rolex-yachtmaster': {
     title: 'Rolex Yachtmaster',
     image: rolexYachtmasterBoxImage,
     description: 'Luxury yacht watch themed box',
-    normalPrice: '299.99',
-    salePrice: '249.99',
+    normalPrice: '199.99',
+    salePrice: '149.99',
     drops: [
-      { name: 'RYM-226659-WG42', image: rolexYachtmasterBoxImage1, price: '47500.00', rarity: 0.0001, code: 'RY0001' },
-      { name: 'RYM-126655-RG40', image: rolexYachtmasterBoxImage2, price: '42000.00', rarity: 0.0002, code: 'RY0002' },
-      { name: 'RYM-226658-YG42', image: rolexYachtmasterBoxImage3, price: '41500.00', rarity: 0.0003, code: 'RY0003' },
-      { name: 'RYM-126679-WGSBR40', image: rolexYachtmasterBoxImage4, price: '39900.00', rarity: 0.0004, code: 'RY0004' },
-      { name: 'RYM-126695-RGSBR40', image: rolexYachtmasterBoxImage5, price: '38500.00', rarity: 0.0005, code: 'RY0005' },
-      { name: 'RYM-268655-RG37', image: rolexYachtmasterBoxImage6, price: '36000.00', rarity: 0.001, code: 'RY0006' },
-      { name: 'RYM-126622-PT40', image: rolexYachtmasterBoxImage7, price: '33500.00', rarity: 0.002, code: 'RY0007' },
-      { name: 'RYM-268621-RS37', image: rolexYachtmasterBoxImage8, price: '31000.00', rarity: 0.003, code: 'RY0008' },
-      { name: 'RYM-226627-WS42', image: rolexYachtmasterBoxImage9, price: '29500.00', rarity: 0.004, code: 'RY0009' },
-      { name: 'RYM-116655-RG40', image: rolexYachtmasterBoxImage10, price: '27800.00', rarity: 0.005, code: 'RY0010' },
-      { name: 'RYM-116622-PT40', image: rolexYachtmasterBoxImage11, price: '26500.00', rarity: 0.01, code: 'RY0011' },
-      { name: 'RYM-268622-PT37', image: rolexYachtmasterBoxImage12, price: '25000.00', rarity: 0.015, code: 'RY0012' },
-      { name: 'RYM-168622-PT35', image: rolexYachtmasterBoxImage13, price: '23500.00', rarity: 0.02, code: 'RY0013' },
-      { name: 'RYM-16622-PT40', image: rolexYachtmasterBoxImage14, price: '22000.00', rarity: 0.025, code: 'RY0014' },
-      { name: 'RYM-168623-TT35', image: rolexYachtmasterBoxImage15, price: '21000.00', rarity: 0.03, code: 'RY0015' },
-      { name: 'RYM-16623-TT40', image: rolexYachtmasterBoxImage16, price: '19800.00', rarity: 0.035, code: 'RY0016' },
-      { name: 'RYM-169622-PT29', image: rolexYachtmasterBoxImage17, price: '18500.00', rarity: 0.04, code: 'RY0017' },
-      { name: 'RYM-68623-TT35', image: rolexYachtmasterBoxImage18, price: '17200.00', rarity: 0.045, code: 'RY0018' },
-      { name: 'RYM-16628-YG40', image: rolexYachtmasterBoxImage19, price: '16500.00', rarity: 0.05, code: 'RY0019' },
-      { name: 'RYM-68628-YG35', image: rolexYachtmasterBoxImage20, price: '15800.00', rarity: 0.055, code: 'RY0020' },
-      { name: 'RYM-69628-YG29', image: rolexYachtmasterBoxImage21, price: '14900.00', rarity: 0.06, code: 'RY0021' },
-      { name: 'RYM-16623-TT40-BLK', image: rolexYachtmasterBoxImage22, price: '14200.00', rarity: 0.065, code: 'RY0022' },
-      { name: 'RYM-68623-TT35-BLK', image: rolexYachtmasterBoxImage23, price: '13500.00', rarity: 0.07, code: 'RY0023' },
-      { name: 'RYM-69623-TT29-BLK', image: rolexYachtmasterBoxImage24, price: '12800.00', rarity: 0.075, code: 'RY0024' },
-      { name: 'RYM-16622-PT40-PLT', image: rolexYachtmasterBoxImage25, price: '12200.00', rarity: 0.08, code: 'RY0025' },
-      { name: 'RYM-168622-PT35-PLT', image: rolexYachtmasterBoxImage26, price: '11500.00', rarity: 0.085, code: 'RY0026' },
-      { name: 'RYM-169622-PT29-PLT', image: rolexYachtmasterBoxImage27, price: '10800.00', rarity: 0.09, code: 'RY0027' },
-      { name: 'RYM-16622-PT40-BLU', image: rolexYachtmasterBoxImage28, price: '10200.00', rarity: 0.095, code: 'RY0028' },
-      { name: 'RYM-168622-PT35-BLU', image: rolexYachtmasterBoxImage29, price: '9500.00', rarity: 0.1, code: 'RY0029' },
-      { name: 'RYM-169622-PT29-BLU', image: rolexYachtmasterBoxImage30, price: '8900.00', rarity: 0.105, code: 'RY0030' },
-      { name: 'RYM-16622-PT40-RHD', image: rolexYachtmasterBoxImage31, price: '8200.00', rarity: 0.11, code: 'RY0031' },
-      { name: 'RYM-168622-PT35-RHD', image: rolexYachtmasterBoxImage32, price: '7500.00', rarity: 0.115, code: 'RY0032' }
+      { name: 'RYM-226659-WG42', image: rolexYachtmasterBoxImage1, price: '2000.00', rarity: 0.0001, code: 'RYM-PLATINUM-WG42-01' },
+      { name: 'RYM-126655-RG40', image: rolexYachtmasterBoxImage2, price: '1800.00', rarity: 0.0002, code: 'RYM-PLATINUM-RG40-02' },
+      { name: 'RYM-226658-YG42', image: rolexYachtmasterBoxImage3, price: '1600.00', rarity: 0.0003, code: 'RYM-PLATINUM-YG42-03' },
+      { name: 'RYM-126679-WGSBR40', image: rolexYachtmasterBoxImage4, price: '1400.00', rarity: 0.0004, code: 'RYM-PLATINUM-WGSBR-04' },
+      { name: 'RYM-126695-RGSBR40', image: rolexYachtmasterBoxImage5, price: '1200.00', rarity: 0.0005, code: 'RYM-PLATINUM-RGSBR-05' },
+      { name: 'RYM-268655-RG37', image: rolexYachtmasterBoxImage6, price: '1000.00', rarity: 0.001, code: 'RYM-ELITE-RG37-06' },
+      { name: 'RYM-126622-PT40', image: rolexYachtmasterBoxImage7, price: '800.00', rarity: 0.002, code: 'RYM-ELITE-PT40-07' },
+      { name: 'RYM-268621-RS37', image: rolexYachtmasterBoxImage8, price: '600.00', rarity: 0.003, code: 'RYM-RARE-RS37-08' },
+      { name: 'RYM-226627-WS42', image: rolexYachtmasterBoxImage9, price: '500.00', rarity: 0.004, code: 'RYM-RARE-WS42-09' },
+      { name: 'RYM-116655-RG40', image: rolexYachtmasterBoxImage10, price: '400.00', rarity: 0.005, code: 'RYM-RARE-RG40-10' },
+      { name: 'RYM-116622-PT40', image: rolexYachtmasterBoxImage11, price: '300.00', rarity: 0.01, code: 'RYM-PRO-PT40-11' },
+      { name: 'RYM-116621-RS40', image: rolexYachtmasterBoxImage12, price: '250.00', rarity: 0.02, code: 'RYM-PRO-RS40-12' },
+      { name: 'RYM-116680-SS40', image: rolexYachtmasterBoxImage13, price: '200.00', rarity: 0.03, code: 'RYM-PRO-SS40-13' },
+      { name: 'RYM-116679-WGBR40', image: rolexYachtmasterBoxImage14, price: '180.00', rarity: 0.04, code: 'RYM-SPECIAL-WGBR-14' },
+      { name: 'RYM-116695-RGBR40', image: rolexYachtmasterBoxImage15, price: '160.00', rarity: 0.05, code: 'RYM-SPECIAL-RGBR-15' },
+      { name: 'RYM-268655-RG37-LN', image: rolexYachtmasterBoxImage16, price: '140.00', rarity: 0.06, code: 'RYM-SPECIAL-RG37-16' },
+      { name: 'RYM-126622-PT40-LN', image: rolexYachtmasterBoxImage17, price: '120.00', rarity: 0.07, code: 'RYM-BASIC-PT40-17' },
+      { name: 'RYM-268621-RS37-LN', image: rolexYachtmasterBoxImage18, price: '100.00', rarity: 0.08, code: 'RYM-BASIC-RS37-18' },
+      { name: 'RYM-226627-WS42-LN', image: rolexYachtmasterBoxImage19, price: '90.00', rarity: 0.09, code: 'RYM-BASIC-WS42-19' },
+      { name: 'RYM-116655-RG40-LN', image: rolexYachtmasterBoxImage20, price: '80.00', rarity: 0.1, code: 'RYM-BASIC-RG40-20' },
+      { name: 'RYM-116622-PT40-LN', image: rolexYachtmasterBoxImage21, price: '70.00', rarity: 0.15, code: 'RYM-COMMON-PT40-21' },
+      { name: 'RYM-116621-RS40-LN', image: rolexYachtmasterBoxImage22, price: '60.00', rarity: 0.2, code: 'RYM-COMMON-RS40-22' },
+      { name: 'RYM-116680-SS40-LN', image: rolexYachtmasterBoxImage23, price: '50.00', rarity: 0.25, code: 'RYM-COMMON-SS40-23' }
     ]
   },
   'rolex': {
     title: 'Rolex Collection',
     image: rolexBoxImage,
     description: 'Premium Rolex collection box',
-    normalPrice: '399.99',
-    salePrice: '349.99',
+    normalPrice: '299.99',
+    salePrice: '249.99',
     drops: [
-      { name: 'RLX-116506-PT40-ICE', image: rolexBoxImage1, price: '185000.00', rarity: 0.0001, code: 'RX0001' },
-      { name: 'RLX-116508-YG40-GRN', image: rolexBoxImage2, price: '165000.00', rarity: 0.0002, code: 'RX0002' },
-      { name: 'RLX-116505-RG40-BLK', image: rolexBoxImage3, price: '149000.00', rarity: 0.0003, code: 'RX0003' },
-      { name: 'RLX-116519-WG40-MET', image: rolexBoxImage4, price: '135000.00', rarity: 0.0004, code: 'RX0004' },
-      { name: 'RLX-116500-SS40-WHT', image: rolexBoxImage5, price: '125000.00', rarity: 0.0005, code: 'RX0005' },
-      { name: 'RLX-228236-PT40-ICE', image: rolexBoxImage6, price: '115000.00', rarity: 0.001, code: 'RX0006' },
-      { name: 'RLX-228238-YG40-CHM', image: rolexBoxImage7, price: '98000.00', rarity: 0.002, code: 'RX0007' },
-      { name: 'RLX-228235-RG40-CHO', image: rolexBoxImage8, price: '89000.00', rarity: 0.003, code: 'RX0008' },
-      { name: 'RLX-326938-YG42-BLK', image: rolexBoxImage9, price: '82000.00', rarity: 0.004, code: 'RX0009' },
-      { name: 'RLX-326935-RG42-SLT', image: rolexBoxImage10, price: '75000.00', rarity: 0.005, code: 'RX0010' },
-      { name: 'RLX-326934-SS42-BLU', image: rolexBoxImage11, price: '65000.00', rarity: 0.01, code: 'RX0011' },
-      { name: 'RLX-226659-WG42-BLK', image: rolexBoxImage12, price: '55000.00', rarity: 0.015, code: 'RX0012' },
-      { name: 'RLX-126711-TT40-BRN', image: rolexBoxImage13, price: '45000.00', rarity: 0.02, code: 'RX0013' },
-      { name: 'RLX-126710-SS40-BLU', image: rolexBoxImage14, price: '38000.00', rarity: 0.025, code: 'RX0014' }
+      { name: 'RLX-116506-PT40-ICE', image: rolexBoxImage1, price: '3000.00', rarity: 0.0001, code: 'RLX-PLATINUM-ICE-01' },
+      { name: 'RLX-116508-YG40-GRN', image: rolexBoxImage2, price: '2800.00', rarity: 0.0002, code: 'RLX-PLATINUM-GRN-02' },
+      { name: 'RLX-116505-RG40-BLK', image: rolexBoxImage3, price: '2600.00', rarity: 0.0003, code: 'RLX-PLATINUM-BLK-03' },
+      { name: 'RLX-116519-WG40-MET', image: rolexBoxImage4, price: '2400.00', rarity: 0.0004, code: 'RLX-PLATINUM-MET-04' },
+      { name: 'RLX-116500-SS40-WHT', image: rolexBoxImage5, price: '2200.00', rarity: 0.0005, code: 'RLX-PLATINUM-WHT-05' },
+      { name: 'RLX-228236-PT40-ICE', image: rolexBoxImage6, price: '2000.00', rarity: 0.001, code: 'RLX-ELITE-ICE-06' },
+      { name: 'RLX-228238-YG40-CHM', image: rolexBoxImage7, price: '1800.00', rarity: 0.002, code: 'RLX-ELITE-CHM-07' },
+      { name: 'RLX-228235-RG40-CHO', image: rolexBoxImage8, price: '1600.00', rarity: 0.003, code: 'RLX-ELITE-CHO-08' },
+      { name: 'RLX-326938-YG42-BLK', image: rolexBoxImage9, price: '1400.00', rarity: 0.004, code: 'RLX-ELITE-BLK-09' },
+      { name: 'RLX-326935-RG42-SLT', image: rolexBoxImage10, price: '1200.00', rarity: 0.005, code: 'RLX-RARE-SLT-10' },
+      { name: 'RLX-326934-SS42-BLU', image: rolexBoxImage11, price: '1000.00', rarity: 0.01, code: 'RLX-RARE-BLU-11' },
+      { name: 'RLX-226659-WG42-BLK', image: rolexBoxImage12, price: '800.00', rarity: 0.02, code: 'RLX-RARE-BLK-12' },
+      { name: 'RLX-126711-TT40-BRN', image: rolexBoxImage13, price: '600.00', rarity: 0.03, code: 'RLX-PRO-BRN-13' },
+      { name: 'RLX-126710-SS40-BLU', image: rolexBoxImage14, price: '500.00', rarity: 0.9133, code: 'RLX-PRO-BLU-14' },
+
     ]
   },
   
@@ -834,90 +666,56 @@ export const boxesData: Record<string, BoxData> = {
     title: 'Chanel',
     image: chanelBoxImage,
     description: 'Luxury fashion mystery box',
-    normalPrice: '399.99',
-    salePrice: '349.99',
+    normalPrice: '199.99',
+    salePrice: '169.99',
     drops: [
-      { name: 'CNL-CF-2590-BLK-GHW', image: chanelBoxImage1, price: '5999.99', rarity: 0.0001, code: 'CH0001' },
-      { name: 'CNL-19S-3600-WHT-SHW', image: chanelBoxImage2, price: '4999.99', rarity: 0.0005, code: 'CH0002' },
-      { name: 'CNL-22B-2955-BEG-GHW', image: chanelBoxImage3, price: '4599.99', rarity: 0.001, code: 'CH0003' },
-      { name: 'CNL-21K-2200-RED-SHW', image: chanelBoxImage4, price: '3999.99', rarity: 0.002, code: 'CH0004' },
-      { name: 'CNL-20A-1955-BLK-GHW', image: chanelBoxImage5, price: '3599.99', rarity: 0.003, code: 'CH0005' },
-      { name: 'CNL-WOC-1680-PNK-SHW', image: chanelBoxImage6, price: '2999.99', rarity: 0.005, code: 'CH0006' },
-      { name: 'CNL-MIN-1200-BLU-GHW', image: chanelBoxImage7, price: '2499.99', rarity: 0.01, code: 'CH0007' },
-      { name: 'CNL-SLG-0955-GRY-SHW', image: chanelBoxImage8, price: '1999.99', rarity: 0.02, code: 'CH0008' },
-      { name: 'CNL-RTW-0899-BLK-NA', image: chanelBoxImage9, price: '1599.99', rarity: 0.03, code: 'CH0009' },
-      { name: 'CNL-ACC-0699-GLD-NA', image: chanelBoxImage10, price: '1299.99', rarity: 0.05, code: 'CH0010' },
-      { name: 'CNL-SHO-0599-BLK-NA', image: chanelBoxImage11, price: '999.99', rarity: 0.08, code: 'CH0011' },
-      { name: 'CNL-SML-0499-SLV-NA', image: chanelBoxImage12, price: '799.99', rarity: 0.1, code: 'CH0012' },
-      { name: 'CNL-BSC-0399-MIX-NA', image: chanelBoxImage13, price: '599.99', rarity: 0.2, code: 'CH0013' },
-      { name: 'CNL-BTQ-0299-STD-NA', image: chanelBoxImage14, price: '399.99', rarity: 0.5, code: 'CH0014' }
+      { name: 'CNL-CF-2590-BLK-GHW', image: chanelBoxImage1, price: '2500.00', rarity: 0.0001, code: 'CNL-PLATINUM-BLK-01' },
+      { name: 'CNL-19S-3600-WHT-SHW', image: chanelBoxImage2, price: '2000.00', rarity: 0.0005, code: 'CNL-PLATINUM-WHT-02' },
+      { name: 'CNL-22B-2955-BEG-GHW', image: chanelBoxImage3, price: '1800.00', rarity: 0.001, code: 'CNL-PLATINUM-BEG-03' },
+      { name: 'CNL-21K-2200-RED-SHW', image: chanelBoxImage4, price: '1500.00', rarity: 0.002, code: 'CNL-ELITE-RED-04' },
+      { name: 'CNL-20A-1955-BLK-GHW', image: chanelBoxImage5, price: '1200.00', rarity: 0.003, code: 'CNL-ELITE-BLK-05' },
+      { name: 'CNL-WOC-1680-PNK-SHW', image: chanelBoxImage6, price: '1000.00', rarity: 0.005, code: 'CNL-ELITE-PNK-06' },
+      { name: 'CNL-MIN-1200-BLU-GHW', image: chanelBoxImage7, price: '800.00', rarity: 0.01, code: 'CNL-RARE-BLU-07' },
+      { name: 'CNL-SLG-0955-GRY-SHW', image: chanelBoxImage8, price: '600.00', rarity: 0.02, code: 'CNL-RARE-GRY-08' },
+      { name: 'CNL-RTW-0899-BLK-NA', image: chanelBoxImage9, price: '400.00', rarity: 0.03, code: 'CNL-PRO-BLK-09' },
+      { name: 'CNL-ACC-0699-GLD-NA', image: chanelBoxImage10, price: '300.00', rarity: 0.05, code: 'CNL-PRO-GLD-10' },
+      { name: 'CNL-SHO-0599-BLK-NA', image: chanelBoxImage11, price: '200.00', rarity: 0.08, code: 'CNL-SPECIAL-BLK-11' },
+      { name: 'CNL-SML-0499-SLV-NA', image: chanelBoxImage12, price: '150.00', rarity: 0.1, code: 'CNL-BASIC-SLV-12' },
+      { name: 'CNL-BSC-0399-MIX-NA', image: chanelBoxImage13, price: '100.00', rarity: 0.2, code: 'CNL-BASIC-MIX-13' },
+      { name: 'CNL-BTQ-0299-STD-NA', image: chanelBoxImage14, price: '80.00', rarity: 0.5, code: 'CNL-COMMON-STD-14' }
     ]
   },
-  'jordan-exclusive': {
-    title: 'Jordan Exclusive',
-    image: jordanBoxImage,
-    description: 'Premium Jordan sneakers and sportswear',
-    normalPrice: '299.99',
-    salePrice: '249.99',
-    drops: [
-      { name: 'JRD-AJ1-HI-DIOR-2020', image: jordanBoxImage1, price: '4499.99', rarity: 0.0001, code: 'JE0001' },
-      { name: 'JRD-AJ1-HI-TROPHY-21', image: jordanBoxImage2, price: '3999.99', rarity: 0.0005, code: 'JE0002' },
-      { name: 'JRD-AJ1-TS-FRAG-21', image: jordanBoxImage3, price: '3799.99', rarity: 0.001, code: 'JE0003' },
-      { name: 'JRD-AJ1-OW-CHI-17', image: jordanBoxImage4, price: '3599.99', rarity: 0.002, code: 'JE0004' },
-      { name: 'JRD-AJ1-SBB-15', image: jordanBoxImage5, price: '3299.99', rarity: 0.003, code: 'JE0005' },
-      { name: 'JRD-AJ1-BRED-16', image: jordanBoxImage6, price: '2999.99', rarity: 0.005, code: 'JE0006' },
-      { name: 'JRD-AJ1-UNC-15', image: jordanBoxImage7, price: '2799.99', rarity: 0.007, code: 'JE0007' },
-      { name: 'JRD-AJ1-ROYAL-17', image: jordanBoxImage8, price: '2499.99', rarity: 0.01, code: 'JE0008' },
-      { name: 'JRD-AJ1-SHADOW-18', image: jordanBoxImage9, price: '2299.99', rarity: 0.015, code: 'JE0009' },
-      { name: 'JRD-AJ1-COURT-18', image: jordanBoxImage10, price: '1999.99', rarity: 0.02, code: 'JE0010' },
-      { name: 'JRD-AJ1-STORM-19', image: jordanBoxImage11, price: '1799.99', rarity: 0.025, code: 'JE0011' },
-      { name: 'JRD-AJ1-PINE-19', image: jordanBoxImage12, price: '1599.99', rarity: 0.03, code: 'JE0012' },
-      { name: 'JRD-AJ1-OBSID-19', image: jordanBoxImage13, price: '1399.99', rarity: 0.035, code: 'JE0013' },
-      { name: 'JRD-AJ1-GYM-19', image: jordanBoxImage14, price: '1299.99', rarity: 0.04, code: 'JE0014' },
-      { name: 'JRD-AJ1-CRIMSON-21', image: jordanBoxImage15, price: '1199.99', rarity: 0.045, code: 'JE0015' },
-      { name: 'JRD-AJ1-VOLT-21', image: jordanBoxImage16, price: '999.99', rarity: 0.05, code: 'JE0016' },
-      { name: 'JRD-AJ1-ZOOM-21', image: jordanBoxImage17, price: '899.99', rarity: 0.06, code: 'JE0017' },
-      { name: 'JRD-AJ1-MID-BRD-21', image: jordanBoxImage18, price: '799.99', rarity: 0.07, code: 'JE0018' },
-      { name: 'JRD-AJ1-LOW-TS-21', image: jordanBoxImage19, price: '699.99', rarity: 0.08, code: 'JE0019' },
-      { name: 'JRD-AJ1-MID-DMP-21', image: jordanBoxImage20, price: '599.99', rarity: 0.09, code: 'JE0020' },
-      { name: 'JRD-AJ1-LOW-PSG-21', image: jordanBoxImage21, price: '499.99', rarity: 0.1, code: 'JE0021' },
-      { name: 'JRD-AJ1-MID-GREY-21', image: jordanBoxImage22, price: '449.99', rarity: 0.11, code: 'JE0022' },
-      { name: 'JRD-AJ1-LOW-UNC-21', image: jordanBoxImage23, price: '399.99', rarity: 0.12, code: 'JE0023' },
-      { name: 'JRD-AJ1-MID-BAN-21', image: jordanBoxImage24, price: '349.99', rarity: 0.13, code: 'JE0024' },
-      { name: 'JRD-AJ1-LOW-GYM-21', image: jordanBoxImage25, price: '299.99', rarity: 0.14, code: 'JE0025' }
-    ]
-  },
+  
   'louis-vuitton': {
     title: 'Louis Vuitton',
     image: louisVuittonBoxImage,
     description: 'Luxury fashion and accessories box',
-    normalPrice: '299.99',
-    salePrice: '249.99',
+    normalPrice: '99.99',
+    salePrice: '95.45',
     drops: [
-      { name: 'LV-TRK-MONO-SPE-21', image: louisVuittonBoxImage1, price: '4499.99', rarity: 0.0001, code: 'LV0001' },
-      { name: 'LV-KPL-MONO-LTD-21', image: louisVuittonBoxImage2, price: '3999.99', rarity: 0.0005, code: 'LV0002' },
-      { name: 'LV-BAG-CROC-EXO-21', image: louisVuittonBoxImage3, price: '3799.99', rarity: 0.001, code: 'LV0003' },
-      { name: 'LV-SPE-MONO-ART-21', image: louisVuittonBoxImage4, price: '3599.99', rarity: 0.002, code: 'LV0004' },
-      { name: 'LV-TRV-MONO-VIN-21', image: louisVuittonBoxImage5, price: '3299.99', rarity: 0.003, code: 'LV0005' },
-      { name: 'LV-BAG-MONO-LTD-21', image: louisVuittonBoxImage6, price: '2999.99', rarity: 0.005, code: 'LV0006' },
-      { name: 'LV-KPL-DAMI-SPE-21', image: louisVuittonBoxImage7, price: '2799.99', rarity: 0.007, code: 'LV0007' },
-      { name: 'LV-BAG-MONO-CLA-21', image: louisVuittonBoxImage8, price: '2499.99', rarity: 0.01, code: 'LV0008' },
-      { name: 'LV-WLT-MONO-EPI-21', image: louisVuittonBoxImage9, price: '2299.99', rarity: 0.015, code: 'LV0009' },
-      { name: 'LV-SLG-MONO-CLA-21', image: louisVuittonBoxImage10, price: '1999.99', rarity: 0.02, code: 'LV0010' },
-      { name: 'LV-ACC-MONO-LTD-21', image: louisVuittonBoxImage11, price: '1799.99', rarity: 0.025, code: 'LV0011' },
-      { name: 'LV-SHO-MONO-SPE-21', image: louisVuittonBoxImage12, price: '1599.99', rarity: 0.03, code: 'LV0012' },
-      { name: 'LV-RTW-DAMI-LTD-21', image: louisVuittonBoxImage13, price: '1399.99', rarity: 0.035, code: 'LV0013' },
-      { name: 'LV-BAG-MONO-STD-21', image: louisVuittonBoxImage14, price: '1299.99', rarity: 0.04, code: 'LV0014' },
-      { name: 'LV-WLT-DAMI-CLA-21', image: louisVuittonBoxImage15, price: '1199.99', rarity: 0.045, code: 'LV0015' },
-      { name: 'LV-SLG-MONO-STD-21', image: louisVuittonBoxImage16, price: '999.99', rarity: 0.05, code: 'LV0016' },
-      { name: 'LV-ACC-DAMI-CLA-21', image: louisVuittonBoxImage17, price: '899.99', rarity: 0.06, code: 'LV0017' },
-      { name: 'LV-SHO-MONO-CLA-21', image: louisVuittonBoxImage18, price: '799.99', rarity: 0.07, code: 'LV0018' },
-      { name: 'LV-RTW-MONO-STD-21', image: louisVuittonBoxImage19, price: '699.99', rarity: 0.08, code: 'LV0019' },
-      { name: 'LV-BAG-DAMI-BSC-21', image: louisVuittonBoxImage20, price: '599.99', rarity: 0.09, code: 'LV0020' },
-      { name: 'LV-WLT-MONO-BSC-21', image: louisVuittonBoxImage21, price: '499.99', rarity: 0.1, code: 'LV0021' },
-      { name: 'LV-SLG-DAMI-BSC-21', image: louisVuittonBoxImage22, price: '449.99', rarity: 0.11, code: 'LV0022' },
-      { name: 'LV-ACC-MONO-BSC-21', image: louisVuittonBoxImage23, price: '399.99', rarity: 0.12, code: 'LV0023' },
-      { name: 'LV-SHO-DAMI-BSC-21', image: louisVuittonBoxImage24, price: '349.99', rarity: 0.13, code: 'LV0024' },
+      { name: 'LV-TRK-MONO-SPE-21', image: louisVuittonBoxImage1, price: '1500.00', rarity: 0.0001, code: 'LV-PLATINUM-MONO-01' },
+      { name: 'LV-KPL-MONO-LTD-21', image: louisVuittonBoxImage2, price: '1200.00', rarity: 0.0005, code: 'LV-PLATINUM-LTD-02' },
+      { name: 'LV-BAG-CROC-EXO-21', image: louisVuittonBoxImage3, price: '1000.00', rarity: 0.001, code: 'LV-PLATINUM-CROC-03' },
+      { name: 'LV-SPE-MONO-ART-21', image: louisVuittonBoxImage4, price: '800.00', rarity: 0.002, code: 'LV-ELITE-ART-04' },
+      { name: 'LV-TRV-MONO-VIN-21', image: louisVuittonBoxImage5, price: '600.00', rarity: 0.003, code: 'LV-ELITE-VIN-05' },
+      { name: 'LV-BAG-MONO-LTD-21', image: louisVuittonBoxImage6, price: '500.00', rarity: 0.005, code: 'LV-ELITE-LTD-06' },
+      { name: 'LV-KPL-DAMI-SPE-21', image: louisVuittonBoxImage7, price: '400.00', rarity: 0.007, code: 'LV-RARE-DAMI-07' },
+      { name: 'LV-BAG-MONO-CLA-21', image: louisVuittonBoxImage8, price: '300.00', rarity: 0.01, code: 'LV-RARE-CLA-08' },
+      { name: 'LV-WLT-MONO-EPI-21', image: louisVuittonBoxImage9, price: '250.00', rarity: 0.015, code: 'LV-RARE-EPI-09' },
+      { name: 'LV-SLG-MONO-CLA-21', image: louisVuittonBoxImage10, price: '200.00', rarity: 0.02, code: 'LV-PRO-CLA-10' },
+      { name: 'LV-ACC-MONO-LTD-21', image: louisVuittonBoxImage11, price: '150.00', rarity: 0.025, code: 'LV-PRO-LTD-11' },
+      { name: 'LV-SHO-MONO-SPE-21', image: louisVuittonBoxImage12, price: '120.00', rarity: 0.03, code: 'LV-PRO-SPE-12' },
+      { name: 'LV-RTW-DAMI-LTD-21', image: louisVuittonBoxImage13, price: '100.00', rarity: 0.035, code: 'LV-SPECIAL-LTD-13' },
+      { name: 'LV-BAG-MONO-STD-21', image: louisVuittonBoxImage14, price: '90.00', rarity: 0.04, code: 'LV-SPECIAL-STD-14' },
+      { name: 'LV-WLT-DAMI-CLA-21', image: louisVuittonBoxImage15, price: '80.00', rarity: 0.045, code: 'LV-SPECIAL-CLA-15' },
+      { name: 'LV-SLG-MONO-STD-21', image: louisVuittonBoxImage16, price: '70.00', rarity: 0.05, code: 'LV-BASIC-STD-16' },
+      { name: 'LV-ACC-DAMI-CLA-21', image: louisVuittonBoxImage17, price: '60.00', rarity: 0.06, code: 'LV-BASIC-CLA-17' },
+      { name: 'LV-SHO-MONO-BSC-21', image: louisVuittonBoxImage18, price: '50.00', rarity: 0.07, code: 'LV-BASIC-BSC-18' },
+      { name: 'LV-RTW-MONO-STD-21', image: louisVuittonBoxImage19, price: '45.00', rarity: 0.08, code: 'LV-COMMON-STD-19' },
+      { name: 'LV-SLG-DAMI-BSC-21', image: louisVuittonBoxImage20, price: '40.00', rarity: 0.09, code: 'LV-COMMON-BSC-20' },
+      { name: 'LV-ACC-MONO-STD-21', image: louisVuittonBoxImage21, price: '35.00', rarity: 0.1, code: 'LV-COMMON-STD-21' },
+      { name: 'LV-SHO-DAMI-BSC-21', image: louisVuittonBoxImage22, price: '30.00', rarity: 0.15, code: 'LV-COMMON-BSC-22' },
+      { name: 'LV-RTW-MONO-BSC-21', image: louisVuittonBoxImage23, price: '25.00', rarity: 0.2, code: 'LV-COMMON-BSC-23' }
     ]
   },
  
@@ -925,571 +723,416 @@ export const boxesData: Record<string, BoxData> = {
     title: 'BMW Box',
     image: bmwBoxImage,
     description: 'BMW themed luxury automotive box',
-    normalPrice: '1899.99',
-    salePrice: '1799.99',
+    normalPrice: '189.99',
+    salePrice: '159.99',
     drops: [
-      { name: 'BMW-M4-CSL-LTD', image: bmwBoxImage1, price: '28499.99', rarity: 0.0001, code: 'BM0001' },
-      { name: 'BMW-M3-COMP-SPE', image: bmwBoxImage2, price: '25999.99', rarity: 0.0005, code: 'BM0002' },
-      { name: 'BMW-M5-CS-PRE', image: bmwBoxImage3, price: '23499.99', rarity: 0.001, code: 'BM0003' },
-      { name: 'BMW-M8-GRAN-LTD', image: bmwBoxImage4, price: '21999.99', rarity: 0.002, code: 'BM0004' },
-      { name: 'BMW-X5M-COMP-SPE', image: bmwBoxImage5, price: '19999.99', rarity: 0.003, code: 'BM0005' },
-      { name: 'BMW-M2-CS-RAC', image: bmwBoxImage6, price: '17999.99', rarity: 0.005, code: 'BM0006' },
-      { name: 'BMW-Z4M-ROAD-LTD', image: bmwBoxImage7, price: '15999.99', rarity: 0.007, code: 'BM0007' },
-      { name: 'BMW-M4-GTS-SPE', image: bmwBoxImage8, price: '14499.99', rarity: 0.01, code: 'BM0008' },
-      { name: 'BMW-M3-GTR-LTD', image: bmwBoxImage9, price: '12999.99', rarity: 0.015, code: 'BM0009' },
-      { name: 'BMW-M1-HERI-SPE', image: bmwBoxImage10, price: '11499.99', rarity: 0.02, code: 'BM0010' },
-      { name: 'BMW-E30-M3-CLS', image: bmwBoxImage11, price: '9999.99', rarity: 0.025, code: 'BM0011' },
-      { name: 'BMW-E46-M3-GTR', image: bmwBoxImage12, price: '8999.99', rarity: 0.03, code: 'BM0012' },
-      { name: 'BMW-E92-M3-GTS', image: bmwBoxImage13, price: '7999.99', rarity: 0.035, code: 'BM0013' },
-      { name: 'BMW-F82-M4-GTS', image: bmwBoxImage14, price: '6999.99', rarity: 0.04, code: 'BM0014' },
-      { name: 'BMW-G80-M3-CSL', image: bmwBoxImage15, price: '5999.99', rarity: 0.045, code: 'BM0015' },
-      { name: 'BMW-MOTO-S1000-RR', image: bmwBoxImage16, price: '4999.99', rarity: 0.05, code: 'BM0016' },
-      { name: 'BMW-MOTO-M1000-RR', image: bmwBoxImage17, price: '4499.99', rarity: 0.06, code: 'BM0017' },
-      { name: 'BMW-DRIV-EXP-PRO', image: bmwBoxImage18, price: '3999.99', rarity: 0.07, code: 'BM0018' },
-      { name: 'BMW-RACE-SIM-PRO', image: bmwBoxImage19, price: '3499.99', rarity: 0.08, code: 'BM0019' },
-      { name: 'BMW-GEAR-COL-LTD', image: bmwBoxImage20, price: '2999.99', rarity: 0.09, code: 'BM0020' },
-      { name: 'BMW-WATCH-M-SPE', image: bmwBoxImage21, price: '2499.99', rarity: 0.1, code: 'BM0021' }
+      { name: 'BMW-M4-CSL-LTD', image: bmwBoxImage1, price: '2500.00', rarity: 0.0001, code: 'BMW-PLATINUM-CSL-01' },
+      { name: 'BMW-M3-COMP-SPE', image: bmwBoxImage2, price: '2200.00', rarity: 0.0005, code: 'BMW-PLATINUM-COMP-02' },
+      { name: 'BMW-M5-CS-PRE', image: bmwBoxImage3, price: '2000.00', rarity: 0.001, code: 'BMW-PLATINUM-CS-03' },
+      { name: 'BMW-M8-GRAN-LTD', image: bmwBoxImage4, price: '1800.00', rarity: 0.002, code: 'BMW-ELITE-GRAN-04' },
+      { name: 'BMW-X5M-COMP-SPE', image: bmwBoxImage5, price: '1500.00', rarity: 0.003, code: 'BMW-ELITE-X5M-05' },
+      { name: 'BMW-M2-CS-RAC', image: bmwBoxImage6, price: '1200.00', rarity: 0.005, code: 'BMW-ELITE-M2CS-06' },
+      { name: 'BMW-Z4M-ROAD-LTD', image: bmwBoxImage7, price: '1000.00', rarity: 0.007, code: 'BMW-RARE-Z4M-07' },
+      { name: 'BMW-M4-GTS-SPE', image: bmwBoxImage8, price: '800.00', rarity: 0.01, code: 'BMW-RARE-GTS-08' },
+      { name: 'BMW-M3-GTR-LTD', image: bmwBoxImage9, price: '600.00', rarity: 0.015, code: 'BMW-RARE-GTR-09' },
+      { name: 'BMW-M1-HERI-SPE', image: bmwBoxImage10, price: '500.00', rarity: 0.02, code: 'BMW-PRO-M1-10' },
+      { name: 'BMW-E30-M3-CLS', image: bmwBoxImage11, price: '400.00', rarity: 0.025, code: 'BMW-PRO-E30-11' },
+      { name: 'BMW-E46-M3-GTR', image: bmwBoxImage12, price: '300.00', rarity: 0.03, code: 'BMW-PRO-E46-12' },
+      { name: 'BMW-E92-M3-GTS', image: bmwBoxImage13, price: '250.00', rarity: 0.04, code: 'BMW-SPECIAL-E92-13' },
+      { name: 'BMW-F82-M4-GTS', image: bmwBoxImage14, price: '200.00', rarity: 0.05, code: 'BMW-SPECIAL-F82-14' },
+      { name: 'BMW-G80-M3-CSL', image: bmwBoxImage15, price: '180.00', rarity: 0.06, code: 'BMW-SPECIAL-G80-15' },
+      { name: 'BMW-F87-M2-CS', image: bmwBoxImage16, price: '160.00', rarity: 0.07, code: 'BMW-BASIC-F87-16' },
+      { name: 'BMW-F90-M5-CS', image: bmwBoxImage17, price: '140.00', rarity: 0.08, code: 'BMW-BASIC-F90-17' },
+      { name: 'BMW-G82-M4-CSL', image: bmwBoxImage18, price: '120.00', rarity: 0.09, code: 'BMW-BASIC-G82-18' },
+      { name: 'BMW-F80-M3-CS', image: bmwBoxImage19, price: '100.00', rarity: 0.1, code: 'BMW-COMMON-F80-19' },
+      { name: 'BMW-F10-M5-30JB', image: bmwBoxImage20, price: '80.00', rarity: 0.2, code: 'BMW-COMMON-F10-20' },
+      { name: 'BMW-E60-M5-V10', image: bmwBoxImage21, price: '60.00', rarity: 0.3, code: 'BMW-COMMON-E60-21' }
     ]
   },
   'versace': {
     title: 'Versace',
     image: versaceBoxImage,
     description: 'Luxury Italian fashion box',
-    normalPrice: '249.99',
-    salePrice: '219.99',
+    normalPrice: '149.99',
+    salePrice: '119.99',
     drops: [
-      { name: 'VRS-HCT-SET-LUX-LTD', image: versaceBoxImage1, price: '5499.99', rarity: 0.0001, code: 'VER001' },
-      { name: 'VRS-RNW-COL-PRE-LTD', image: versaceBoxImage2, price: '5299.99', rarity: 0.0005, code: 'VER002' },
-      { name: 'VRS-LMT-EDT-SPE-COL', image: versaceBoxImage3, price: '4999.99', rarity: 0.001, code: 'VER003' },
-      { name: 'VRS-DSN-SUT-LUX-PRE', image: versaceBoxImage4, price: '4799.99', rarity: 0.002, code: 'VER004' },
-      { name: 'VRS-HME-COL-LUX-EDT', image: versaceBoxImage5, price: '4599.99', rarity: 0.003, code: 'VER005' },
-      { name: 'VRS-LTH-COL-PRE-LTD', image: versaceBoxImage6, price: '4299.99', rarity: 0.005, code: 'VER006' },
-      { name: 'VRS-JWL-SET-LUX-PRE', image: versaceBoxImage7, price: '3999.99', rarity: 0.007, code: 'VER007' },
-      { name: 'VRS-BAG-COL-SPE-EDT', image: versaceBoxImage8, price: '3799.99', rarity: 0.01, code: 'VER008' },
-      { name: 'VRS-WCH-SET-LUX-LTD', image: versaceBoxImage9, price: '3599.99', rarity: 0.015, code: 'VER009' },
-      { name: 'VRS-SHE-COL-PRE-EDT', image: versaceBoxImage10, price: '3299.99', rarity: 0.02, code: 'VER010' },
-      { name: 'VRS-SNG-SET-LUX-PRE', image: versaceBoxImage11, price: '2999.99', rarity: 0.025, code: 'VER011' },
-      { name: 'VRS-FRG-SUT-SPE-LTD', image: versaceBoxImage12, price: '2799.99', rarity: 0.03, code: 'VER012' },
-      { name: 'VRS-SLK-COL-LUX-EDT', image: versaceBoxImage13, price: '2599.99', rarity: 0.035, code: 'VER013' },
-      { name: 'VRS-DNM-PCK-PRE-LTD', image: versaceBoxImage14, price: '2399.99', rarity: 0.04, code: 'VER014' },
-      { name: 'VRS-ACS-SET-SPE-EDT', image: versaceBoxImage15, price: '2199.99', rarity: 0.045, code: 'VER015' },
-      { name: 'VRS-BLT-COL-LUX-PRE', image: versaceBoxImage16, price: '1999.99', rarity: 0.05, code: 'VER016' },
-      { name: 'VRS-WLT-SET-SPE-EDT', image: versaceBoxImage17, price: '1799.99', rarity: 0.055, code: 'VER017' },
-      { name: 'VRS-SCF-COL-PRE-LTD', image: versaceBoxImage18, price: '1599.99', rarity: 0.06, code: 'VER018' },
-      { name: 'VRS-PHN-CSE-LUX-EDT', image: versaceBoxImage19, price: '1399.99', rarity: 0.065, code: 'VER019' },
-      { name: 'VRS-SML-LTH-PRE-LTD', image: versaceBoxImage20, price: '1199.99', rarity: 0.07, code: 'VER020' },
-      { name: 'VRS-MKP-COL-SPE-EDT', image: versaceBoxImage21, price: '999.99', rarity: 0.075, code: 'VER021' }
+      { name: 'VRS-HCT-SET-LUX-LTD', image: versaceBoxImage1, price: '2000.00', rarity: 0.0001, code: 'VRS-PLATINUM-SET-01' },
+      { name: 'VRS-RNW-COL-PRE-LTD', image: versaceBoxImage2, price: '1800.00', rarity: 0.0005, code: 'VRS-PLATINUM-COL-02' },
+      { name: 'VRS-LMT-EDT-SPE-COL', image: versaceBoxImage3, price: '1500.00', rarity: 0.001, code: 'VRS-PLATINUM-EDT-03' },
+      { name: 'VRS-DSN-SUT-LUX-PRE', image: versaceBoxImage4, price: '1200.00', rarity: 0.002, code: 'VRS-ELITE-SUT-04' },
+      { name: 'VRS-HME-COL-LUX-EDT', image: versaceBoxImage5, price: '1000.00', rarity: 0.003, code: 'VRS-ELITE-COL-05' },
+      { name: 'VRS-LTH-COL-PRE-LTD', image: versaceBoxImage6, price: '800.00', rarity: 0.005, code: 'VRS-ELITE-LTH-06' },
+      { name: 'VRS-JWL-SET-LUX-PRE', image: versaceBoxImage7, price: '600.00', rarity: 0.007, code: 'VRS-RARE-JWL-07' },
+      { name: 'VRS-BAG-COL-SPE-EDT', image: versaceBoxImage8, price: '500.00', rarity: 0.01, code: 'VRS-RARE-BAG-08' },
+      { name: 'VRS-WCH-SET-LUX-LTD', image: versaceBoxImage9, price: '400.00', rarity: 0.015, code: 'VRS-RARE-WCH-09' },
+      { name: 'VRS-SHE-COL-PRE-EDT', image: versaceBoxImage10, price: '300.00', rarity: 0.02, code: 'VRS-PRO-SHE-10' },
+      { name: 'VRS-SNG-SET-LUX-PRE', image: versaceBoxImage11, price: '250.00', rarity: 0.025, code: 'VRS-PRO-SNG-11' },
+      { name: 'VRS-FRG-SUT-SPE-LTD', image: versaceBoxImage12, price: '200.00', rarity: 0.03, code: 'VRS-PRO-FRG-12' },
+      { name: 'VRS-SLK-COL-LUX-EDT', image: versaceBoxImage13, price: '180.00', rarity: 0.035, code: 'VRS-SPECIAL-SLK-13' },
+      { name: 'VRS-DNM-PCK-PRE-LTD', image: versaceBoxImage14, price: '160.00', rarity: 0.04, code: 'VRS-SPECIAL-DNM-14' },
+      { name: 'VRS-ACS-SET-SPE-EDT', image: versaceBoxImage15, price: '140.00', rarity: 0.045, code: 'VRS-SPECIAL-ACS-15' },
+      { name: 'VRS-BLT-COL-LUX-PRE', image: versaceBoxImage16, price: '120.00', rarity: 0.05, code: 'VRS-BASIC-BLT-16' },
+      { name: 'VRS-WLT-SET-SPE-EDT', image: versaceBoxImage17, price: '100.00', rarity: 0.06, code: 'VRS-BASIC-WLT-17' },
+      { name: 'VRS-SCF-COL-PRE-LTD', image: versaceBoxImage18, price: '90.00', rarity: 0.07, code: 'VRS-BASIC-SCF-18' },
+      { name: 'VRS-PHN-CSE-LUX-EDT', image: versaceBoxImage19, price: '80.00', rarity: 0.08, code: 'VRS-COMMON-PHN-19' },
+      { name: 'VRS-SML-LTH-PRE-LTD', image: versaceBoxImage20, price: '70.00', rarity: 0.2, code: 'VRS-COMMON-SML-20' },
+      { name: 'VRS-MKP-COL-SPE-EDT', image: versaceBoxImage21, price: '60.00', rarity: 0.3, code: 'VRS-COMMON-MKP-21' }
     ]
   },
   'ferrari': {
     title: 'Ferrari',
     image: ferrariBoxImage,
     description: 'Italian supercar themed box',
-    normalPrice: '3999.99',
-    salePrice: '3749.99',
+    normalPrice: '199.99',
+    salePrice: '149.99',
     drops: [
-      { name: 'FRR-TRK-EXP-PRO-LTD', image: ferrariBoxImage1, price: '1359999.99', rarity: 0.0001, code: 'FER001' },
-      { name: 'FRR-RCE-SCH-PRO-LTD', image: ferrariBoxImage2, price: '1299999.99', rarity: 0.0005, code: 'FER002' },
-      { name: 'FRR-FCT-VIP-EXP-LTD', image: ferrariBoxImage3, price: '1199999.99', rarity: 0.001, code: 'FER003' },
-      { name: 'FRR-PIT-CRW-PRO-LTD', image: ferrariBoxImage4, price: '1099999.99', rarity: 0.002, code: 'FER004' },
-      { name: 'FRR-WCH-LTD-SPE-EDT', image: ferrariBoxImage5, price: '999999.99', rarity: 0.003, code: 'FER005' },
-      { name: 'FRR-SIM-PRO-RCE-LTD', image: ferrariBoxImage6, price: '899999.99', rarity: 0.005, code: 'FER006' },
-      { name: 'FRR-DSN-WRK-PRO-LTD', image: ferrariBoxImage7, price: '849999.99', rarity: 0.007, code: 'FER007' },
-      { name: 'FRR-COL-SET-LTD-EDT', image: ferrariBoxImage8, price: '799999.99', rarity: 0.01, code: 'FER008' },
-      { name: 'FRR-RCE-SUT-PRO-LTD', image: ferrariBoxImage9, price: '749999.99', rarity: 0.015, code: 'FER009' },
-      { name: 'FRR-PDK-ACS-VIP-LTD', image: ferrariBoxImage10, price: '699999.99', rarity: 0.02, code: 'FER010' },
-      { name: 'FRR-LTH-JKT-PRO-LTD', image: ferrariBoxImage11, price: '649999.99', rarity: 0.025, code: 'FER011' },
-      { name: 'FRR-LUG-SET-PRO-LTD', image: ferrariBoxImage12, price: '599999.99', rarity: 0.03, code: 'FER012' },
-      { name: 'FRR-HLM-RCE-PRO-LTD', image: ferrariBoxImage13, price: '579999.99', rarity: 0.035, code: 'FER013' },
-      { name: 'FRR-MDL-SCL-PRO-LTD', image: ferrariBoxImage14, price: '549999.99', rarity: 0.04, code: 'FER014' },
-      { name: 'FRR-SHE-RCE-PRO-LTD', image: ferrariBoxImage15, price: '529999.99', rarity: 0.045, code: 'FER015' },
-      { name: 'FRR-SNG-PRO-LTD-EDT', image: ferrariBoxImage16, price: '509999.99', rarity: 0.05, code: 'FER016' },
-      { name: 'FRR-GLV-RCE-PRO-LTD', image: ferrariBoxImage17, price: '499999.99', rarity: 0.055, code: 'FER017' },
-      { name: 'FRR-BAG-PRO-LTD-EDT', image: ferrariBoxImage18, price: '489999.99', rarity: 0.06, code: 'FER018' },
-      { name: 'FRR-WLT-PRO-LTD-EDT', image: ferrariBoxImage19, price: '485999.99', rarity: 0.065, code: 'FER019' },
-      { name: 'FRR-BLT-PRO-LTD-EDT', image: ferrariBoxImage20, price: '482999.99', rarity: 0.07, code: 'FER020' },
-      { name: 'FRR-PLO-PRO-LTD-EDT', image: ferrariBoxImage21, price: '479999.99', rarity: 0.075, code: 'FER021' },
-      { name: 'FRR-CAP-PRO-LTD-EDT', image: ferrariBoxImage22, price: '477999.99', rarity: 0.08, code: 'FER022' },
-      { name: 'FRR-KEY-RNG-PRO-LTD', image: ferrariBoxImage23, price: '475999.99', rarity: 0.085, code: 'FER023' },
-      { name: 'FRR-PHN-CSE-PRO-LTD', image: ferrariBoxImage24, price: '473999.99', rarity: 0.09, code: 'FER024' },
-      { name: 'FRR-UMB-PRO-LTD-EDT', image: ferrariBoxImage25, price: '471999.99', rarity: 0.095, code: 'FER025' },
-      { name: 'FRR-NTB-PRO-LTD-EDT', image: ferrariBoxImage26, price: '469999.99', rarity: 0.1, code: 'FER026' },
-      { name: 'FRR-PEN-SET-PRO-LTD', image: ferrariBoxImage27, price: '467999.99', rarity: 0.11, code: 'FER027' },
-      { name: 'FRR-MSE-PAD-PRO-LTD', image: ferrariBoxImage28, price: '465999.99', rarity: 0.12, code: 'FER028' },
-      { name: 'FRR-LNY-PRO-LTD-EDT', image: ferrariBoxImage29, price: '463999.99', rarity: 0.13, code: 'FER029' },
-      { name: 'FRR-STK-PCK-PRO-LTD', image: ferrariBoxImage30, price: '461999.99', rarity: 0.14, code: 'FER030' },
-      { name: 'FRR-PST-SET-PRO-LTD', image: ferrariBoxImage31, price: '459999.99', rarity: 0.15, code: 'FER031' },
-      { name: 'FRR-PIN-BDG-PRO-LTD', image: ferrariBoxImage32, price: '457999.99', rarity: 0.16, code: 'FER032' },
-      { name: 'FRR-WRS-BND-PRO-LTD', image: ferrariBoxImage33, price: '455999.99', rarity: 0.17, code: 'FER033' },
-      { name: 'FRR-KEY-CHN-PRO-LTD', image: ferrariBoxImage34, price: '453999.99', rarity: 0.18, code: 'FER034' },
-      { name: 'FRR-AIR-FRS-PRO-LTD', image: ferrariBoxImage35, price: '451999.99', rarity: 0.19, code: 'FER035' },
-      { name: 'FRR-TOT-BAG-PRO-LTD', image: ferrariBoxImage36, price: '449999.99', rarity: 0.2, code: 'FER036' }
+      { name: 'FRR-TRK-EXP-PRO-LTD', image: ferrariBoxImage1, price: '2500.00', rarity: 0.0001, code: 'FRR-PLATINUM-TRK-01' },
+      { name: 'FRR-RCE-SCH-PRO-LTD', image: ferrariBoxImage2, price: '2200.00', rarity: 0.0005, code: 'FRR-PLATINUM-RCE-02' },
+      { name: 'FRR-FCT-VIP-EXP-LTD', image: ferrariBoxImage3, price: '2000.00', rarity: 0.001, code: 'FRR-PLATINUM-VIP-03' },
+      { name: 'FRR-PIT-CRW-PRO-LTD', image: ferrariBoxImage4, price: '1800.00', rarity: 0.002, code: 'FRR-ELITE-PIT-04' },
+      { name: 'FRR-WCH-LTD-SPE-EDT', image: ferrariBoxImage5, price: '1500.00', rarity: 0.003, code: 'FRR-ELITE-WCH-05' },
+      { name: 'FRR-SIM-PRO-RCE-LTD', image: ferrariBoxImage6, price: '1200.00', rarity: 0.005, code: 'FRR-ELITE-SIM-06' },
+      { name: 'FRR-DSN-WRK-PRO-LTD', image: ferrariBoxImage7, price: '1000.00', rarity: 0.007, code: 'FRR-RARE-DSN-07' },
+      { name: 'FRR-COL-SET-LTD-EDT', image: ferrariBoxImage8, price: '800.00', rarity: 0.01, code: 'FRR-RARE-COL-08' },
+      { name: 'FRR-RCE-SUT-PRO-LTD', image: ferrariBoxImage9, price: '600.00', rarity: 0.015, code: 'FRR-RARE-SUT-09' },
+      { name: 'FRR-HLM-SET-LTD-EDT', image: ferrariBoxImage10, price: '500.00', rarity: 0.02, code: 'FRR-PRO-HLM-10' },
+      { name: 'FRR-JKT-PRO-LTD-EDT', image: ferrariBoxImage11, price: '400.00', rarity: 0.025, code: 'FRR-PRO-JKT-11' },
+      { name: 'FRR-SHO-SET-PRO-LTD', image: ferrariBoxImage12, price: '300.00', rarity: 0.03, code: 'FRR-PRO-SHO-12' },
+      { name: 'FRR-BAG-COL-LTD-EDT', image: ferrariBoxImage13, price: '250.00', rarity: 0.04, code: 'FRR-SPECIAL-BAG-13' },
+      { name: 'FRR-WLT-SET-PRO-LTD', image: ferrariBoxImage14, price: '200.00', rarity: 0.05, code: 'FRR-SPECIAL-WLT-14' },
+      { name: 'FRR-KEY-RNG-LTD-EDT', image: ferrariBoxImage15, price: '180.00', rarity: 0.06, code: 'FRR-SPECIAL-KEY-15' },
+      { name: 'FRR-CAP-PRO-LTD-EDT', image: ferrariBoxImage16, price: '160.00', rarity: 0.07, code: 'FRR-BASIC-CAP-16' },
+      { name: 'FRR-TSH-SET-PRO-LTD', image: ferrariBoxImage17, price: '140.00', rarity: 0.08, code: 'FRR-BASIC-TSH-17' },
+      { name: 'FRR-PIN-COL-LTD-EDT', image: ferrariBoxImage18, price: '120.00', rarity: 0.09, code: 'FRR-BASIC-PIN-18' },
+      { name: 'FRR-STK-SET-PRO-LTD', image: ferrariBoxImage19, price: '100.00', rarity: 0.1, code: 'FRR-COMMON-STK-19' },
+      { name: 'FRR-LYD-COL-LTD-EDT', image: ferrariBoxImage20, price: '80.00', rarity: 0.2, code: 'FRR-COMMON-LYD-20' },
+      { name: 'FRR-KCH-SET-PRO-LTD', image: ferrariBoxImage21, price: '60.00', rarity: 0.3, code: 'FRR-COMMON-KCH-21' }
     ]
   },
   'prime': {
-    title: 'Prime Box',
+    title: 'Prime',
     image: primeBoxImage,
-    description: 'Premium selection mystery box',
-    normalPrice: '39.99',
-    salePrice: '34.99',
+    description: 'Premium luxury themed box',
+    normalPrice: '199.99',
+    salePrice: '179.99',
     drops: [
-      { name: 'PRM-ULT-PCG-PRO-MAX', image: primeBoxImage1, price: '3199.99', rarity: 0.0001, code: 'PM0001' },
-      { name: 'PRM-4KM-UHD-PRO-LTD', image: primeBoxImage2, price: '3099.99', rarity: 0.0005, code: 'PM0002' },
-      { name: 'PRM-CNS-BDL-PRO-LTD', image: primeBoxImage3, price: '2999.99', rarity: 0.001, code: 'PM0003' },
-      { name: 'PRM-STR-SET-PRO-MAX', image: primeBoxImage4, price: '2899.99', rarity: 0.002, code: 'PM0004' },
-      { name: 'PRM-CHR-PRO-MAX-LTD', image: primeBoxImage5, price: '2799.99', rarity: 0.003, code: 'PM0005' },
-      { name: 'PRM-VRS-PRO-MAX-LTD', image: primeBoxImage6, price: '2699.99', rarity: 0.005, code: 'PM0006' },
-      { name: 'PRM-DSK-PRO-MAX-LTD', image: primeBoxImage7, price: '2599.99', rarity: 0.007, code: 'PM0007' },
-      { name: 'PRM-RGB-SET-PRO-LTD', image: primeBoxImage8, price: '2499.99', rarity: 0.01, code: 'PM0008' },
-      { name: 'PRM-KBD-MCH-PRO-LTD', image: primeBoxImage9, price: '2399.99', rarity: 0.015, code: 'PM0009' },
-      { name: 'PRM-MSE-PRO-MAX-LTD', image: primeBoxImage10, price: '2299.99', rarity: 0.02, code: 'PM0010' },
-      { name: 'PRM-HDS-PRO-MAX-LTD', image: primeBoxImage11, price: '2199.99', rarity: 0.025, code: 'PM0011' },
-      { name: 'PRM-MIC-SET-PRO-LTD', image: primeBoxImage12, price: '1999.99', rarity: 0.03, code: 'PM0012' },
-      { name: 'PRM-WBC-4K-PRO-LTD', image: primeBoxImage13, price: '1899.99', rarity: 0.035, code: 'PM0013' },
-      { name: 'PRM-STD-PRO-MAX-LTD', image: primeBoxImage14, price: '1799.99', rarity: 0.04, code: 'PM0014' },
-      { name: 'PRM-RTR-PRO-MAX-LTD', image: primeBoxImage15, price: '1699.99', rarity: 0.045, code: 'PM0015' },
-      { name: 'PRM-NSW-PRO-MAX-LTD', image: primeBoxImage16, price: '1599.99', rarity: 0.05, code: 'PM0016' },
-      { name: 'PRM-AUD-SET-PRO-LTD', image: primeBoxImage17, price: '1499.99', rarity: 0.055, code: 'PM0017' },
+      { name: 'PRM-LUX-SET-PRO-LTD', image: primeBoxImage1, price: '3000.00', rarity: 0.0001, code: 'PRM-PLATINUM-LUX-01' },
+      { name: 'PRM-VIP-COL-PRO-LTD', image: primeBoxImage2, price: '2500.00', rarity: 0.0005, code: 'PRM-PLATINUM-VIP-02' },
+      { name: 'PRM-EXC-SET-PRO-LTD', image: primeBoxImage3, price: '2000.00', rarity: 0.001, code: 'PRM-PLATINUM-EXC-03' },
+      { name: 'PRM-LMT-EDT-PRO-LTD', image: primeBoxImage4, price: '1800.00', rarity: 0.002, code: 'PRM-ELITE-LMT-04' },
+      { name: 'PRM-SPE-COL-PRO-LTD', image: primeBoxImage5, price: '1500.00', rarity: 0.003, code: 'PRM-ELITE-SPE-05' },
+      { name: 'PRM-DSN-SET-PRO-LTD', image: primeBoxImage6, price: '1200.00', rarity: 0.005, code: 'PRM-ELITE-DSN-06' },
+      { name: 'PRM-ART-COL-PRO-LTD', image: primeBoxImage7, price: '1000.00', rarity: 0.007, code: 'PRM-RARE-ART-07' },
+      { name: 'PRM-HND-SET-PRO-LTD', image: primeBoxImage8, price: '800.00', rarity: 0.01, code: 'PRM-RARE-HND-08' },
+      { name: 'PRM-CRF-COL-PRO-LTD', image: primeBoxImage9, price: '600.00', rarity: 0.015, code: 'PRM-RARE-CRF-09' },
+      { name: 'PRM-SLK-SET-PRO-LTD', image: primeBoxImage10, price: '500.00', rarity: 0.02, code: 'PRM-PRO-SLK-10' },
+      { name: 'PRM-LTH-COL-PRO-LTD', image: primeBoxImage11, price: '400.00', rarity: 0.025, code: 'PRM-PRO-LTH-11' },
+      { name: 'PRM-ACC-SET-PRO-LTD', image: primeBoxImage12, price: '300.00', rarity: 0.03, code: 'PRM-PRO-ACC-12' },
+      { name: 'PRM-JWL-COL-PRO-LTD', image: primeBoxImage13, price: '250.00', rarity: 0.04, code: 'PRM-SPECIAL-JWL-13' },
+      { name: 'PRM-WCH-SET-PRO-LTD', image: primeBoxImage14, price: '200.00', rarity: 0.05, code: 'PRM-SPECIAL-WCH-14' },
+      { name: 'PRM-SUN-COL-PRO-LTD', image: primeBoxImage15, price: '180.00', rarity: 0.06, code: 'PRM-SPECIAL-SUN-15' },
+      { name: 'PRM-BAG-SET-PRO-LTD', image: primeBoxImage16, price: '160.00', rarity: 0.07, code: 'PRM-BASIC-BAG-16' },
+      { name: 'PRM-WLT-COL-PRO-LTD', image: primeBoxImage17, price: '140.00', rarity: 0.08, code: 'PRM-BASIC-WLT-17' },
 
     ]
   },
   'sneakers': {
-    title: 'Sneakers Box',
+    title: 'Sneakers',
     image: sneakersBoxImage,
-    description: 'Premium sneaker collection box',
-    normalPrice: '129.99',
-    salePrice: '109.99',
+    description: 'Premium sneakers themed box',
+    normalPrice: '149.99',
+    salePrice: '129.99',
     drops: [
-      { name: 'SNK-AJ1-CHI-LTD-SPE', image: sneakersBoxImage1, price: '18199.99', rarity: 0.0001, code: 'SN0001' },
-      { name: 'SNK-DNK-TSC-PRO-LTD', image: sneakersBoxImage2, price: '17599.99', rarity: 0.0005, code: 'SN0002' },
-      { name: 'SNK-YZY-BST-V2-LTD', image: sneakersBoxImage3, price: '16999.99', rarity: 0.001, code: 'SN0003' },
-      { name: 'SNK-OWN-COL-PRO-LTD', image: sneakersBoxImage4, price: '16399.99', rarity: 0.002, code: 'SN0004' },
-      { name: 'SNK-AJ4-RET-PRO-LTD', image: sneakersBoxImage5, price: '15799.99', rarity: 0.003, code: 'SN0005' },
-      { name: 'SNK-MAG-BTF-SPE-LTD', image: sneakersBoxImage6, price: '15199.99', rarity: 0.005, code: 'SN0006' },
-      { name: 'SNK-SPR-DNK-PRO-LTD', image: sneakersBoxImage7, price: '14599.99', rarity: 0.007, code: 'SN0007' },
-      { name: 'SNK-AJ11-SPJ-PRO-LTD', image: sneakersBoxImage8, price: '13999.99', rarity: 0.01, code: 'SN0008' },
-      { name: 'SNK-YZY-WVR-PRO-LTD', image: sneakersBoxImage9, price: '13399.99', rarity: 0.015, code: 'SN0009' },
-      { name: 'SNK-SBP-DNK-PRO-LTD', image: sneakersBoxImage10, price: '12799.99', rarity: 0.02, code: 'SN0010' },
-      { name: 'SNK-AJ3-BCM-PRO-LTD', image: sneakersBoxImage11, price: '12199.99', rarity: 0.025, code: 'SN0011' },
-      { name: 'SNK-AF1-TSC-PRO-LTD', image: sneakersBoxImage12, price: '11599.99', rarity: 0.03, code: 'SN0012' },
-      { name: 'SNK-YZY-FMR-PRO-LTD', image: sneakersBoxImage13, price: '10999.99', rarity: 0.035, code: 'SN0013' },
-      { name: 'SNK-AJ5-OWH-PRO-LTD', image: sneakersBoxImage14, price: '10799.99', rarity: 0.04, code: 'SN0014' },
-      { name: 'SNK-DNK-AMB-PRO-LTD', image: sneakersBoxImage15, price: '10399.99', rarity: 0.045, code: 'SN0015' }
+      { name: 'SNK-TRV-SCT-HYP-LTD', image: sneakersBoxImage1, price: '2500.00', rarity: 0.0001, code: 'SNK-PLATINUM-TRV-01' },
+      { name: 'SNK-OFF-WHT-PRO-LTD', image: sneakersBoxImage2, price: '2200.00', rarity: 0.0005, code: 'SNK-PLATINUM-OFF-02' },
+      { name: 'SNK-YZY-BST-PRO-LTD', image: sneakersBoxImage3, price: '2000.00', rarity: 0.001, code: 'SNK-PLATINUM-YZY-03' },
+      { name: 'SNK-AIR-MAG-PRO-LTD', image: sneakersBoxImage4, price: '1800.00', rarity: 0.002, code: 'SNK-ELITE-MAG-04' },
+      { name: 'SNK-SB-DNK-PRO-LTD', image: sneakersBoxImage5, price: '1500.00', rarity: 0.003, code: 'SNK-ELITE-SB-05' },
+      { name: 'SNK-AJ1-CHI-PRO-LTD', image: sneakersBoxImage6, price: '1200.00', rarity: 0.005, code: 'SNK-ELITE-AJ1-06' },
+      { name: 'SNK-NMD-HU-PRO-LTD', image: sneakersBoxImage7, price: '1000.00', rarity: 0.007, code: 'SNK-RARE-NMD-07' },
+      { name: 'SNK-AF1-SUP-PRO-LTD', image: sneakersBoxImage8, price: '800.00', rarity: 0.01, code: 'SNK-RARE-AF1-08' },
+      { name: 'SNK-VPM-MAX-PRO-LTD', image: sneakersBoxImage9, price: '600.00', rarity: 0.015, code: 'SNK-RARE-VPM-09' },
+      { name: 'SNK-UB-DNA-PRO-LTD', image: sneakersBoxImage10, price: '500.00', rarity: 0.02, code: 'SNK-PRO-UB-10' },
+      { name: 'SNK-AM90-PRO-LTD-EDT', image: sneakersBoxImage11, price: '400.00', rarity: 0.025, code: 'SNK-PRO-AM90-11' },
+      { name: 'SNK-AJ4-PRO-LTD-EDT', image: sneakersBoxImage12, price: '300.00', rarity: 0.03, code: 'SNK-PRO-AJ4-12' },
+      { name: 'SNK-AM95-PRO-LTD-EDT', image: sneakersBoxImage13, price: '250.00', rarity: 0.04, code: 'SNK-SPECIAL-AM95-13' },
+      { name: 'SNK-AJ11-PRO-LTD-EDT', image: sneakersBoxImage14, price: '200.00', rarity: 0.05, code: 'SNK-SPECIAL-AJ11-14' },
+      { name: 'SNK-AM97-PRO-LTD-EDT', image: sneakersBoxImage15, price: '180.00', rarity: 0.06, code: 'SNK-SPECIAL-AM97-15' },
+
     ]
   },
 
   'rolex-daytona': {
     title: 'Rolex Daytona',
     image: rolexDaytonaBoxImage,
-    description: 'Luxury Rolex Daytona collection box',
-    normalPrice: '999.99',
-    salePrice: '899.99',
+    description: 'Premium Rolex Daytona themed box',
+    normalPrice: '299.99',
+    salePrice: '249.99',
     drops: [
-      { name: 'RLX-DTN-PLT-CRM-LTD', image: rolexDaytonaBoxImage1, price: '64999.99', rarity: 0.0001, code: 'RD0001' },
-      { name: 'RLX-DTN-YG18-BLK-SPE', image: rolexDaytonaBoxImage2, price: '62499.99', rarity: 0.0005, code: 'RD0002' },
-      { name: 'RLX-DTN-WG18-MET-PRO', image: rolexDaytonaBoxImage3, price: '59999.99', rarity: 0.001, code: 'RD0003' },
-      { name: 'RLX-DTN-RG18-CHC-LTD', image: rolexDaytonaBoxImage4, price: '57499.99', rarity: 0.002, code: 'RD0004' },
-      { name: 'RLX-DTN-PLT-ICE-SPE', image: rolexDaytonaBoxImage5, price: '54999.99', rarity: 0.003, code: 'RD0005' },
-      { name: 'RLX-DTN-YG18-CRM-PRO', image: rolexDaytonaBoxImage6, price: '52499.99', rarity: 0.005, code: 'RD0006' },
-      { name: 'RLX-DTN-WG18-BLK-LTD', image: rolexDaytonaBoxImage7, price: '49999.99', rarity: 0.007, code: 'RD0007' },
-      { name: 'RLX-DTN-RG18-MET-SPE', image: rolexDaytonaBoxImage8, price: '47499.99', rarity: 0.01, code: 'RD0008' },
-      { name: 'RLX-DTN-SS40-WHT-PRO', image: rolexDaytonaBoxImage9, price: '44999.99', rarity: 0.015, code: 'RD0009' },
-      { name: 'RLX-DTN-YG18-OYS-LTD', image: rolexDaytonaBoxImage10, price: '42499.99', rarity: 0.02, code: 'RD0010' },
-      { name: 'RLX-DTN-WG18-BLU-SPE', image: rolexDaytonaBoxImage11, price: '39999.99', rarity: 0.025, code: 'RD0011' },
-      { name: 'RLX-DTN-RG18-PNK-PRO', image: rolexDaytonaBoxImage12, price: '37499.99', rarity: 0.03, code: 'RD0012' },
-      { name: 'RLX-DTN-SS40-BLK-LTD', image: rolexDaytonaBoxImage13, price: '34999.99', rarity: 0.035, code: 'RD0013' },
-      { name: 'RLX-DTN-YG18-GRN-SPE', image: rolexDaytonaBoxImage14, price: '32499.99', rarity: 0.04, code: 'RD0014' },
-      { name: 'RLX-DTN-WG18-GRY-PRO', image: rolexDaytonaBoxImage15, price: '29999.99', rarity: 0.045, code: 'RD0015' },
-      { name: 'RLX-DTN-RG18-BRN-LTD', image: rolexDaytonaBoxImage16, price: '27499.99', rarity: 0.05, code: 'RD0016' },
-      { name: 'RLX-DTN-SS40-BLU-SPE', image: rolexDaytonaBoxImage17, price: '24999.99', rarity: 0.055, code: 'RD0017' },
-      { name: 'RLX-DTN-YG18-CHM-PRO', image: rolexDaytonaBoxImage18, price: '22999.99', rarity: 0.06, code: 'RD0018' }
+      { name: 'RLX-DTN-PLT-PRO-LTD', image: rolexDaytonaBoxImage1, price: '4500.00', rarity: 0.0001, code: 'RLX-PLATINUM-DTN-01' },
+      { name: 'RLX-DTN-RGD-PRO-LTD', image: rolexDaytonaBoxImage2, price: '4000.00', rarity: 0.0005, code: 'RLX-PLATINUM-RGD-02' },
+      { name: 'RLX-DTN-PMT-PRO-LTD', image: rolexDaytonaBoxImage3, price: '3500.00', rarity: 0.001, code: 'RLX-PLATINUM-PMT-03' },
+      { name: 'RLX-DTN-YGD-PRO-LTD', image: rolexDaytonaBoxImage4, price: '3000.00', rarity: 0.002, code: 'RLX-ELITE-YGD-04' },
+      { name: 'RLX-DTN-EVR-PRO-LTD', image: rolexDaytonaBoxImage5, price: '2500.00', rarity: 0.003, code: 'RLX-ELITE-EVR-05' },
+      { name: 'RLX-DTN-MET-PRO-LTD', image: rolexDaytonaBoxImage6, price: '2000.00', rarity: 0.005, code: 'RLX-ELITE-MET-06' },
+      { name: 'RLX-DTN-CRM-PRO-LTD', image: rolexDaytonaBoxImage7, price: '1800.00', rarity: 0.007, code: 'RLX-RARE-CRM-07' },
+      { name: 'RLX-DTN-BLK-PRO-LTD', image: rolexDaytonaBoxImage8, price: '1500.00', rarity: 0.01, code: 'RLX-RARE-BLK-08' },
+      { name: 'RLX-DTN-WHT-PRO-LTD', image: rolexDaytonaBoxImage9, price: '1200.00', rarity: 0.015, code: 'RLX-RARE-WHT-09' },
+      { name: 'RLX-DTN-ICE-PRO-LTD', image: rolexDaytonaBoxImage10, price: '1000.00', rarity: 0.02, code: 'RLX-PRO-ICE-10' },
+      { name: 'RLX-DTN-BLU-PRO-LTD', image: rolexDaytonaBoxImage11, price: '800.00', rarity: 0.025, code: 'RLX-PRO-BLU-11' },
+      { name: 'RLX-DTN-GRN-PRO-LTD', image: rolexDaytonaBoxImage12, price: '600.00', rarity: 0.03, code: 'RLX-PRO-GRN-12' },
+      { name: 'RLX-DTN-CHM-PRO-LTD', image: rolexDaytonaBoxImage13, price: '500.00', rarity: 0.04, code: 'RLX-SPECIAL-CHM-13' },
+      { name: 'RLX-DTN-PRL-PRO-LTD', image: rolexDaytonaBoxImage14, price: '400.00', rarity: 0.05, code: 'RLX-SPECIAL-PRL-14' },
+      { name: 'RLX-DTN-SLV-PRO-LTD', image: rolexDaytonaBoxImage15, price: '300.00', rarity: 0.06, code: 'RLX-SPECIAL-SLV-15' },
+      { name: 'RLX-DTN-BRZ-PRO-LTD', image: rolexDaytonaBoxImage16, price: '250.00', rarity: 0.07, code: 'RLX-BASIC-BRZ-16' },
+      { name: 'RLX-DTN-CPR-PRO-LTD', image: rolexDaytonaBoxImage17, price: '200.00', rarity: 0.08, code: 'RLX-BASIC-CPR-17' },
+      { name: 'RLX-DTN-STL-PRO-LTD', image: rolexDaytonaBoxImage18, price: '150.00', rarity: 0.09, code: 'RLX-BASIC-STL-18' }
     ]
   },
   'corsair': {
     title: 'Corsair',
     image: corsairBoxImage,
-    description: 'Premium gaming and tech equipment',
-    normalPrice: '99.99',
-    salePrice: '49.99',
+    description: 'Premium gaming peripherals themed box',
+    normalPrice: '89.99',
+    salePrice: '69.99',
     drops: [
-      { name: 'CSR-ULT-GMS-PRO-MAX', image: corsairBoxImage1, price: '3999.99', rarity: 0.0001, code: 'CS001' },
-      { name: 'CSR-STR-STD-PRO-LTD', image: corsairBoxImage2, price: '3899.99', rarity: 0.0005, code: 'CS002' },
-      { name: 'CSR-GMR-PKG-PRO-SPE', image: corsairBoxImage3, price: '3799.99', rarity: 0.001, code: 'CS003' },
-      { name: 'CSR-ESP-TRN-PRO-LTD', image: corsairBoxImage4, price: '3699.99', rarity: 0.002, code: 'CS004' },
-      { name: 'CSR-CNT-BDL-PRO-MAX', image: corsairBoxImage5, price: '3599.99', rarity: 0.003, code: 'CS005' },
-      { name: 'CSR-PCU-MAX-PRO-LTD', image: corsairBoxImage6, price: '3499.99', rarity: 0.005, code: 'CS006' },
-      { name: 'CSR-STW-PRO-MAX-SPE', image: corsairBoxImage7, price: '3299.99', rarity: 0.007, code: 'CS007' },
-      { name: 'CSR-PER-SET-PRO-LTD', image: corsairBoxImage8, price: '2999.99', rarity: 0.01, code: 'CS008' },
-      { name: 'CSR-RGB-PKG-PRO-MAX', image: corsairBoxImage9, price: '2799.99', rarity: 0.015, code: 'CS009' },
-      { name: 'CSR-CHR-ELT-PRO-LTD', image: corsairBoxImage10, price: '2599.99', rarity: 0.02, code: 'CS010' },
-      { name: 'CSR-AUD-SYS-PRO-SPE', image: corsairBoxImage11, price: '2399.99', rarity: 0.025, code: 'CS011' },
-      { name: 'CSR-MNT-COL-PRO-LTD', image: corsairBoxImage12, price: '2199.99', rarity: 0.03, code: 'CS012' },
-      { name: 'CSR-KBD-SET-PRO-MAX', image: corsairBoxImage13, price: '1999.99', rarity: 0.035, code: 'CS013' },
-      { name: 'CSR-MSE-COL-PRO-LTD', image: corsairBoxImage14, price: '1799.99', rarity: 0.04, code: 'CS014' },
-      { name: 'CSR-HDS-SET-PRO-SPE', image: corsairBoxImage15, price: '1599.99', rarity: 0.045, code: 'CS015' },
-      { name: 'CSR-STD-PRO-MAX-LTD', image: corsairBoxImage16, price: '1399.99', rarity: 0.05, code: 'CS016' },
-      { name: 'CSR-DSK-SET-PRO-SPE', image: corsairBoxImage17, price: '1199.99', rarity: 0.055, code: 'CS017' },
-      { name: 'CSR-CLS-PRO-MAX-LTD', image: corsairBoxImage18, price: '999.99', rarity: 0.06, code: 'CS018' },
-      { name: 'CSR-RAM-KIT-PRO-SPE', image: corsairBoxImage19, price: '979.99', rarity: 0.065, code: 'CS019' },
-      { name: 'CSR-PSU-PRO-MAX-LTD', image: corsairBoxImage20, price: '959.99', rarity: 0.07, code: 'CS020' }
+      { name: 'CSR-K100-RGB-PRO-LTD', image: corsairBoxImage1, price: '1500.00', rarity: 0.0001, code: 'CSR-PLATINUM-K100-01' },
+      { name: 'CSR-K95-PLT-PRO-LTD', image: corsairBoxImage2, price: '1200.00', rarity: 0.0005, code: 'CSR-PLATINUM-K95-02' },
+      { name: 'CSR-VRT-PRO-PRO-LTD', image: corsairBoxImage3, price: '1000.00', rarity: 0.001, code: 'CSR-PLATINUM-VRT-03' },
+      { name: 'CSR-K70-RGB-PRO-LTD', image: corsairBoxImage4, price: '800.00', rarity: 0.002, code: 'CSR-ELITE-K70-04' },
+      { name: 'CSR-DRK-COR-PRO-LTD', image: corsairBoxImage5, price: '600.00', rarity: 0.003, code: 'CSR-ELITE-DRK-05' },
+      { name: 'CSR-STR-ONE-PRO-LTD', image: corsairBoxImage6, price: '500.00', rarity: 0.005, code: 'CSR-ELITE-STR-06' },
+      { name: 'CSR-M65-RGB-PRO-LTD', image: corsairBoxImage7, price: '400.00', rarity: 0.007, code: 'CSR-RARE-M65-07' },
+      { name: 'CSR-SCM-RGB-PRO-LTD', image: corsairBoxImage8, price: '300.00', rarity: 0.01, code: 'CSR-RARE-SCM-08' },
+      { name: 'CSR-HST-RGB-PRO-LTD', image: corsairBoxImage9, price: '250.00', rarity: 0.015, code: 'CSR-RARE-HST-09' },
+      { name: 'CSR-K60-RGB-PRO-LTD', image: corsairBoxImage10, price: '200.00', rarity: 0.02, code: 'CSR-PRO-K60-10' },
+      { name: 'CSR-IRN-RGB-PRO-LTD', image: corsairBoxImage11, price: '180.00', rarity: 0.025, code: 'CSR-PRO-IRN-11' },
+      { name: 'CSR-HRP-RGB-PRO-LTD', image: corsairBoxImage12, price: '150.00', rarity: 0.03, code: 'CSR-PRO-HRP-12' },
+      { name: 'CSR-MM7-RGB-PRO-LTD', image: corsairBoxImage13, price: '120.00', rarity: 0.04, code: 'CSR-SPECIAL-MM7-13' },
+      { name: 'CSR-ST1-RGB-PRO-LTD', image: corsairBoxImage14, price: '100.00', rarity: 0.05, code: 'CSR-SPECIAL-ST1-14' },
+      { name: 'CSR-MM3-RGB-PRO-LTD', image: corsairBoxImage15, price: '90.00', rarity: 0.06, code: 'CSR-SPECIAL-MM3-15' },
+      { name: 'CSR-HS5-RGB-PRO-LTD', image: corsairBoxImage16, price: '80.00', rarity: 0.07, code: 'CSR-BASIC-HS5-16' },
+      { name: 'CSR-KP1-RGB-PRO-LTD', image: corsairBoxImage17, price: '70.00', rarity: 0.08, code: 'CSR-BASIC-KP1-17' },
+      { name: 'CSR-MP1-RGB-PRO-LTD', image: corsairBoxImage18, price: '60.00', rarity: 0.09, code: 'CSR-BASIC-MP1-18' },
+      { name: 'CSR-WR1-RGB-PRO-LTD', image: corsairBoxImage19, price: '50.00', rarity: 0.1, code: 'CSR-COMMON-WR1-19' },
+      { name: 'CSR-MS1-RGB-PRO-LTD', image: corsairBoxImage20, price: '40.00', rarity: 0.2, code: 'CSR-COMMON-MS1-20' },
+      { name: 'CSR-PS1-RGB-PRO-LTD', image: corsairBoxImage21, price: '30.00', rarity: 0.3, code: 'CSR-COMMON-PS1-21' }
     ]
   },
 
-  'topg': {
-    title: 'Top G Box',
+  'top-g': {
+    title: 'Top G',
     image: topgBoxImage,
-    description: 'Premium lifestyle and luxury items',
-    normalPrice: '149.99',
-    salePrice: '129.99',
+    description: 'Premium luxury lifestyle themed box',
+    normalPrice: '199.99',
+    salePrice: '169.99',
     drops: [
-      { name: 'TPG-LUX-ULT-PRO-MAX', image: topgBoxImage1, price: '9449.99', rarity: 0.0001, code: 'TG001' },
-      { name: 'TPG-EXP-VIP-PRO-LTD', image: topgBoxImage2, price: '9199.99', rarity: 0.0005, code: 'TG002' },
-      { name: 'TPG-SUP-COL-PRO-SPE', image: topgBoxImage3, price: '8899.99', rarity: 0.001, code: 'TG003' },
-      { name: 'TPG-LFE-SET-PRO-LTD', image: topgBoxImage4, price: '8599.99', rarity: 0.002, code: 'TG004' },
-      { name: 'TPG-ELT-PKG-PRO-MAX', image: topgBoxImage5, price: '8299.99', rarity: 0.003, code: 'TG005' },
-      { name: 'TPG-VIP-ACC-PRO-LTD', image: topgBoxImage6, price: '7999.99', rarity: 0.005, code: 'TG006' },
-      { name: 'TPG-PRE-SET-PRO-SPE', image: topgBoxImage7, price: '7699.99', rarity: 0.007, code: 'TG007' },
-      { name: 'TPG-LUX-COL-PRO-MAX', image: topgBoxImage8, price: '7399.99', rarity: 0.01, code: 'TG008' },
-      { name: 'TPG-EXC-PKG-PRO-LTD', image: topgBoxImage9, price: '7099.99', rarity: 0.015, code: 'TG009' },
-      { name: 'TPG-SPE-SET-PRO-MAX', image: topgBoxImage10, price: '6799.99', rarity: 0.02, code: 'TG010' },
-      { name: 'TPG-UNQ-COL-PRO-LTD', image: topgBoxImage11, price: '6499.99', rarity: 0.025, code: 'TG011' },
-      { name: 'TPG-PRO-PKG-SPE-MAX', image: topgBoxImage12, price: '6199.99', rarity: 0.03, code: 'TG012' },
-      { name: 'TPG-ELT-SET-PRO-LTD', image: topgBoxImage13, price: '5899.99', rarity: 0.035, code: 'TG013' },
-      { name: 'TPG-LUX-ACC-PRO-SPE', image: topgBoxImage14, price: '5599.99', rarity: 0.04, code: 'TG014' },
-      { name: 'TPG-VIP-COL-PRO-MAX', image: topgBoxImage15, price: '5299.99', rarity: 0.045, code: 'TG015' },
-      { name: 'TPG-SUP-SET-PRO-LTD', image: topgBoxImage16, price: '4999.99', rarity: 0.05, code: 'TG016' },
-      { name: 'TPG-EXC-PKG-PRO-SPE', image: topgBoxImage17, price: '4699.99', rarity: 0.055, code: 'TG017' },
-      { name: 'TPG-PRE-COL-PRO-MAX', image: topgBoxImage18, price: '4499.99', rarity: 0.06, code: 'TG018' },
-      { name: 'TPG-LFE-PKG-PRO-LTD', image: topgBoxImage19, price: '4499.99', rarity: 0.065, code: 'TG019' }
+      { name: 'TPG-BUG-CHR-PRO-LTD', image: topgBoxImage1, price: '3500.00', rarity: 0.0001, code: 'TPG-PLATINUM-BUG-01' },
+      { name: 'TPG-FER-F40-PRO-LTD', image: topgBoxImage2, price: '3000.00', rarity: 0.0005, code: 'TPG-PLATINUM-F40-02' },
+      { name: 'TPG-LAM-AVT-PRO-LTD', image: topgBoxImage3, price: '2500.00', rarity: 0.001, code: 'TPG-PLATINUM-LAM-03' },
+      { name: 'TPG-MCL-P1-PRO-LTD', image: topgBoxImage4, price: '2000.00', rarity: 0.002, code: 'TPG-ELITE-MCL-04' },
+      { name: 'TPG-AST-VAN-PRO-LTD', image: topgBoxImage5, price: '1800.00', rarity: 0.003, code: 'TPG-ELITE-AST-05' },
+      { name: 'TPG-POR-GT3-PRO-LTD', image: topgBoxImage6, price: '1500.00', rarity: 0.005, code: 'TPG-ELITE-POR-06' },
+      { name: 'TPG-RR-PHN-PRO-LTD', image: topgBoxImage7, price: '1200.00', rarity: 0.007, code: 'TPG-RARE-RR-07' },
+      { name: 'TPG-BNT-CGT-PRO-LTD', image: topgBoxImage8, price: '1000.00', rarity: 0.01, code: 'TPG-RARE-BNT-08' },
+      { name: 'TPG-MER-AMG-PRO-LTD', image: topgBoxImage9, price: '800.00', rarity: 0.015, code: 'TPG-RARE-MER-09' },
+      { name: 'TPG-BMW-M8-PRO-LTD', image: topgBoxImage10, price: '600.00', rarity: 0.02, code: 'TPG-PRO-BMW-10' },
+      { name: 'TPG-AUD-RS7-PRO-LTD', image: topgBoxImage11, price: '500.00', rarity: 0.025, code: 'TPG-PRO-AUD-11' },
+      { name: 'TPG-JGR-FPC-PRO-LTD', image: topgBoxImage12, price: '400.00', rarity: 0.03, code: 'TPG-PRO-JGR-12' },
+      { name: 'TPG-MSR-MC2-PRO-LTD', image: topgBoxImage13, price: '300.00', rarity: 0.04, code: 'TPG-SPECIAL-MSR-13' },
+      { name: 'TPG-BRB-B11-PRO-LTD', image: topgBoxImage14, price: '250.00', rarity: 0.05, code: 'TPG-SPECIAL-BRB-14' },
+      { name: 'TPG-LXS-LS5-PRO-LTD', image: topgBoxImage15, price: '200.00', rarity: 0.06, code: 'TPG-SPECIAL-LXS-15' },
+      { name: 'TPG-INF-Q60-PRO-LTD', image: topgBoxImage16, price: '180.00', rarity: 0.07, code: 'TPG-BASIC-INF-16' },
+      { name: 'TPG-ACR-TLX-PRO-LTD', image: topgBoxImage17, price: '160.00', rarity: 0.08, code: 'TPG-BASIC-ACR-17' },
+      { name: 'TPG-VLV-S90-PRO-LTD', image: topgBoxImage18, price: '140.00', rarity: 0.09, code: 'TPG-BASIC-VLV-18' },
+      { name: 'TPG-GNS-G70-PRO-LTD', image: topgBoxImage19, price: '120.00', rarity: 0.1, code: 'TPG-COMMON-GNS-19' },
+      { name: 'TPG-KIA-STG-PRO-LTD', image: topgBoxImage20, price: '100.00', rarity: 0.2, code: 'TPG-COMMON-KIA-20' },
+      { name: 'TPG-HYN-VLS-PRO-LTD', image: topgBoxImage21, price: '80.00', rarity: 0.3, code: 'TPG-COMMON-HYN-21' }
     ]
   },
   'porsche': {
     title: 'Porsche',
     image: porscheBoxImage,
-    description: 'Sports car themed luxury box',
-    normalPrice: '7349.99',
-    salePrice: '7299.99',
+    description: 'Premium Porsche themed box',
+    normalPrice: '149.99',
+    salePrice: '125.45',
     drops: [
-      { name: 'POR-TRK-EXP-ULT-MAX', image: porscheBoxImage1, price: '514499.99', rarity: 0.0001, code: 'PS001' },
-      { name: 'POR-GT3-RSR-PRO-LTD', image: porscheBoxImage2, price: '499999.99', rarity: 0.0005, code: 'PS002' },
-      { name: 'POR-GT2-SPE-PRO-MAX', image: porscheBoxImage3, price: '484999.99', rarity: 0.001, code: 'PS003' },
-      { name: 'POR-TRB-EXP-PRO-LTD', image: porscheBoxImage4, price: '469999.99', rarity: 0.002, code: 'PS004' },
-      { name: 'POR-CUP-PRO-MAX-SPE', image: porscheBoxImage5, price: '454999.99', rarity: 0.003, code: 'PS005' },
-      { name: 'POR-RSR-ELT-PRO-LTD', image: porscheBoxImage6, price: '439999.99', rarity: 0.005, code: 'PS006' },
-      { name: 'POR-GT4-CLB-PRO-MAX', image: porscheBoxImage7, price: '424999.99', rarity: 0.007, code: 'PS007' },
-      { name: 'POR-SPD-EXP-PRO-LTD', image: porscheBoxImage8, price: '409999.99', rarity: 0.01, code: 'PS008' },
-      { name: 'POR-RCE-PRO-MAX-SPE', image: porscheBoxImage9, price: '394999.99', rarity: 0.015, code: 'PS009' },
-      { name: 'POR-DRV-EXP-PRO-LTD', image: porscheBoxImage10, price: '379999.99', rarity: 0.02, code: 'PS010' },
-      { name: 'POR-CLB-MBR-PRO-MAX', image: porscheBoxImage11, price: '364999.99', rarity: 0.025, code: 'PS011' },
-      { name: 'POR-VIP-ACC-PRO-LTD', image: porscheBoxImage12, price: '349999.99', rarity: 0.03, code: 'PS012' },
-      { name: 'POR-LUX-PKG-PRO-SPE', image: porscheBoxImage13, price: '334999.99', rarity: 0.035, code: 'PS013' },
-      { name: 'POR-DSN-STD-PRO-MAX', image: porscheBoxImage14, price: '319999.99', rarity: 0.04, code: 'PS014' },
-      { name: 'POR-EXC-COL-PRO-LTD', image: porscheBoxImage15, price: '304999.99', rarity: 0.045, code: 'PS015' },
-      { name: 'POR-PRE-SET-PRO-MAX', image: porscheBoxImage16, price: '289999.99', rarity: 0.05, code: 'PS016' },
-      { name: 'POR-LMT-EDT-PRO-SPE', image: porscheBoxImage17, price: '274999.99', rarity: 0.055, code: 'PS017' },
-      { name: 'POR-ULT-PKG-PRO-LTD', image: porscheBoxImage18, price: '264599.99', rarity: 0.06, code: 'PS018' }
+      { name: 'POR-918-SPY-PRO-LTD', image: porscheBoxImage1, price: '2500.00', rarity: 0.0001, code: 'POR-PLATINUM-918-01' },
+      { name: 'POR-GT2-RS-PRO-LTD', image: porscheBoxImage2, price: '2200.00', rarity: 0.0005, code: 'POR-PLATINUM-GT2-02' },
+      { name: 'POR-CGT-SPE-PRO-LTD', image: porscheBoxImage3, price: '2000.00', rarity: 0.001, code: 'POR-PLATINUM-CGT-03' },
+      { name: 'POR-GT3-RS-PRO-LTD', image: porscheBoxImage4, price: '1800.00', rarity: 0.002, code: 'POR-ELITE-GT3-04' },
+      { name: 'POR-TBO-GT-PRO-LTD', image: porscheBoxImage5, price: '1500.00', rarity: 0.003, code: 'POR-ELITE-TBO-05' },
+      { name: 'POR-GT4-RS-PRO-LTD', image: porscheBoxImage6, price: '1200.00', rarity: 0.005, code: 'POR-ELITE-GT4-06' },
+      { name: 'POR-GTS-RS-PRO-LTD', image: porscheBoxImage7, price: '1000.00', rarity: 0.007, code: 'POR-RARE-GTS-07' },
+      { name: 'POR-TUR-S-PRO-LTD', image: porscheBoxImage8, price: '800.00', rarity: 0.01, code: 'POR-RARE-TUR-08' },
+      { name: 'POR-SPD-GT-PRO-LTD', image: porscheBoxImage9, price: '600.00', rarity: 0.015, code: 'POR-RARE-SPD-09' },
+      { name: 'POR-TAR-4S-PRO-LTD', image: porscheBoxImage10, price: '500.00', rarity: 0.02, code: 'POR-PRO-TAR-10' },
+      { name: 'POR-CAY-GT-PRO-LTD', image: porscheBoxImage11, price: '400.00', rarity: 0.025, code: 'POR-PRO-CAY-11' },
+      { name: 'POR-MAC-GT-PRO-LTD', image: porscheBoxImage12, price: '300.00', rarity: 0.03, code: 'POR-PRO-MAC-12' },
+      { name: 'POR-BOX-GT-PRO-LTD', image: porscheBoxImage13, price: '250.00', rarity: 0.04, code: 'POR-SPECIAL-BOX-13' },
+      { name: 'POR-CAR-4S-PRO-LTD', image: porscheBoxImage14, price: '200.00', rarity: 0.05, code: 'POR-SPECIAL-CAR-14' },
+      { name: 'POR-PAN-4S-PRO-LTD', image: porscheBoxImage15, price: '180.00', rarity: 0.06, code: 'POR-SPECIAL-PAN-15' },
+      { name: 'POR-CAY-S-PRO-LTD', image: porscheBoxImage16, price: '160.00', rarity: 0.07, code: 'POR-BASIC-CAY-16' },
+      { name: 'POR-MAC-S-PRO-LTD', image: porscheBoxImage17, price: '140.00', rarity: 0.08, code: 'POR-BASIC-MAC-17' },
+      { name: 'POR-BOX-S-PRO-LTD', image: porscheBoxImage18, price: '120.00', rarity: 0.09, code: 'POR-BASIC-BOX-18' },
+      { name: 'POR-CAR-S-PRO-LTD', image: porscheBoxImage19, price: '100.00', rarity: 0.1, code: 'POR-COMMON-CAR-19' },
+      { name: 'POR-PAN-S-PRO-LTD', image: porscheBoxImage20, price: '80.00', rarity: 0.2, code: 'POR-COMMON-PAN-20' },
+      { name: 'POR-CAY-E-PRO-LTD', image: porscheBoxImage21, price: '60.00', rarity: 0.3, code: 'POR-COMMON-CAY-21' }
     ]
   },
   'cartier': {
     title: 'Cartier',
     image: cartierBoxImage,
-    description: 'Luxury jewelry and accessories box',
-    normalPrice: '999.99',
-    salePrice: '949.99',
+    description: 'Premium Cartier jewelry themed box',
+    normalPrice: '199.99',
+    salePrice: '169.99',
     drops: [
-      { name: 'CTR-LUX-JWL-PRO-MAX', image: cartierBoxImage1, price: '39999.99', rarity: 0.0001, code: 'CR001' },
-      { name: 'CTR-HRT-COL-PRO-LTD', image: cartierBoxImage2, price: '38499.99', rarity: 0.0005, code: 'CR002' },
-      { name: 'CTR-RNG-SET-PRO-SPE', image: cartierBoxImage3, price: '36999.99', rarity: 0.001, code: 'CR003' },
-      { name: 'CTR-BRC-LUX-PRO-MAX', image: cartierBoxImage4, price: '35499.99', rarity: 0.002, code: 'CR004' },
-      { name: 'CTR-NCK-PRE-PRO-LTD', image: cartierBoxImage5, price: '33999.99', rarity: 0.003, code: 'CR005' },
-      { name: 'CTR-WCH-ELT-PRO-SPE', image: cartierBoxImage6, price: '32499.99', rarity: 0.005, code: 'CR006' },
-      { name: 'CTR-DIA-SET-PRO-MAX', image: cartierBoxImage7, price: '30999.99', rarity: 0.007, code: 'CR007' },
-      { name: 'CTR-GLD-COL-PRO-LTD', image: cartierBoxImage8, price: '29499.99', rarity: 0.01, code: 'CR008' },
-      { name: 'CTR-PLT-JWL-PRO-SPE', image: cartierBoxImage9, price: '27999.99', rarity: 0.015, code: 'CR009' },
-      { name: 'CTR-GEM-SET-PRO-MAX', image: cartierBoxImage10, price: '25999.99', rarity: 0.02, code: 'CR010' },
-      { name: 'CTR-PRL-COL-PRO-LTD', image: cartierBoxImage11, price: '23999.99', rarity: 0.025, code: 'CR011' },
-      { name: 'CTR-SLV-JWL-PRO-SPE', image: cartierBoxImage12, price: '21999.99', rarity: 0.03, code: 'CR012' },
-      { name: 'CTR-STN-SET-PRO-MAX', image: cartierBoxImage13, price: '19999.99', rarity: 0.035, code: 'CR013' },
-      { name: 'CTR-CRY-COL-PRO-LTD', image: cartierBoxImage14, price: '17999.99', rarity: 0.04, code: 'CR014' },
-      { name: 'CTR-ACC-LUX-PRO-SPE', image: cartierBoxImage15, price: '15999.99', rarity: 0.045, code: 'CR015' },
-      { name: 'CTR-PEN-SET-PRO-MAX', image: cartierBoxImage16, price: '13999.99', rarity: 0.05, code: 'CR016' },
-      { name: 'CTR-KEY-COL-PRO-LTD', image: cartierBoxImage17, price: '11999.99', rarity: 0.055, code: 'CR017' },
-      { name: 'CTR-WLT-LUX-PRO-SPE', image: cartierBoxImage18, price: '9999.99', rarity: 0.06, code: 'CR018' },
-      { name: 'CTR-CRD-SET-PRO-MAX', image: cartierBoxImage19, price: '7999.99', rarity: 0.065, code: 'CR019' },
-      { name: 'CTR-FRM-COL-PRO-LTD', image: cartierBoxImage20, price: '5999.99', rarity: 0.07, code: 'CR020' },
-      { name: 'CTR-BOX-LUX-PRO-SPE', image: cartierBoxImage21, price: '4999.99', rarity: 0.075, code: 'CR021' }
+      { name: 'CTR-PNT-DIA-PRO-LTD', image: cartierBoxImage1, price: '3000.00', rarity: 0.0001, code: 'CTR-PLATINUM-PNT-01' },
+      { name: 'CTR-LVE-DIA-PRO-LTD', image: cartierBoxImage2, price: '2500.00', rarity: 0.0005, code: 'CTR-PLATINUM-LVE-02' },
+      { name: 'CTR-TNK-DIA-PRO-LTD', image: cartierBoxImage3, price: '2000.00', rarity: 0.001, code: 'CTR-PLATINUM-TNK-03' },
+      { name: 'CTR-BSH-DIA-PRO-LTD', image: cartierBoxImage4, price: '1800.00', rarity: 0.0015, code: 'CTR-ELITE-BSH-04' },
+      { name: 'CTR-JUS-DIA-PRO-LTD', image: cartierBoxImage5, price: '1500.00', rarity: 0.002, code: 'CTR-ELITE-JUS-05' },
+      { name: 'CTR-SNT-DIA-PRO-LTD', image: cartierBoxImage6, price: '1200.00', rarity: 0.003, code: 'CTR-ELITE-SNT-06' },
+      { name: 'CTR-CLN-DIA-PRO-LTD', image: cartierBoxImage7, price: '1000.00', rarity: 0.004, code: 'CTR-RARE-CLN-07' },
+      { name: 'CTR-TRT-DIA-PRO-LTD', image: cartierBoxImage8, price: '800.00', rarity: 0.005, code: 'CTR-RARE-TRT-08' },
+      { name: 'CTR-BLN-DIA-PRO-LTD', image: cartierBoxImage9, price: '600.00', rarity: 0.006, code: 'CTR-RARE-BLN-09' },
+      { name: 'CTR-PNT-GLD-PRO-LTD', image: cartierBoxImage10, price: '500.00', rarity: 0.007, code: 'CTR-PRO-PNT-10' },
+      { name: 'CTR-LVE-GLD-PRO-LTD', image: cartierBoxImage11, price: '400.00', rarity: 0.008, code: 'CTR-PRO-LVE-11' },
+      { name: 'CTR-TNK-GLD-PRO-LTD', image: cartierBoxImage12, price: '300.00', rarity: 0.009, code: 'CTR-PRO-TNK-12' },
+      { name: 'CTR-BSH-GLD-PRO-LTD', image: cartierBoxImage13, price: '250.00', rarity: 0.01, code: 'CTR-SPECIAL-BSH-13' },
+      { name: 'CTR-JUS-GLD-PRO-LTD', image: cartierBoxImage14, price: '200.00', rarity: 0.012, code: 'CTR-SPECIAL-JUS-14' },
+      { name: 'CTR-SNT-GLD-PRO-LTD', image: cartierBoxImage15, price: '180.00', rarity: 0.015, code: 'CTR-SPECIAL-SNT-15' },
+      { name: 'CTR-CLN-GLD-PRO-LTD', image: cartierBoxImage16, price: '160.00', rarity: 0.018, code: 'CTR-BASIC-CLN-16' },
+      { name: 'CTR-TRT-GLD-PRO-LTD', image: cartierBoxImage17, price: '140.00', rarity: 0.02, code: 'CTR-BASIC-TRT-17' },
+      { name: 'CTR-BLN-GLD-PRO-LTD', image: cartierBoxImage18, price: '120.00', rarity: 0.025, code: 'CTR-BASIC-BLN-18' },
+      { name: 'CTR-PNT-SLV-PRO-LTD', image: cartierBoxImage19, price: '100.00', rarity: 0.03, code: 'CTR-COMMON-PNT-19' },
+      { name: 'CTR-LVE-SLV-PRO-LTD', image: cartierBoxImage20, price: '80.00', rarity: 0.035, code: 'CTR-COMMON-LVE-20' },
+      { name: 'CTR-TNK-SLV-PRO-LTD', image: cartierBoxImage21, price: '60.00', rarity: 0.04, code: 'CTR-COMMON-TNK-21' }
     ]
   },
   'diamond-vault': {
     title: 'Diamond Vault',
     image: diamondBoxImage,
     description: 'Premium diamond and jewelry collection',
-    normalPrice: '4999.99',
-    salePrice: '4899.99',
+    normalPrice: '199.99',
+    salePrice: '159.99',
     drops: [
-      { name: 'DVT-ULT-DIA-PRO-MAX', image: diamondBoxImage1, price: '119999.99', rarity: 0.0001, code: 'DV001' },
-      { name: 'DVT-PRE-GEM-PRO-LTD', image: diamondBoxImage2, price: '115999.99', rarity: 0.0005, code: 'DV002' },
-      { name: 'DVT-RAR-JWL-PRO-SPE', image: diamondBoxImage3, price: '111999.99', rarity: 0.001, code: 'DV003' },
-      { name: 'DVT-LUX-SET-PRO-MAX', image: diamondBoxImage4, price: '107999.99', rarity: 0.002, code: 'DV004' },
-      { name: 'DVT-ELT-COL-PRO-LTD', image: diamondBoxImage5, price: '103999.99', rarity: 0.003, code: 'DV005' },
-      { name: 'DVT-PRE-DIA-PRO-SPE', image: diamondBoxImage6, price: '99999.99', rarity: 0.005, code: 'DV006' },
-      { name: 'DVT-SAP-SET-PRO-MAX', image: diamondBoxImage7, price: '95999.99', rarity: 0.007, code: 'DV007' },
-      { name: 'DVT-RBY-COL-PRO-LTD', image: diamondBoxImage8, price: '91999.99', rarity: 0.01, code: 'DV008' },
-      { name: 'DVT-EMR-JWL-PRO-SPE', image: diamondBoxImage9, price: '87999.99', rarity: 0.015, code: 'DV009' },
-      { name: 'DVT-PLT-SET-PRO-MAX', image: diamondBoxImage10, price: '83999.99', rarity: 0.02, code: 'DV010' },
-      { name: 'DVT-GLD-COL-PRO-LTD', image: diamondBoxImage11, price: '79999.99', rarity: 0.025, code: 'DV011' },
-      { name: 'DVT-PRL-JWL-PRO-SPE', image: diamondBoxImage12, price: '75999.99', rarity: 0.03, code: 'DV012' },
-      { name: 'DVT-CRY-SET-PRO-MAX', image: diamondBoxImage13, price: '71999.99', rarity: 0.035, code: 'DV013' },
-      { name: 'DVT-OPL-COL-PRO-LTD', image: diamondBoxImage14, price: '67999.99', rarity: 0.04, code: 'DV014' },
-      { name: 'DVT-AMT-JWL-PRO-SPE', image: diamondBoxImage15, price: '63999.99', rarity: 0.045, code: 'DV015' },
-      { name: 'DVT-TPZ-SET-PRO-MAX', image: diamondBoxImage16, price: '59999.99', rarity: 0.05, code: 'DV016' },
-      { name: 'DVT-AQU-COL-PRO-LTD', image: diamondBoxImage17, price: '55999.99', rarity: 0.055, code: 'DV017' },
-      { name: 'DVT-GNT-JWL-PRO-SPE', image: diamondBoxImage18, price: '51999.99', rarity: 0.06, code: 'DV018' },
-      { name: 'DVT-CTR-SET-PRO-MAX', image: diamondBoxImage19, price: '47999.99', rarity: 0.065, code: 'DV019' },
-      { name: 'DVT-TZN-COL-PRO-LTD', image: diamondBoxImage20, price: '43999.99', rarity: 0.07, code: 'DV020' },
-      { name: 'DVT-MRG-JWL-PRO-SPE', image: diamondBoxImage21, price: '41999.99', rarity: 0.075, code: 'DV021' },
-      { name: 'DVT-BRL-SET-PRO-MAX', image: diamondBoxImage22, price: '40999.99', rarity: 0.08, code: 'DV022' },
-      { name: 'DVT-PRT-COL-PRO-LTD', image: diamondBoxImage23, price: '40499.99', rarity: 0.085, code: 'DV023' },
-      { name: 'DVT-JDE-JWL-PRO-SPE', image: diamondBoxImage24, price: '40299.99', rarity: 0.09, code: 'DV024' },
-      { name: 'DVT-ZRC-SET-PRO-MAX', image: diamondBoxImage25, price: '40199.99', rarity: 0.095, code: 'DV025' },
-      { name: 'DVT-MLK-COL-PRO-LTD', image: diamondBoxImage26, price: '40099.99', rarity: 0.1, code: 'DV026' },
-      { name: 'DVT-MSN-JWL-PRO-SPE', image: diamondBoxImage27, price: '39999.99', rarity: 0.105, code: 'DV027' },
-      { name: 'DVT-LAB-SET-PRO-MAX', image: diamondBoxImage28, price: '39899.99', rarity: 0.11, code: 'DV028' },
-      { name: 'DVT-SPN-COL-PRO-LTD', image: diamondBoxImage29, price: '39799.99', rarity: 0.115, code: 'DV029' },
-      { name: 'DVT-KYN-JWL-PRO-SPE', image: diamondBoxImage30, price: '39699.99', rarity: 0.12, code: 'DV030' },
-      { name: 'DVT-TRM-SET-PRO-MAX', image: diamondBoxImage31, price: '39599.99', rarity: 0.125, code: 'DV031' },
-      { name: 'DVT-IOL-COL-PRO-LTD', image: diamondBoxImage32, price: '39499.99', rarity: 0.13, code: 'DV032' },
-      { name: 'DVT-TSV-JWL-PRO-SPE', image: diamondBoxImage33, price: '39399.99', rarity: 0.135, code: 'DV033' },
-      { name: 'DVT-RHD-SET-PRO-MAX', image: diamondBoxImage34, price: '39299.99', rarity: 0.14, code: 'DV034' },
-      { name: 'DVT-CHR-COL-PRO-LTD', image: diamondBoxImage35, price: '39199.99', rarity: 0.145, code: 'DV035' }
+      { name: 'DMD-RND-FLS-PRO-LTD', image: diamondBoxImage1, price: '2800.00', rarity: 0.0001, code: 'DMD-PLATINUM-RND-01' },
+      { name: 'DMD-PCH-FLS-PRO-LTD', image: diamondBoxImage2, price: '2500.00', rarity: 0.0005, code: 'DMD-PLATINUM-PCH-02' },
+      { name: 'DMD-OVL-FLS-PRO-LTD', image: diamondBoxImage3, price: '2200.00', rarity: 0.001, code: 'DMD-PLATINUM-OVL-03' },
+      { name: 'DMD-EMR-FLS-PRO-LTD', image: diamondBoxImage4, price: '1800.00', rarity: 0.002, code: 'DMD-ELITE-EMR-04' },
+      { name: 'DMD-RAD-FLS-PRO-LTD', image: diamondBoxImage5, price: '1500.00', rarity: 0.003, code: 'DMD-ELITE-RAD-05' },
+      { name: 'DMD-CUS-FLS-PRO-LTD', image: diamondBoxImage6, price: '1200.00', rarity: 0.005, code: 'DMD-ELITE-CUS-06' },
+      { name: 'DMD-RND-VS1-PRO-LTD', image: diamondBoxImage7, price: '1000.00', rarity: 0.007, code: 'DMD-RARE-RND-07' },
+      { name: 'DMD-PCH-VS1-PRO-LTD', image: diamondBoxImage8, price: '800.00', rarity: 0.01, code: 'DMD-RARE-PCH-08' },
+      { name: 'DMD-OVL-VS1-PRO-LTD', image: diamondBoxImage9, price: '600.00', rarity: 0.015, code: 'DMD-RARE-OVL-09' },
+      { name: 'DMD-EMR-VS1-PRO-LTD', image: diamondBoxImage10, price: '500.00', rarity: 0.02, code: 'DMD-PRO-EMR-10' },
+      { name: 'DMD-RAD-VS1-PRO-LTD', image: diamondBoxImage11, price: '400.00', rarity: 0.025, code: 'DMD-PRO-RAD-11' },
+      { name: 'DMD-CUS-VS1-PRO-LTD', image: diamondBoxImage12, price: '300.00', rarity: 0.03, code: 'DMD-PRO-CUS-12' },
+      { name: 'DMD-RND-VS2-PRO-LTD', image: diamondBoxImage13, price: '250.00', rarity: 0.04, code: 'DMD-SPECIAL-RND-13' },
+      { name: 'DMD-PCH-VS2-PRO-LTD', image: diamondBoxImage14, price: '200.00', rarity: 0.05, code: 'DMD-SPECIAL-PCH-14' },
+      { name: 'DMD-OVL-VS2-PRO-LTD', image: diamondBoxImage15, price: '180.00', rarity: 0.06, code: 'DMD-SPECIAL-OVL-15' },
+      { name: 'DMD-EMR-VS2-PRO-LTD', image: diamondBoxImage16, price: '160.00', rarity: 0.07, code: 'DMD-BASIC-EMR-16' },
+      { name: 'DMD-RAD-VS2-PRO-LTD', image: diamondBoxImage17, price: '140.00', rarity: 0.08, code: 'DMD-BASIC-RAD-17' },
+      { name: 'DMD-CUS-VS2-PRO-LTD', image: diamondBoxImage18, price: '120.00', rarity: 0.09, code: 'DMD-BASIC-CUS-18' },
+      { name: 'DMD-RND-SI1-PRO-LTD', image: diamondBoxImage19, price: '100.00', rarity: 0.1, code: 'DMD-COMMON-RND-19' },
+      { name: 'DMD-PCH-SI1-PRO-LTD', image: diamondBoxImage20, price: '80.00', rarity: 0.2, code: 'DMD-COMMON-PCH-20' },
+      { name: 'DMD-OVL-SI1-PRO-LTD', image: diamondBoxImage21, price: '60.00', rarity: 0.3, code: 'DMD-COMMON-OVL-21' }
     ]
   },
   'hublot': {
     title: 'Hublot',
     image: hublotBoxImage,
     description: 'Luxury Swiss watch collection',
-    normalPrice: '1999.99',
-    salePrice: '1899.99',
+   normalPrice: '99.99',
+    salePrice: '89.99',
     drops: [
-      { name: 'HBT-ULT-LTD-PRO-MAX', image: hublotBoxImage1, price: '67999.99', rarity: 0.0001, code: 'HB001' },
-      { name: 'HBT-BGB-SPE-PRO-LTD', image: hublotBoxImage2, price: '64999.99', rarity: 0.0005, code: 'HB002' },
-      { name: 'HBT-KNG-PRO-MAX-SPE', image: hublotBoxImage3, price: '61999.99', rarity: 0.001, code: 'HB003' },
-      { name: 'HBT-FUS-LTD-PRO-ELT', image: hublotBoxImage4, price: '58999.99', rarity: 0.002, code: 'HB004' },
-      { name: 'HBT-CLS-PRO-MAX-LTD', image: hublotBoxImage5, price: '55999.99', rarity: 0.003, code: 'HB005' },
-      { name: 'HBT-SGN-SPE-PRO-ELT', image: hublotBoxImage6, price: '52999.99', rarity: 0.005, code: 'HB006' },
-      { name: 'HBT-MPT-LTD-PRO-MAX', image: hublotBoxImage7, price: '49999.99', rarity: 0.007, code: 'HB007' },
-      { name: 'HBT-TEC-PRO-SPE-LTD', image: hublotBoxImage8, price: '46999.99', rarity: 0.01, code: 'HB008' },
-      { name: 'HBT-ART-MAX-PRO-ELT', image: hublotBoxImage9, price: '43999.99', rarity: 0.015, code: 'HB009' },
-      { name: 'HBT-SPR-LTD-PRO-SPE', image: hublotBoxImage10, price: '40999.99', rarity: 0.02, code: 'HB010' },
-      { name: 'HBT-RCE-PRO-MAX-LTD', image: hublotBoxImage11, price: '37999.99', rarity: 0.025, code: 'HB011' },
-      { name: 'HBT-CLB-SPE-PRO-ELT', image: hublotBoxImage12, price: '34999.99', rarity: 0.03, code: 'HB012' },
-      { name: 'HBT-LGD-LTD-PRO-MAX', image: hublotBoxImage13, price: '31999.99', rarity: 0.035, code: 'HB013' },
-      { name: 'HBT-CHR-PRO-SPE-LTD', image: hublotBoxImage14, price: '28999.99', rarity: 0.04, code: 'HB014' },
-      { name: 'HBT-EVO-MAX-PRO-ELT', image: hublotBoxImage15, price: '25999.99', rarity: 0.045, code: 'HB015' },
-      { name: 'HBT-FER-LTD-PRO-SPE', image: hublotBoxImage16, price: '22999.99', rarity: 0.05, code: 'HB016' },
-      { name: 'HBT-GMT-PRO-MAX-LTD', image: hublotBoxImage17, price: '19999.99', rarity: 0.055, code: 'HB017' },
-      { name: 'HBT-DSC-SPE-PRO-ELT', image: hublotBoxImage18, price: '16999.99', rarity: 0.06, code: 'HB018' },
-      { name: 'HBT-ALP-LTD-PRO-MAX', image: hublotBoxImage19, price: '13999.99', rarity: 0.065, code: 'HB019' },
-      { name: 'HBT-OCN-PRO-SPE-LTD', image: hublotBoxImage20, price: '10999.99', rarity: 0.07, code: 'HB020' },
-      { name: 'HBT-STH-MAX-PRO-ELT', image: hublotBoxImage21, price: '7999.99', rarity: 0.075, code: 'HB021' },
-      { name: 'HBT-ESS-LTD-PRO-SPE', image: hublotBoxImage22, price: '5999.99', rarity: 0.08, code: 'HB022' }
+      { name: 'HBT-ULT-LTD-PRO-MAX', image: hublotBoxImage1, price: '899.99', rarity: 0.0001, code: 'HB001' },
+      { name: 'HBT-BGB-SPE-PRO-LTD', image: hublotBoxImage2, price: '849.99', rarity: 0.0003, code: 'HB002' },
+      { name: 'HBT-KNG-PRO-MAX-SPE', image: hublotBoxImage3, price: '799.99', rarity: 0.0005, code: 'HB003' },
+      { name: 'HBT-FUS-LTD-PRO-ELT', image: hublotBoxImage4, price: '749.99', rarity: 0.001, code: 'HB004' },
+      { name: 'HBT-CLS-PRO-MAX-LTD', image: hublotBoxImage5, price: '699.99', rarity: 0.002, code: 'HB005' },
+      { name: 'HBT-SGN-SPE-PRO-ELT', image: hublotBoxImage6, price: '649.99', rarity: 0.003, code: 'HB006' },
+      { name: 'HBT-MPT-LTD-PRO-MAX', image: hublotBoxImage7, price: '599.99', rarity: 0.005, code: 'HB007' },
+      { name: 'HBT-TEC-PRO-SPE-LTD', image: hublotBoxImage8, price: '549.99', rarity: 0.007, code: 'HB008' },
+      { name: 'HBT-ART-MAX-PRO-ELT', image: hublotBoxImage9, price: '499.99', rarity: 0.01, code: 'HB009' },
+      { name: 'HBT-SPR-LTD-PRO-SPE', image: hublotBoxImage10, price: '449.99', rarity: 0.015, code: 'HB010' },
+      { name: 'HBT-RCE-PRO-MAX-LTD', image: hublotBoxImage11, price: '399.99', rarity: 0.02, code: 'HB011' },
+      { name: 'HBT-CLB-SPE-PRO-ELT', image: hublotBoxImage12, price: '349.99', rarity: 0.025, code: 'HB012' },
+      { name: 'HBT-LGD-LTD-PRO-MAX', image: hublotBoxImage13, price: '299.99', rarity: 0.03, code: 'HB013' },
+      { name: 'HBT-CHR-PRO-SPE-LTD', image: hublotBoxImage14, price: '249.99', rarity: 0.035, code: 'HB014' },
+      { name: 'HBT-EVO-MAX-PRO-ELT', image: hublotBoxImage15, price: '199.99', rarity: 0.04, code: 'HB015' },
+      { name: 'HBT-FER-LTD-PRO-SPE', image: hublotBoxImage16, price: '149.99', rarity: 0.045, code: 'HB016' },
+      { name: 'HBT-GMT-PRO-MAX-LTD', image: hublotBoxImage17, price: '99.99', rarity: 0.05, code: 'HB017' },
+      { name: 'HBT-DSC-SPE-PRO-ELT', image: hublotBoxImage18, price: '89.99', rarity: 0.055, code: 'HB018' },
+      { name: 'HBT-ALP-LTD-PRO-MAX', image: hublotBoxImage19, price: '79.99', rarity: 0.06, code: 'HB019' },
+      { name: 'HBT-OCN-PRO-SPE-LTD', image: hublotBoxImage20, price: '69.99', rarity: 0.065, code: 'HB020' },
+      { name: 'HBT-STH-MAX-PRO-ELT', image: hublotBoxImage21, price: '59.99', rarity: 0.07, code: 'HB021' },
+      { name: 'HBT-ESS-LTD-PRO-SPE', image: hublotBoxImage22, price: '49.99', rarity: 0.08, code: 'HB022' }
     ]
   },
   'old-money': {
     title: 'Old Money',
     image: oldMoneyBoxImage,
     description: 'Premium lifestyle and luxury collection',
-    normalPrice: '999.99',
-    salePrice: '949.99',
+    normalPrice: '29.99',
+    salePrice: '24.99',
     drops: [
-      { name: 'OLM-ULT-LTD-PRO-MAX', image: oldMoneyBoxImage1, price: '33999.99', rarity: 0.0001, code: 'OM001' },
-      { name: 'OLM-ELT-SPE-PRO-LTD', image: oldMoneyBoxImage2, price: '32499.99', rarity: 0.0005, code: 'OM002' },
-      { name: 'OLM-PRO-MAX-LTD-SPE', image: oldMoneyBoxImage3, price: '30999.99', rarity: 0.001, code: 'OM003' },
-      { name: 'OLM-LUX-PRO-ELT-MAX', image: oldMoneyBoxImage4, price: '29499.99', rarity: 0.002, code: 'OM004' },
-      { name: 'OLM-VIP-LTD-SPE-PRO', image: oldMoneyBoxImage5, price: '27999.99', rarity: 0.003, code: 'OM005' },
-      { name: 'OLM-RYL-MAX-PRO-ELT', image: oldMoneyBoxImage6, price: '26499.99', rarity: 0.005, code: 'OM006' },
-      { name: 'OLM-SUP-PRO-LTD-MAX', image: oldMoneyBoxImage7, price: '24999.99', rarity: 0.007, code: 'OM007' },
-      { name: 'OLM-PRE-ELT-SPE-PRO', image: oldMoneyBoxImage8, price: '23499.99', rarity: 0.01, code: 'OM008' },
-      { name: 'OLM-ICN-LTD-MAX-SPE', image: oldMoneyBoxImage9, price: '21999.99', rarity: 0.015, code: 'OM009' },
-      { name: 'OLM-LEG-PRO-ELT-LTD', image: oldMoneyBoxImage10, price: '20499.99', rarity: 0.02, code: 'OM010' },
-      { name: 'OLM-MST-SPE-PRO-MAX', image: oldMoneyBoxImage11, price: '18999.99', rarity: 0.025, code: 'OM011' },
-      { name: 'OLM-EXE-LTD-PRO-ELT', image: oldMoneyBoxImage12, price: '17499.99', rarity: 0.03, code: 'OM012' },
-      { name: 'OLM-SIG-MAX-SPE-PRO', image: oldMoneyBoxImage13, price: '15999.99', rarity: 0.035, code: 'OM013' },
-      { name: 'OLM-PLT-PRO-LTD-MAX', image: oldMoneyBoxImage14, price: '14499.99', rarity: 0.04, code: 'OM014' },
-      { name: 'OLM-GLD-ELT-PRO-SPE', image: oldMoneyBoxImage15, price: '12999.99', rarity: 0.045, code: 'OM015' },
-      { name: 'OLM-DLX-LTD-MAX-PRO', image: oldMoneyBoxImage16, price: '11499.99', rarity: 0.05, code: 'OM016' },
-      { name: 'OLM-PRM-SPE-ELT-LTD', image: oldMoneyBoxImage17, price: '9999.99', rarity: 0.055, code: 'OM017' },
-      { name: 'OLM-EXT-PRO-MAX-SPE', image: oldMoneyBoxImage18, price: '8499.99', rarity: 0.06, code: 'OM018' },
-      { name: 'OLM-ADV-LTD-PRO-ELT', image: oldMoneyBoxImage19, price: '6999.99', rarity: 0.065, code: 'OM019' },
-      { name: 'OLM-STD-MAX-SPE-PRO', image: oldMoneyBoxImage20, price: '5499.99', rarity: 0.07, code: 'OM020' },
-      { name: 'OLM-BSC-PRO-LTD-MAX', image: oldMoneyBoxImage21, price: '3999.99', rarity: 0.075, code: 'OM021' },
-      { name: 'OLM-ESS-ELT-PRO-SPE', image: oldMoneyBoxImage22, price: '2999.99', rarity: 0.08, code: 'OM022' }
+      { name: 'OLM-LUX-PRO-MAX-SPE', image: oldMoneyBoxImage1, price: '249.99', rarity: 0.0001, code: 'OM001' },
+      { name: 'OLM-ELT-LTD-PRO-MAX', image: oldMoneyBoxImage2, price: '229.99', rarity: 0.0003, code: 'OM002' },
+      { name: 'OLM-PRE-SPE-PRO-LTD', image: oldMoneyBoxImage3, price: '209.99', rarity: 0.0005, code: 'OM003' },
+      { name: 'OLM-VIP-MAX-PRO-ELT', image: oldMoneyBoxImage4, price: '189.99', rarity: 0.001, code: 'OM004' },
+      { name: 'OLM-TOP-LTD-SPE-PRO', image: oldMoneyBoxImage5, price: '169.99', rarity: 0.002, code: 'OM005' },
+      { name: 'OLM-HGH-PRO-MAX-LTD', image: oldMoneyBoxImage6, price: '149.99', rarity: 0.003, code: 'OM006' },
+      { name: 'OLM-SUP-ELT-PRO-SPE', image: oldMoneyBoxImage7, price: '129.99', rarity: 0.005, code: 'OM007' },
+      { name: 'OLM-PRO-MAX-LTD-SPE', image: oldMoneyBoxImage8, price: '109.99', rarity: 0.007, code: 'OM008' },
+      { name: 'OLM-ULT-SPE-PRO-ELT', image: oldMoneyBoxImage9, price: '99.99', rarity: 0.01, code: 'OM009' },
+      { name: 'OLM-MAX-LTD-PRO-SPE', image: oldMoneyBoxImage10, price: '89.99', rarity: 0.015, code: 'OM010' },
+      { name: 'OLM-EXC-PRO-ELT-LTD', image: oldMoneyBoxImage11, price: '79.99', rarity: 0.02, code: 'OM011' },
+      { name: 'OLM-SPL-MAX-PRO-SPE', image: oldMoneyBoxImage12, price: '69.99', rarity: 0.025, code: 'OM012' },
+      { name: 'OLM-RAR-LTD-ELT-PRO', image: oldMoneyBoxImage13, price: '59.99', rarity: 0.03, code: 'OM013' },
+      { name: 'OLM-UNQ-PRO-SPE-MAX', image: oldMoneyBoxImage14, price: '49.99', rarity: 0.035, code: 'OM014' },
+      { name: 'OLM-LMT-ELT-PRO-LTD', image: oldMoneyBoxImage15, price: '39.99', rarity: 0.04, code: 'OM015' },
+      { name: 'OLM-PRO-SPE-MAX-ELT', image: oldMoneyBoxImage16, price: '34.99', rarity: 0.045, code: 'OM016' },
+      { name: 'OLM-STD-LTD-PRO-MAX', image: oldMoneyBoxImage17, price: '29.99', rarity: 0.05, code: 'OM017' },
+      { name: 'OLM-EXT-PRO-MAX-SPE', image: oldMoneyBoxImage18, price: '24.99', rarity: 0.06, code: 'OM018' },
+      { name: 'OLM-ADV-LTD-PRO-ELT', image: oldMoneyBoxImage19, price: '19.99', rarity: 0.07, code: 'OM019' },
+      { name: 'OLM-STD-MAX-SPE-PRO', image: oldMoneyBoxImage20, price: '14.99', rarity: 0.08, code: 'OM020' },
+      { name: 'OLM-BSC-PRO-LTD-MAX', image: oldMoneyBoxImage21, price: '9.99', rarity: 0.09, code: 'OM021' },
+      { name: 'OLM-ESS-ELT-PRO-SPE', image: oldMoneyBoxImage22, price: '4.99', rarity: 0.1, code: 'OM022' }
     ]
   },
-  'apple': {
-    title: 'Apple',
-    image: appleBoxImage,
-    description: 'Premium Apple products collection',
-    normalPrice: '499.99',
-    salePrice: '449.99',
-    drops: [
-      { name: 'APL-ULT-PRO-MAX-LTD', image: appleBoxImage1, price: '6999.99', rarity: 0.0001, code: 'AP001' },
-      { name: 'APL-ELT-PRO-SPE-MAX', image: appleBoxImage2, price: '6699.99', rarity: 0.0005, code: 'AP002' },
-      { name: 'APL-PRO-LTD-MAX-ELT', image: appleBoxImage3, price: '6399.99', rarity: 0.001, code: 'AP003' },
-      { name: 'APL-MAX-SPE-PRO-LTD', image: appleBoxImage4, price: '6099.99', rarity: 0.002, code: 'AP004' },
-      { name: 'APL-LTD-ELT-MAX-PRO', image: appleBoxImage5, price: '5799.99', rarity: 0.003, code: 'AP005' },
-      { name: 'APL-SPE-PRO-LTD-MAX', image: appleBoxImage6, price: '5499.99', rarity: 0.005, code: 'AP006' },
-      { name: 'APL-PRO-MAX-ELT-SPE', image: appleBoxImage7, price: '5199.99', rarity: 0.007, code: 'AP007' },
-      { name: 'APL-ELT-LTD-PRO-MAX', image: appleBoxImage8, price: '4899.99', rarity: 0.01, code: 'AP008' },
-      { name: 'APL-MAX-PRO-SPE-LTD', image: appleBoxImage9, price: '4599.99', rarity: 0.015, code: 'AP009' },
-      { name: 'APL-LTD-SPE-MAX-PRO', image: appleBoxImage10, price: '4299.99', rarity: 0.02, code: 'AP010' },
-      { name: 'APL-PRO-ELT-LTD-SPE', image: appleBoxImage11, price: '3999.99', rarity: 0.025, code: 'AP011' },
-      { name: 'APL-SPE-MAX-PRO-ELT', image: appleBoxImage12, price: '3699.99', rarity: 0.03, code: 'AP012' },
-      { name: 'APL-ELT-PRO-LTD-MAX', image: appleBoxImage13, price: '3399.99', rarity: 0.035, code: 'AP013' },
-      { name: 'APL-MAX-LTD-SPE-PRO', image: appleBoxImage14, price: '3099.99', rarity: 0.04, code: 'AP014' },
-      { name: 'APL-PRO-SPE-ELT-LTD', image: appleBoxImage15, price: '2799.99', rarity: 0.045, code: 'AP015' },
-      { name: 'APL-LTD-MAX-PRO-SPE', image: appleBoxImage16, price: '2499.99', rarity: 0.05, code: 'AP016' },
-      { name: 'APL-SPE-ELT-LTD-MAX', image: appleBoxImage17, price: '2199.99', rarity: 0.055, code: 'AP017' },
-      { name: 'APL-PRO-LTD-SPE-ELT', image: appleBoxImage18, price: '1899.99', rarity: 0.06, code: 'AP018' },
-      { name: 'APL-MAX-PRO-ELT-LTD', image: appleBoxImage19, price: '1599.99', rarity: 0.065, code: 'AP019' },
-      { name: 'APL-ELT-SPE-PRO-MAX', image: appleBoxImage20, price: '1299.99', rarity: 0.07, code: 'AP020' },
-      { name: 'APL-LTD-PRO-MAX-SPE', image: appleBoxImage21, price: '999.99', rarity: 0.075, code: 'AP021' }
-    ]
-  },
+  
  
-  'rolex-day-date': {
-    title: 'Rolex Day-Date',
-    image: rolexDayDateBoxImage,
-    description: 'Luxury Rolex Day-Date themed box',
-    normalPrice: '399.99',
-    salePrice: '349.99',
-    drops: [
-      { name: 'Rolex Day-Date Watch', image: rolexDayDateBoxImage1, price: '45000.00', rarity: 5.5, code: 'RD0001' },
-      { name: 'Luxury Watch Set', image: rolexDayDateBoxImage2, price: '25000.00', rarity: 15.5, code: 'RD0002' },
-      { name: 'Premium Collection', image: rolexDayDateBoxImage3, price: '15000.00', rarity: 25.5, code: 'RD0003' },
-      { name: 'Watch Accessories', image: rolexDayDateBoxImage4, price: '5000.00', rarity: 35.5, code: 'RD0004' },
-      { name: 'Collector\'s Items', image: rolexDayDateBoxImage5, price: '2500.00', rarity: 45.5, code: 'RD0005' },
-      { name: 'Rolex Day-Date Watch', image: rolexDayDateBoxImage6, price: '45000.00', rarity: 5.5, code: 'RD0006' },
-      { name: 'Luxury Watch Set', image: rolexDayDateBoxImage7, price: '25000.00', rarity: 15.5, code: 'RD0007' },
-      { name: 'Premium Collection', image: rolexDayDateBoxImage8, price: '15000.00', rarity: 25.5, code: 'RD0008' },
-      { name: 'Watch Accessories', image: rolexDayDateBoxImage9, price: '5000.00', rarity: 35.5, code: 'RD0009' },
-      { name: 'Collector\'s Items', image: rolexDayDateBoxImage10, price: '2500.00', rarity: 45.5, code: 'RD0010' },
-      { name: 'Rolex Day-Date Watch', image: rolexDayDateBoxImage11, price: '45000.00', rarity: 5.5, code: 'RD0011' },
-      { name: 'Luxury Watch Set', image: rolexDayDateBoxImage12, price: '25000.00', rarity: 15.5, code: 'RD0012' },
-      { name: 'Premium Collection', image: rolexDayDateBoxImage13, price: '15000.00', rarity: 25.5, code: 'RD0013' },
-      { name: 'Watch Accessories', image: rolexDayDateBoxImage14, price: '5000.00', rarity: 35.5, code: 'RD0014' },
-      { name: 'Collector\'s Items', image: rolexDayDateBoxImage15, price: '2500.00', rarity: 45.5, code: 'RD0015' },
-      { name: 'Rolex Day-Date Watch', image: rolexDayDateBoxImage16, price: '45000.00', rarity: 5.5, code: 'RD0016' },
-      { name: 'Luxury Watch Set', image: rolexDayDateBoxImage17, price: '25000.00', rarity: 15.5, code: 'RD0017' },
-      { name: 'Premium Collection', image: rolexDayDateBoxImage18, price: '15000.00', rarity: 25.5, code: 'RD0018' },
-      { name: 'Watch Accessories', image: rolexDayDateBoxImage19, price: '5000.00', rarity: 35.5, code: 'RD0019' },
-      { name: 'Collector\'s Items', image: rolexDayDateBoxImage20, price: '2500.00', rarity: 45.5, code: 'RD0020' },
-      { name: 'Rolex Day-Date Watch', image: rolexDayDateBoxImage21, price: '45000.00', rarity: 5.5, code: 'RD0021' },
-      { name: 'Luxury Watch Set', image: rolexDayDateBoxImage22, price: '25000.00', rarity: 15.5, code: 'RD0022' },
-      { name: 'Premium Collection', image: rolexDayDateBoxImage23, price: '15000.00', rarity: 25.5, code: 'RD0023' },
-      { name: 'Watch Accessories', image: rolexDayDateBoxImage24, price: '5000.00', rarity: 35.5, code: 'RD0024' },
-      { name: 'Collector\'s Items', image: rolexDayDateBoxImage25, price: '2500.00', rarity: 45.5, code: 'RD0025' },
-      { name: 'Rolex Day-Date Watch', image: rolexDayDateBoxImage26, price: '45000.00', rarity: 5.5, code: 'RD0026' },
-      { name: 'Luxury Watch Set', image: rolexDayDateBoxImage27, price: '25000.00', rarity: 15.5, code: 'RD0027' },
-      { name: 'Premium Collection', image: rolexDayDateBoxImage28, price: '15000.00', rarity: 25.5, code: 'RD0028' },
-      { name: 'Watch Accessories', image: rolexDayDateBoxImage29, price: '5000.00', rarity: 35.5, code: 'RD0029' },
-      { name: 'Collector\'s Items', image: rolexDayDateBoxImage30, price: '2500.00', rarity: 45.5, code: 'RD0030' },
-      { name: 'Rolex Day-Date Watch', image: rolexDayDateBoxImage31, price: '45000.00', rarity: 5.5, code: 'RD0031' },
-      { name: 'Luxury Watch Set', image: rolexDayDateBoxImage32, price: '25000.00', rarity: 15.5, code: 'RD0032' },
-      { name: 'Premium Collection', image: rolexDayDateBoxImage33, price: '15000.00', rarity: 25.5, code: 'RD0033' },
-      { name: 'Watch Accessories', image: rolexDayDateBoxImage34, price: '5000.00', rarity: 35.5, code: 'RD0034' },
-      { name: 'Collector\'s Items', image: rolexDayDateBoxImage35, price: '2500.00', rarity: 45.5, code: 'RD0035' },
-    ]
-  },
-  'ralph-lauren': {
-    title: 'Ralph Lauren',
-    image: ralphLaurenBoxImage,
-    description: 'Premium Ralph Lauren fashion and accessories',
-    normalPrice: '299.99',
-    salePrice: '249.99',
-    drops: [
-      { name: 'RL Purple Label Collection', image: ralphLaurenBoxImage1, price: '150000.00', rarity: 0.0001, code: 'RL001' },
-      { name: 'RL Vintage Collection Set', image: ralphLaurenBoxImage2, price: '120000.00', rarity: 0.0005, code: 'RL002' },
-      { name: 'RL Fashion Show Experience', image: ralphLaurenBoxImage3, price: '100000.00', rarity: 0.001, code: 'RL003' },
-      { name: 'RL Private Shopping Day', image: ralphLaurenBoxImage4, price: '80000.00', rarity: 0.002, code: 'RL004' },
-      { name: 'RL Heritage Collection', image: ralphLaurenBoxImage5, price: '60000.00', rarity: 0.003, code: 'RL005' },
-      { name: 'RL Polo Experience', image: ralphLaurenBoxImage6, price: '50000.00', rarity: 0.005, code: 'RL006' },
-      { name: 'RL Complete Wardrobe', image: ralphLaurenBoxImage7, price: '40000.00', rarity: 0.007, code: 'RL007' },
-      { name: 'RL Home Collection Set', image: ralphLaurenBoxImage8, price: '30000.00', rarity: 0.01, code: 'RL008' },
-      { name: 'RL Limited Edition Watch', image: ralphLaurenBoxImage9, price: '25000.00', rarity: 0.015, code: 'RL009' },
-      { name: 'RL Luxury Suit Collection', image: ralphLaurenBoxImage10, price: '20000.00', rarity: 0.02, code: 'RL010' },
-      { name: 'RL Leather Goods Set', image: ralphLaurenBoxImage11, price: '15000.00', rarity: 0.025, code: 'RL011' },
-      { name: 'RL Shoe Collection', image: ralphLaurenBoxImage12, price: '12000.00', rarity: 0.03, code: 'RL012' },
-
-    ]
-  },
  
-  'rolls-royce': {
-    title: 'Rolls Royce',
-    image: rollsRoyceBoxImage,
-    description: 'Ultra-luxury automotive themed box',
-    normalPrice: '399.99',
-    salePrice: '349.99',
-    drops: [
-      { name: 'Rolls Royce Private Tour', image: rollsRoyceBoxImage1, price: '150000.00', rarity: 0.0001, code: 'RR001' },
-      { name: 'Bespoke Design Experience', image: rollsRoyceBoxImage2, price: '120000.00', rarity: 0.0005, code: 'RR002' },
-      { name: 'Luxury Driving Package', image: rollsRoyceBoxImage3, price: '100000.00', rarity: 0.001, code: 'RR003' },
-      { name: 'Factory Visit Experience', image: rollsRoyceBoxImage4, price: '80000.00', rarity: 0.002, code: 'RR004' },
-      { name: 'Phantom Test Drive', image: rollsRoyceBoxImage5, price: '60000.00', rarity: 0.003, code: 'RR005' },
-      { name: 'Cullinan Adventure Day', image: rollsRoyceBoxImage6, price: '50000.00', rarity: 0.005, code: 'RR006' },
-      { name: 'Ghost Experience Package', image: rollsRoyceBoxImage7, price: '40000.00', rarity: 0.007, code: 'RR007' },
-      { name: 'Luxury Lifestyle Event', image: rollsRoyceBoxImage8, price: '30000.00', rarity: 0.01, code: 'RR008' },
-      { name: 'Concierge Service Package', image: rollsRoyceBoxImage9, price: '25000.00', rarity: 0.015, code: 'RR009' },
-      { name: 'VIP Club Membership', image: rollsRoyceBoxImage10, price: '20000.00', rarity: 0.02, code: 'RR010' },
-      { name: 'Luxury Hotel Package', image: rollsRoyceBoxImage11, price: '15000.00', rarity: 0.025, code: 'RR011' },
-      { name: 'Private Chauffeur Service', image: rollsRoyceBoxImage12, price: '12000.00', rarity: 0.03, code: 'RR012' },
-      { name: 'Luxury Travel Set', image: rollsRoyceBoxImage13, price: '10000.00', rarity: 0.035, code: 'RR013' },
-      { name: 'Exclusive Merchandise Set', image: rollsRoyceBoxImage14, price: '8000.00', rarity: 0.04, code: 'RR014' },
-      { name: 'Limited Edition Model', image: rollsRoyceBoxImage15, price: '7000.00', rarity: 0.045, code: 'RR015' },
-   
-    ]
-  },
+  
+ 
+ 
   'football-frenzy': {
     title: 'Football Frenzy',
     image: footballBoxImage,
     description: 'Football themed mystery box',
-    normalPrice: '79.99',
-    salePrice: '69.99',
+    normalPrice: '9.99',
+    salePrice: '7.45',
     drops: [
-      { name: 'FF-PREMIUM-VIP-MATCH-01', image: footballBoxImage1, price: '639.92', rarity: 0.001, code: 'FF001' },
-      { name: 'FF-UCL-FINAL-ACCESS-02', image: footballBoxImage2, price: '599.99', rarity: 0.002, code: 'FF002' },
-      { name: 'FF-PRO-TRAINING-ELITE-03', image: footballBoxImage3, price: '559.99', rarity: 0.005, code: 'FF003' },
-      { name: 'FF-STADIUM-TOUR-VIP-04', image: footballBoxImage4, price: '519.99', rarity: 0.008, code: 'FF004' },
-      { name: 'FF-LEGEND-MEET-GOLD-05', image: footballBoxImage5, price: '499.99', rarity: 0.01, code: 'FF005' },
-      { name: 'FF-SEASON-PASS-PRO-06', image: footballBoxImage6, price: '479.99', rarity: 0.015, code: 'FF006' },
-      { name: 'FF-MUSEUM-TOUR-VIP-07', image: footballBoxImage7, price: '459.99', rarity: 0.02, code: 'FF007' },
-      { name: 'FF-ELITE-CAMP-ACCESS-08', image: footballBoxImage8, price: '439.99', rarity: 0.025, code: 'FF008' },
-      { name: 'FF-STADIUM-ELITE-09', image: footballBoxImage9, price: '419.99', rarity: 0.03, code: 'FF009' },
-      { name: 'FF-LEGEND-MEET-PRO-10', image: footballBoxImage10, price: '399.99', rarity: 0.035, code: 'FF010' },
-      { name: 'FF-SEASON-GOLD-PKG-11', image: footballBoxImage11, price: '389.99', rarity: 0.04, code: 'FF011' },
-      { name: 'FF-MUSEUM-PREMIUM-12', image: footballBoxImage12, price: '379.99', rarity: 0.045, code: 'FF012' },
-      { name: 'FF-TRAINING-PREMIUM-13', image: footballBoxImage13, price: '369.99', rarity: 0.05, code: 'FF013' },
-      { name: 'FF-STADIUM-PREMIUM-14', image: footballBoxImage14, price: '359.99', rarity: 0.055, code: 'FF014' },
-      { name: 'FF-LEGEND-SILVER-15', image: footballBoxImage15, price: '349.99', rarity: 0.06, code: 'FF015' },
-      { name: 'FF-SEASON-SILVER-16', image: footballBoxImage16, price: '339.99', rarity: 0.065, code: 'FF016' },
-      { name: 'FF-MUSEUM-GOLD-17', image: footballBoxImage17, price: '329.99', rarity: 0.07, code: 'FF017' },
-      { name: 'FF-TRAINING-GOLD-18', image: footballBoxImage18, price: '319.99', rarity: 0.075, code: 'FF018' },
-      { name: 'FF-STADIUM-GOLD-19', image: footballBoxImage19, price: '309.99', rarity: 0.08, code: 'FF019' },
-      { name: 'FF-LEGEND-BRONZE-20', image: footballBoxImage20, price: '299.99', rarity: 0.085, code: 'FF020' },
-      { name: 'FF-SEASON-BRONZE-21', image: footballBoxImage21, price: '289.99', rarity: 0.09, code: 'FF021' },
-      { name: 'FF-MUSEUM-SILVER-22', image: footballBoxImage22, price: '279.99', rarity: 0.095, code: 'FF022' },
-      { name: 'FF-TRAINING-SILVER-23', image: footballBoxImage23, price: '269.99', rarity: 0.1, code: 'FF023' },
-      { name: 'FF-STADIUM-SILVER-24', image: footballBoxImage24, price: '259.99', rarity: 0.105, code: 'FF024' },
-      { name: 'FF-MEET-STANDARD-25', image: footballBoxImage25, price: '249.99', rarity: 0.11, code: 'FF025' },
-      { name: 'FF-SEASON-STANDARD-26', image: footballBoxImage26, price: '244.99', rarity: 0.115, code: 'FF026' },
-      { name: 'FF-MUSEUM-BRONZE-27', image: footballBoxImage27, price: '242.99', rarity: 0.12, code: 'FF027' },
-      { name: 'FF-TRAINING-BRONZE-28', image: footballBoxImage28, price: '241.99', rarity: 0.125, code: 'FF028' },
-      { name: 'FF-STADIUM-BRONZE-29', image: footballBoxImage29, price: '240.99', rarity: 0.13, code: 'FF029' },
-      { name: 'FF-MEET-BASIC-30', image: footballBoxImage30, price: '240.49', rarity: 0.135, code: 'FF030' },
-      { name: 'FF-SEASON-BASIC-31', image: footballBoxImage31, price: '240.29', rarity: 0.14, code: 'FF031' },
-      { name: 'FF-MUSEUM-BASIC-32', image: footballBoxImage32, price: '240.19', rarity: 0.145, code: 'FF032' },
-      { name: 'FF-TRAINING-BASIC-33', image: footballBoxImage33, price: '240.09', rarity: 0.15, code: 'FF033' },
-      { name: 'FF-STADIUM-BASIC-34', image: footballBoxImage34, price: '239.97', rarity: 0.155, code: 'FF034' }
+      { name: 'FF-PREMIUM-VIP-MATCH-01', image: footballBoxImage1, price: '74.50', rarity: 0.0001, code: 'FF001' },
+      { name: 'FF-UCL-FINAL-ACCESS-02', image: footballBoxImage2, price: '69.99', rarity: 0.0003, code: 'FF002' },
+      { name: 'FF-PRO-TRAINING-ELITE-03', image: footballBoxImage3, price: '64.99', rarity: 0.0005, code: 'FF003' },
+      { name: 'FF-STADIUM-TOUR-VIP-04', image: footballBoxImage4, price: '59.99', rarity: 0.001, code: 'FF004' },
+      { name: 'FF-LEGEND-MEET-GOLD-05', image: footballBoxImage5, price: '54.99', rarity: 0.002, code: 'FF005' },
+      { name: 'FF-SEASON-PASS-PRO-06', image: footballBoxImage6, price: '49.99', rarity: 0.003, code: 'FF006' },
+      { name: 'FF-MUSEUM-TOUR-VIP-07', image: footballBoxImage7, price: '44.99', rarity: 0.005, code: 'FF007' },
+      { name: 'FF-ELITE-CAMP-ACCESS-08', image: footballBoxImage8, price: '39.99', rarity: 0.007, code: 'FF008' },
+      { name: 'FF-STADIUM-ELITE-09', image: footballBoxImage9, price: '34.99', rarity: 0.01, code: 'FF009' },
+      { name: 'FF-LEGEND-MEET-PRO-10', image: footballBoxImage10, price: '29.99', rarity: 0.015, code: 'FF010' },
+      { name: 'FF-SEASON-GOLD-PKG-11', image: footballBoxImage11, price: '24.99', rarity: 0.02, code: 'FF011' },
+      { name: 'FF-MUSEUM-PREMIUM-12', image: footballBoxImage12, price: '19.99', rarity: 0.025, code: 'FF012' },
+      { name: 'FF-TRAINING-PREMIUM-13', image: footballBoxImage13, price: '14.99', rarity: 0.03, code: 'FF013' },
+      { name: 'FF-STADIUM-PREMIUM-14', image: footballBoxImage14, price: '12.99', rarity: 0.04, code: 'FF014' },
+      { name: 'FF-LEGEND-SILVER-15', image: footballBoxImage15, price: '10.99', rarity: 0.05, code: 'FF015' },
+      { name: 'FF-SEASON-SILVER-16', image: footballBoxImage16, price: '8.99', rarity: 0.06, code: 'FF016' },
+      { name: 'FF-MUSEUM-STANDARD-17', image: footballBoxImage17, price: '7.45', rarity: 0.07, code: 'FF017' },
+      { name: 'FF-TRAINING-BASIC-18', image: footballBoxImage18, price: '5.99', rarity: 0.08, code: 'FF018' }
     ]
   },
   'maserati': {
@@ -1499,26 +1142,26 @@ export const boxesData: Record<string, BoxData> = {
     normalPrice: '299.99',
     salePrice: '249.99',
     drops: [
-      { name: 'MS-TRACK-ELITE-PRO-01', image: maseratiBoxImage1, price: '41398.62', rarity: 0.001, code: 'MS0001' },
-      { name: 'MS-LUXURY-PREMIUM-02', image: maseratiBoxImage2, price: '39999.99', rarity: 0.002, code: 'MS0002' },
-      { name: 'MS-RACING-ELITE-03', image: maseratiBoxImage3, price: '38599.99', rarity: 0.003, code: 'MS0003' },
-      { name: 'MS-VIP-EXPERIENCE-04', image: maseratiBoxImage4, price: '37199.99', rarity: 0.004, code: 'MS0004' },
-      { name: 'MS-PREMIUM-ACCESS-05', image: maseratiBoxImage5, price: '35799.99', rarity: 0.005, code: 'MS0005' },
-      { name: 'MS-TRACK-PREMIUM-06', image: maseratiBoxImage6, price: '34399.99', rarity: 0.008, code: 'MS0006' },
-      { name: 'MS-LUXURY-GOLD-07', image: maseratiBoxImage7, price: '32999.99', rarity: 0.01, code: 'MS0007' },
-      { name: 'MS-RACING-PRO-08', image: maseratiBoxImage8, price: '31599.99', rarity: 0.015, code: 'MS0008' },
-      { name: 'MS-VIP-GOLD-09', image: maseratiBoxImage9, price: '30199.99', rarity: 0.02, code: 'MS0009' },
-      { name: 'MS-PREMIUM-PRO-10', image: maseratiBoxImage10, price: '28799.99', rarity: 0.025, code: 'MS0010' },
-      { name: 'MS-TRACK-GOLD-11', image: maseratiBoxImage11, price: '27399.99', rarity: 0.03, code: 'MS0011' },
-      { name: 'MS-LUXURY-PRO-12', image: maseratiBoxImage12, price: '25999.99', rarity: 0.035, code: 'MS0012' },
-      { name: 'MS-RACING-GOLD-13', image: maseratiBoxImage13, price: '24599.99', rarity: 0.04, code: 'MS0013' },
-      { name: 'MS-VIP-PRO-14', image: maseratiBoxImage14, price: '23199.99', rarity: 0.045, code: 'MS0014' },
-      { name: 'MS-PREMIUM-GOLD-15', image: maseratiBoxImage15, price: '21799.99', rarity: 0.05, code: 'MS0015' },
-      { name: 'MS-TRACK-PRO-16', image: maseratiBoxImage16, price: '20399.99', rarity: 0.06, code: 'MS0016' },
-      { name: 'MS-LUXURY-SILVER-17', image: maseratiBoxImage17, price: '18999.99', rarity: 0.07, code: 'MS0017' },
-      { name: 'MS-RACING-PRO-18', image: maseratiBoxImage18, price: '17599.99', rarity: 0.08, code: 'MS0018' },
-      { name: 'MS-VIP-SILVER-19', image: maseratiBoxImage19, price: '15199.99', rarity: 0.09, code: 'MS0019' },
-      { name: 'MS-PREMIUM-BASE-20', image: maseratiBoxImage20, price: '13799.54', rarity: 0.1, code: 'MS0020' }
+      { name: 'MS-TRACK-ELITE-PRO-01', image: maseratiBoxImage1, price: '2499.99', rarity: 0.0001, code: 'MS0001' },
+      { name: 'MS-LUXURY-PREMIUM-02', image: maseratiBoxImage2, price: '2299.99', rarity: 0.0003, code: 'MS0002' },
+      { name: 'MS-RACING-ELITE-03', image: maseratiBoxImage3, price: '2099.99', rarity: 0.0005, code: 'MS0003' },
+      { name: 'MS-VIP-EXPERIENCE-04', image: maseratiBoxImage4, price: '1899.99', rarity: 0.001, code: 'MS0004' },
+      { name: 'MS-PREMIUM-ACCESS-05', image: maseratiBoxImage5, price: '1699.99', rarity: 0.002, code: 'MS0005' },
+      { name: 'MS-TRACK-PREMIUM-06', image: maseratiBoxImage6, price: '1499.99', rarity: 0.003, code: 'MS0006' },
+      { name: 'MS-LUXURY-GOLD-07', image: maseratiBoxImage7, price: '1299.99', rarity: 0.005, code: 'MS0007' },
+      { name: 'MS-RACING-PRO-08', image: maseratiBoxImage8, price: '1099.99', rarity: 0.007, code: 'MS0008' },
+      { name: 'MS-VIP-GOLD-09', image: maseratiBoxImage9, price: '999.99', rarity: 0.01, code: 'MS0009' },
+      { name: 'MS-PREMIUM-PRO-10', image: maseratiBoxImage10, price: '899.99', rarity: 0.015, code: 'MS0010' },
+      { name: 'MS-TRACK-GOLD-11', image: maseratiBoxImage11, price: '799.99', rarity: 0.02, code: 'MS0011' },
+      { name: 'MS-LUXURY-PRO-12', image: maseratiBoxImage12, price: '699.99', rarity: 0.025, code: 'MS0012' },
+      { name: 'MS-RACING-GOLD-13', image: maseratiBoxImage13, price: '599.99', rarity: 0.03, code: 'MS0013' },
+      { name: 'MS-VIP-PRO-14', image: maseratiBoxImage14, price: '499.99', rarity: 0.035, code: 'MS0014' },
+      { name: 'MS-PREMIUM-GOLD-15', image: maseratiBoxImage15, price: '449.99', rarity: 0.04, code: 'MS0015' },
+      { name: 'MS-TRACK-PRO-16', image: maseratiBoxImage16, price: '399.99', rarity: 0.045, code: 'MS0016' },
+      { name: 'MS-LUXURY-SILVER-17', image: maseratiBoxImage17, price: '349.99', rarity: 0.05, code: 'MS0017' },
+      { name: 'MS-RACING-PRO-18', image: maseratiBoxImage18, price: '299.99', rarity: 0.06, code: 'MS0018' },
+      { name: 'MS-VIP-SILVER-19', image: maseratiBoxImage19, price: '249.99', rarity: 0.07, code: 'MS0019' },
+      { name: 'MS-PREMIUM-BASE-20', image: maseratiBoxImage20, price: '199.99', rarity: 0.08, code: 'MS0020' }
     ]
   },
   'mystery-gift': {
@@ -1529,188 +1172,173 @@ export const boxesData: Record<string, BoxData> = {
     salePrice: '19.99',
     drops: [
       {
-        code: '1key',
-        name: '1 KEY PART',
-        image: artboard1Image,
-        price: '100.00',
-        rarity: 0.2
+        code: 'GIFT5',
+        name: '2000 BBLIP',
+        image: dsdImage,
+        price: '140.00',
+        rarity: 0.0001
       },
-      
       {
-        code: '5key',
-        name: '5 KEY PART',
-        image: sdsdsdsdImage,
-        price: '200.00',
-        rarity: 0.1
+        code: 'GIFT6',
+        name: '250 USDT',
+        image: sdsdsdImage,
+        price: '250.00',
+        rarity: 0.0001
       },
       {
         code: 'GIFT4',
-        name: 'Mystery Gift 4',
+        name: '100 TON',
         image: sdsImage,
-        price: '250.00',
-        rarity: 0.08
+        price: '300.00',
+        rarity: 0.0001
+      },
+      {
+        code: 'GIFT5',
+        name: '1500 BBLIP',
+        image: dsdImage,
+        price: '105.00',
+        rarity: 0.0005
+      },
+      {
+        code: 'GIFT6',
+        name: '100 USDT',
+        image: sdsdsdImage,
+        price: '100.00',
+        rarity: 0.0005
+      },
+      {
+        code: 'GIFT4',
+        name: '75 TON',
+        image: sdsImage,
+        price: '225.00',
+        rarity: 0.0005
+      },
+      {
+        code: 'GIFT5',
+        name: '1000 BBLIP',
+        image: dsdImage,
+        price: '70.00',
+        rarity: 0.001
+      },
+      {
+        code: 'GIFT6',
+        name: '50 USDT',
+        image: sdsdsdImage,
+        price: '50.00',
+        rarity: 0.002
+      },
+      {
+        code: 'GIFT4',
+        name: '20 TON',
+        image: sdsImage,
+        price: '60.00',
+        rarity: 0.002
       },
       {
         code: 'GIFT5',
         name: '500 BBLIP',
         image: dsdImage,
-        price: '300.00',
-        rarity: 0.05
+        price: '35.00',
+        rarity: 0.005
       },
       {
         code: 'GIFT6',
-        name: 'Mystery Gift 6',
+        name: '25 USDT',
         image: sdsdsdImage,
-        price: '350.00',
+        price: '25.00',
+        rarity: 0.01
+      },
+      {
+        code: 'GIFT4',
+        name: '15 TON',
+        image: sdsImage,
+        price: '45.00',
+        rarity: 0.01
+      },
+      {
+        code: 'GIFT5',
+        name: '250 BBLIP',
+        image: dsdImage,
+        price: '17.50',
+        rarity: 0.02
+      },
+      {
+        code: 'GIFT6',
+        name: '10 USDT',
+        image: sdsdsdImage,
+        price: '10.00',
         rarity: 0.03
       },
       {
         code: 'GIFT4',
-        name: 'Mystery Gift 4',
+        name: '5 TON',
         image: sdsImage,
-        price: '250.00',
-        rarity: 0.08
+        price: '15.00',
+        rarity: 0.03
       },
       {
         code: 'GIFT5',
-        name: '150.000 BBLIP',
+        name: '100 BBLIP',
         image: dsdImage,
-        price: '300.00',
+        price: '7.00',
         rarity: 0.05
       },
       {
-        code: 'GIFT6',
-        name: 'Mystery Gift 6',
-        image: sdsdsdImage,
-        price: '350.00',
-        rarity: 0.03
+        code: '5key',
+        name: '3 KEY PART',
+        image: sdsdsdsdImage,
+        price: '15.00',
+        rarity: 0.35
       },
       {
         code: 'GIFT4',
-        name: 'Mystery Gift 4',
+        name: '3 TON',
         image: sdsImage,
-        price: '250.00',
-        rarity: 0.08
-      },
-      {
-        code: 'GIFT5',
-        name: '50.000 BBLIP',
-        image: dsdImage,
-        price: '300.00',
+        price: '9.00',
         rarity: 0.05
       },
       {
-        code: 'GIFT6',
-        name: 'Mystery Gift 6',
-        image: sdsdsdImage,
-        price: '350.00',
-        rarity: 0.03
+        code: 'GIFT5',
+        name: '50 BBLIP',
+        image: dsdImage,
+        price: '3.50',
+        rarity: 0.07
+      },
+      {
+        code: '1key',
+        name: '1 KEY PART',
+        image: artboard1Image,
+        price: '5.00',
+        rarity: 0.45
       },
       {
         code: 'GIFT4',
-        name: 'Mystery Gift 4',
+        name: '1 TON',
         image: sdsImage,
-        price: '250.00',
+        price: '3.00',
         rarity: 0.08
       },
       {
-        code: 'GIFT5',
-        name: '25.000 BBLIP',
-        image: dsdImage,
-        price: '300.00',
-        rarity: 0.05
-      },
-      {
         code: 'GIFT6',
-        name: 'Mystery Gift 6',
+        name: '2.5 USDT',
         image: sdsdsdImage,
-        price: '350.00',
-        rarity: 0.03
+        price: '2.50',
+        rarity: 0.09
       },
       {
         code: 'GIFT4',
-        name: 'Mystery Gift 4',
+        name: '0.5 TON',
         image: sdsImage,
-        price: '250.00',
-        rarity: 0.08
-      },
-      {
-        code: 'GIFT5',
-        name: '5.000 BBLIP',
-        image: dsdImage,
-        price: '300.00',
-        rarity: 0.05
+        price: '1.50',
+        rarity: 0.1
       },
       {
         code: 'GIFT6',
-        name: 'Mystery Gift 6',
+        name: '1 USDT',
         image: sdsdsdImage,
-        price: '350.00',
-        rarity: 0.03
-      },
-      {
-        code: 'GIFT4',
-        name: 'Mystery Gift 4',
-        image: sdsImage,
-        price: '250.00',
-        rarity: 0.08
-      },
-      {
-        code: 'GIFT5',
-        name: '100.000 BBLIP',
-        image: dsdImage,
-        price: '300.00',
-        rarity: 0.05
-      },
-      {
-        code: 'GIFT6',
-        name: 'Mystery Gift 6',
-        image: sdsdsdImage,
-        price: '350.00',
-        rarity: 0.03
-      },
-      {
-        code: 'GIFT4',
-        name: 'Mystery Gift 4',
-        image: sdsImage,
-        price: '250.00',
-        rarity: 0.08
-      },
-      {
-        code: 'GIFT5',
-        name: '10.000 BBLIP',
-        image: dsdImage,
-        price: '300.00',
-        rarity: 0.05
-      },
-      {
-        code: 'GIFT6',
-        name: 'Mystery Gift 6',
-        image: sdsdsdImage,
-        price: '350.00',
-        rarity: 0.03
-      },
-      {
-        code: 'GIFT4',
-        name: 'Mystery Gift 4',
-        image: sdsImage,
-        price: '250.00',
-        rarity: 0.08
-      },
-      {
-        code: 'GIFT5',
-        name: '1.000 BBLIP',
-        image: dsdImage,
-        price: '300.00',
-        rarity: 0.05
-      },
-      {
-        code: 'GIFT6',
-        name: 'Mystery Gift 6',
-        image: sdsdsdImage,
-        price: '350.00',
-        rarity: 0.03
-      },
+        price: '1.00',
+        rarity: 0.15
+      }
     ]
   }
 }; 

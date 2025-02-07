@@ -10,15 +10,17 @@ import CloseIcon from '@mui/icons-material/Close';
 import TokenSwap from '../../pages/SwapComponent';
 
 const StyledDrawer = styled(Drawer)(({  }) => ({
+  zIndex: 9999,
   '& .MuiDrawer-paper': {
     background: 'linear-gradient(180deg, rgba(26, 33, 38, 0.99) 0%, rgba(26, 33, 38, 0.95) 100%)',
     borderRadius: '24px 24px 0 0',
     padding: '24px',
-     maxHeight: '80vh',
+    maxHeight: '80vh',
     minHeight: '60vh',
     height: 'auto',
     border: '1px solid rgba(110, 211, 255, 0.1)',
     overflow: 'visible',
+    zIndex: 9999
   }
 }));
 

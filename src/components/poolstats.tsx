@@ -65,7 +65,7 @@ const PoolStats: React.FC<PoolStatsProps> = ({
           >
             <LockIcon sx={{ color: '#ff4d4d', fontSize: 20 }} />
             <Typography sx={{ color: '#fff', fontWeight: 600, fontSize: '0.9rem' }}>
-              Pool is Full
+              Full
             </Typography>
           </Box>
         )}

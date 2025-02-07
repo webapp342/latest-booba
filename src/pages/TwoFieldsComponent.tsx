@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Typography, Box, TextField, Fade, Drawer, styled, Grid, Modal } from '@mui/material';
+import { Button, Typography, Box, TextField, Fade, Drawer, styled, Grid, Modal, CircularProgress } from '@mui/material';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, onSnapshot, updateDoc, getDoc } from 'firebase/firestore';
 import { firebaseConfig } from './firebaseConfig';
@@ -11,6 +11,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import StarIcon from '@mui/icons-material/Star';
 import SwapDrawer from '../components/WalletDrawers/SwapDrawer';
+import ticketImage from '../assets/ticket.png';
 
 // Firebase initialization
 const app = initializeApp(firebaseConfig);
@@ -169,7 +170,6 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
   const [showSuccess, setShowSuccess] = useState(false);
   const [showMinWithdrawModal, setShowMinWithdrawModal] = useState(false);
   const [showStarsModal, setShowStarsModal] = useState(false);
-  const [isProcessingStars] = useState(false);
   const [isUpgrading, setIsUpgrading] = useState(false);
   const [showLevelUpSuccess, setShowLevelUpSuccess] = useState(false);
   const [showSwapDrawer, setShowSwapDrawer] = useState(false);
@@ -295,20 +295,7 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
   };
 
 
-  const getLevelRequirements = (amount: number): { requiredLevel: number, requiredTickets: number } => {
-    if (amount <= 3) return { requiredLevel: 1, requiredTickets: 1 };
-    if (amount <= 5) return { requiredLevel: 1, requiredTickets: 1 };
-    if (amount <= 10) return { requiredLevel: 2, requiredTickets: 3 }; // 1 + 2
-    if (amount <= 15) return { requiredLevel: 3, requiredTickets: 6 }; // 1 + 2 + 3
-    if (amount <= 20) return { requiredLevel: 4, requiredTickets: 10 }; // 1 + 2 + 3 + 4
-    if (amount <= 25) return { requiredLevel: 5, requiredTickets: 15 }; // 1 + 2 + 3 + 4 + 5
-    if (amount <= 30) return { requiredLevel: 6, requiredTickets: 21 }; // 1 + 2 + 3 + 4 + 5 + 6
-    if (amount <= 35) return { requiredLevel: 7, requiredTickets: 28 }; // 1 + 2 + 3 + 4 + 5 + 6 + 7
-    if (amount <= 40) return { requiredLevel: 8, requiredTickets: 36 }; // 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8
-    if (amount <= 45) return { requiredLevel: 9, requiredTickets: 45 }; // 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9
-    return { requiredLevel: 10, requiredTickets: 55 }; // 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 + 10
-  };
-
+ 
 
   const handleLevelUpgrade = async () => {
     setIsUpgrading(true);
@@ -390,11 +377,9 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
       return;
     }
 
-    // If balance is sufficient, then check level requirement
-    const { requiredLevel } = getLevelRequirements(withdrawAmount);
+    // Check if user has reached level 200
     const currentLevel = userData?.level || 0;
-    
-    if (currentLevel < requiredLevel) {
+    if (currentLevel < 200) {
       setShowStarsModal(true);
       return;
     }
@@ -1178,7 +1163,7 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
       </MinWithdrawModal>
       <StarsModal
         open={showStarsModal}
-        onClose={() => !isProcessingStars && setShowStarsModal(false)}
+        onClose={() => setShowStarsModal(false)}
       >
         <StarsModalContent>
           <Box sx={{ 
@@ -1197,36 +1182,47 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
               gap: 2
             }}>
               <Box sx={{ 
-                width: '64px', 
-                height: '64px', 
-                borderRadius: '50%', 
-                backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                width: '80px', 
+                height: '80px', 
+                position: 'relative',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                animation: 'pulse 2s infinite',
-                '@keyframes pulse': {
-                  '0%': {
-                    boxShadow: '0 0 0 0 rgba(110, 211, 255, 0.4)',
-                  },
-                  '70%': {
-                    boxShadow: '0 0 0 10px rgba(110, 211, 255, 0)',
-                  },
-                  '100%': {
-                    boxShadow: '0 0 0 0 rgba(110, 211, 255, 0)',
-                  },
-                },
               }}>
-                <StarIcon sx={{ 
-                  fontSize: 32, 
-                  color: '#6ed3ff',
-                  animation: 'rotate 2s infinite linear',
-                  '@keyframes rotate': {
-                    '0%': {
-                      transform: 'rotate(0deg)',
+                <Box
+                  component="img"
+                  src={ticketImage}
+                  alt="Upgrade Ticket"
+                  sx={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain',
+                    animation: 'float 3s ease-in-out infinite',
+                    '@keyframes float': {
+                      '0%, 100%': {
+                        transform: 'translateY(0)',
+                      },
+                      '50%': {
+                        transform: 'translateY(-10px)',
+                      },
                     },
-                    '100%': {
-                      transform: 'rotate(360deg)',
+                  }}
+                />
+                <Box sx={{
+                  position: 'absolute',
+                  width: '100%',
+                  height: '10px',
+                  bottom: '-15px',
+                  background: 'radial-gradient(ellipse at center, rgba(110, 211, 255, 0.3) 0%, rgba(110, 211, 255, 0) 70%)',
+                  animation: 'shadow 3s ease-in-out infinite',
+                  '@keyframes shadow': {
+                    '0%, 100%': {
+                      transform: 'scale(1)',
+                      opacity: 0.3,
+                    },
+                    '50%': {
+                      transform: 'scale(0.7)',
+                      opacity: 0.1,
                     },
                   },
                 }} />
@@ -1245,18 +1241,8 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
                   fontSize: '14px',
                   lineHeight: 1.5
                 }}>
-                  {(function() {
-                    const currentLevel = userData?.level || 0;
-                    const nextLevel = currentLevel + 1;
-                    const withdrawAmount = Number(amount);
-                    const { requiredLevel } = getLevelRequirements(withdrawAmount);
-                    
-                    if (currentLevel === 0) {
-                      return `Upgrade to Level 1 to continue`;
-                    } else if (currentLevel < requiredLevel) {
-                      return `Upgrade to Level ${nextLevel} to continue.`;
-                    }
-                    return `Maximum level reached for this withdrawal amount`;
+                  {(() => {
+                    return `You need to upgrade your level to withdraw !`;
                   })()}
                 </Typography>
               </Box>
@@ -1266,18 +1252,36 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
             <Box sx={{
               width: '100%',
               display: 'flex',
-              gap: 2
+              gap: 2,
+              mb: 1
             }}>
               <Box sx={{
                 flex: 1,
-                backgroundColor: 'rgba(110, 211, 255, 0.05)',
+                background: 'linear-gradient(145deg, rgba(110, 211, 255, 0.1) 0%, rgba(110, 211, 255, 0.05) 100%)',
                 borderRadius: '16px',
                 padding: '16px',
                 border: '1px solid rgba(110, 211, 255, 0.1)',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: 1
+                gap: 1,
+                position: 'relative',
+                overflow: 'hidden',
+                '&::before': {
+                  content: '""',
+                  position: 'absolute',
+                  top: 0,
+                  left: '-100%',
+                  width: '100%',
+                  height: '100%',
+                  background: 'linear-gradient(90deg, transparent, rgba(110, 211, 255, 0.1), transparent)',
+                  animation: 'shine 2s infinite',
+                },
+                '@keyframes shine': {
+                  '100%': {
+                    left: '100%',
+                  },
+                },
               }}>
                 <Typography sx={{ 
                   color: 'rgba(255, 255, 255, 0.7)',
@@ -1290,21 +1294,34 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
                 <Typography sx={{ 
                   color: '#6ed3ff',
                   fontSize: '24px',
-                  fontWeight: '600'
+                  fontWeight: '600',
+                  textShadow: '0 0 10px rgba(110, 211, 255, 0.5)'
                 }}>
                   {userData?.level || 0}
                 </Typography>
               </Box>
               <Box sx={{
                 flex: 1,
-                backgroundColor: 'rgba(110, 211, 255, 0.05)',
+                background: 'linear-gradient(145deg, rgba(110, 211, 255, 0.1) 0%, rgba(110, 211, 255, 0.05) 100%)',
                 borderRadius: '16px',
                 padding: '16px',
                 border: '1px solid rgba(110, 211, 255, 0.1)',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: 1
+                gap: 1,
+                position: 'relative',
+                overflow: 'hidden',
+                '&::before': {
+                  content: '""',
+                  position: 'absolute',
+                  top: 0,
+                  left: '-100%',
+                  width: '100%',
+                  height: '100%',
+                  background: 'linear-gradient(90deg, transparent, rgba(110, 211, 255, 0.1), transparent)',
+                  animation: 'shine 2s infinite 1s',
+                },
               }}>
                 <Typography sx={{ 
                   color: 'rgba(255, 255, 255, 0.7)',
@@ -1312,12 +1329,13 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
                   textTransform: 'uppercase',
                   letterSpacing: '0.5px'
                 }}>
-                  Your Tickets
+                  Available Tickets
                 </Typography>
                 <Typography sx={{ 
                   color: '#6ed3ff',
                   fontSize: '24px',
-                  fontWeight: '600'
+                  fontWeight: '600',
+                  textShadow: '0 0 10px rgba(110, 211, 255, 0.5)'
                 }}>
                   {userData?.tickets || 0}
                 </Typography>
@@ -1330,11 +1348,17 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
                 color: '#ff4d4d', 
                 fontSize: '14px',
                 textAlign: 'center',
-                padding: '8px 12px',
+                padding: '12px',
                 backgroundColor: 'rgba(255, 77, 77, 0.1)',
-                borderRadius: '8px',
-                width: '100%'
+                borderRadius: '12px',
+                width: '100%',
+                border: '1px solid rgba(255, 77, 77, 0.2)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 1
               }}>
+                <span role="img" aria-label="warning">⚠️</span>
                 {ticketError}
               </Typography>
             )}
@@ -1349,73 +1373,109 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
               <Button
                 fullWidth
                 onClick={handleLevelUpgrade}
-                disabled={isUpgrading || !userData?.tickets || userData?.tickets < (userData?.level + 1 || 1)}
+                disabled={isUpgrading || !userData?.tickets || userData?.tickets < 1}
                 sx={{
-                  backgroundColor: 'rgba(110, 211, 255, 0.1)',
-                  color: '#6ed3ff',
+                  background: 'linear-gradient(90deg, #6ed3ff, #8ee9ff)',
+                  color: 'black',
                   height: '48px',
                   borderRadius: '12px',
                   fontSize: '16px',
                   fontWeight: '600',
                   textTransform: 'none',
+                  position: 'relative',
+                  overflow: 'hidden',
                   '&:hover': {
-                    backgroundColor: 'rgba(110, 211, 255, 0.2)',
+                    background: 'linear-gradient(90deg, #8ee9ff, #6ed3ff)',
                   },
                   '&:disabled': {
-                    backgroundColor: 'rgba(110, 211, 255, 0.05)',
-                    color: 'rgba(110, 211, 255, 0.3)',
+                    background: 'rgba(110, 211, 255, 0.1)',
+                    color: 'rgba(255, 255, 255, 0.3)',
+                  },
+                  '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    left: '-100%',
+                    width: '100%',
+                    height: '100%',
+                    background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)',
+                    animation: 'shine 2s infinite',
+                  },
+                }}
+              >
+                {isUpgrading ? (
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <CircularProgress size={20} thickness={5} sx={{ color: 'black' }} />
+                    Processing...
+                  </Box>
+                ) : (
+                  'Use Upgrade Ticket'
+                )}
+              </Button>
+
+              <Button
+                fullWidth
+                onClick={() => setShowSwapDrawer(true)}
+                sx={{
+                  background: 'linear-gradient(90deg, #0088CC, #00A3FF)',
+                  color: 'white',
+                  height: '48px',
+                  borderRadius: '12px',
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  textTransform: 'none',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  '&:hover': {
+                    background: 'linear-gradient(90deg, #00A3FF, #0088CC)',
+                  },
+                  '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    left: '-100%',
+                    width: '100%',
+                    height: '100%',
+                    background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)',
+                    animation: 'shine 2s infinite',
+                  },
+                }}
+              >
+                Get More Tickets
+              </Button>
+
+              <Typography sx={{ 
+                color: 'rgba(255, 255, 255, 0.7)', 
+                fontSize: '14px',
+                textAlign: 'center',
+                padding: '8px 12px',
+                borderRadius: '8px',
+        
+              }}>
+                {(() => {
+                  const currentLevel = userData?.level || 0;
+                  const nextLevel = currentLevel + 1;
+                  const currentTickets = userData?.tickets || 0;
+                  const neededTickets = nextLevel - currentTickets;
+                  return `You need ${neededTickets} more ticket${neededTickets > 1 ? 's' : ''} to reach Level ${nextLevel}`;
+                })()}
+              </Typography>
+
+              <Button
+                fullWidth
+                onClick={() => setShowStarsModal(false)}
+                sx={{
+                  color: 'rgba(255, 255, 255, 0.6)',
+                  height: '48px',
+                  fontSize: '16px',
+                  textTransform: 'none',
+                  '&:hover': {
+                    background: 'rgba(255, 255, 255, 0.1)',
                   }
                 }}
               >
-                {isUpgrading ? 'Processing...' : 'Use Upgrade Ticket'}
+                Cancel
               </Button>
-
-              {(!userData?.tickets || userData?.tickets < (userData?.level + 1 || 1)) && (
-                <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 1 }}>
-                 
-                  <Button
-                    fullWidth
-                    onClick={() => {
-                      const currentLevel = userData?.level || 0;
-                      const nextLevel = currentLevel + 1;
-                      const currentTickets = userData?.tickets || 0;
-                      const neededTickets = nextLevel - currentTickets;
-                      setShowStarsModal(false);
-                      setShowSwapDrawer(true);
-                      return neededTickets; // Bu değer SwapDrawer'a defaultAmount olarak geçecek
-                    }}
-                    sx={{
-                      backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                      color: '#fff',
-                      height: '48px',
-                      borderRadius: '12px',
-                      fontSize: '16px',
-                      fontWeight: '600',
-                      textTransform: 'none',
-                      '&:hover': {
-                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                      }
-                    }}
-                  >
-                    Get More Tickets
-                  </Button>
-                   <Typography sx={{ 
-                    color: 'rgba(255, 255, 255, 0.7)', 
-                    fontSize: '14px',
-                    textAlign: 'center',
-                    padding: '8px 12px',
-                    borderRadius: '8px',
-                  }}>
-                    {(() => {
-                      const currentLevel = userData?.level || 0;
-                      const nextLevel = currentLevel + 1;
-                      const currentTickets = userData?.tickets || 0;
-                      const neededTickets = nextLevel - currentTickets;
-                      return `You need ${neededTickets} more ticket${neededTickets > 1 ? 's' : ''} to reach Level ${nextLevel}`;
-                    })()}
-                  </Typography>
-                </Box>
-              )}
             </Box>
           </Box>
         </StarsModalContent>
@@ -1430,7 +1490,8 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
           justifyContent: 'center',
         }}
       >
-        <Box sx={{
+        <Box //@ts-ignore
+         sx={{
           backgroundColor: 'rgba(18, 22, 25, 0.95)',
           backdropFilter: 'blur(20px)',
           borderRadius: '24px',

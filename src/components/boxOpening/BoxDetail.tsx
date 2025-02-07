@@ -700,7 +700,6 @@ const BoxDetail: React.FC = () => {
                     bgcolor: '#1a1b23',
                     borderRadius: '12px',
                     overflow: 'hidden',
-                    height: '30vh',
                     transition: 'transform 0.2s',
                     borderTop: '2px solid',
 borderBottom:'2px solid',                    borderColor: () => {
@@ -735,6 +734,7 @@ borderBottom:'2px solid',                    borderColor: () => {
                       height: {xs: '100px'},
                       objectFit: 'contain',
                       p: 1,
+                      mb:2,
                   
                     }}
                   />
