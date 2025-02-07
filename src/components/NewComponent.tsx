@@ -267,7 +267,8 @@ const PeriodSelector: React.FC<PeriodSelectorProps> = ({
   };
 
   return (
-    <Box sx={{ mb: 3 }}>
+    <Box //@ts-ignore
+     sx={{ mb: 3 }}>
       <StyledToggleButtonGroup
         value={selectedPeriod}
         exclusive
@@ -1848,7 +1849,9 @@ const handleUnstake = async (amount: number): Promise<void> => {
       
       
       {/* Button Group for Stake and Unstake */}
-      <Box className="total-equity" sx={{ 
+      <Box
+       className="total-equity" 
+       sx={{ 
         borderRadius: 2, 
         p: 1.5,
         display: 'flex',
@@ -1899,7 +1902,9 @@ const handleUnstake = async (amount: number): Promise<void> => {
                 }
               }}
             >
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Box
+              
+               sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <AddCircleIcon sx={{ fontSize: '20px' }} />
                 Subscribe
               </Box>
@@ -2607,7 +2612,7 @@ variant="h6"
                     lbTON Balance
                   </Typography>
                   <Typography variant="h6" className="text-gradient" sx={{ fontWeight: 'bold' }}>
-                    {lbBalance !== null ? `${lbBalance.toFixed(2)} TON` : 'Loading...'}
+                    {lbBalance !== null && typeof lbBalance === 'number' ? `${lbBalance.toFixed(2)} TON` : 'Loading...'}
                   </Typography>
                 </Grid>
               </Grid>
