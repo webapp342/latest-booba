@@ -346,7 +346,8 @@ const BoxOpening: React.FC = () => {
   const [currentTab, setCurrentTab] = useState<TabType>('boxes');
   const [dropsSortBy, setDropsSortBy] = useState<'price' | 'rarity'>('price');
   const [showLevelModal, setShowLevelModal] = useState(false);
-  const [, setSelectedDrop] = useState<any>(null);
+  const [ 
+    , setSelectedDrop] = useState<any>(null);
   const [isUpgrading, setIsUpgrading] = useState(false);
   const [ticketError, setTicketError] = useState('');
   const [showLevelUpSuccess, setShowLevelUpSuccess] = useState(false);
@@ -385,22 +386,19 @@ const BoxOpening: React.FC = () => {
       return;
     }
 
-    const unsubscribe = onSnapshot(
-      doc(db, 'users', telegramUserId),
-      (doc) => {
-        if (doc.exists()) {
-          setUserStats(doc.data() as UserStats);
-        } else {
-          setError('Kullanıcı verisi bulunamadı');
-        }
-        setLoading(false);
-      },
-      (error) => {
-        console.error('Error fetching user stats:', error);
-        setError('Veriler yüklenirken hata oluştu');
-        setLoading(false);
+    const docRef = doc(db, "users", telegramUserId);
+    const unsubscribe = onSnapshot(docRef, (docSnap) => {
+      if (docSnap.exists()) {
+        setUserStats(docSnap.data() as UserStats);
+      } else {
+        setError('User data not found');
       }
-    );
+      setLoading(false);
+    }, (error) => {
+      console.error('Error fetching user stats:', error);
+      setError('Error loading data');
+      setLoading(false);
+    });
 
     return () => unsubscribe();
   }, [navigate]);
