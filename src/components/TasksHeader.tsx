@@ -12,7 +12,8 @@ function Brand() {
  
   return (
             <AppBar  sx={{minHeight:"10vh", backgroundColor: '#1a2126',border:"none",boxShadow:'none' }}>
-                   <Box  alignItems={"center"}  sx={{backgroundColor: '#1a2126' }}>
+                   <Box //@ts-ignore
+                    alignItems={"center"}  sx={{backgroundColor: '#1a2126' }}>
           <Typography     sx={{
         mt: "7vh",
         textAlign: "center",

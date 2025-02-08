@@ -1459,7 +1459,8 @@ const BoxOpening: React.FC = () => {
                     {userStats?.level || 0}
                   </Typography>
                 </Box>
-                <Box sx={{
+                <Box 
+                sx={{
                   flex: 1,
                   background: 'linear-gradient(145deg, rgba(110, 211, 255, 0.1) 0%, rgba(110, 211, 255, 0.05) 100%)',
                   borderRadius: '16px',
@@ -1523,7 +1524,8 @@ const BoxOpening: React.FC = () => {
               )}
 
               {/* Action Buttons */}
-              <Box sx={{ 
+              <Box 
+               sx={{ 
                 width: '100%', 
                 display: 'flex', 
                 flexDirection: 'column', 
@@ -1563,7 +1565,8 @@ const BoxOpening: React.FC = () => {
                   }}
                 >
                   {isUpgrading ? (
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Box 
+                    sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                       <CircularProgress size={20} thickness={5} sx={{ color: 'black' }} />
                       Processing...
                     </Box>
@@ -1572,36 +1575,46 @@ const BoxOpening: React.FC = () => {
                   )}
                 </Button>
 
-                <Button
-                  fullWidth
-                  onClick={() => setShowSwapDrawer(true)}
-                  sx={{
-                    background: 'linear-gradient(90deg, #0088CC, #00A3FF)',
-                    color: 'white',
-                    height: '48px',
-                    borderRadius: '12px',
-                    fontSize: '16px',
-                    fontWeight: '600',
-                    textTransform: 'none',
-                    position: 'relative',
-                    overflow: 'hidden',
-                    '&:hover': {
-                      background: 'linear-gradient(90deg, #00A3FF, #0088CC)',
-                    },
-                    '&::before': {
-                      content: '""',
-                      position: 'absolute',
-                      top: 0,
-                      left: '-100%',
-                      width: '100%',
-                      height: '100%',
-                      background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)',
-                      animation: 'shine 2s infinite',
-                    },
-                  }}
-                >
-                  Get More Tickets
-                </Button>
+                {(() => {
+                  const currentLevel = userStats?.level || 0;
+                  const nextLevel = currentLevel + 1;
+                  const currentTickets = userStats?.tickets || 0;
+                  const neededTickets = nextLevel - currentTickets;
+                  
+                  // Sadece yetersiz ticket varsa Get More Tickets butonunu göster
+                  return neededTickets > 0 ? (
+                    <Button
+                      fullWidth
+                      onClick={() => setShowSwapDrawer(true)}
+                      sx={{
+                        background: 'linear-gradient(90deg, #0088CC, #00A3FF)',
+                        color: 'white',
+                        height: '48px',
+                        borderRadius: '12px',
+                        fontSize: '16px',
+                        fontWeight: '600',
+                        textTransform: 'none',
+                        position: 'relative',
+                        overflow: 'hidden',
+                        '&:hover': {
+                          background: 'linear-gradient(90deg, #00A3FF, #0088CC)',
+                        },
+                        '&::before': {
+                          content: '""',
+                          position: 'absolute',
+                          top: 0,
+                          left: '-100%',
+                          width: '100%',
+                          height: '100%',
+                          background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)',
+                          animation: 'shine 2s infinite',
+                        },
+                      }}
+                    >
+                      Get More Tickets
+                    </Button>
+                  ) : null;
+                })()}
 
                 <Typography sx={{ 
                   color: 'rgba(255, 255, 255, 0.7)', 
@@ -1609,14 +1622,17 @@ const BoxOpening: React.FC = () => {
                   textAlign: 'center',
                   padding: '8px 12px',
                   borderRadius: '8px',
-               
                 }}>
                   {(() => {
                     const currentLevel = userStats?.level || 0;
                     const nextLevel = currentLevel + 1;
                     const currentTickets = userStats?.tickets || 0;
                     const neededTickets = nextLevel - currentTickets;
-                    return `You need ${neededTickets} more ticket${neededTickets > 1 ? 's' : ''} to reach Level ${nextLevel}`;
+                    
+                    // Sadece yetersiz ticket varsa mesajı göster
+                    return neededTickets > 0 
+                      ? `You need ${neededTickets} more ticket${neededTickets > 1 ? 's' : ''} to reach Level ${nextLevel}`
+                      : null;
                   })()}
                 </Typography>
 
