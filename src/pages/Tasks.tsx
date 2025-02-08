@@ -35,20 +35,20 @@ import task1Logo from '../assets/task1logo.png';
 import task2Logo from '../assets/instagram.png';
 import task4Logo from '../assets/tik-tok.png';
 import task5Logo from '../assets/telegram.png';
-import task7Logo from '../assets/darkLogo.png';
-import task8Logo from '../assets/darkLogo.png';
+import task7Logo from '../assets/booba-logo.png';
+import task8Logo from '../assets/booba-logo.png';
 
 import watchad from '../assets/ad.png';
 
 
 import task9Logo from '../assets/ton_logo_dark_background.svg';
-import task10Logo from '../assets/ton_logo_dark_background.svg';
-import task11Logo from '../assets/ton_logo_dark_background.svg';
 import comingSoonLogo from '../assets/task1logo.png';
 import UserDataTable from './UserDataTable';
 import { ShowAdButton } from './ShowAdButton';
 import styled from 'styled-components';
 import WithTourSection from '../components/TourGuide/withTourSection';
+import { useNavigate } from 'react-router-dom';
+import DepositDrawer from '../components/WalletDrawers/DepositDrawer';
 
 // Firebase App initialization
 const app = initializeApp(firebaseConfig);
@@ -89,20 +89,22 @@ const theme = createTheme({
 
 // Tasks metadata
 const tasksMetadata = [
-
   { title: 'Follow on X',label:'+5 BBLIP', description: '5 BBLIP', link: 'twitter://user?screen_name=BoobaBlip', reward: 5000 },
   { title: 'Follow on Instagram',label:'+5 BBLIP', description: '5 BBLIP', link: 'https://www.instagram.com/boobablip', reward: 5000 },
   { title: 'Follow on Tiktok',label:'+5 BBLIP', description: '5 BBLIP', link: 'https://www.tiktok.com/@boobablip?_t=8scYCPf4zaQ&_r=1', reward: 5000 },
   { title: 'Join Community',label:'+5 BBLIP', description: '5 BBLIP', link: 'https://t.me/BoobaBlipCommunity', reward: 5000 },
   { title: 'Invite 1 fren',label:'+5 BBLIP', description: '5 BBLIP', link: '', reward: 5000 },
-  { title: 'Invite 10 fren',label:'+25 BBLIP', description: '25 BBLIP', link: '', reward: 25000 },
+  { title: 'Invite 5 fren',label:'+0.5 TON', description: '0.5 TON', link: '', reward: 15000 },
+  { title: 'Invite 10 fren',label:'+0.75 TON', description: '0.75 TON', link: '', reward: 25000 },
+  { title: 'Invite 15 fren',label:'+1 TON', description: '1 TON', link: '', reward: 1000 },
+  { title: 'Invite 20 fren',label:'+1.5 TON', description: '1.5 TON', link: '', reward: 1500 },
   { title: 'Invite 25 fren',label:'+2.5 TON', description: '2.5 TON', link: '', reward: 2500 },
   { title: 'Invite 50 fren',label:'+5 TON', description: '5 TON', link: '', reward: 5000 },
+  { title: 'Invite 75 fren',label:'+7.5 TON', description: '7.5 TON', link: '', reward: 7500 },
   { title: 'Invite 100 fren',label:'+10 TON', description: '10 TON', link: '', reward: 10000 },
-    { title: 'Watch a Video',label:'+10 BBLIP', description: '10 BBLIP', link: 'https://example.com/watch-video', reward: 1000 },
-
-
-
+  { title: 'Watch a Video',label:'+10 BBLIP', description: '10 BBLIP', link: 'https://example.com/watch-video', reward: 1000 },
+  { title: 'Try Your Luck',label:'+0.5 TON', description: '0.5 TON', link: '', reward: 500 },
+  { title: 'Make Your First Deposit',label:'+0.5 TON', description: '0.5 TON', link: '', reward: 500 },
   { title: '', description: 'Coming Soon...', link: '' , reward: 100},
 ];
 
@@ -111,37 +113,46 @@ const taskLogos = [
   task2Logo,
   task4Logo,
   task5Logo,
-  task7Logo,
-  task8Logo,
-  task9Logo,
-  task10Logo, 
-  task11Logo,
+  task7Logo, // Invite 1
+  task9Logo, // Invite 5
+  task9Logo, // Invite 10
+  task9Logo, // Invite 15
+  task9Logo, // Invite 20
+  task9Logo, // Invite 25
+  task9Logo, // Invite 50
+  task9Logo, // Invite 75
+  task9Logo, // Invite 100
+  task8Logo, // Watch video
+  task9Logo, // Spin task
+  task9Logo, // Deposit task
   comingSoonLogo,
 ];
 
 const currencyLogo = [
-  task8Logo,
-  task8Logo,
-  task8Logo,
-  task8Logo,
-  task8Logo,
-  task8Logo,
-  task9Logo,
-  task10Logo,
-  task11Logo,
+  task8Logo, // Follow X
+  task8Logo, // Follow Instagram
+  task8Logo, // Follow Tiktok
+  task8Logo, // Join Community
+  task8Logo, // Invite 1
+  task9Logo, // Invite 5
+  task9Logo, // Invite 10
+  task9Logo, // Invite 15
+  task9Logo, // Invite 20
+  task9Logo, // Invite 25
+  task9Logo, // Invite 50
+  task9Logo, // Invite 75
+  task9Logo, // Invite 100
+  task8Logo, // Watch video
+  task9Logo, // Spin task
+  task9Logo, // Deposit task
   comingSoonLogo,
 ];
 
 
 const categories = [
-
-  { id: 1, name: 'New', tasks: [9,0, 1,2,3] },
-
-  { id: 2, name: 'Socials', tasks: [0,1,2, 3] },
-
-  { id: 3, name: 'Frens', tasks: [4,5,6,7,8] },
-
-
+  { id: 1, name: 'New', tasks: [13, 14, 15] },
+  { id: 2, name: 'Socials', tasks: [0,1,2,3] },
+  { id: 3, name: 'Frens', tasks: [4,5,6,7,8,10,11,12] },
 ];
 
 
@@ -181,142 +192,177 @@ const CategorySelector = ({ category, isSelected, hasBadge, onClick }: {
 );
 
 // Task kartı stilini güncelliyorum
-const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount, requiredCount }: any) => (
-  <Paper
-    elevation={0}
-    sx={{
-      borderRadius: 2,
-      
-      mb: 1,
-      width: '95%',
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      transition: 'all 0.2s ease',
-   
-    }}
-  >
-    <Box //@ts-ignore
-    sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-      <Box
-        component="img"
-        src={taskLogos[index]}
-        alt={`Task ${index + 1} logo`}
-        sx={{
-          width: 20,
-          height: 20,
-          borderRadius: '12px',
-          p: 1,
-      
-          backgroundColor: 'rgba(0, 198, 255, 0.05)',
-          border: '1px solid rgba(255, 255, 255, 0.08)',
-        }}
-      />
-      <Box>
-        <Typography 
-         textAlign={'left'}
-          sx={{ 
-            color: '#FFFFFF',
-                fontsize:'0.85rem',
-      
-          }}
-        >
-          {task.title}
-        </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          {index >= 4 && index <= 9 && (
-            <Box
-              sx={{
-                px: 1.5,
-                py: 0.5,
-                backgroundColor: invitedCount >= requiredCount ? 'rgba(76, 175, 80, 0.1)' : 'rgba(255, 152, 0, 0.1)',
-                borderRadius: '6px',
-                display: 'inline-flex',
-                alignItems: 'center',
-              }}
-            >
-              <Typography
-                variant="caption"
-                sx={{
-                  color: invitedCount >= requiredCount ? '#4caf50' : '#ff9800',
-                  fontWeight: 600,
-                }}
-              >
-                {invitedCount}/{requiredCount}
-              </Typography>
-            </Box>
-          )}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Box
-              component="img"
-              src={currencyLogo[index]}
-              alt=""
-              sx={{
-                width: 16,
-                height: 16,
-                borderRadius: '50%',
-              }}
-            />
-            <Typography
-              variant="caption"
-              sx={{
-                color: index >= 6 && index <= 9 ? '#89d9ff' : '#98d974',
-                fontWeight: 600,
-              }}
-            >
-              {task.label}
-            </Typography>
-          </Box>
-        </Box>
-      </Box>
-    </Box>
+const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount, requiredCount, hasSpinned, deposits }: {
+  task: typeof tasksMetadata[0];
+  index: number;
+  status?: { completed: boolean; disabled: boolean };
+  loading: boolean;
+  onStart: () => void;
+  onClaim: () => void;
+  invitedCount: number;
+  requiredCount: number;
+  hasSpinned?: boolean;
+  deposits?: Record<string, any[]>;
+}) => {
+  const navigate = useNavigate();
+  const [isDepositDrawerOpen, setIsDepositDrawerOpen] = useState(false);
 
-    {status?.completed ? (
-      status?.disabled ? (
+  const handleDepositClick = () => {
+    setIsDepositDrawerOpen(true);
+  };
+
+  const hasDeposits = deposits && Object.keys(deposits).length > 0;
+
+  const renderButton = () => {
+    if (index === 15) { // Deposit task
+      if (hasDeposits) {
+        if (status?.disabled) {
+          return (
+            <Button
+              variant="contained"
+              disabled
+              sx={{
+                mr: 1,
+                backgroundColor: '#4caf50',
+                opacity: 0.7,
+                '&:disabled': {
+                  color: '#fff',
+                },
+              }}
+            >
+              Completed
+            </Button>
+          );
+        }
+        return (
+          <Button
+            variant="outlined"
+            onClick={onClaim}
+            sx={{
+              borderColor: '#4caf50',
+              color: '#4caf50',
+            }}
+          >
+            {loading ? <CircularProgress size={20} color="inherit" /> : 'Claim'}
+          </Button>
+        );
+      }
+      return (
         <Button
-        
           variant="contained"
-          disabled
+          onClick={handleDepositClick}
           sx={{
-            mr:1,
-            backgroundColor: '#4caf50',
-            opacity: 0.7,
-            '&:disabled': {
-              color: '#fff',
+            p: 1,
+            backgroundColor: 'rgba(110, 211, 255, 0.1)',
+            color: '#6ed3ff',
+            '&:hover': {
+              backgroundColor: 'rgba(110, 211, 255, 0.2)',
             },
           }}
         >
-          Completed
+          {loading ? <CircularProgress size={20} color="inherit" /> : 'Deposit'}
         </Button>
-      ) : (
+      );
+    }
+
+    if (index === 14) { // Spin task
+      if (hasSpinned) {
+        if (status?.disabled) {
+          return (
+            <Button
+              variant="contained"
+              disabled
+              sx={{
+                mr: 1,
+                backgroundColor: '#4caf50',
+                opacity: 0.7,
+                '&:disabled': {
+                  color: '#fff',
+                },
+              }}
+            >
+              Completed
+            </Button>
+          );
+        }
+        return (
+          <Button
+            variant="outlined"
+            onClick={onClaim}
+            sx={{
+              borderColor: '#4caf50',
+              color: '#4caf50',
+            }}
+          >
+            {loading ? <CircularProgress size={20} color="inherit" /> : 'Claim'}
+          </Button>
+        );
+      }
+      return (
+        <Button
+          variant="contained"
+          onClick={() => navigate('/latest-booba/slot')}
+          sx={{
+            p: 1,
+            backgroundColor: 'rgba(110, 211, 255, 0.1)',
+            color: '#6ed3ff',
+            '&:hover': {
+              backgroundColor: 'rgba(110, 211, 255, 0.2)',
+            },
+          }}
+        >
+          {loading ? <CircularProgress size={20} color="inherit" /> : 'Spin'}
+        </Button>
+      );
+    }
+
+    // Default task button
+    if (status?.completed) {
+      if (status.disabled) {
+        return (
+          <Button
+            variant="contained"
+            disabled
+            sx={{
+              mr: 1,
+              backgroundColor: '#4caf50',
+              opacity: 0.7,
+              '&:disabled': {
+                color: '#fff',
+              },
+            }}
+          >
+            Completed
+          </Button>
+        );
+      }
+      return (
         <Button
           variant="outlined"
           onClick={onClaim}
           sx={{
             borderColor: '#4caf50',
-         
             color: '#4caf50',
-          
           }}
         >
           {loading ? <CircularProgress size={20} color="inherit" /> : 'Claim'}
         </Button>
-      )
-    ) : (
+      );
+    }
+
+    return (
       <Button
         variant="contained"
         onClick={onStart}
-        disabled={index >= 4 && index <= 9 && invitedCount < requiredCount}
+        disabled={index >= 4 && index <= 12 && invitedCount < requiredCount}
         component={index <= 3 ? 'a' : 'button'}
         href={index <= 3 ? task.link : undefined}
         target={index <= 3 ? "_blank" : undefined}
         rel={index <= 3 ? "noopener noreferrer" : undefined}
         sx={{
-       p:1,
-                              backgroundColor: 'rgba(110, 211, 255, 0.1)',
-                                      color: '#6ed3ff'
-,
-         
+          p: 1,
+          backgroundColor: 'rgba(110, 211, 255, 0.1)',
+          color: '#6ed3ff',
           '&:disabled': {
             background: '#2f363a',
             color: 'rgba(255, 255, 255, 0.3)',
@@ -325,64 +371,148 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
       >
         {loading ? <CircularProgress size={20} color="inherit" /> : 'Start'}
       </Button>
-    )}
-  </Paper>
-);
+    );
+  };
+
+  return (
+    <>
+      <Paper
+        elevation={0}
+        sx={{
+          borderRadius: 2,
+          mb: 1,
+          width: '95%',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          transition: 'all 0.2s ease',
+        }}
+      >
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Box
+            component="img"
+            src={taskLogos[index]}
+            alt={`Task ${index + 1} logo`}
+            sx={{
+              width: 20,
+              height: 20,
+              borderRadius: '12px',
+              p: 1,
+              backgroundColor: 'rgba(0, 198, 255, 0.05)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+            }}
+          />
+          <Box>
+            <Typography 
+              textAlign={'left'}
+              sx={{ 
+                color: '#FFFFFF',
+                fontsize:'0.85rem',
+              }}
+            >
+              {task.title}
+            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              {index >= 4 && index <= 12 && (
+                <Box
+                  sx={{
+                    px: 1.5,
+                    py: 0.5,
+                    backgroundColor: invitedCount >= requiredCount ? 'rgba(76, 175, 80, 0.1)' : 'rgba(255, 152, 0, 0.1)',
+                    borderRadius: '6px',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      color: invitedCount >= requiredCount ? '#4caf50' : '#ff9800',
+                      fontWeight: 600,
+                    }}
+                  >
+                    {invitedCount}/{requiredCount}
+                  </Typography>
+                </Box>
+              )}
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Box
+                  component="img"
+                  src={currencyLogo[index]}
+                  alt=""
+                  sx={{
+                    width: 16,
+                    height: 16,
+                    borderRadius: '50%',
+                  }}
+                />
+                <Typography
+                  variant="caption"
+                  sx={{
+                    color: task.description.includes('TON') ? '#89d9ff' : '#98d974',
+                    fontWeight: 600,
+                  }}
+                >
+                  {task.label}
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+
+        {renderButton()}
+      </Paper>
+      <DepositDrawer open={isDepositDrawerOpen} onClose={() => setIsDepositDrawerOpen(false)} />
+    </>
+  );
+};
 
 
 // Ana bileşeni güncelliyorum
 const DealsComponent: React.FC = () => {
-  const [taskStatus, setTaskStatus] = useState<Record<number, { completed: boolean; disabled: boolean }>>({});
-  const [loading, setLoading] = useState(true);
+  const [taskStatus, setTaskStatus] = useState<{ [key: number]: { completed: boolean; disabled: boolean } }>({});
+  const [selectedCategory, setSelectedCategory] = useState(1);
+  const [loadingTaskIndex, setLoadingTaskIndex] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
-
-  const [selectedCategory, setSelectedCategory] = useState<number>(1);
-  const [loadingTaskIndex, setLoadingTaskIndex] = useState<number | null>(null); // Track the task being processed
-  const [openSnackbar, setOpenSnackbar] = useState(false); // Snackbar state
-  const [rewardMessage, setRewardMessage] = useState<string>(''); // Reward message for snackbar
-  
-  
-
-  const [invitedUsersCount, setInvitedUsersCount] = useState(0); // Davet edilen kullanıcı sayısı
-
-  
-  
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [rewardMessage, setRewardMessage] = useState('');
+  const [invitedUsersCount, setInvitedUsersCount] = useState(0);
+  const [hasSpinned, setHasSpinned] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [deposits, setDeposits] = useState<Record<string, any[]>>({});
 
   useEffect(() => {
-    const fetchUserTasks = async () => {
-      try {
-        setLoading(true);
-        const telegramUserId = localStorage.getItem('telegramUserId');
+    const telegramUserId = localStorage.getItem('telegramUserId');
+    if (!telegramUserId) {
+      setLoading(false);
+      return;
+    }
 
-        if (!telegramUserId) {
-          throw new Error('User ID not found. Please log in again.');
+    const userDocRef = doc(db, 'users', telegramUserId);
+    const unsubscribe = onSnapshot(userDocRef, (doc) => {
+      if (doc.exists()) {
+        const data = doc.data();
+        // Update task status
+        if (data.tasks) {
+          setTaskStatus(data.tasks);
         }
-
-        const userDocRef = doc(db, 'users', telegramUserId);
-        
-        // Using onSnapshot for real-time updates
-        const unsubscribe = onSnapshot(userDocRef, (docSnapshot) => {
-          if (docSnapshot.exists()) {
-            const userData = docSnapshot.data();
-            setTaskStatus(userData.tasks || {});
-             const invitedUsers = userData.invitedUsers || [];
-          setInvitedUsersCount(invitedUsers.length);
-          } else {
-            setError('User document not found.');
-          }
-        });
-
-        // Cleanup function to stop the real-time listener when the component unmounts
-        return () => unsubscribe();
-
-      } catch (err) {
-        setError((err as Error).message);
-      } finally {
-        setLoading(false);
+        // Update invited users count
+        if (data.invitedUsers) {
+          setInvitedUsersCount(data.invitedUsers.length);
+        }
+        // Update hasSpinned status
+        if (data.hasSpinned !== undefined) {
+          setHasSpinned(data.hasSpinned);
+        }
+        // Update deposits
+        if (data.deposits) {
+          setDeposits(data.deposits);
+        }
       }
-    };
+      setLoading(false);
+    });
 
-    fetchUserTasks();
+    return () => unsubscribe();
   }, []);
 
   const handleTaskCompletion = async (taskIndex: number) => {
@@ -390,32 +520,37 @@ const DealsComponent: React.FC = () => {
       const telegramUserId = localStorage.getItem('telegramUserId');
       if (!telegramUserId) throw new Error('User ID not found.');
 
-      setLoadingTaskIndex(taskIndex); // Show loading spinner for the task
+      setLoadingTaskIndex(taskIndex);
 
-      // Immediately update task status before redirection (Only set completed to true)
+      // Update Firestore with only the completed field
+      const userDocRef = doc(db, 'users', telegramUserId);
+      if (taskIndex === 14) {
+        // For spin task, update hasSpinned field
+        await updateDoc(userDocRef, {
+          hasSpinned: true,
+          [`tasks.${taskIndex}.completed`]: true,
+        });
+        setHasSpinned(true); // Update local state
+      } else {
+        await updateDoc(userDocRef, {
+          [`tasks.${taskIndex}.completed`]: true,
+        });
+      }
+
+      // Update local state
       const updatedTasks = {
         ...taskStatus,
         [taskIndex]: { ...taskStatus[taskIndex], completed: true },
       };
-
       setTaskStatus(updatedTasks);
 
-      // Update Firestore with only the completed field
-      const userDocRef = doc(db, 'users', telegramUserId);
-      await updateDoc(userDocRef, {
-        [`tasks.${taskIndex}.completed`]: true,
-      });
-
-
-
-      // Wait for 5 seconds before hiding the loading spinner
       setTimeout(() => {
-        setLoadingTaskIndex(null); // Hide the spinner after 5 seconds
-      }, 15000); // Wait for 5 seconds before hiding the spinner
+        setLoadingTaskIndex(null);
+      }, 15000);
     } catch (err) {
       console.error('Error completing task:', err);
       setError('An error occurred. Please try again.');
-      setLoadingTaskIndex(null); // Hide the spinner in case of error
+      setLoadingTaskIndex(null);
     }
   };
 
@@ -424,26 +559,30 @@ const DealsComponent: React.FC = () => {
       const telegramUserId = localStorage.getItem('telegramUserId');
       if (!telegramUserId) throw new Error('User ID not found.');
 
-      setLoadingTaskIndex(taskIndex); // Show loading spinner for the claim action
+      // For spin task, check if user has actually spun
+      if (taskIndex === 14 && !hasSpinned) {
+        setError('Please spin first before claiming the reward.');
+        return;
+      }
+
+      setLoadingTaskIndex(taskIndex);
 
       // Get the reward and description for the selected task
-      const reward = tasksMetadata[taskIndex].reward;
-      const description = tasksMetadata[taskIndex].description;
+      const reward = tasksMetadata[taskIndex].description;
+      const isTON = reward.includes('TON');
+      
+      // Convert TON amount to the correct value (e.g., "1.5 TON" -> 1.5)
+      const rewardAmount = isTON 
+        ? parseFloat(reward.split(' ')[0]) * 1000 // Convert TON to millitokens
+        : tasksMetadata[taskIndex].reward;
 
       // Update Firestore with the claim action and reward
       const userDocRef = doc(db, 'users', telegramUserId);
       
-      if (description.includes('BBLIP')) {
-        await updateDoc(userDocRef, {
-          [`tasks.${taskIndex}.disabled`]: true,
-          bblip: increment(reward)
-        });
-      } else if (description.includes('TON')) {
-        await updateDoc(userDocRef, {
-          [`tasks.${taskIndex}.disabled`]: true,
-          total: increment(reward)
-        });
-      }
+      await updateDoc(userDocRef, {
+        [`tasks.${taskIndex}.disabled`]: true,
+        [isTON ? 'total' : 'bblip']: increment(rewardAmount)
+      });
 
       // Update local state
       const updatedTasks = {
@@ -453,7 +592,7 @@ const DealsComponent: React.FC = () => {
       setTaskStatus(updatedTasks);
 
       // Set the reward message for the snackbar
-      setRewardMessage(`${description} claimed succesfully`);
+      setRewardMessage(`${tasksMetadata[taskIndex].description} claimed succesfully`);
 
       // Show success message  
       setOpenSnackbar(true);
@@ -710,11 +849,17 @@ Earn rewards by completing tasks, invite friends, watching ads, and more in our 
                       invitedCount={invitedUsersCount}
                       requiredCount={
                         taskIndex === 4 ? 1 :
-                        taskIndex === 5 ? 10 :
-                        taskIndex === 6 ? 25 :
-                        taskIndex === 7 ? 50 :
-                        taskIndex === 8 ? 100 : 0
+                        taskIndex === 5 ? 5 :
+                        taskIndex === 6 ? 10 :
+                        taskIndex === 7 ? 15 :
+                        taskIndex === 8 ? 20 :
+                        taskIndex === 9 ? 25 :
+                        taskIndex === 10 ? 50 :
+                        taskIndex === 11 ? 75 :
+                        taskIndex === 12 ? 100 : 0
                       }
+                      hasSpinned={taskIndex === 14 && hasSpinned}
+                      deposits={deposits}
                     />
                   );
                 })}
@@ -787,18 +932,55 @@ Earn rewards by completing tasks, invite friends, watching ads, and more in our 
             open={openSnackbar}
             autoHideDuration={3000}
             onClose={() => setOpenSnackbar(false)}
-            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             TransitionComponent={Slide}
+            sx={{
+              mb: 2,
+              '& .MuiSnackbar-root': {
+                minWidth: '300px'
+              }
+            }}
           >
             <Alert
               severity="success"
               variant="filled"
+              onClose={() => setOpenSnackbar(false)}
+              icon={false}
               sx={{
-                backgroundColor: '#4caf50',
+                minWidth: '300px',
+                backgroundColor: 'rgba(26, 33, 38, 0.95)',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(110, 211, 255, 0.1)',
                 color: '#fff',
-                borderRadius: '8px',
+                borderRadius: '16px',
+                padding: '16px',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+                '& .MuiAlert-message': {
+                  padding: 0,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1.5,
+                  fontSize: '0.95rem',
+                  fontWeight: 500
+                },
                 '& .MuiAlert-icon': {
-                  color: '#fff'
+                  padding: 0,
+                  marginRight: 0,
+                  fontSize: '1.5rem'
+                },
+                '&::before': {
+                  content: '""',
+                  display: 'block',
+                  width: '24px',
+                  height: '24px',
+                  backgroundImage: rewardMessage.includes('TON') 
+                    ? `url(${task9Logo})`
+                    : `url(${task8Logo})`,
+                  backgroundSize: 'cover',
+                  borderRadius: '50%'
                 }
               }}
             >

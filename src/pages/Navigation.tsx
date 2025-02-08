@@ -123,9 +123,8 @@ export default function Navigation() {
   };
 
   const handleTelegramClick = () => {
-    // URL encode the default message
-    const defaultMessage = encodeURIComponent("Merhaba, bir konuda yardıma ihtiyacım var.");
-    window.open(`https://t.me/BoobaBlipCMO?start=${defaultMessage}`, '_blank');
+    const defaultMessage = encodeURIComponent("Hello! I need support with Booba platform.");
+    window.open(`https://t.me/BoobaBlipCMO?text=${defaultMessage}`, '_blank');
     setIsModalOpen(false);
   };
 
@@ -195,14 +194,14 @@ export default function Navigation() {
             borderBottom: '1px solid rgba(110, 211, 255, 0.1)',
             color: '#6ed3ff'
           }}>
-            Teknik Destek
+            Technical Support
           </DialogTitle>
           <DialogContent sx={{ mt: 2 }}>
             <Typography variant="body1" sx={{ mb: 2 }}>
-              Herhangi bir sorunuz veya sorununuz mu var? Size yardımcı olmaktan mutluluk duyarız.
+              Do you have any questions or concerns? We'd be happy to help you.
             </Typography>
             <Typography variant="body2" color="grey.400">
-              Telegram üzerinden bize ulaşabilirsiniz. Destek ekibimiz en kısa sürede size dönüş yapacaktır.
+              You can reach us via Telegram. Our support team will get back to you as soon as possible.
             </Typography>
           </DialogContent>
           <DialogActions sx={{ 
