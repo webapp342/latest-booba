@@ -6,12 +6,15 @@ import {
   styled,
   Button,
   CircularProgress,
+  ToggleButtonGroup,
+  ToggleButton,
 } from '@mui/material';
 import { doc, getFirestore, onSnapshot } from 'firebase/firestore';
 import { app } from '../../pages/firebaseConfig';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CloseIcon from '@mui/icons-material/Close';
+import { ArrowDownCircle, ArrowUpCircle } from 'lucide-react';
 
 const db = getFirestore(app);
 
@@ -58,9 +61,16 @@ interface Transaction {
   timestamp?: number;
 }
 
+interface Deposit {
+  amount: number;
+  timestamp: number;
+}
+
 const HistoryDrawer: React.FC<HistoryDrawerProps> = ({ open, onClose }) => {
   const [transactions, setTransactions] = useState<Record<string, Transaction>>({});
+  const [deposits, setDeposits] = useState<Deposit[]>([]);
   const [loading, setLoading] = useState(true);
+  const [view, setView] = useState<'withdrawals' | 'deposits'>('withdrawals');
 
   useEffect(() => {
     const telegramUserId = localStorage.getItem("telegramUserId");
@@ -74,12 +84,19 @@ const HistoryDrawer: React.FC<HistoryDrawerProps> = ({ open, onClose }) => {
       if (docSnap.exists()) {
         const userData = docSnap.data();
         setTransactions(userData.fields || {});
+        setDeposits(userData.deposits || []);
       }
       setLoading(false);
     });
 
     return () => unsubscribe();
   }, []);
+
+  const handleViewChange = (_: React.MouseEvent<HTMLElement>, newView: 'withdrawals' | 'deposits') => {
+    if (newView !== null) {
+      setView(newView);
+    }
+  };
 
   const pendingTransactions = Object.entries(transactions)
     .filter(([_, tx]) => !tx.completed)
@@ -88,6 +105,8 @@ const HistoryDrawer: React.FC<HistoryDrawerProps> = ({ open, onClose }) => {
   const completedTransactions = Object.entries(transactions)
     .filter(([_, tx]) => tx.completed)
     .sort(([a], [b]) => Number(b) - Number(a));
+
+  const sortedDeposits = [...deposits].sort((a, b) => b.timestamp - a.timestamp);
 
   const formatAddress = (address: string) => {
     if (address.length <= 12) return address;
@@ -126,16 +145,53 @@ const HistoryDrawer: React.FC<HistoryDrawerProps> = ({ open, onClose }) => {
         >
           Transaction History
         </Typography>
-        <Box sx={{ width: 40 }} /> {/* Spacing için boş box */}
+        <Box sx={{ width: 40 }} />
       </DrawerHeader>
 
+      <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
+        <ToggleButtonGroup
+          value={view}
+          exclusive
+          onChange={handleViewChange}
+          sx={{
+            backgroundColor: 'rgba(110, 211, 255, 0.05)',
+            border: '1px solid rgba(110, 211, 255, 0.1)',
+            borderRadius: '12px',
+            '& .MuiToggleButton-root': {
+              border: 'none',
+              color: 'rgba(255, 255, 255, 0.6)',
+              '&.Mui-selected': {
+                backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                color: '#6ed3ff',
+              },
+              '&:hover': {
+                backgroundColor: 'rgba(110, 211, 255, 0.15)',
+              },
+            },
+          }}
+        >
+          <ToggleButton 
+            value="withdrawals"
+            sx={{ px: 3, py: 1, display: 'flex', gap: 1 }}
+          >
+            <ArrowUpCircle size={18} />
+            Withdrawals
+          </ToggleButton>
+          <ToggleButton 
+            value="deposits"
+            sx={{ px: 3, py: 1, display: 'flex', gap: 1 }}
+          >
+            <ArrowDownCircle size={18} />
+            Deposits
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </Box>
+
       {loading ? (
-        <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 ,'&::-webkit-scrollbar': {
-    display: 'none'
-  },}}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', py: 4, '&::-webkit-scrollbar': { display: 'none' } }}>
           <CircularProgress sx={{ color: '#6ed3ff' }} />
         </Box>
-      ) : (
+      ) : view === 'withdrawals' ? (
         <Box sx={{ overflow: 'auto' }}>
           {pendingTransactions.length > 0 && (
             <>
@@ -179,9 +235,7 @@ const HistoryDrawer: React.FC<HistoryDrawerProps> = ({ open, onClose }) => {
 
           {completedTransactions.length > 0 && (
             <>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, mt: 3 ,'&::-webkit-scrollbar': {
-    display: 'none'
-  },}}>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, mt: 3 }}>
                 <CheckCircleIcon sx={{ color: '#4caf50', mr: 1, fontSize: 20 }} />
                 <Typography sx={{ color: '#4caf50', fontWeight: 600 }}>
                   Completed Transactions
@@ -229,10 +283,68 @@ const HistoryDrawer: React.FC<HistoryDrawerProps> = ({ open, onClose }) => {
               opacity: 0.6
             }}>
               <Typography variant="h6" sx={{ color: '#fff', mb: 1 }}>
-                No transactions yet
+                No withdrawals yet
               </Typography>
               <Typography sx={{ color: 'rgba(255, 255, 255, 0.6)' }}>
                 Your withdrawal history will appear here
+              </Typography>
+            </Box>
+          )}
+        </Box>
+      ) : (
+        <Box sx={{ overflow: 'auto' }}>
+          {sortedDeposits.length > 0 ? (
+            <>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, mt: 1 }}>
+                <CheckCircleIcon sx={{ color: '#4caf50', mr: 1, fontSize: 20 }} />
+                <Typography sx={{ color: '#4caf50', fontWeight: 600 }}>
+                  Deposit History
+                </Typography>
+              </Box>
+              {sortedDeposits.map((deposit, index) => (
+                <TransactionItem key={index}>
+                  <Box>
+                    <Typography sx={{ color: '#fff', mb: 0.5 }}>
+                      Deposit
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.6)' }}>
+                      {new Date(deposit.timestamp * 1000).toLocaleString()}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ textAlign: 'right' }}>
+                    <Typography sx={{ color: '#fff', fontWeight: 600 }}>
+                      {deposit.amount} TON
+                    </Typography>
+                    <Typography 
+                      variant="body2" 
+                      sx={{ 
+                        color: '#4caf50',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'flex-end'
+                      }}
+                    >
+                      <CheckCircleIcon sx={{ fontSize: 16, mr: 0.5 }} />
+                      Completed
+                    </Typography>
+                  </Box>
+                </TransactionItem>
+              ))}
+            </>
+          ) : (
+            <Box sx={{ 
+              display: 'flex', 
+              flexDirection: 'column', 
+              alignItems: 'center', 
+              justifyContent: 'center',
+              height: '50vh',
+              opacity: 0.6
+            }}>
+              <Typography variant="h6" sx={{ color: '#fff', mb: 1 }}>
+                No deposits yet
+              </Typography>
+              <Typography sx={{ color: 'rgba(255, 255, 255, 0.6)' }}>
+                Your deposit history will appear here
               </Typography>
             </Box>
           )}
