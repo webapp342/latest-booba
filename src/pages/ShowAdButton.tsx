@@ -61,7 +61,7 @@ export function ShowAdButton(): ReactElement {
 
   const onReward = useCallback(() => {
     alert('Congratulations, your reward has been added to your wallet');
-    updateUserBblip(1000).catch((error) => {
+    updateUserBblip(5000).catch((error) => {
       console.error('Bblip güncellenirken hata oluştu:', error);
       alert('Bblip güncellenirken bir hata oluştu.');
     });
