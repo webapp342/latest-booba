@@ -526,24 +526,22 @@ const DealsComponent: React.FC = () => {
       // Update Firestore with only the completed field
       const userDocRef = doc(db, 'users', telegramUserId);
       if (taskIndex === 14) {
-        // For spin task, update hasSpinned field
+        // For spin task, only update hasSpinned field, not the completed status
         await updateDoc(userDocRef, {
           hasSpinned: true,
-          [`tasks.${taskIndex}.completed`]: true,
         });
         setHasSpinned(true); // Update local state
       } else {
         await updateDoc(userDocRef, {
           [`tasks.${taskIndex}.completed`]: true,
         });
+        // Update local state
+        const updatedTasks = {
+          ...taskStatus,
+          [taskIndex]: { ...taskStatus[taskIndex], completed: true },
+        };
+        setTaskStatus(updatedTasks);
       }
-
-      // Update local state
-      const updatedTasks = {
-        ...taskStatus,
-        [taskIndex]: { ...taskStatus[taskIndex], completed: true },
-      };
-      setTaskStatus(updatedTasks);
 
       setTimeout(() => {
         setLoadingTaskIndex(null);
