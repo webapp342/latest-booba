@@ -150,7 +150,7 @@ const currencyLogo = [
 
 
 const categories = [
-  { id: 1, name: 'New', tasks: [13, 14, 15] },
+  { id: 1, name: 'New', tasks: [9, 14, 15] },
   { id: 2, name: 'Socials', tasks: [0,1,2,3] },
   { id: 3, name: 'Frens', tasks: [4,5,6,7,8,10,11,12] },
 ];
