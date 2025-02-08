@@ -196,7 +196,9 @@ const DepositDrawer: React.FC<DepositDrawerProps> = ({ open, onClose }) => {
           }}>
    
 
-            <Box sx={{
+            <Box 
+            //@ts-ignore
+            sx={{
               width: '90%',
               mb: 3,
               display: 'flex',
@@ -237,7 +239,8 @@ const DepositDrawer: React.FC<DepositDrawerProps> = ({ open, onClose }) => {
               gap: 1,
               width: '90%'
             }}>
-              <Box sx={{
+              <Box //@ts-ignore
+              sx={{
                 width: 6,
                 height: 6,
                 borderRadius: '50%',
@@ -267,10 +270,10 @@ const DepositDrawer: React.FC<DepositDrawerProps> = ({ open, onClose }) => {
                   textOverflow: 'ellipsis',
                   fontFamily: 'monospace'
                 }}>
-                  UQCHHbMAASLfzfSaMhuNcN_CYV4V-9gek7djHixvW5gBfVhJ
+                  UQDppAsjyioMu23LIEaFBm5g5o5oNjRft99oe4gfv-c9BNn2
                 </Typography>
                 <Button
-                  onClick={() => handleCopy('UQCHHbMAASLfzfSaMhuNcN_CYV4V-9gek7djHixvW5gBfVhJ')}
+                  onClick={() => handleCopy('UQDppAsjyioMu23LIEaFBm5g5o5oNjRft99oe4gfv-c9BNn2')}
                   sx={{ 
                     color: '#6ed3ff',
                     fontSize: '0.75rem',

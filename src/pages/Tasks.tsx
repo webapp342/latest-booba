@@ -388,7 +388,8 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
           transition: 'all 0.2s ease',
         }}
       >
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Box //@ts-ignore
+        sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Box
             component="img"
             src={taskLogos[index]}
