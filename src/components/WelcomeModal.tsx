@@ -178,7 +178,7 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
       const updates: any = {
         [`boxes.${selectedBox.title}`]: increment(1),
         welcomeBonus: true,
-        keys: increment(1) // Bir anahtar da ekle
+        keys: increment(5) // Bir anahtar da ekle
       };
 
       await updateDoc(userRef, updates);
@@ -237,7 +237,7 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
           background: 'linear-gradient(90deg, rgba(110,211,255,0.1), rgba(142,233,255,0.05))',
           borderBottom: '1px solid rgba(255,255,255,0.1)'
         }}>
-          <Box 
+          <Box //@ts-ignore
           sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <Typography variant="h6" sx={{ 
               background: 'linear-gradient(90deg, #6ed3ff, #8ee9ff)',
@@ -290,7 +290,8 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
           }}
         >
           {/* Arka plan efekti */}
-          <Box sx={{
+          <Box 
+           sx={{
             position: 'absolute',
             top: 0,
             left: 0,
@@ -333,7 +334,8 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
         </DialogContent>
 
         {/* Bonus bilgisi */}
-        <Box sx={{ 
+        <Box //@ts-ignore
+        sx={{ 
           p: 2, 
           display: 'flex', 
           gap: 2,
@@ -366,7 +368,7 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
           }}>
             <KeyIcon size={16} />
             <Typography sx={{ color: '#6ed3ff', fontWeight: 'bold' }}>
-              +1 Key
+              +5 Key
             </Typography>
           </Box>
         </Box>
