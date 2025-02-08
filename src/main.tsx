@@ -9,12 +9,10 @@ import LocalStorageViewer from "./pages/LocalStorageViewer.tsx";
 import TokenSwap from "./pages/SwapComponent.tsx";
 import WebApp from "@twa-dev/sdk";
 
-import TopComponent from "./pages/Cup.tsx";
 import DealsComponent from "./pages/Tasks.tsx";
 import TestComponent from "./pages/TestComponent.tsx";
 import { SlotMachine } from './pages/spot/SlotMachine';
 import ImageSlider from "./pages/ImageSlider.tsx";
-import MatchesList from "./pages/MatchesList.tsx";
 import AdminPanel from "./pages/AdminPanel.tsx";
 import NewComponent from "./components/NewComponent.tsx";
 import Stats from "./components/Stats.tsx";
@@ -69,7 +67,7 @@ const theme = createTheme({
 });
 
 const DefaultErrorElement = () => (
-  <Box
+  <Box //@ts-ignore
     sx={{
       p: 4,
       textAlign: 'center',
@@ -147,10 +145,7 @@ const router = createBrowserRouter([
         path: "games",
         element: <ImageSlider />
       },
-      {
-        path: "matches",
-        element: <MatchesList />
-      },
+   
       {
         path: "admin",
         element: <AdminPanel />
@@ -159,10 +154,7 @@ const router = createBrowserRouter([
         path: "slot",
         element: <SlotMachine />
       },
-      {
-        path: "top",
-        element: <TopComponent />
-      },
+    
       {
         path: "mystery-box",
         element: <BoxOpening />
