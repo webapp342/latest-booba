@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   Box,
   Button,
@@ -29,15 +29,19 @@ const DirectLinkAd: React.FC<DirectLinkAdProps> = ({ onAdComplete, disabled }) =
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleAdClick = async () => {
+  const handleAdClick = useCallback(() => {
     setLoading(true);
     setError(null);
 
     try {
-      // Yeni pencerede Direct Link'i aç
-      window.open(ADSTERRA_DIRECT_LINK, '_blank');
+      // Create an invisible anchor element
+      const link = document.createElement('a');
+      link.href = ADSTERRA_DIRECT_LINK;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.click();
 
-      // İsteğe bağlı callback
+      // Optional callback
       if (onAdComplete) {
         onAdComplete();
       }
@@ -46,7 +50,7 @@ const DirectLinkAd: React.FC<DirectLinkAdProps> = ({ onAdComplete, disabled }) =
     } finally {
       setLoading(false);
     }
-  };
+  }, [onAdComplete]);
 
   return (
     <Box 
