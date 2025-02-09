@@ -1028,7 +1028,8 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ defaultAmount, onClose }) => {
 
           {/* Custom Keyboard */}
           <KeyboardContainer>
-            <Box sx={{ p: 1 }}>
+            <Box //@ts-ignore
+            sx={{ p: 1 }}>
               <Grid container spacing={0.5}>
               <Grid item xs={4}><KeyboardButton onClick={() => handleNumberClick("1")}>1</KeyboardButton></Grid>
               <Grid item xs={4}><KeyboardButton onClick={() => handleNumberClick("2")}>2</KeyboardButton></Grid>

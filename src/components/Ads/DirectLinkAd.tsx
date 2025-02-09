@@ -5,7 +5,7 @@ import {
   Typography,
   CircularProgress,
 } from '@mui/material';
-import { Hourglass, Sparkles } from 'lucide-react';
+import { Hourglass } from 'lucide-react';
 import { getFirestore, doc, updateDoc, increment } from 'firebase/firestore';
 import { app } from '../../pages/firebaseConfig';
 import { keyframes } from '@emotion/react';

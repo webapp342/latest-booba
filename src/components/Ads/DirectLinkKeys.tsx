@@ -5,7 +5,7 @@ import {
   Typography,
   CircularProgress,
 } from '@mui/material';
-import { Hourglass, Sparkles } from 'lucide-react';
+import { Hourglass } from 'lucide-react';
 import KeyIcon from '@mui/icons-material/Key';
 import watchad from '../../assets/watchad.png'
 import { getFirestore, doc, updateDoc, increment } from 'firebase/firestore';
