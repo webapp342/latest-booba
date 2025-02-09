@@ -23,7 +23,7 @@ interface DirectLinkAdProps {
   disabled?: boolean;
 }
 
-const ADSTERRA_DIRECT_LINK = 'https://www.effectiveratecpm.com/ccj4ktfax?key=eec9b442ff8919961cded6c7c8b4ba4f';
+const ADSTERRA_DIRECT_LINK = 'https://www.effectiveratecpm.com/rfzqpxh9b5?key=363850befc2ce02b0f1173157255afe8';
 
 const DirectLinkAd: React.FC<DirectLinkAdProps> = ({ onAdComplete, disabled }) => {
   const [loading, setLoading] = useState(false);
