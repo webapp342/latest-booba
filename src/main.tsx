@@ -24,6 +24,7 @@ import ErrorBoundary from "./components/ErrorBoundary.tsx";
 import { Box, Typography } from '@mui/material';
 import BoxOpening from "./components/boxOpening/BoxOpening";
 import BoxDetail from './components/boxOpening/BoxDetail';
+import DirectLinkAd from "./components/Ads/DirectLinkAd.tsx";
 
 if (WebApp.isVersionAtLeast('8.0') && 
     WebApp.platform !== 'tdesktop' && 
@@ -145,6 +146,13 @@ const router = createBrowserRouter([
         path: "games",
         element: <ImageSlider />
       },
+       {
+        path: "ad",
+        element: < DirectLinkAd />
+      },
+
+
+     
    
       {
         path: "admin",
