@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import { ExternalLink } from 'lucide-react';
 
-// Global type declaration for Adsterra
+// Extend Window interface
 declare global {
   interface Window {
     atOptions?: {
@@ -34,12 +34,14 @@ const DirectLinkAd: React.FC<DirectLinkAdProps> = ({ onAdComplete, disabled }) =
     setError(null);
 
     try {
-      // Create an invisible anchor element
-      const link = document.createElement('a');
-      link.href = ADSTERRA_DIRECT_LINK;
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
-      link.click();
+      // Use Telegram WebApp API to open the link
+      const tg = (window as any).Telegram?.WebApp;
+      if (tg) {
+        tg.openLink(ADSTERRA_DIRECT_LINK);
+      } else {
+        // Fallback for development/testing outside Telegram
+        window.open(ADSTERRA_DIRECT_LINK, '_blank');
+      }
 
       // Optional callback
       if (onAdComplete) {
@@ -99,4 +101,4 @@ const DirectLinkAd: React.FC<DirectLinkAdProps> = ({ onAdComplete, disabled }) =
   );
 };
 
-export default DirectLinkAd; 
+export default DirectLinkAd;

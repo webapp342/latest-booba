@@ -119,6 +119,7 @@ interface TwoFieldsComponentProps {
 }
 
 interface TelegramWebApp {
+  [x: string]: any;
   ready: () => void;
   MainButton: {
     text: string;
