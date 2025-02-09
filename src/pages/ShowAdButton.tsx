@@ -2,81 +2,53 @@ import { useCallback, useEffect, useState, ReactElement } from 'react';
 import { useAdsgram } from './useAdsgram';
 import { ShowPromiseResult } from './adsgram';
 import { updateUserBblip } from '../utils/database';
-import { getFirestore, doc, onSnapshot } from 'firebase/firestore';
 import { Button } from '@mui/material';
 
-const db = getFirestore();
+const COOLDOWN_PERIOD = 60 * 60 * 1000; // 1 hour in milliseconds
 
 export function ShowAdButton(): ReactElement {
-  const [lastRewardTime, setLastRewardTime] = useState<Date | null>(null);
   const [timeLeft, setTimeLeft] = useState<number>(0);
 
-  // Veritabanından veya Local Storage'dan lastRewardTime'ı çekiyoruz
   useEffect(() => {
-    const userId = localStorage.getItem('telegramUserId');
-    if (!userId) {
-      console.error('User ID localStorage\'da bulunamadı.');
-      return;
-    }
-
-    // Veritabanından lastRewardTime'ı almak için onSnapshot kullanıyoruz
-    const userRef = doc(db, 'users', userId);
-    const unsubscribe = onSnapshot(userRef, (docSnapshot) => {
-      if (docSnapshot.exists()) {
-        const data = docSnapshot.data();
-        if (data.lastRewardTime) {
-          const rewardTime = data.lastRewardTime.toDate();
-          setLastRewardTime(rewardTime);
-          localStorage.setItem('lastRewardTime', rewardTime.toISOString()); // Veriyi Local Storage'a kaydedelim
-        }
-      }
-    });
-
-    return () => unsubscribe(); // Cleanup: Abonelikten çıkmak
-  }, []);
-
-  // lastRewardTime değiştiğinde zaman kalan süreyi hesapla
-  useEffect(() => {
-    if (!lastRewardTime) return;
-
     const calculateTimeLeft = () => {
-      const now = new Date();
-      const diff = now.getTime() - lastRewardTime.getTime();
-      const oneHour = 60 * 60 * 1000;
-      if (diff >= oneHour) {
-        setTimeLeft(0); // 1 saat geçti, butonu göster
+      const lastRewardTime = localStorage.getItem('lastRewardTime');
+      if (!lastRewardTime) {
+        setTimeLeft(0);
+        return;
+      }
+
+      const now = new Date().getTime();
+      const lastTime = new Date(lastRewardTime).getTime();
+      const diff = now - lastTime;
+
+      if (diff >= COOLDOWN_PERIOD) {
+        setTimeLeft(0);
       } else {
-        setTimeLeft(oneHour - diff); // Kalan süreyi hesapla
+        setTimeLeft(COOLDOWN_PERIOD - diff);
       }
     };
 
-    // İlk hesaplamayı yap
     calculateTimeLeft();
+    const timer = setInterval(calculateTimeLeft, 1000);
 
-    // Zamanı güncellemek için bir defa timeout ile işlem yap
-    const timer = setTimeout(calculateTimeLeft, 1000);
-
-    return () => clearTimeout(timer); // Cleanup: Timer'ı temizle
-  }, [lastRewardTime]);
+    return () => clearInterval(timer);
+  }, []);
 
   const onReward = useCallback(() => {
-    alert('Congratulations, your reward has been added to your wallet');
+    localStorage.setItem('lastRewardTime', new Date().toISOString());
     updateUserBblip(5000).catch((error) => {
       console.error('Bblip güncellenirken hata oluştu:', error);
       alert('Bblip güncellenirken bir hata oluştu.');
     });
+    alert('Congratulations, your reward has been added to your wallet');
   }, []);
 
   const onError = useCallback((result: ShowPromiseResult) => {
     alert(JSON.stringify(result, null, 4));
   }, []);
 
-  /**
-   * insert your-block-id
-   */
   const showAd = useAdsgram({ blockId: '6760', onReward, onError });
 
-  // Kalan süreyi formatla (HH:MM:SS)
   const formatTimeLeft = (milliseconds: number) => {
     const totalSeconds = Math.floor(milliseconds / 1000);
     const hours = Math.floor(totalSeconds / 3600);
@@ -85,24 +57,24 @@ export function ShowAdButton(): ReactElement {
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
 
-  return (
-    <>
-      {timeLeft > 0 ? (
-        <div>
-          <p>{formatTimeLeft(timeLeft)}</p>
-        </div>
-      ) : (
-        <Button onClick={showAd}     sx={{
-              p:1,
-          backgroundColor: 'rgba(110, 211, 255, 0.1)',
-                                      color: '#6ed3ff',
-         
-          '&:disabled': {
-            background: '#2f363a',
-            color: 'rgba(255, 255, 255, 0.3)',
-          },
-        }}>Start</Button>
-      )}
-    </>
+  return timeLeft > 0 ? (
+    <div style={{ color: '#6ed3ff', fontSize: '1rem' }}>
+      {formatTimeLeft(timeLeft)}
+    </div>
+  ) : (
+    <Button 
+      onClick={showAd} 
+      sx={{
+        p: 1,
+        backgroundColor: 'rgba(110, 211, 255, 0.1)',
+        color: '#6ed3ff',
+        '&:disabled': {
+          background: '#2f363a',
+          color: 'rgba(255, 255, 255, 0.3)',
+        },
+      }}
+    >
+      Start
+    </Button>
   );
 }
