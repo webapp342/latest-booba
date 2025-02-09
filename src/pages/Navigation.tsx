@@ -80,13 +80,13 @@ const navItems = [
   { 
     label: 'Tasks', 
     icon: <ListTodo size={24} strokeWidth={1.5} />, 
-    path: '/latest-booba/ad',
+    path: '/latest-booba/tasks',
     dataTour: 'tasks-nav'
   },
   { 
     label: 'Wallet', 
     icon: <Wallet size={24} strokeWidth={1.5} />, 
-    path: '/latest-booba/spin',
+    path: '/latest-booba/ad',
     dataTour: 'wallet-nav'
   },
 ];
