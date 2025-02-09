@@ -4,6 +4,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import boobaLogo from '../../assets/booba-logo.png';
 import ticketLogo from '../../assets/ticket.png';
 import tonLogo from '../../assets/ton_symbol.png';
+import DirectLinkAd from '../../components/Ads/DirectLinkAd';
 
 const theme = createTheme({
   typography: {
@@ -44,7 +45,7 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
   isSpinning,
   showTopUpButton,
   openSwapDrawer,
-  navigateToTasks
+ 
 }) => {
   const [prevTotal, setPrevTotal] = useState(total);
   const [prevTickets, setPrevTickets] = useState(tickets);
@@ -227,45 +228,44 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
         </Typography>
 
         {showTopUpButton ? (
-          <Button
-            onClick={() => {
-              switch (selectedSpinType) {
-                case 'ticket':
-                  if (openSwapDrawer) { 
-                    openSwapDrawer();
+          <Box>
+            {selectedSpinType === 'bblip' ? (
+              <DirectLinkAd />
+            ) : (
+              <Button
+                onClick={() => {
+                  switch (selectedSpinType) {
+                    case 'ticket':
+                      if (openSwapDrawer) { 
+                        openSwapDrawer();
+                      }
+                      break;
+                    default:
+                      openDepositDrawer();
                   }
-                  break;
-                case 'bblip':
-                  if (navigateToTasks) {
-                    navigateToTasks();
-                  }
-                  break;
-                default:
-                  openDepositDrawer();
-              }
-            }}
-            variant="contained"
-            sx={{
-              width: '100%',
-              py: 1.5,
-              background: selectedSpinType === 'total' 
-                ? 'linear-gradient(135deg, #FF4B4B 0%, #FF0000 100%)'
-                : selectedSpinType === 'bblip'
-                ? 'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)'
-                : 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
-              color: 'black',
-              fontSize: '1rem',
-              fontWeight: 'bold',
-              borderRadius: '8px',
-              textTransform: 'none',
-            }}
-          >
-            {selectedSpinType === 'ticket' 
-              ? 'Buy Ticket'
-              : selectedSpinType === 'bblip'
-              ? 'Earn BBLIP'
-              : 'Deposit TON'}
-          </Button>
+                }}
+                variant="contained"
+                sx={{
+                  width: '100%',
+                  py: 1.5,
+                  backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                  color: '#6ed3ff',
+                  border: '1px solid rgba(110, 211, 255, 0.2)',
+                  '&:hover': {
+                    backgroundColor: 'rgba(110, 211, 255, 0.2)',
+                    border: '1px solid rgba(110, 211, 255, 0.3)',
+                  },
+                  borderRadius: '12px',
+                  textTransform: 'none',
+                  fontSize: '0.95rem',
+                  fontWeight: 600,
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                {selectedSpinType === 'ticket' ? 'Get Tickets' : 'Deposit TON'}
+              </Button>
+            )}
+          </Box>
         ) : (
           <Button
             onClick={handleSpinClick}

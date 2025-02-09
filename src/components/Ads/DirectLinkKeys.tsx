@@ -6,6 +6,7 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { Hourglass, Sparkles } from 'lucide-react';
+import KeyIcon from '@mui/icons-material/Key';
 import { getFirestore, doc, updateDoc, increment } from 'firebase/firestore';
 import { app } from '../../pages/firebaseConfig';
 import { keyframes } from '@emotion/react';
@@ -32,30 +33,18 @@ const RotatingIcon = styled(Box)`
   justify-content: center;
 `;
 
-// Only declare atOptions here since Telegram types are in telegram.d.ts
-declare global {
-  interface Window {
-    atOptions?: {
-      key: string;
-      format: string;
-      params: Record<string, unknown>;
-    };
-  }
-}
-
-interface DirectLinkAdProps {
+interface DirectLinkKeysProps {
   onAdComplete?: () => void;
   disabled?: boolean;
 }
 
 const ADSTERRA_DIRECT_LINK = 'https://www.effectiveratecpm.com/rfzqpxh9b5?key=363850befc2ce02b0f1173157255afe8';
-const TOTAL_REQUIRED_VIEWS = 5;
-const VIEW_COUNT_KEY = 'adViewCount';
-const LAST_CLAIM_KEY = 'lastAdClaim';
-const REWARD_AMOUNT = 25000;
-const COOLDOWN_TIME = 60 * 60 * 1000; // 60 minutes in milliseconds
+const TOTAL_REQUIRED_VIEWS = 7;
+const VIEW_COUNT_KEY = 'keyAdViewCount';
+const LAST_CLAIM_KEY = 'lastKeyAdClaim';
+const COOLDOWN_TIME = 60 * 1000; // 1 minute in milliseconds
 
-const DirectLinkAd: React.FC<DirectLinkAdProps> = ({ onAdComplete, disabled }) => {
+const DirectLinkKeys: React.FC<DirectLinkKeysProps> = ({ onAdComplete, disabled }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [viewCount, setViewCount] = useState(0);
@@ -146,17 +135,17 @@ const DirectLinkAd: React.FC<DirectLinkAdProps> = ({ onAdComplete, disabled }) =
         throw new Error('User ID not found');
       }
 
-      const now = Date.now();
       const userDocRef = doc(db, 'users', telegramUserId);
       await updateDoc(userDocRef, {
-        bblip: increment(REWARD_AMOUNT),
-        lastAdReward: now
+        keyParts: increment(3)
       });
+
 
       // Reset view count and set cooldown timestamp
       localStorage.removeItem(VIEW_COUNT_KEY);
       setViewCount(0);
       
+      const now = Date.now();
       localStorage.setItem(LAST_CLAIM_KEY, now.toString());
       setTimeLeft(COOLDOWN_TIME);
 
@@ -170,11 +159,9 @@ const DirectLinkAd: React.FC<DirectLinkAdProps> = ({ onAdComplete, disabled }) =
     }
   };
 
-
   const formatTimeLeft = (ms: number) => {
-    const minutes = Math.floor(ms / (60 * 1000));
-    const seconds = Math.ceil((ms % (60 * 1000)) / 1000);
-    return `${minutes}m ${seconds}s`;
+    const seconds = Math.ceil(ms / 1000);
+    return `${seconds}s`;
   };
 
   return (
@@ -183,7 +170,7 @@ const DirectLinkAd: React.FC<DirectLinkAdProps> = ({ onAdComplete, disabled }) =
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-      
+        gap: 1,
       }}
     >
       <Button
@@ -215,10 +202,8 @@ const DirectLinkAd: React.FC<DirectLinkAdProps> = ({ onAdComplete, disabled }) =
             opacity: 0.7,
             cursor: 'not-allowed'
           },
-          borderRadius: '12px',
-          py: 1.5,
-          px: 3,
-          minWidth: '200px',
+          borderRadius: 2,
+     
           display: 'flex',
           alignItems: 'center',
           gap: 1,
@@ -233,21 +218,18 @@ const DirectLinkAd: React.FC<DirectLinkAdProps> = ({ onAdComplete, disabled }) =
         ) : timeLeft !== null ? (
           <>
             <Sparkles size={18} strokeWidth={1.5} />
-           Earn Free Spin
+           Earn Key Parts
           </>
         ) : viewCount >= TOTAL_REQUIRED_VIEWS ? (
           <>
-            <Box component="img" 
-              src="/booba-logo.png" 
-              sx={{ width: 20, height: 20, borderRadius: '50%', mr: 1 }} 
-            />
-            Claim 25,000 BBLIP
+            <KeyIcon sx={{ fontSize: 20, mr: 1 }} />
+            Claim Key Parts
           </>
         ) : (
           <>
-           Earn Free Spin
+           Earn Key Parts
             {viewCount > 0 && (
-              <Box //@ts-ignore
+              <Box
                 sx={{
                   backgroundColor: 'rgba(255, 255, 255, 0.1)',
                   borderRadius: '8px',
@@ -280,7 +262,7 @@ const DirectLinkAd: React.FC<DirectLinkAdProps> = ({ onAdComplete, disabled }) =
           <RotatingIcon>
             <Hourglass size={14} color="rgba(255, 255, 255, 0.5)" />
           </RotatingIcon>
-          {`Free Spin in ${formatTimeLeft(timeLeft)}`}
+          {`Free Keys in ${formatTimeLeft(timeLeft)}`}
         </Typography>
       )}
 
@@ -293,4 +275,4 @@ const DirectLinkAd: React.FC<DirectLinkAdProps> = ({ onAdComplete, disabled }) =
   );
 };
 
-export default DirectLinkAd;
+export default DirectLinkKeys; 

@@ -10,6 +10,7 @@ import { TonConnectUIProvider } from "@tonconnect/ui-react";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Brand from './components/AiYield';
 import WelcomeModal from './components/WelcomeModal';
+import SpinNotification from './components/Notifications/SpinNotification';
 
 // MUI theme configuration
 const muiTheme = createTheme({
@@ -77,6 +78,7 @@ function App() {
                     </div>
 
                     <SimpleBottomNavigation />
+                    <SpinNotification />
                 </div>
             </TonConnectUIProvider>
         </ThemeProvider>

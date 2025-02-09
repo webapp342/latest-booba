@@ -3,6 +3,7 @@ import { Box, Button, Typography, CircularProgress, IconButton } from '@mui/mate
 import { motion } from 'framer-motion';
 import KeyIcon from '@mui/icons-material/Key';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import DirectLinkKeys from '../Ads/DirectLinkKeys';
 
 interface KeyCraftingProps {
   keyParts: number;
@@ -22,7 +23,7 @@ const commonStyles = {
   buttonHoverShadow: '0 6px 16px rgba(110, 211, 255, 0.4)',
 };
 
-const KeyCrafting: React.FC<KeyCraftingProps> = ({ keyParts, onCraftKey, isLoading, onOpenFreeBox }) => {
+const KeyCrafting: React.FC<KeyCraftingProps> = ({ keyParts, onCraftKey, isLoading}) => {
   const canCraftKey = keyParts >= 5;
   const progress = (keyParts / 5) * 100;
 
@@ -32,7 +33,7 @@ const KeyCrafting: React.FC<KeyCraftingProps> = ({ keyParts, onCraftKey, isLoadi
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <Box
+      <Box //@ts-ignore
         sx={{
           mt: 4,
           p: 3,
@@ -201,25 +202,8 @@ const KeyCrafting: React.FC<KeyCraftingProps> = ({ keyParts, onCraftKey, isLoadi
 
             {/* Open Free Box Button - Only show when can't craft key */}
             {!canCraftKey && (
-              <Button
-                variant="contained"
-                onClick={onOpenFreeBox}
-                fullWidth
-                sx={{
-                  py: 1.5,
-                  background: 'linear-gradient(90deg, #0088CC, #00A3FF)',
-                  color: 'black',
-                  fontWeight: 'bold',
-                  fontSize: '0.95rem',
-                  borderRadius: '8px',
-                  textTransform: 'none',
-                  '&:hover': {
-                    background: 'linear-gradient(90deg, #00A3FF, #0088CC)',
-                  }
-                }}
-              >
-                Open Free Box
-              </Button>
+             
+              <DirectLinkKeys/>
             )}
           </Box>
         </Box>

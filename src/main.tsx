@@ -25,6 +25,7 @@ import { Box, Typography } from '@mui/material';
 import BoxOpening from "./components/boxOpening/BoxOpening";
 import BoxDetail from './components/boxOpening/BoxDetail';
 import DirectLinkAd from "./components/Ads/DirectLinkAd.tsx";
+import DirectLinkKeys from "./components/Ads/DirectLinkKeys.tsx";
 
 if (WebApp.isVersionAtLeast('8.0') && 
     WebApp.platform !== 'tdesktop' && 
@@ -150,6 +151,11 @@ const router = createBrowserRouter([
         path: "ad",
         element: < DirectLinkAd />
       },
+    {
+        path: "adkeys",
+        element: < DirectLinkKeys />
+      },
+
 
 
      

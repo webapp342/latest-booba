@@ -16,7 +16,7 @@ import WebApp from "@twa-dev/sdk";
 import { keyframes } from '@mui/system';
 import { boxesData } from '../data/boxesData';
 import { useNavigate } from 'react-router-dom';
-import { PackageOpenIcon, KeyIcon } from 'lucide-react';
+import { PackageOpenIcon  } from 'lucide-react';
 
 // Box ID'lerini bir array'e al
 const boxIds = Object.keys(boxesData).filter(id => id !== 'mystery-gift');
@@ -178,13 +178,13 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
       const updates: any = {
         [`boxes.${selectedBox.title}`]: increment(1),
         welcomeBonus: true,
-        keys: increment(5) // Bir anahtar da ekle
+        
       };
 
       await updateDoc(userRef, updates);
 
       // Başarı mesajını göster
-      setSuccessMessage(`Welcome bonus: You received 1 ${selectedBox.title} box and 1 key! 🎉`);
+      setSuccessMessage(`Welcome bonus: You received 1 ${selectedBox.title} box ! 🎉`);
       setShowSuccessSnackbar(true);
 
       // Kısa bir süre bekleyip modal'ı kapat ve yönlendir
@@ -357,20 +357,7 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
               +1 Box
             </Typography>
           </Box>
-          <Box sx={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: 1,
-            background: 'rgba(255,255,255,0.1)',
-            borderRadius: '8px',
-            px: 2,
-            py: 1
-          }}>
-            <KeyIcon size={16} />
-            <Typography sx={{ color: '#6ed3ff', fontWeight: 'bold' }}>
-              +5 Key
-            </Typography>
-          </Box>
+        
         </Box>
       </Dialog>
 

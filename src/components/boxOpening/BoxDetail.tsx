@@ -578,7 +578,7 @@ const BoxDetail: React.FC = () => {
                               textTransform: 'none',
                             }}
                           >
-                            Deposit Now
+                            Deposit & get Free Box
                           </Button>
                         )
                       : // Normal kutular için

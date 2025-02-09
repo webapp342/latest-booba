@@ -86,7 +86,7 @@ const navItems = [
   { 
     label: 'Wallet', 
     icon: <Wallet size={24} strokeWidth={1.5} />, 
-    path: '/latest-booba/ad',
+    path: '/latest-booba/spin',
     dataTour: 'wallet-nav'
   },
 ];

@@ -14,6 +14,7 @@ import { PackageOpenIcon } from 'lucide-react';
 import StarIcon from '@mui/icons-material/Star';
 import SwapDrawer from '../WalletDrawers/SwapDrawer';
 import ticketImage from '../../assets/ticket.png';
+import LevelUpgrade from '../Ads/1levelupgrade';
 
 // Import all box images
 import alienwareImage from '../../assets/boxes/ALIENWARE.png';
@@ -1581,7 +1582,14 @@ const BoxOpening: React.FC = () => {
                   const currentTickets = userStats?.tickets || 0;
                   const neededTickets = nextLevel - currentTickets;
                   
-                  // Sadece yetersiz ticket varsa Get More Tickets butonunu göster
+                  if (currentLevel === 0 && neededTickets === 1) {
+                    return <LevelUpgrade 
+                      onAdComplete={() => setShowLevelModal(true)}
+                      disabled={isUpgrading}
+                    />;
+                  }
+                  
+                  // Level 0 dışındaki tüm leveller için Get More Tickets butonunu göster
                   return neededTickets > 0 ? (
                     <Button
                       fullWidth
