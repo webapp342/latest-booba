@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import { ExternalLink } from 'lucide-react';
 
-// Extend Window interface
+// Only declare atOptions here since Telegram types are in telegram.d.ts
 declare global {
   interface Window {
     atOptions?: {
@@ -34,16 +34,12 @@ const DirectLinkAd: React.FC<DirectLinkAdProps> = ({ onAdComplete, disabled }) =
     setError(null);
 
     try {
-      // Use Telegram WebApp API to open the link
-      const tg = (window as any).Telegram?.WebApp;
-      if (tg) {
-        tg.openLink(ADSTERRA_DIRECT_LINK);
+      if (window.Telegram?.WebApp) {
+        window.Telegram.WebApp.openLink(ADSTERRA_DIRECT_LINK);
       } else {
-        // Fallback for development/testing outside Telegram
         window.open(ADSTERRA_DIRECT_LINK, '_blank');
       }
 
-      // Optional callback
       if (onAdComplete) {
         onAdComplete();
       }
@@ -55,7 +51,7 @@ const DirectLinkAd: React.FC<DirectLinkAdProps> = ({ onAdComplete, disabled }) =
   }, [onAdComplete]);
 
   return (
-    <Box 
+    <Box //@ts-ignore
       sx={{ 
         display: 'flex',
         flexDirection: 'column',
