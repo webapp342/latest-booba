@@ -7,6 +7,7 @@ import {
 } from '@mui/material';
 import { Hourglass, Sparkles } from 'lucide-react';
 import KeyIcon from '@mui/icons-material/Key';
+import watchad from '../../assets/watchad.png'
 import { getFirestore, doc, updateDoc, increment } from 'firebase/firestore';
 import { app } from '../../pages/firebaseConfig';
 import { keyframes } from '@emotion/react';
@@ -178,7 +179,8 @@ const DirectLinkKeys: React.FC<DirectLinkKeysProps> = ({ onAdComplete, disabled 
         variant="contained"
         onClick={viewCount >= TOTAL_REQUIRED_VIEWS ? handleClaim : handleAdClick}
         disabled={disabled || loading || timeLeft !== null}
-        startIcon={viewCount >= TOTAL_REQUIRED_VIEWS ? null : <Sparkles size={18} strokeWidth={1.5} />}
+        startIcon={viewCount >= TOTAL_REQUIRED_VIEWS ? null :             <img src={watchad} alt="" width={32} />
+}
         sx={{
           backgroundColor: viewCount >= TOTAL_REQUIRED_VIEWS 
             ? 'rgba(76, 175, 80, 0.1)' 
@@ -217,8 +219,8 @@ const DirectLinkKeys: React.FC<DirectLinkKeysProps> = ({ onAdComplete, disabled 
           <CircularProgress size={24} sx={{ color: 'inherit' }} />
         ) : timeLeft !== null ? (
           <>
-            <Sparkles size={18} strokeWidth={1.5} />
-           Earn Key Parts
+              <img src={watchad} alt="" width={32} />
+           Earn Free Keys
           </>
         ) : viewCount >= TOTAL_REQUIRED_VIEWS ? (
           <>
@@ -227,7 +229,7 @@ const DirectLinkKeys: React.FC<DirectLinkKeysProps> = ({ onAdComplete, disabled 
           </>
         ) : (
           <>
-           Earn Key Parts
+           Earn Free Keys
             {viewCount > 0 && (
               <Box
                 sx={{

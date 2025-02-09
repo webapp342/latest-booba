@@ -142,7 +142,12 @@ const TokenListDrawer = styled(SwipeableDrawer)({
     borderRadius: '24px 24px 0 0',
     padding: '24px',
     maxHeight: '80vh',
-  },
+        zIndex: 10999, // Yüksek z-index değeri ekledik
+
+ },
+  '& .MuiBackdrop-root': {
+    zIndex: 10998, // Backdrop için de yüksek z-index
+  }
 });
 
 const TokenListItem = styled(ListItem)({
@@ -938,7 +943,8 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ defaultAmount, onClose }) => {
             
             {/* Details Section */}
             <Box sx={{ px: 1, mt: 1, opacity: 0.9 }}>
-              <Box sx={{ 
+              <Box 
+              sx={{ 
                 display: 'flex', 
                 justifyContent: 'space-between', 
                 alignItems: 'center',
@@ -994,7 +1000,8 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ defaultAmount, onClose }) => {
                   </Box>
                 </>
               )}
-              <Box sx={{ 
+              <Box 
+              sx={{ 
                 display: 'flex', 
                 justifyContent: 'space-between', 
                 alignItems: 'center',
@@ -1051,9 +1058,7 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ defaultAmount, onClose }) => {
                     fontSize: '16px',
                     fontWeight: '600',
                     marginTop: '16px',
-                    '&:hover': {
-                      backgroundColor: isSwapDisabled() ? 'rgba(110, 211, 255, 0.15)' : '#89d9ff',
-                    },
+                   
                     '&:disabled': {
                       backgroundColor: 'rgba(110, 211, 255, 0.1)',
                       color: 'rgba(255, 255, 255, 0.3)',
@@ -1072,6 +1077,10 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ defaultAmount, onClose }) => {
             open={openDrawer}
             onClose={() => setOpenDrawer(false)}
             onOpen={() => setOpenDrawer(true)}
+             sx={{
+    zIndex: 9999,
+    position: 'relative',
+  }}
           >
             <Box sx={{ mx:-1 }}>
               <Box sx={{ 

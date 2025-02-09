@@ -14,8 +14,8 @@ import {
 
 
 } from '@mui/material';
-import WalletIcon from '@mui/icons-material/Wallet';
 import './slide.css'
+import connectwallet from '../assets/connectwallet.png';
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Header } from './ConnectButton';
@@ -38,7 +38,9 @@ import task5Logo from '../assets/telegram.png';
 import task7Logo from '../assets/booba-logo.png';
 import task8Logo from '../assets/booba-logo.png';
 
-import watchad from '../assets/ad.png';
+import watchad from '../assets/watchad.png';
+import freespin from '../assets/freespin.png';
+import firstdeposit from '../assets/firstdeposit.png';
 
 
 import task9Logo from '../assets/ton_logo_dark_background.svg';
@@ -103,7 +105,7 @@ const tasksMetadata = [
   { title: 'Invite 75 fren',label:'+7.5 TON', description: '7.5 TON', link: '', reward: 7500 },
   { title: 'Invite 100 fren',label:'+10 TON', description: '10 TON', link: '', reward: 10000 },
   { title: 'Watch a Video',label:'+10 BBLIP', description: '10 BBLIP', link: 'https://example.com/watch-video', reward: 1000 },
-  { title: 'Try Your Luck',label:'+0.5 TON', description: '0.5 TON', link: '', reward: 500 },
+  { title: 'Spin for Free',label:'+0.5 TON', description: '0.5 TON', link: '', reward: 500 },
   { title: 'Make Your First Deposit',label:'+0.5 TON', description: '0.5 TON', link: '', reward: 500 },
   { title: '', description: 'Coming Soon...', link: '' , reward: 100},
 ];
@@ -123,8 +125,8 @@ const taskLogos = [
   task9Logo, // Invite 75
   task9Logo, // Invite 100
   task8Logo, // Watch video
-  task9Logo, // Spin task
-  task9Logo, // Deposit task
+  freespin, // Spin task
+  firstdeposit, // Deposit task
   comingSoonLogo,
 ];
 
@@ -219,11 +221,9 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
         if (status?.disabled) {
           return (
             <Button
-              variant="contained"
               disabled
               sx={{
                 mr: 1,
-                backgroundColor: '#4caf50',
                 opacity: 0.7,
                 '&:disabled': {
                   color: '#fff',
@@ -255,9 +255,7 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
             p: 1,
             backgroundColor: 'rgba(110, 211, 255, 0.1)',
             color: '#6ed3ff',
-            '&:hover': {
-              backgroundColor: 'rgba(110, 211, 255, 0.2)',
-            },
+           
           }}
         >
           {loading ? <CircularProgress size={20} color="inherit" /> : 'Deposit'}
@@ -270,11 +268,9 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
         if (status?.disabled) {
           return (
             <Button
-              variant="contained"
               disabled
               sx={{
                 mr: 1,
-                backgroundColor: '#4caf50',
                 opacity: 0.7,
                 '&:disabled': {
                   color: '#fff',
@@ -321,11 +317,9 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
       if (status.disabled) {
         return (
           <Button
-            variant="contained"
             disabled
             sx={{
               mr: 1,
-              backgroundColor: '#4caf50',
               opacity: 0.7,
               '&:disabled': {
                 color: '#fff',
@@ -791,7 +785,6 @@ Earn rewards by completing tasks, invite friends, watching ads, and more in our 
                              alt="Watch Ads"
                              sx={{
                                width: 30,
-                               height: 30,
                                borderRadius: '12px',
                                p: 0.4,
                        
@@ -892,7 +885,7 @@ Earn rewards by completing tasks, invite friends, watching ads, and more in our 
                        justifyContent: 'center'
                      }}
                    >
-                     <WalletIcon sx={{ color: '#00c6ff' }} />
+                     <img src={connectwallet} alt="" width={22} />
                    </Box>
                    <Box>
                      <Typography 

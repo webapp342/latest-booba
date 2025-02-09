@@ -11,6 +11,8 @@ import { app } from '../../pages/firebaseConfig';
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import ticket from '../../assets/ticket.png';
+import watchad from '../../assets/watchad.png'
+
 
 const db = getFirestore(app);
 
@@ -177,7 +179,7 @@ const LevelUpgrade: React.FC<LevelUpgradeProps> = ({ onAdComplete, disabled }) =
         variant="contained"
         onClick={viewCount >= TOTAL_REQUIRED_VIEWS ? handleClaim : handleAdClick}
         disabled={disabled || loading || timeLeft !== null}
-        startIcon={viewCount >= TOTAL_REQUIRED_VIEWS ? null : <Sparkles size={18} strokeWidth={1.5} />}
+        startIcon={viewCount >= TOTAL_REQUIRED_VIEWS ? null :   <img src={watchad} alt="" width={32} />}
         sx={{
           backgroundColor: viewCount >= TOTAL_REQUIRED_VIEWS 
             ? 'rgba(76, 175, 80, 0.1)' 
@@ -215,7 +217,7 @@ const LevelUpgrade: React.FC<LevelUpgradeProps> = ({ onAdComplete, disabled }) =
           <CircularProgress size={24} sx={{ color: 'inherit' }} />
         ) : timeLeft !== null ? (
           <>
-            <Sparkles size={18} strokeWidth={1.5} />
+              <img src={watchad} alt="" width={32} />
             Earn Free Ticket
           </>
         ) : disabled ? (
