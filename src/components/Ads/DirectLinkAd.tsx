@@ -51,7 +51,7 @@ interface DirectLinkAdProps {
 }
 
 const ADSTERRA_DIRECT_LINK = 'https://www.effectiveratecpm.com/rfzqpxh9b5?key=363850befc2ce02b0f1173157255afe8';
-const TOTAL_REQUIRED_VIEWS = 5;
+const TOTAL_REQUIRED_VIEWS = 2;
 const VIEW_COUNT_KEY = 'adViewCount';
 const LAST_CLAIM_KEY = 'lastAdClaim';
 const REWARD_AMOUNT = 25000;
@@ -234,7 +234,7 @@ const DirectLinkAd: React.FC<DirectLinkAdProps> = ({ onAdComplete, disabled }) =
           <CircularProgress size={24} sx={{ color: 'inherit' }} />
         ) : timeLeft !== null ? (
           <>
-                       <img src={watchad} alt="" width={32} />
+                     
 
            Earn Free Spin
           </>
@@ -277,7 +277,7 @@ const DirectLinkAd: React.FC<DirectLinkAdProps> = ({ onAdComplete, disabled }) =
             alignItems: 'center',
             gap: 1,
             fontSize: '0.85rem',
-            mt: -1
+         mt:0.2,
           }}
         >
           <RotatingIcon>

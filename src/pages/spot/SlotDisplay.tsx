@@ -55,17 +55,17 @@ const SlotDisplay = forwardRef<CounterRef[], SlotDisplayProps>(({ numbers, selec
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        gap: 2,
+        gap: 1,
         my: 4,
-        perspective: '1000px',
       }}
     >
       {/* Slot Machine Frame */}
       <Box
         sx={{
           background: 'linear-gradient(45deg, #2b2b2b 0%, #1a1a1a 100%)',
-          padding: '20px',
           borderRadius: '30px',
+          m:2,
+          width:'100%',
           boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
           position: 'relative',
           '&::before': {

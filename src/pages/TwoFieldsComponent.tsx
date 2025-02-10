@@ -243,8 +243,8 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
     }
 
     // Check if amount is less than or equal to 1
-    if (withdrawAmount <= 1) {
-      setErrorMessage('Minimum withdrawal amount is 1 TON');
+    if (withdrawAmount <= 2.99) {
+      setErrorMessage('Minimum withdrawal amount is 3 TON');
       return;
     }
 
@@ -626,14 +626,11 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
                   padding: '4px 12px',
                   minWidth: 'unset',
                   borderRadius: '8px',
-                  backgroundColor: 'rgba(110, 211, 255, 0.1)',
                   border: '1px solid rgba(110, 211, 255, 0.2)',
-                  '&:hover': {
-                    backgroundColor: 'rgba(110, 211, 255, 0.15)',
-                  }
+                 
                 }}
               >
-                Max
+               Use Max
               </Button>
             </Box>
 
@@ -649,14 +646,13 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
                   gap: 0.5,
                   padding: '8px 12px',
                   borderRadius: '8px',
-                  backgroundColor: 'rgba(255, 77, 77, 0.1)',
                   width: '90%',
                   textAlign: 'center',
                   position: 'relative',
                   zIndex: 1
                 }}
               >
-                {errorMessage}
+                {errorMessage} !
               </Typography>
             )}
 
@@ -667,7 +663,7 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
               display: 'flex',
               alignItems: 'center',
               gap: 1,
-              width: '90%'
+              width: '85%',
             }}>
               <Box sx={{
                 width: 6,
@@ -678,7 +674,7 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
               Amount Details
             </Typography>
             <Box sx={{
-              width: '90%',
+              width: '80%',
               mb: 3,
       px: 2,
               py:1,              backgroundColor: 'rgba(110, 211, 255, 0.05)',
@@ -689,6 +685,7 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
+                width: '100%',
                 gap: 0.5
               }}>
                 <Typography sx={{ 
@@ -707,31 +704,13 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
               </Box>
             </Box>
 
-            <Typography sx={{ 
-              fontSize: '0.85rem',
-              color: 'rgba(255, 255, 255, 0.7)',
-              mb: 1,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 1,
-              width: '90%'
-            }}>
-              <Box sx={{
-                width: 6,
-                height: 6,
-                borderRadius: '50%',
-                backgroundColor: '#fff'
-              }} />
-              Available Balance
-            </Typography>
+          
             <Box sx={{
-              width: '90%',
+             width: '85%',
               mb: 3,
               px: 2,
-              py:1,
-              backgroundColor: 'rgba(255, 255, 255, 0.03)',
+              mt:-2,
               borderRadius: '12px',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
             }}>
               <Box sx={{
                 display: 'flex',
@@ -742,7 +721,7 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
                   fontSize: '0.8rem',
                   color: 'rgba(255, 255, 255, 0.6)'
                 }}>
-                  Balance
+                  Available Balance
                 </Typography>
                 <Box sx={{
                   display: 'flex',
@@ -756,12 +735,7 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
                   }}>
                     {userData?.total ? (userData.total / 1000).toFixed(2) : '0'} TON
                   </Typography>
-                  <Typography sx={{ 
-                    fontSize: '0.75rem',
-                    color: 'rgba(255, 255, 255, 0.5)'
-                  }}>
-                    ≈ ${((userData?.total ? userData.total / 1000 : 0) * tonPrice).toFixed(2)}
-                  </Typography>
+             
                 </Box>
               </Box>
             </Box>

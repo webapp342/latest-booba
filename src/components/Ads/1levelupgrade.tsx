@@ -41,7 +41,7 @@ interface LevelUpgradeProps {
 }
 
 const ADSTERRA_DIRECT_LINK = 'https://www.effectiveratecpm.com/rfzqpxh9b5?key=363850befc2ce02b0f1173157255afe8';
-const TOTAL_REQUIRED_VIEWS = 10;
+const TOTAL_REQUIRED_VIEWS = 2;
 const VIEW_COUNT_KEY = 'levelUpgradeViewCount';
 const LAST_CLAIM_KEY = 'lastLevelUpgradeClaim';
 const COOLDOWN_TIME = 60 * 1000; // 1 minute in milliseconds

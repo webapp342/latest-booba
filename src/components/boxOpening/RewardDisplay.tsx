@@ -1,6 +1,7 @@
 import React from 'react';
-import { Dialog, DialogContent, Box, Typography, IconButton } from '@mui/material';
+import { Dialog, DialogContent, Box, Typography, IconButton, Button } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import { useNavigate } from 'react-router-dom';
 
 interface RewardDisplayProps {
   reward: {
@@ -16,6 +17,13 @@ interface RewardDisplayProps {
 }
 
 const RewardDisplay: React.FC<RewardDisplayProps> = ({ reward, isVisible, onClose }) => {
+  const navigate = useNavigate();
+
+  const handleSellClick = () => {
+    onClose();
+    navigate('/box-opening', { state: { defaultTab: 'drops' } });
+  };
+
   return (
     <Dialog
       open={isVisible}
@@ -67,9 +75,7 @@ const RewardDisplay: React.FC<RewardDisplayProps> = ({ reward, isVisible, onClos
             <Typography sx={{ color: 'white', fontSize: '1.2rem' }}>
               Price: ${reward.price}
             </Typography>
-            <Typography sx={{ color: 'rgba(255,255,255,0.7)' }}>
-              Rarity: {(reward.rarity * 100).toFixed(4)}%
-            </Typography>
+          
             <Typography sx={{ color: '#6C5DD3', mt: 1 }}>
               Item Code: {reward.code}
             </Typography>
@@ -79,6 +85,26 @@ const RewardDisplay: React.FC<RewardDisplayProps> = ({ reward, isVisible, onClos
               </Typography>
             )}
           </Box>
+
+          <Button
+            variant="contained"
+            onClick={handleSellClick}
+            sx={{
+              mt: 2,
+              mb: 1,
+              background: 'linear-gradient(90deg, #6C5DD3, #8F7BE8)',
+              color: 'white',
+              textTransform: 'none',
+              fontSize: '1.1rem',
+              padding: '10px 30px',
+              borderRadius: '12px',
+              '&:hover': {
+                background: 'linear-gradient(90deg, #5a4ec0, #7c69d5)',
+              }
+            }}
+          >
+            Sell This Item
+          </Button>
         </Box>
       </DialogContent>
     </Dialog>

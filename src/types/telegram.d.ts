@@ -32,6 +32,7 @@ interface TelegramWebApp {
     };
     start_param?: string;
   };
+  switchInlineQuery: (query: string, targets?: Array<'users' | 'groups' | 'channels'>) => void;
   // Add other WebApp methods as needed
 }
 

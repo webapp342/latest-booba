@@ -58,23 +58,26 @@ const SpinNotification = () => {
       TransitionComponent={Slide}
       sx={{
         '& .MuiSnackbar-root': {
-          minWidth: '300px'
+          width: '100%'
         }
       }}
     >
       <Alert
+
         severity="info"
         variant="filled"
+       
         onClose={handleNotificationClose}
         icon={<Sparkles size={24} />}
         onClick={handleNotificationClick}
+
         sx={{
-          minWidth: '300px',
           backgroundColor: 'rgba(26, 33, 38, 0.95)',
           backdropFilter: 'blur(10px)',
           border: '1px solid rgba(110, 211, 255, 0.1)',
           color: '#fff',
           borderRadius: '16px',
+          width: '100%',
           padding: '16px',
           boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)',
           display: 'flex',
@@ -82,11 +85,7 @@ const SpinNotification = () => {
           gap: 1.5,
           cursor: 'pointer',
           transition: 'all 0.2s ease',
-          '&:hover': {
-            backgroundColor: 'rgba(26, 33, 38, 0.98)',
-            transform: 'translateY(-1px)',
-            boxShadow: '0 10px 40px rgba(0, 0, 0, 0.12)',
-          },
+       
           '& .MuiAlert-icon': {
             color: '#6ed3ff',
             opacity: 1,

@@ -263,7 +263,7 @@ const PeriodSelector: React.FC<PeriodSelectorProps> = ({
         handleAmountChange(newIndex, newStakingData.amount);
         handleDurationChange(newIndex, newStakingData.duration);
       }
-    }
+    } 
   };
 
   return (
@@ -2873,23 +2873,13 @@ variant="h6"
 
             {/* Insufficient Balance Message */}
             {totalBalance !== null && selectedStaking && selectedStaking.data.amount > totalBalance && (
-              <Box sx={{ 
+              <Box // @ts-ignore
+               sx={{ 
                 mt: 2,
-                p: 2,
+             
                 borderRadius: 2,
-                backgroundColor: 'rgba(244, 67, 54, 0.1)',
-                border: '1px solid rgba(244, 67, 54, 0.2)'
               }}>
-                <Typography 
-                  sx={{ 
-                    fontSize:'0.8rem',
-                    color: '#f44336',
-                    textAlign: 'center',
-                    mb: 1
-                  }}
-                >
-                  Insufficient balance for this subscription
-                </Typography>
+              
                 <Button
                   variant="outlined"
                   fullWidth
@@ -2905,6 +2895,16 @@ variant="h6"
                 >
                   Deposit Now
                 </Button>
+                  <Typography 
+                  sx={{ 
+                    fontSize:'0.8rem',
+                    color: '#f44336',
+                    textAlign: 'center',
+                    mb: 1
+                  }}
+                >
+                  Insufficient balance for this subscription
+                </Typography>
               </Box>
             )}
 

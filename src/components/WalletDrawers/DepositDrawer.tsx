@@ -5,10 +5,11 @@ import {
   Button,
   Drawer,
   Snackbar,
-  SnackbarContent,
   styled,
+  Slide,
+  Alert,
 } from '@mui/material';
-import { CheckCircleOutline } from '@mui/icons-material';
+import { CheckCircle } from '@mui/icons-material';
 import CloseIcon from '@mui/icons-material/Close';
 import QRCode from 'qrcode';
 import { doc, getDoc, getFirestore } from 'firebase/firestore';
@@ -102,9 +103,8 @@ const DepositDrawer: React.FC<DepositDrawerProps> = ({ open, onClose }) => {
   };
 
   const handleTelegramShare = () => {
-    if (shareUrl) {
-      const telegramUrl = `tg://msg_url?url=${encodeURIComponent(shareUrl)}`;
-      window.location.href = telegramUrl;
+    if (shareUrl && window.Telegram?.WebApp) {
+      window.Telegram.WebApp.switchInlineQuery(shareUrl, ['users', 'groups', 'channels']);
     }
   };
 
@@ -116,38 +116,54 @@ const DepositDrawer: React.FC<DepositDrawerProps> = ({ open, onClose }) => {
         onClose={onClose}
       >
         <Box // @ts-ignore
-         sx={{ position: 'relative', height: '100%' }}>
+         sx={{  height: '100%' }}>
           <Snackbar
             open={snackbarOpen}
             autoHideDuration={2000}
             onClose={() => setSnackbarOpen(false)}
+            TransitionComponent={Slide}
             sx={{
-              position: 'absolute',
-              top: '-90%',
-              right: '16px',
-              transform: 'none',
-              width: 'auto',
-              '& .MuiSnackbarContent-root': {
-                minWidth: 'unset',
-                backgroundColor: '#4caf50',
-                borderRadius: '12px',
-                padding: '12px 24px',
+              '& .MuiSnackbar-root': {
+                width:'100%'
               }
             }}
           >
-            <SnackbarContent
+            <Alert
+              severity="success"
+              variant="filled"
+              onClose={() => setSnackbarOpen(false)}
+              icon={<CheckCircle />}
               sx={{
-                backgroundColor: '#4caf50 !important',
+                backgroundColor: 'rgba(26, 33, 38, 0.95)',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(110, 211, 255, 0.1)',
+                color: '#fff',
+                borderRadius: '16px',
+                padding: '16px',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)',
                 display: 'flex',
+                width:'100%',
                 alignItems: 'center',
+                gap: 1.5,
+                '& .MuiAlert-icon': {
+                  color: '#6ed3ff',
+                  opacity: 1,
+                  padding: 0,
+                  marginRight: 1
+                },
+                '& .MuiAlert-message': {
+                  padding: 0,
+                  fontSize: '0.95rem',
+                  fontWeight: 500
+                },
+                '& .MuiAlert-action': {
+                  padding: 0,
+                  alignItems: 'center'
+                }
               }}
-              message={
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <CheckCircleOutline />
-                  <Typography>Kopyalandı!</Typography>
-                </Box>
-              }
-            />
+            >
+              Copied !
+            </Alert>
           </Snackbar>
           <DrawerHeader>
             <Button
