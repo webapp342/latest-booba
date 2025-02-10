@@ -1304,7 +1304,7 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
                   textTransform: 'uppercase',
                   letterSpacing: '0.5px'
                 }}>
-                  Available Tickets
+                  Tickets
                 </Typography>
                 <Typography sx={{ 
                   color: '#6ed3ff',
@@ -1432,7 +1432,7 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
                   const nextLevel = currentLevel + 1;
                   const currentTickets = userData?.tickets || 0;
                   const neededTickets = nextLevel - currentTickets;
-                  return `You need ${neededTickets} more ticket${neededTickets > 1 ? 's' : ''} to reach Level ${nextLevel}`;
+                  return `Need ${neededTickets} more ticket${neededTickets > 1 ? 's' : ''} to reach Level ${nextLevel}`;
                 })()}
               </Typography>
 

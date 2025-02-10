@@ -554,7 +554,7 @@ const Statistics: React.FC = () => {
         change24h: 4.3,
         totalUsers: '880',
         currentCapacity: 745218,
-        maxCapacity: 100000
+        maxCapacity: 1000000
       }
     },
     {

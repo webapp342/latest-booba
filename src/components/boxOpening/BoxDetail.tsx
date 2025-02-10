@@ -302,7 +302,7 @@ const BoxDetail: React.FC = () => {
 
     const totalPrice = parseFloat(calculateTotal());
     const userBalance = selectedPayment === 'TON' ? 
-      (typeof userStats.total === 'number' ? userStats.total : 0) : 
+      (typeof userStats.total === 'number' ? userStats.total / 1000 : 0) : 
       (typeof userStats.usdt === 'number' ? userStats.usdt : 0);
     const needed = totalPrice - userBalance;
 
@@ -322,7 +322,7 @@ const BoxDetail: React.FC = () => {
       const updates: any = {};
 
       if (selectedPayment === 'TON') {
-        updates.total = increment(-totalPrice);
+        updates.total = increment(-(totalPrice * 1000));
       } else {
         updates.usdt = increment(-totalPrice);
       }
@@ -331,11 +331,9 @@ const BoxDetail: React.FC = () => {
 
       await updateDoc(userRef, updates);
 
-      // Set success message and show snackbar
       setSuccessMessage(`Successfully purchased ${boxData?.title}!`);
       setShowSuccessSnackbar(true);
       
-      // Close modal after delay
       setTimeout(() => {
         setShowPurchaseModal(false);
         setQuantity(1);
@@ -355,14 +353,20 @@ const BoxDetail: React.FC = () => {
     return usdPrice.toFixed(2);
   };
 
-  const formatBalance = (value: number | undefined | null): string => {
+  const formatBalance = (value: number | undefined | null, paymentType: 'TON' | 'USDT'): string => {
     if (typeof value !== 'number') return '0.00';
+    if (paymentType === 'TON') {
+      return (value / 1000).toFixed(2);
+    }
     return value.toFixed(2);
   };
 
   const getUserBalance = (stats: UserStats | null, paymentType: 'TON' | 'USDT'): number => {
     if (!stats) return 0;
-    return paymentType === 'TON' ? (stats.total || 0) : (stats.usdt || 0);
+    if (paymentType === 'TON') {
+      return (stats.total || 0) / 1000;
+    }
+    return (stats.usdt || 0);
   };
 
   const canPurchase = () => {
@@ -961,13 +965,7 @@ borderBottom:'2px solid',                    borderColor: () => {
                 transition: 'all 0.3s ease',
                 transform: selectedPayment === 'TON' ? 'scale(1.02)' : 'scale(1)',
                 boxShadow: selectedPayment === 'TON' ? '0 8px 32px rgba(110, 211, 255, 0.15)' : 'none',
-                '&:hover': {
-                  background: selectedPayment === 'TON'
-                    ? 'rgba(110, 211, 255, 0.2)'
-                    : 'rgba(110, 211, 255, 0.1)',
-                  transform: 'scale(1.02)',
-                  boxShadow: '0 8px 32px rgba(110, 211, 255, 0.2)'
-                }
+              
               }}
             >
               <Box sx={{ textAlign: 'center' }}>
@@ -984,7 +982,7 @@ borderBottom:'2px solid',                    borderColor: () => {
                   fontSize: '0.8rem',
                   textTransform: 'none'
                 }}>
-                  Balance: {formatBalance(userStats?.total)}
+                  Balance: {formatBalance(userStats?.total, 'TON')}
                 </Typography>
               </Box>
             </Button>
@@ -1025,7 +1023,7 @@ borderBottom:'2px solid',                    borderColor: () => {
                   fontSize: '0.8rem',
                   textTransform: 'none'
                 }}>
-                  Balance: ${formatBalance(userStats?.usdt)}
+                  Balance: {formatBalance(userStats?.usdt, 'USDT')}
                 </Typography>
               </Box>
             </Button>

@@ -50,6 +50,8 @@ import { doc, onSnapshot, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../pages/firebaseConfig';
 import StarIcon from '@mui/icons-material/Star';
 import SwapDrawer from '../WalletDrawers/SwapDrawer';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import DepositDrawer from '../WalletDrawers/DepositDrawer';
 
 interface CreatePoolModalProps {
   open: boolean;
@@ -494,11 +496,19 @@ const StyledPaper = styled(Paper)({
   }
 });
 
+// Add styled component for DepositDrawer
+const StyledDepositDrawer = styled(DepositDrawer)({
+  '& .MuiDrawer-root': {
+    zIndex: 9999
+  }
+});
+
 const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [userBalance, setUserBalance] = useState(0);
   const [formData, setFormData] = useState<FormData>({
-    investmentAmount: '1000', // Default investment amount
+    investmentAmount: '1500', // Default investment amount
     riskLevel: 'moderate',
     tradingStrategy: 'balanced',
     aiModel: 'conservative',
@@ -515,7 +525,7 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
     },
     poolName: '',
     poolDescription: '',
-    selectedDuration: '7d', // Default duration
+    selectedDuration: '1d', // Default duration
     acknowledgments: {
       investment: false,
       strategy: false,
@@ -542,40 +552,42 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
 
   // Add state for selected percentages
   const [selectedPercentages, setSelectedPercentages] = useState<SelectedPercentages>({
-    duration: 45,     // Default 7d percentage (45%)
-    risk: 32,        // Default moderate percentage
-    strategy: 20,    // Default balanced percentage
-    aiModel: 15,     // Default conservative percentage
+    duration: 5,     // Default 7d percentage (45%)
+    risk: 2,        // Default moderate percentage
+    strategy: 3,    // Default balanced percentage
+    aiModel: 4,     // Default conservative percentage
     leverage: 1      // Default leverage percentage (10x = 1%)
   });
 
   // Update risk level multipliers for daily returns
   const riskPercentages = {
-    conservative: 20,
-    moderate: 32,
-    aggressive: 60
+    conservative: 4,
+    moderate: 8,
+    aggressive: 9
   };
 
   // Update risk multipliers with strategy and model combinations
   const strategyPercentages = {
-    momentum: 40,
-    balanced: 20,
-    value: 10
+    momentum: 15,
+    balanced: 3,
+    value: 5
   };
 
   const aiModelPercentages = {
-    conservative: 15,
-    balanced: 35,
-    aggressive: 60
+    conservative: 5,
+    balanced: 4,
+    aggressive: 3
   };
 
   // Add duration percentages mapping
   const durationPercentages = {
-    '1d': 20,
-    '7d': 45,
-    '14d': 60,
-    '30d': 73
+    '1d': 0.18,      // 5% daily
+    '7d': 43.26,     // 5% daily
+    '14d': 104.83,    // 5% daily
+    '30d': 182.19    // 5% daily
   } as const;
+
+  const [showDepositDrawer, setShowDepositDrawer] = useState(false);
 
   useEffect(() => {
     const telegramUserId = localStorage.getItem("telegramUserId");
@@ -588,6 +600,7 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
     const unsubscribe = onSnapshot(docRef, (docSnap) => {
       if (docSnap.exists()) {
         setUserData(docSnap.data());
+        setUserBalance(docSnap.data().usdt || 0); // Set user balance
       } else {
         console.log("No such document!");
       }
@@ -685,17 +698,33 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
     switch (activeStep) {
       case 0: // Investment
         const investmentAmount = parseFloat(formData.investmentAmount);
-        if (!formData.investmentAmount || investmentAmount < 50) {
-          errors.investmentAmount = 'Minimum investment amount is 50';
+        
+        // First check if amount is entered
+        if (!formData.investmentAmount) {
+          errors.investmentAmount = 'Please enter investment amount';
           isValid = false;
           scrollToError('investment-amount-field');
         }
-        // Check for 1d duration minimum investment
-        if (formData.selectedDuration === '1d' && investmentAmount < 2500) {
-          errors.investmentAmount = 'For 1-day duration, minimum investment amount is $2,500';
+        // Then check balance
+        else if (investmentAmount > userBalance) {
+          errors.investmentAmount = `Insufficient balance`;
           isValid = false;
           scrollToError('investment-amount-field');
         }
+        // Only if balance is sufficient, check minimum amounts
+        else {
+          if (investmentAmount < 50) {
+            errors.investmentAmount = 'Minimum investment amount is $50';
+            isValid = false;
+            scrollToError('investment-amount-field');
+          }
+          else if (formData.selectedDuration === '1d' && investmentAmount < 2500) {
+            errors.investmentAmount = 'Min investment amount is $2,500';
+            isValid = false;
+            scrollToError('investment-amount-field');
+          }
+        }
+
         if (!formData.riskLevel) {
           errors.riskLevel = 'Please select a risk level';
           isValid = false;
@@ -1037,6 +1066,14 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
     );
   };
 
+
+  const handleNavigateToDeposit = () => {
+    onClose(); // Close the main modal first
+    setTimeout(() => {
+      setShowDepositDrawer(true); // Open deposit drawer after a small delay
+    }, 100);
+  };
+
   const steps = [
     {
       label: 'Investment',
@@ -1079,10 +1116,34 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
                         ),
                         inputProps: { min: 50 }
                       }}
-                      label="Initial Investment (Min: $50)"
+                      label="Initial Investment "
                       error={!!formErrors.investmentAmount}
                       helperText={formErrors.investmentAmount}
                     />
+                    
+            {/* Update Balance Display */}
+            <Box sx={{
+              position: 'absolute',
+              borderRadius: '12px',
+              zIndex: 1
+            }}>
+              <Box display={'flex'} alignItems="center">
+                <Typography variant="body1" sx={{ color: 'white', fontSize: '0.8rem' }}>
+                  <span style={{color:"gray", fontSize: '0.8rem'}}>
+                    Available: </span> {userBalance !== null ? `${userBalance.toFixed(2)} USDT` : 'Loading...'}
+                </Typography>
+                <AddCircleOutlineIcon 
+                  onClick={handleNavigateToDeposit} 
+                  fontSize='small' 
+                  sx={{ 
+                    ml: 1, 
+                    color:'#89d9ff',
+                    cursor: 'pointer',
+                 
+                  }} 
+                />
+              </Box>
+            </Box>
                   </Box>
 
                   <FormControl id="risk-level-field" fullWidth error={!!formErrors.riskLevel}>
@@ -2048,6 +2109,8 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
     }
   ];
 
+  
+
   return (
     <>
       <Modal
@@ -2115,6 +2178,7 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
               </Typography>
               <Box sx={{ width: 40 }} />
             </Box>
+
 
             {/* Scrollable Content */}
             <Box sx={{ 
@@ -2494,6 +2558,11 @@ const CreatePoolModal: React.FC<CreatePoolModalProps> = ({ open, onClose }) => {
           setShowStarsModal(true);
           open && onClose(); // Keep the main modal closed if it was open
         }}
+      />
+
+      <StyledDepositDrawer
+        open={showDepositDrawer}
+        onClose={() => setShowDepositDrawer(false)}
       />
     </>
   );

@@ -293,9 +293,7 @@ const DepositDrawer: React.FC<DepositDrawerProps> = ({ open, onClose }) => {
                     borderRadius: '8px',
                     backgroundColor: 'rgba(110, 211, 255, 0.1)',
                     border: '1px solid rgba(110, 211, 255, 0.2)',
-                    '&:hover': {
-                      backgroundColor: 'rgba(110, 211, 255, 0.15)',
-                    }
+                    
                   }}
                 >
                   Copy
