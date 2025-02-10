@@ -41,7 +41,7 @@ const muiTheme = createTheme({
 });
 
 const UnauthorizedAccess = () => (
-  <Box
+  <Box // @ts-ignore
     sx={{
       height: '100vh',
       display: 'flex',
