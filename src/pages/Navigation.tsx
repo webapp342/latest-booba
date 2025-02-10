@@ -42,14 +42,14 @@ const navItems = [
   {
     label: 'Boxes',
     icon: <Gift size={24} strokeWidth={1.5} />,
-    path: '/latest-booba/mystery-box',
+    path: '/mystery-box',
     dataTour: 'mystery-box-nav'
   },
   
   { 
     label: 'Stats', 
     icon: <BarChart2 size={24} strokeWidth={1.5} />, 
-    path: '/latest-booba/',
+    path: '/',
     dataTour: 'stats-nav'
   },
   { 
@@ -73,20 +73,20 @@ const navItems = [
         <BadgeDollarSign />
       </Box>
     ),
-    path: '/latest-booba/stake',
+    path: '/stake',
     dataTour: 'earn-nav'
   },
  
   { 
     label: 'Tasks', 
     icon: <ListTodo size={24} strokeWidth={1.5} />, 
-    path: '/latest-booba/tasks',
+    path: '/tasks',
     dataTour: 'tasks-nav'
   },
   { 
     label: 'Wallet', 
     icon: <Wallet size={24} strokeWidth={1.5} />, 
-    path: '/latest-booba/spin',
+    path: '/spin',
     dataTour: 'wallet-nav'
   },
 ];

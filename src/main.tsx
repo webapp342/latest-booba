@@ -87,7 +87,7 @@ const DefaultErrorElement = () => (
 
 const router = createBrowserRouter([
   {
-    path: "/latest-booba",
+    path: "/",
     element: (
       <ErrorBoundary>
         <OnboardingProvider>
