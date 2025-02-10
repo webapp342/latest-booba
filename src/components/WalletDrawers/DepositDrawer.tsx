@@ -54,7 +54,7 @@ const DepositDrawer: React.FC<DepositDrawerProps> = ({ open, onClose }) => {
   const [qrCodeUrl, setQrCodeUrl] = useState<string>('');
   const [comment, setComment] = useState('Loading...');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [shareUrl, setShareUrl] = useState('');
+  const [, setShareUrl] = useState('');
 
   useEffect(() => {
     const generateQRCode = async () => {
@@ -102,11 +102,6 @@ const DepositDrawer: React.FC<DepositDrawerProps> = ({ open, onClose }) => {
     setSnackbarOpen(true);
   };
 
-  const handleTelegramShare = () => {
-    if (shareUrl && window.Telegram?.WebApp) {
-      window.Telegram.WebApp.switchInlineQuery(shareUrl, ['users', 'groups', 'channels']);
-    }
-  };
 
   return (
     <>
