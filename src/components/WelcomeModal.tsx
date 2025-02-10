@@ -17,6 +17,7 @@ import { keyframes } from '@mui/system';
 import { boxesData } from '../data/boxesData';
 import { useNavigate } from 'react-router-dom';
 import { PackageOpenIcon  } from 'lucide-react';
+import { Slide } from '@mui/material';
 
 // Box ID'lerini bir array'e al
 const boxIds = Object.keys(boxesData).filter(id => id !== 'mystery-gift');
@@ -366,16 +367,44 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
         autoHideDuration={3000}
         onClose={() => setShowSuccessSnackbar(false)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        TransitionComponent={Slide}
+        sx={{
+          '& .MuiSnackbar-root': {
+            width: '100%'
+          }
+        }}
       >
         <Alert 
           onClose={() => setShowSuccessSnackbar(false)} 
           severity="success"
+          variant="filled"
+          icon={<PackageOpenIcon size={24} />}
           sx={{ 
-            width: '100%', 
-            background: 'linear-gradient(90deg, #4CAF50, #45a049)',
-            color: 'white',
+            backgroundColor: 'rgba(26, 33, 38, 0.95)',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(110, 211, 255, 0.1)',
+            color: '#fff',
+            borderRadius: '16px',
+            width: '100%',
+            padding: '16px',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1.5,
             '& .MuiAlert-icon': {
-              color: 'white'
+              color: '#6ed3ff',
+              opacity: 1,
+              padding: 0,
+              marginRight: 1
+            },
+            '& .MuiAlert-message': {
+              padding: 0,
+              fontSize: '0.95rem',
+              fontWeight: 500
+            },
+            '& .MuiAlert-action': {
+              padding: 0,
+              alignItems: 'center'
             }
           }}
         >
