@@ -394,7 +394,7 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
               flexDirection: 'column',
               alignItems: 'center',
               gap: 2,
-              mt: 2
+             
             }}>
               <Typography
                 sx={{
@@ -406,38 +406,14 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
                   mb: 1
                 }}
               >
-                Welcome to Booba! 🎉
+                Welcome to Booba! 
                 <br />
                 <span style={{ color: '#6ed3ff', fontSize: '0.9rem' }}>
                   Claim your welcome bonus and start your journey!
                 </span>
               </Typography>
 
-              <Button
-                onClick={handleClaim}
-                disabled={isClaiming}
-                sx={{
-                  backgroundColor: 'rgba(110,211,255,0.15)',
-                  color: '#6ed3ff',
-                  borderRadius: '12px',
-                  padding: '10px 24px',
-                  fontSize: '1rem',
-                  fontWeight: 600,
-                  border: '1px solid rgba(110,211,255,0.2)',
-                  transition: 'all 0.2s ease',
-                  '&:hover': {
-                    backgroundColor: 'rgba(110,211,255,0.25)',
-                    border: '1px solid rgba(110,211,255,0.3)',
-                  },
-                  '&:disabled': {
-                    backgroundColor: 'rgba(110,211,255,0.05)',
-                    color: 'rgba(110,211,255,0.5)',
-                  }
-                }}
-                startIcon={isClaiming ? <CircularProgress size={20} sx={{ color: '#6ed3ff' }} /> : <Sparkles size={20} />}
-              >
-                {isClaiming ? 'Claiming...' : 'Claim Welcome Bonus'}
-              </Button>
+         
             </Box>
           )}
         </DialogContent>
@@ -453,20 +429,28 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
               background: 'linear-gradient(90deg, rgba(110,211,255,0.05), rgba(142,233,255,0.02))'
             }}
           >
-            <Box sx={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: 1,
-              background: 'rgba(255,255,255,0.1)',
-              borderRadius: '8px',
-              px: 2,
-              py: 1
-            }}>
-              <PackageOpenIcon size={16} />
-              <Typography sx={{ color: '#6ed3ff', fontWeight: 'bold' }}>
-                +1 Box
-              </Typography>
-            </Box>
+                <Button
+                onClick={handleClaim}
+                disabled={isClaiming}
+                sx={{
+                  backgroundColor: 'rgba(110,211,255,0.15)',
+                  color: '#6ed3ff',
+                  borderRadius: '12px',
+                  padding: '10px 24px',
+                  fontSize: '1rem',
+                  fontWeight: 600,
+                  border: '1px solid rgba(110,211,255,0.2)',
+                  transition: 'all 0.2s ease',
+                  textTransform: 'none',
+                  '&:disabled': {
+                    backgroundColor: 'rgba(110,211,255,0.05)',
+                    color: 'rgba(110,211,255,0.5)',
+                  }
+                }}
+                startIcon={isClaiming ? <CircularProgress size={20} sx={{ color: '#6ed3ff' }} /> : <Sparkles size={20} />}
+              >
+                {isClaiming ? 'Claiming...' : 'Claim Gift Box'}
+              </Button>
           </Box>
         )}
       </Dialog>

@@ -19,11 +19,6 @@ interface RewardDisplayProps {
 const RewardDisplay: React.FC<RewardDisplayProps> = ({ reward, isVisible, onClose }) => {
   const navigate = useNavigate();
 
-  const handleSellClick = () => {
-    onClose();
-    navigate('/box-opening', { state: { defaultTab: 'drops' } });
-  };
-
   return (
     <Dialog
       open={isVisible}
@@ -51,7 +46,8 @@ const RewardDisplay: React.FC<RewardDisplayProps> = ({ reward, isVisible, onClos
           <CloseIcon />
         </IconButton>
 
-        <Box sx={{ textAlign: 'center', pt: 2 }}>
+        <Box //@ts-ignore
+        sx={{ textAlign: 'center', pt: 2 }}>
           <Typography variant="h4" sx={{ color: 'white', mb: 2 }}>
             Congratulations!
           </Typography>
@@ -88,7 +84,7 @@ const RewardDisplay: React.FC<RewardDisplayProps> = ({ reward, isVisible, onClos
 
           <Button
             variant="contained"
-            onClick={handleSellClick}
+                            onClick={() => navigate('/latest-booba/mystery-box', { state: { defaultTab: 'drops' } })}
             sx={{
               mt: 2,
               mb: 1,

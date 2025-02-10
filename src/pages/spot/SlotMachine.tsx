@@ -964,7 +964,7 @@ useEffect(() => {
                   mt: 2,
                 }}
               >
-                Your lucky spin paid off! 🍀
+                Your lucky spin paid off! 
               </Typography>
             </Box>
 

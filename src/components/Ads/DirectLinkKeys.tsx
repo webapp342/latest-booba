@@ -138,7 +138,7 @@ const DirectLinkKeys: React.FC<DirectLinkKeysProps> = ({ onAdComplete, disabled 
 
       const userDocRef = doc(db, 'users', telegramUserId);
       await updateDoc(userDocRef, {
-        keyParts: increment(3)
+        keyParts: increment(5)
       });
 
 
