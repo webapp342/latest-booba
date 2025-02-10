@@ -8,7 +8,9 @@ import {
   Typography,
   Snackbar,
   Alert,
-  LinearProgress
+  LinearProgress,
+  Button,
+  CircularProgress
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { doc, getDoc, setDoc, updateDoc, increment, getFirestore } from 'firebase/firestore';
@@ -16,7 +18,7 @@ import WebApp from "@twa-dev/sdk";
 import { keyframes } from '@mui/system';
 import { boxesData } from '../data/boxesData';
 import { useNavigate } from 'react-router-dom';
-import { PackageOpenIcon  } from 'lucide-react';
+import { PackageOpenIcon, Gift, Sparkles } from 'lucide-react';
 import { Slide } from '@mui/material';
 
 // Box ID'lerini bir array'e al
@@ -60,6 +62,8 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
   const db = getFirestore();
   const animationRef = useRef<NodeJS.Timeout>();
   const navigate = useNavigate();
+  const [isClaiming, setIsClaiming] = useState(false);
+  const [claimed, setClaimed] = useState(false);
 
   useEffect(() => {
     const checkUserWelcomeStatus = async () => {
@@ -185,7 +189,7 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
       await updateDoc(userRef, updates);
 
       // Başarı mesajını göster
-      setSuccessMessage(`Welcome bonus: You received 1 ${selectedBox.title} box ! 🎉`);
+      setSuccessMessage(`You received 1 ${selectedBox.title} box ! 🎉`);
       setShowSuccessSnackbar(true);
 
       // Kısa bir süre bekleyip modal'ı kapat ve yönlendir
@@ -202,6 +206,51 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
       navigate('/latest-booba/mystery-box');
     } finally {
       setIsProcessing(false);
+    }
+  };
+
+  const handleClaim = async () => {
+    if (isClaiming || !finalBoxId) return;
+    
+    try {
+      setIsClaiming(true);
+      const telegramUserId = localStorage.getItem("telegramUserId");
+      if (!telegramUserId) {
+        setOpen(false);
+        onClose();
+        navigate('/latest-booba/mystery-box');
+        return;
+      }
+
+      const selectedBox = boxesData[finalBoxId];
+      if (!selectedBox) {
+        setOpen(false);
+        onClose();
+        navigate('/latest-booba/mystery-box');
+        return;
+      }
+
+      const userRef = doc(db, "users", telegramUserId);
+      const updates: any = {
+        [`boxes.${selectedBox.title}`]: increment(1),
+        welcomeBonus: true,
+      };
+
+      await updateDoc(userRef, updates);
+      setClaimed(true);
+      setSuccessMessage(`You received 1 ${selectedBox.title} box ! 🎉`);
+      setShowSuccessSnackbar(true);
+
+      setTimeout(() => {
+        setOpen(false);
+        onClose();
+        navigate('/latest-booba/mystery-box');
+      }, 2000);
+
+    } catch (error) {
+      console.error("Error claiming welcome bonus:", error);
+    } finally {
+      setIsClaiming(false);
     }
   };
 
@@ -238,8 +287,8 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
           background: 'linear-gradient(90deg, rgba(110,211,255,0.1), rgba(142,233,255,0.05))',
           borderBottom: '1px solid rgba(255,255,255,0.1)'
         }}>
-          <Box //@ts-ignore
-          sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Gift size={24} style={{ color: '#6ed3ff' }} />
             <Typography variant="h6" sx={{ 
               background: 'linear-gradient(90deg, #6ed3ff, #8ee9ff)',
               WebkitBackgroundClip: 'text',
@@ -251,17 +300,20 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
               {currentTitle}
             </Typography>
           </Box>
-          <IconButton
-            aria-label="close"
-            onClick={handleClose}
-            disabled={isProcessing}
-            sx={{
-              color: 'rgba(255,255,255,0.5)',
-              
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
+          {!isAnimating && !isClaiming && (
+            <IconButton
+              aria-label="close"
+              onClick={handleClose}
+              sx={{
+                color: 'rgba(255,255,255,0.5)',
+                '&:hover': {
+                  color: '#fff',
+                }
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          )}
         </DialogTitle>
 
         <LinearProgress 
@@ -277,38 +329,41 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
         />
 
         <DialogContent 
-          dividers 
           sx={{ 
             bgcolor: 'transparent',
             overflow: 'hidden',
             position: 'relative',
-            height: '300px',
+            minHeight: '300px',
             display: 'flex',
+            flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
+            gap: 3,
             borderTop: 'none',
             borderBottom: '1px solid rgba(255,255,255,0.1)',
+            p: 4,
           }}
         >
-          {/* Arka plan efekti */}
           <Box 
-           sx={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: 'radial-gradient(circle at center, rgba(110,211,255,0.1) 0%, rgba(110,211,255,0) 70%)',
-            opacity: isAnimating ? 0.5 : 1,
-            transition: 'opacity 0.3s ease',
-          }} />
+            sx={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: 'radial-gradient(circle at center, rgba(110,211,255,0.1) 0%, rgba(110,211,255,0) 70%)',
+              opacity: isAnimating ? 0.5 : 1,
+              transition: 'opacity 0.3s ease',
+            }}
+          />
 
           <Box
             sx={{
               width: '200px',
               height: '200px',
               position: 'relative',
-              overflow: 'hidden'
+              overflow: 'hidden',
+              mb: 2
             }}
           >
             <Box
@@ -332,34 +387,88 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
               />
             </Box>
           </Box>
+
+          {!isAnimating && !claimed && (
+            <Box sx={{ 
+              display: 'flex', 
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 2,
+              mt: 2
+            }}>
+              <Typography
+                sx={{
+                  color: 'rgba(255,255,255,0.9)',
+                  textAlign: 'center',
+                  fontSize: '1.1rem',
+                  fontWeight: 500,
+                  maxWidth: '80%',
+                  mb: 1
+                }}
+              >
+                Welcome to Booba! 🎉
+                <br />
+                <span style={{ color: '#6ed3ff', fontSize: '0.9rem' }}>
+                  Claim your welcome bonus and start your journey!
+                </span>
+              </Typography>
+
+              <Button
+                onClick={handleClaim}
+                disabled={isClaiming}
+                sx={{
+                  backgroundColor: 'rgba(110,211,255,0.15)',
+                  color: '#6ed3ff',
+                  borderRadius: '12px',
+                  padding: '10px 24px',
+                  fontSize: '1rem',
+                  fontWeight: 600,
+                  border: '1px solid rgba(110,211,255,0.2)',
+                  transition: 'all 0.2s ease',
+                  '&:hover': {
+                    backgroundColor: 'rgba(110,211,255,0.25)',
+                    border: '1px solid rgba(110,211,255,0.3)',
+                  },
+                  '&:disabled': {
+                    backgroundColor: 'rgba(110,211,255,0.05)',
+                    color: 'rgba(110,211,255,0.5)',
+                  }
+                }}
+                startIcon={isClaiming ? <CircularProgress size={20} sx={{ color: '#6ed3ff' }} /> : <Sparkles size={20} />}
+              >
+                {isClaiming ? 'Claiming...' : 'Claim Welcome Bonus'}
+              </Button>
+            </Box>
+          )}
         </DialogContent>
 
-        {/* Bonus bilgisi */}
-        <Box //@ts-ignore
-        sx={{ 
-          p: 2, 
-          display: 'flex', 
-          gap: 2,
-          justifyContent: 'center',
-          alignItems: 'center',
-          background: 'linear-gradient(90deg, rgba(110,211,255,0.05), rgba(142,233,255,0.02))'
-        }}>
-          <Box sx={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: 1,
-            background: 'rgba(255,255,255,0.1)',
-            borderRadius: '8px',
-            px: 2,
-            py: 1
-          }}>
-            <PackageOpenIcon size={16} />
-            <Typography sx={{ color: '#6ed3ff', fontWeight: 'bold' }}>
-              +1 Box
-            </Typography>
+        {!isAnimating && (
+          <Box 
+            sx={{ 
+              p: 2, 
+              display: 'flex', 
+              gap: 2,
+              justifyContent: 'center',
+              alignItems: 'center',
+              background: 'linear-gradient(90deg, rgba(110,211,255,0.05), rgba(142,233,255,0.02))'
+            }}
+          >
+            <Box sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: 1,
+              background: 'rgba(255,255,255,0.1)',
+              borderRadius: '8px',
+              px: 2,
+              py: 1
+            }}>
+              <PackageOpenIcon size={16} />
+              <Typography sx={{ color: '#6ed3ff', fontWeight: 'bold' }}>
+                +1 Box
+              </Typography>
+            </Box>
           </Box>
-        
-        </Box>
+        )}
       </Dialog>
 
       <Snackbar

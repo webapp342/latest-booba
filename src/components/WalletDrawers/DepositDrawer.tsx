@@ -401,45 +401,10 @@ const DepositDrawer: React.FC<DepositDrawerProps> = ({ open, onClose }) => {
               gap: 1
             }}>
           
-              <Typography sx={{ 
-                fontSize: '0.8rem',
-                color: 'rgba(255, 255, 255, 0.5)',
-              }}>
-                • Only send TON to this deposit address
-              </Typography>
+         
             </Box>
 
-            <Box sx={{ 
-              position: 'fixed', 
-              bottom: 0, 
-              left: 0, 
-              right: 0,
-              px: 2,
-              pb: 'env(safe-area-inset-bottom, 22px)',
-              backdropFilter: 'blur(20px)',
-              borderTop: '1px solid rgba(110, 211, 255, 0.1)',
-              backgroundColor: 'rgba(26, 33, 38, 0.8)',
-              zIndex: 1300,
-            }}>
-              <Button
-                fullWidth
-                onClick={handleTelegramShare}
-                sx={{
-                  backgroundColor: '#6ed3ff',
-                  color: '#1a2126',
-                  height: '44px',
-                  my: 2,
-                  borderRadius: '12px',
-                  fontSize: '16px',
-                  fontWeight: 'bold',
-                  '&:hover': {
-                    backgroundColor: '#89d9ff',
-                  }
-                }}
-              >
-                Share on Telegram
-              </Button>
-            </Box>
+          
           </Box>
         </Box>
       </StyledDrawer>
