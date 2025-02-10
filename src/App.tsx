@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState,  useLayoutEffect } from "react";
+import { useState, useLayoutEffect, useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import SimpleBottomNavigation from "./pages/Navigation";
 import Loading from "./pages/Loading";
@@ -11,6 +11,8 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Brand from './components/AiYield';
 import WelcomeModal from './components/WelcomeModal';
 import SpinNotification from './components/Notifications/SpinNotification';
+import WebApp from "@twa-dev/sdk";
+import { Box, Typography, Button } from '@mui/material';
 
 // MUI theme configuration
 const muiTheme = createTheme({
@@ -38,12 +40,65 @@ const muiTheme = createTheme({
   },
 });
 
+const UnauthorizedAccess = () => (
+  <Box // @ts-ignore
+    sx={{
+      height: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      bgcolor: '#1a2126',
+      color: 'white',
+      p: 3,
+      textAlign: 'center'
+    }}
+  >
+    <Typography variant="h4" component="h1" gutterBottom sx={{ color: '#6ed3ff' }}>
+      Unauthorized Access
+    </Typography>
+    <Typography variant="body1" sx={{ mb: 3, maxWidth: 400 }}>
+      This application can only be accessed through Telegram WebApp. Please use our official Telegram bot to access the application.
+    </Typography>
+    <Button
+      variant="contained"
+      href="https://t.me/BoobaBlipBot"
+      target="_blank"
+      sx={{
+        bgcolor: '#6ed3ff',
+        color: '#1a2126',
+        '&:hover': {
+          bgcolor: '#5bc0ff'
+        }
+      }}
+    >
+      Open in Telegram
+    </Button>
+  </Box>
+);
+
 function App() {
     const [loading, setLoading] = useState(true);
+    const [isAuthorized, setIsAuthorized] = useState(false);
     const manifestUrl = "https://webapp342.github.io/latest-booba/tonconnect-manifest.json";
     const location = useLocation();
 
-    // Use both useEffect and useLayoutEffect for more aggressive scroll handling
+    useEffect(() => {
+        // Telegram WebApp kontrolü
+        const checkAuthorization = () => {
+            const user = WebApp.initDataUnsafe?.user;
+            if (user && user.id) {
+                setIsAuthorized(true);
+                console.log('Telegram user authorized:', user.id);
+            } else {
+                setIsAuthorized(false);
+                console.log('Unauthorized access attempt');
+            }
+        };
+
+        checkAuthorization();
+    }, []);
+
     useLayoutEffect(() => {
         const scrollToTop = () => {
             const mainContent = document.querySelector('.main-content');
@@ -56,9 +111,12 @@ function App() {
         };
 
         scrollToTop();
-        // Try again after a short delay
         setTimeout(scrollToTop, 50);
     }, [location.pathname]);
+
+    if (!isAuthorized) {
+        return <UnauthorizedAccess />;
+    }
 
     return (
         <ThemeProvider theme={muiTheme}>
@@ -70,7 +128,6 @@ function App() {
 
                     <div className={`main-content ${loading ? "hidden" : ""}`} style={{marginBottom:"13vh", paddingTop: '64px', overflowX: 'hidden' }}>
                         <WelcomeModal onClose={() => {
-                            // Modal kapandığında yapılacak işlemler (gerekirse)
                             console.log('Welcome modal closed');
                         }} />
                         <Brand />
