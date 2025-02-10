@@ -12,7 +12,7 @@ import Brand from './components/AiYield';
 import WelcomeModal from './components/WelcomeModal';
 import SpinNotification from './components/Notifications/SpinNotification';
 import WebApp from "@twa-dev/sdk";
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography, Button, CircularProgress } from '@mui/material';
 
 // MUI theme configuration
 const muiTheme = createTheme({
@@ -41,7 +41,7 @@ const muiTheme = createTheme({
 });
 
 const UnauthorizedAccess = () => (
-  <Box // @ts-ignore
+  <Box
     sx={{
       height: '100vh',
       display: 'flex',
@@ -77,26 +77,48 @@ const UnauthorizedAccess = () => (
   </Box>
 );
 
+const LoadingScreen = () => (
+  <Box
+    sx={{
+      height: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      bgcolor: '#1a2126',
+    }}
+  >
+    <CircularProgress sx={{ color: '#6ed3ff' }} />
+  </Box>
+);
+
 function App() {
     const [loading, setLoading] = useState(true);
-    const [isAuthorized, setIsAuthorized] = useState(false);
+    const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
     const manifestUrl = "https://webapp342.github.io/latest-booba/tonconnect-manifest.json";
     const location = useLocation();
 
     useEffect(() => {
-        // Telegram WebApp kontrolü
         const checkAuthorization = () => {
-            const user = WebApp.initDataUnsafe?.user;
-            if (user && user.id) {
-                setIsAuthorized(true);
-                console.log('Telegram user authorized:', user.id);
-            } else {
+            try {
+                const user = WebApp.initDataUnsafe?.user;
+                if (user && user.id) {
+                    setIsAuthorized(true);
+                    console.log('Telegram user authorized:', user.id);
+                } else {
+                    setIsAuthorized(false);
+                    console.log('Unauthorized access attempt');
+                }
+            } catch (error) {
+                console.error('Authorization check failed:', error);
                 setIsAuthorized(false);
-                console.log('Unauthorized access attempt');
+            } finally {
+                setLoading(false);
             }
         };
 
-        checkAuthorization();
+        // Kısa bir gecikme ekleyerek WebApp'in yüklenmesini bekleyelim
+        const timer = setTimeout(checkAuthorization, 100);
+        return () => clearTimeout(timer);
     }, []);
 
     useLayoutEffect(() => {
@@ -114,6 +136,12 @@ function App() {
         setTimeout(scrollToTop, 50);
     }, [location.pathname]);
 
+    // İlk yükleme sırasında loading ekranını göster
+    if (loading || isAuthorized === null) {
+        return <LoadingScreen />;
+    }
+
+    // Authorization kontrolü tamamlandıktan sonra
     if (!isAuthorized) {
         return <UnauthorizedAccess />;
     }
