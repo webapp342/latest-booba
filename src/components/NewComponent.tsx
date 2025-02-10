@@ -2156,7 +2156,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
                   border: '1px solid rgba(110, 211, 255, 0.1)',
                   mb: 2
                 }}>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between'}}>
                     <Typography sx={{ color: 'rgba(255,255,255,0.6)' }}>
                       Total to Repay
                     </Typography>
@@ -2164,9 +2164,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
                       <Typography sx={{ color: '#fff', fontWeight: 600 }}>
                         {totalRepay} TON
                       </Typography>
-                      <Typography sx={{ color: '#4CAF50', fontSize: '0.75rem' }}>
-                        +{(stake.amount * (stake.apy) * (2))} BBLIP
-                      </Typography>
+                     
                     </Box>
                   </Box>
                 </Box>
