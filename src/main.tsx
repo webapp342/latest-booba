@@ -87,7 +87,7 @@ const DefaultErrorElement = () => (
 
 const router = createBrowserRouter([
   {
-    path: "/latest-booba",
+    path: "/",
     element: (
       <ErrorBoundary>
         <OnboardingProvider>
@@ -130,7 +130,6 @@ const router = createBrowserRouter([
         path: "spin",
         element: <LocalStorageViewer />
       },
-       
       {
         path: "stake",
         element: <NewComponent />
@@ -147,19 +146,14 @@ const router = createBrowserRouter([
         path: "games",
         element: <ImageSlider />
       },
-       {
+      {
         path: "ad",
-        element: < DirectLinkAd />
+        element: <DirectLinkAd />
       },
-    {
+      {
         path: "adkeys",
-        element: < DirectLinkKeys />
+        element: <DirectLinkKeys />
       },
-
-
-
-     
-   
       {
         path: "admin",
         element: <AdminPanel />
@@ -168,7 +162,6 @@ const router = createBrowserRouter([
         path: "slot",
         element: <SlotMachine />
       },
-    
       {
         path: "mystery-box",
         element: <BoxOpening />
