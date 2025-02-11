@@ -297,7 +297,7 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
       return (
         <Button
           variant="contained"
-          onClick={() => navigate('/latest-booba/slot')}
+          onClick={() => navigate('/slot')}
           sx={{
             p: 1,
             backgroundColor: 'rgba(110, 211, 255, 0.1)',

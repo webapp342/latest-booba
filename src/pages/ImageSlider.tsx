@@ -75,7 +75,7 @@ const NavigateButton = () => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate('/latest-booba/slot');
+    navigate('/slot');
   };
 
   return <Button sx={{backgroundColor:'#b4e6ff',color:'black', left:32, width:'41vw'}} onClick={handleClick}>Play Now</Button>;

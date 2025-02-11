@@ -84,7 +84,7 @@ const RewardDisplay: React.FC<RewardDisplayProps> = ({ reward, isVisible, onClos
 
           <Button
             variant="contained"
-                            onClick={() => navigate('/latest-booba/mystery-box', { state: { defaultTab: 'drops' } })}
+                            onClick={() => navigate('/mystery-box', { state: { defaultTab: 'drops' } })}
             sx={{
               mt: 2,
               mb: 1,

@@ -168,14 +168,14 @@ useEffect(() => {
       // BackButton'u görünür yap ve tıklanma işlevi ekle
       backButton.show();
       backButton.onClick(() => {
-        navigate("/latest-booba/");
+        navigate("/");
       });
   
       // Cleanup: Bileşen unmount olduğunda butonu gizle ve event handler'ı kaldır
       return () => {
         backButton.hide();
         backButton.offClick(() => {
-          navigate("/latest-booba/"); // Buraya tekrar aynı callback sağlanmalıdır.
+          navigate("/"); // Buraya tekrar aynı callback sağlanmalıdır.
         });
       };
     }, [navigate]);

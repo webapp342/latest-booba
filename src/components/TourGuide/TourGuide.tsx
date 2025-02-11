@@ -112,7 +112,7 @@ const TourGuide: React.FC<TourGuideProps> = ({ isOpen, onComplete }) => {
   const [stepIndex, setStepIndex] = useState(0);
 
   useEffect(() => {
-    if (isOpen && location.pathname === '/latest-booba/') {
+    if (isOpen && location.pathname === '/') {
       setRun(true);
       setStepIndex(0);
     } else {
@@ -135,7 +135,7 @@ const TourGuide: React.FC<TourGuideProps> = ({ isOpen, onComplete }) => {
   };
 
   // Only render if we're on the correct route
-  if (location.pathname !== '/latest-booba/') {
+  if (location.pathname !== '/') {
     return null;
   }
 

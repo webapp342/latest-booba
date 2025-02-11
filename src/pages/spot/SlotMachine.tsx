@@ -781,7 +781,7 @@ useEffect(() => {
                       openSwapDrawer={() => setUiState({ type: 'SET_SWAP_DRAWER', payload: true })}
                       navigateToTasks={() => {
                         // Navigate to tasks tab using useNavigate
-                        navigate('/latest-booba/tasks');
+                        navigate('/tasks');
                       }}
                       handleSpinTypeChange={handleSpinTypeChange}
                       isSpinning={uiState.isSpinning}

@@ -46,7 +46,7 @@ const SpinNotification = () => {
   };
 
   const handleNotificationClick = () => {
-    navigate('/latest-booba/slot');
+    navigate('/slot');
     handleNotificationClose();
   };
 

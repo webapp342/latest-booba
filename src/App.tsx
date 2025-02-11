@@ -94,7 +94,7 @@ const LoadingScreen = () => (
 function App() {
     const [loading, setLoading] = useState(true);
     const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
-    const manifestUrl = "https://webapp342.github.io/latest-booba/tonconnect-manifest.json";
+    const manifestUrl = "https://app.bblip.io/tonconnect-manifest.json";
     const location = useLocation();
 
     useEffect(() => {

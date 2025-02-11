@@ -81,7 +81,7 @@ const BoxDetail: React.FC = () => {
   useEffect(() => {
     const telegramUserId = localStorage.getItem("telegramUserId");
     if (!telegramUserId) {
-      navigate('/latest-booba/spin');
+      navigate('/spin');
       return;
     }
 
@@ -385,7 +385,7 @@ const BoxDetail: React.FC = () => {
             Box not found
           </Typography>
           <Button
-            onClick={() => navigate('/latest-booba/mystery-box')}
+            onClick={() => navigate('/mystery-box')}
             sx={{ mt: 2, color: 'white' }}
           >
             Go Back
@@ -421,7 +421,7 @@ const BoxDetail: React.FC = () => {
       {/* Return Button */}
       <Box sx={{ py: 2 }}>
         <IconButton 
-          onClick={() => navigate('/latest-booba/mystery-box')}
+          onClick={() => navigate('/mystery-box')}
           sx={{ color: 'white' }}
         >
           <ArrowBackIcon /> 
@@ -560,7 +560,7 @@ const BoxDetail: React.FC = () => {
                           <Button
                             variant="contained"
                             fullWidth
-                            onClick={() => navigate('/latest-booba/mystery-box', { state: { defaultTab: 'craft' } })}
+                            onClick={() => navigate('/mystery-box', { state: { defaultTab: 'craft' } })}
                             sx={{
                               mt: 1,
                               background: 'linear-gradient(90deg, #6C7BDC, #6C7BDC80)',
@@ -590,7 +590,7 @@ const BoxDetail: React.FC = () => {
                           <Button
                             variant="contained"
                             fullWidth
-                            onClick={() => navigate('/latest-booba/mystery-box', { state: { defaultTab: 'craft' } })}
+                            onClick={() => navigate('/mystery-box', { state: { defaultTab: 'craft' } })}
                             sx={{
                               mt: 1,
                               background: 'linear-gradient(90deg, #6C7BDC, #6C7BDC80)',
@@ -694,7 +694,7 @@ const BoxDetail: React.FC = () => {
           <Typography variant="subtitle1" sx={{ color: 'white', mb: 1 }}>
             Unbox to collect one of products below:
           </Typography>
-          
+           
           <Grid container spacing={1}>
             {drops.sort((a, b) => a.rarity - b.rarity).map((item, index) => (
               <Grid item xs={6} key={index}>

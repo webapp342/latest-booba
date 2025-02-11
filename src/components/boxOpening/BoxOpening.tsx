@@ -381,7 +381,7 @@ const BoxOpening: React.FC = () => {
   useEffect(() => {
     const telegramUserId = localStorage.getItem("telegramUserId");
     if (!telegramUserId) {
-      navigate('/latest-booba/spin');
+      navigate('/spin');
       return;
     }
 
@@ -410,7 +410,7 @@ const BoxOpening: React.FC = () => {
   }, [navigate]);
 
   const handleCardClick = (cardId: string) => {
-    navigate(`/latest-booba/box/${cardId}`);
+    navigate(`/box/${cardId}`);
   };
 
   const handleCloseReward = () => {
@@ -960,7 +960,7 @@ const BoxOpening: React.FC = () => {
         {/* Games Banner */}
         {currentTab !== 'craft' && (
           <Box 
-            onClick={() => navigate('/latest-booba/games')}
+            onClick={() => navigate('/games')}
             sx={{ 
               mb: 4,
               background: commonStyles.bgGradient,

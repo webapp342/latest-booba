@@ -22,7 +22,7 @@ const Layout = ({ children }: { children?: ReactNode }) => {
        
         mb: 2
       }}>        <Tabs 
-          value={currentPath.includes('statistics') ? '/latest-booba/stats/statistics' : '/latest-booba/stats'}
+          value={currentPath.includes('statistics') ? '/stats/statistics' : '/stats'}
           sx={{ 
             '& .MuiTab-root': { 
               color: '#6B7280',
@@ -32,18 +32,18 @@ const Layout = ({ children }: { children?: ReactNode }) => {
         >
           <Tab 
             label="Statistics" 
-            value="/latest-booba/stats" 
+            value="/stats" 
             component={Link} 
             sx={{textTransform: 'none'}}        
-            to="/latest-booba/stats" 
+            to="/stats" 
           />
           <Tab 
             label="Dashboard" 
-            value="/latest-booba/stats/statistics" 
+            value="/stats/statistics" 
             component={Link} 
                         sx={{textTransform: 'none'}}        
 
-            to="/latest-booba/stats/statistics" 
+            to="/stats/statistics" 
           />
         </Tabs>
       </Box>
