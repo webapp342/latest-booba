@@ -613,7 +613,7 @@ const GradientBox = styled(Box)(() => ({
   return (
     <WithTourSection sectionId="tasks-section">
       <ThemeProvider theme={theme}>
-        <Container maxWidth="lg" sx={{px:1,    mt:-5,  mb:12}}>
+        <Container  maxWidth="lg" sx={{px:1, py:5,  mt:-9,  }}>
 
 
             <GradientBox>

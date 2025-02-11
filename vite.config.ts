@@ -10,10 +10,18 @@ export default defineConfig({
   server: {
     port: 3000,
     host: true,
+    proxy: {
+      '/api': {
+        target: 'https://api.bblip.io',
+        changeOrigin: true,
+        secure: false,
+      }
+    }
   },
   build: {
     outDir: 'dist',
     sourcemap: true,
+    copyPublicDir: true,
     rollupOptions: {
       output: {
         manualChunks: {
@@ -22,4 +30,8 @@ export default defineConfig({
       },
     },
   },
+  preview: {
+    port: 3000,
+    host: true,
+  }
 });

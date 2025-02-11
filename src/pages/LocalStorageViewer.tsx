@@ -132,7 +132,7 @@ const initialData: Asset[] = [
     symbol: "ADA",
     name: "Cardano",
         view:"Booba Blip",
-    price:2.25,
+    price:0,
 
     amount: 0,
     usdValue: 0,
