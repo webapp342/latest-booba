@@ -13,6 +13,7 @@ import WelcomeModal from './components/WelcomeModal';
 import SpinNotification from './components/Notifications/SpinNotification';
 import WebApp from "@twa-dev/sdk";
 import { Box, Typography, Button, CircularProgress } from '@mui/material';
+import { usePerformanceMonitoring } from './hooks/usePerformanceMonitoring';
 
 // MUI theme configuration
 const muiTheme = createTheme({
@@ -97,6 +98,39 @@ function App() {
     const manifestUrl = "https://app.bblip.io/tonconnect-manifest.json";
     const location = useLocation();
 
+    // Performance monitoring hook'unu ekle
+    usePerformanceMonitoring();
+
+    // Resource hint'leri ekle
+    useEffect(() => {
+        // Önemli kaynakları önceden yükle
+        const preloadResources = [
+            '/images/large-image.jpg',
+            '/fonts/main-font.woff2'
+        ];
+
+        preloadResources.forEach(resource => {
+            const link = document.createElement('link');
+            link.rel = 'preload';
+            link.as = resource.includes('.woff2') ? 'font' : 'image';
+            link.href = resource;
+            document.head.appendChild(link);
+        });
+
+        // DNS'i önceden çöz
+        const prefetchDomains = [
+            'https://api.bblip.io',
+            'https://cdn.bblip.io'
+        ];
+
+        prefetchDomains.forEach(domain => {
+            const link = document.createElement('link');
+            link.rel = 'dns-prefetch';
+            link.href = domain;
+            document.head.appendChild(link);
+        });
+    }, []);
+
     useEffect(() => {
         const checkAuthorization = () => {
             try {
@@ -154,7 +188,18 @@ function App() {
                 <div id="root">
                     {loading && <Loading onLoadComplete={() => setLoading(false)} />}
 
-                    <div className={`main-content ${loading ? "hidden" : ""}`} style={{marginBottom:"13vh", paddingTop: '64px', overflowX: 'hidden' }}>
+                    <div 
+                        className={`main-content ${loading ? "hidden" : ""}`} 
+                        style={{
+                            marginBottom:"13vh", 
+                            paddingTop: '64px', 
+                            overflowX: 'hidden',
+                            // Performance optimizasyonları
+                            willChange: 'transform',
+                            transform: 'translateZ(0)',
+                            backfaceVisibility: 'hidden'
+                        }}
+                    >
                         <WelcomeModal onClose={() => {
                             console.log('Welcome modal closed');
                         }} />

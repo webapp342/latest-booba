@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
@@ -6,7 +6,6 @@ import "slick-carousel/slick/slick.css"; // Basic styles for the slider
 import "slick-carousel/slick/slick-theme.css"; // Theme styles for the slider
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import LocalStorageViewer from "./pages/LocalStorageViewer.tsx";
-import TokenSwap from "./pages/SwapComponent.tsx";
 import WebApp from "@twa-dev/sdk";
 import { Analytics } from '@vercel/analytics/react';
 
@@ -14,17 +13,12 @@ import DealsComponent from "./pages/Tasks.tsx";
 import TestComponent from "./pages/TestComponent.tsx";
 import { SlotMachine } from './pages/spot/SlotMachine';
 import ImageSlider from "./pages/ImageSlider.tsx";
-import AdminPanel from "./pages/AdminPanel.tsx";
 import NewComponent from "./components/NewComponent.tsx";
-import Stats from "./components/Stats.tsx";
-import Statistics from "./components/Statistics.tsx";
 import Layout from "./layouts/StatsLayout.tsx";
 import { OnboardingProvider } from './components/Onboarding/OnboardingProvider'
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import ErrorBoundary from "./components/ErrorBoundary.tsx";
 import { Box, Typography } from '@mui/material';
-import BoxOpening from "./components/boxOpening/BoxOpening";
-import BoxDetail from './components/boxOpening/BoxDetail';
 import DirectLinkAd from "./components/Ads/DirectLinkAd.tsx";
 import DirectLinkKeys from "./components/Ads/DirectLinkKeys.tsx";
 
@@ -86,13 +80,43 @@ const DefaultErrorElement = () => (
   </Box>
 );
 
+// Performance monitoring function
+const reportWebVitals = (metric: any) => {
+  if (metric.label === 'web-vital') {
+    // Analytics'e gönder veya console'a yazdır
+    console.log(metric);
+  }
+};
+
+// Lazy load the components
+const LazyStats = React.lazy(() => import("./components/Stats.tsx"));
+const LazyStatistics = React.lazy(() => import("./components/Statistics.tsx"));
+const LazyTokenSwap = React.lazy(() => import("./pages/SwapComponent.tsx"));
+const LazyAdminPanel = React.lazy(() => import("./pages/AdminPanel.tsx"));
+const LazyBoxOpening = React.lazy(() => import("./components/boxOpening/BoxOpening"));
+const LazyBoxDetail = React.lazy(() => import("./components/boxOpening/BoxDetail"));
+
+// Loading component
+const LoadingFallback = () => (
+  <Box sx={{ 
+    display: 'flex', 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    height: '100vh' 
+  }}>
+    <Typography>Loading...</Typography>
+  </Box>
+);
+
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
       <ErrorBoundary>
         <OnboardingProvider>
+          <Suspense fallback={<LoadingFallback />}>
             <App />
+          </Suspense>
         </OnboardingProvider>
       </ErrorBoundary>
     ),
@@ -101,12 +125,14 @@ const router = createBrowserRouter([
       {
         path: "",
         element: <Layout>
-          <Stats
-            totalLockedTon={55320000}
-            totalEarningsDistributed={5532000}
-            totalPools={3}
-            performanceData={[11193, 40083, 90056, 100622, 124722, 132191, 177181,]}
-          />
+          <Suspense fallback={<LoadingFallback />}>
+            <LazyStats
+              totalLockedTon={55320000}
+              totalEarningsDistributed={5532000}
+              totalPools={3}
+              performanceData={[11193, 40083, 90056, 100622, 124722, 132191, 177181,]}
+            />
+          </Suspense>
         </Layout>
       },
       {
@@ -115,17 +141,27 @@ const router = createBrowserRouter([
         children: [
           {
             path: "",
-            element: <Stats totalLockedTon={0} totalEarningsDistributed={0} totalPools={0} performanceData={[]} />
+            element: (
+              <Suspense fallback={<LoadingFallback />}>
+                <LazyStats totalLockedTon={0} totalEarningsDistributed={0} totalPools={0} performanceData={[]} />
+              </Suspense>
+            )
           },
           {
             path: "statistics",
-            element: <Statistics />
+            element: (
+              <Suspense fallback={<LoadingFallback />}>
+                <LazyStatistics />
+              </Suspense>
+            )
           }
         ]
       },
       {
         path: "swap",
-        element: <TokenSwap />
+        element: <Suspense fallback={<LoadingFallback />}>
+          <LazyTokenSwap />
+        </Suspense>
       },
       {
         path: "spin",
@@ -157,7 +193,11 @@ const router = createBrowserRouter([
       },
       {
         path: "admin",
-        element: <AdminPanel />
+        element: (
+          <Suspense fallback={<LoadingFallback />}>
+            <LazyAdminPanel />
+          </Suspense>
+        )
       },
       {
         path: "slot",
@@ -165,11 +205,19 @@ const router = createBrowserRouter([
       },
       {
         path: "mystery-box",
-        element: <BoxOpening />
+        element: (
+          <Suspense fallback={<LoadingFallback />}>
+            <LazyBoxOpening />
+          </Suspense>
+        )
       },
       {
         path: "box/:boxId",
-        element: <BoxDetail />
+        element: (
+          <Suspense fallback={<LoadingFallback />}>
+            <LazyBoxDetail />
+          </Suspense>
+        )
       }
     ]
   }
@@ -183,3 +231,6 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     </ThemeProvider>
   </React.StrictMode>
 );
+
+// Initialize performance monitoring
+reportWebVitals(window.performance);
