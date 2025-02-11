@@ -152,36 +152,17 @@ function App() {
     }, []);
 
     useEffect(() => {
-        // Remove development-only authorization
-        /* const checkAuthorization = () => {
-            try {
-                const user = WebApp.initDataUnsafe?.user;
-                if (user && user.id) {
-                    setIsAuthorized(true);
-                    console.log('Telegram user authorized:', user.id);
-                } else {
-                    setIsAuthorized(false);
-                    console.log('Unauthorized access attempt');
-                }
-            } catch (error) {
-                console.error('Authorization check failed:', error);
-                setIsAuthorized(false);
-            } finally {
-                setLoading(false);
-            }
-        };
+        // Development mode - bypass authorization
+        setIsAuthorized(true);
+        setLoading(false);
 
-        const timer = setTimeout(checkAuthorization, 100);
-        return () => clearTimeout(timer); */
-
-        // Activate TWA authorization check
+        /* Production authorization check - commented out for development
         const checkAuthorization = () => {
             try {
                 const user = WebApp.initDataUnsafe?.user;
                 if (user && user.id) {
                     setIsAuthorized(true);
                     console.log('Telegram user authorized:', user.id);
-                    // Store the user ID in localStorage
                     localStorage.setItem('telegramUserId', user.id.toString());
                 } else {
                     setIsAuthorized(false);
@@ -197,6 +178,7 @@ function App() {
 
         const timer = setTimeout(checkAuthorization, 100);
         return () => clearTimeout(timer);
+        */
     }, []);
 
     useLayoutEffect(() => {

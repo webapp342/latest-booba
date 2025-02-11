@@ -1,8 +1,6 @@
 // firebase.ts
-import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
-import { firebaseConfig } from './firebaseConfig'; // Senin firebaseConfig dosyanı kullanıyoruz
+import { app } from './firebaseConfig';
 
-// Firebase bağlantısı
-const app = initializeApp(firebaseConfig);
+// Use the existing Firebase app instance
 export const db = getFirestore(app);
