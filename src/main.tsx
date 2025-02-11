@@ -8,6 +8,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import LocalStorageViewer from "./pages/LocalStorageViewer.tsx";
 import TokenSwap from "./pages/SwapComponent.tsx";
 import WebApp from "@twa-dev/sdk";
+import { Analytics } from '@vercel/analytics/react';
 
 import DealsComponent from "./pages/Tasks.tsx";
 import TestComponent from "./pages/TestComponent.tsx";
@@ -178,6 +179,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <RouterProvider router={router} />
+      <Analytics />
     </ThemeProvider>
   </React.StrictMode>
 );
