@@ -338,7 +338,7 @@ const CryptoCard = ({
               boxShadow: '0 4px 8px rgba(110, 211, 255, 0.2)'
             }
           }}
-          onClick={() => navigate('/latest-booba/stake')}
+          onClick={() => navigate('/stake')}
         >
           Subscribe
         </Button>
@@ -1117,19 +1117,7 @@ const Statistics: React.FC = () => {
       />
       
       {/* Add button to open modal */}
-      <Button
-        variant="contained"
-        onClick={() => setIsCreatePoolModalOpen(true)}
-        startIcon={<AddCircleOutlineIcon />}
-        sx={{
-          bgcolor: '#6ed3ff',
-          color: '#000',
-         
-          mb: 2,
-        }}
-      >
-        Create Pool
-      </Button>
+    
     </Box>
   );
 };

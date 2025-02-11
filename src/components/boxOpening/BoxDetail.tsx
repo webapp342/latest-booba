@@ -582,7 +582,7 @@ const BoxDetail: React.FC = () => {
                               textTransform: 'none',
                             }}
                           >
-                            Deposit & get Free Box
+                            Collect Free Box
                           </Button>
                         )
                       : // Normal kutular için
@@ -622,7 +622,7 @@ const BoxDetail: React.FC = () => {
                    <Typography sx={{ color: 'rgba(255,255,255,0.7)', mt: 1, textAlign: 'center' }}>
                     {status.message}
                   </Typography>
-                  <Box
+                  <Box //@ts-ignore
                     sx={{ 
                     display: 'flex', 
                     justifyContent: 'center', 

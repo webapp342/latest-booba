@@ -31,7 +31,7 @@
     "@ton/ton": "^15.1.0",
     "@tonconnect/sdk": "^3.0.5",
     "@tonconnect/ui-react": "^2.0.9",
-    "@twa-dev/sdk": "^8.0.1",
+    "@twa-dev/sdk": "^8.0.2",
     "@types/canvas-confetti": "^1.9.0",
     "@types/gsap": "^3.0.0",
     "@types/react-joyride": "^2.0.5",
@@ -100,7 +100,10 @@
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.7",
+    "rollup-plugin-visualizer": "^5.14.0",
     "typescript": "^5.2.2",
-    "vite": "^5.3.1"
+    "vite": "^5.3.1",
+    "vite-imagetools": "^7.0.5",
+    "vite-plugin-pwa": "^0.21.1"
   }
 }

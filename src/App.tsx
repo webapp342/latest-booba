@@ -59,7 +59,7 @@ const UnauthorizedAccess = () => (
       Unauthorized Access
     </Typography>
     <Typography variant="body1" sx={{ mb: 3, maxWidth: 400 }}>
-      This application can only be accessed through Telegram WebApp. Please use our official Telegram bot to access the application.
+      Please use our official Telegram bot to access the application.
     </Typography>
     <Button
       variant="contained"
@@ -132,7 +132,8 @@ function App() {
     }, []);
 
     useEffect(() => {
-        const checkAuthorization = () => {
+        // Remove development-only authorization
+        /* const checkAuthorization = () => {
             try {
                 const user = WebApp.initDataUnsafe?.user;
                 if (user && user.id) {
@@ -150,7 +151,30 @@ function App() {
             }
         };
 
-        // Kısa bir gecikme ekleyerek WebApp'in yüklenmesini bekleyelim
+        const timer = setTimeout(checkAuthorization, 100);
+        return () => clearTimeout(timer); */
+
+        // Activate TWA authorization check
+        const checkAuthorization = () => {
+            try {
+                const user = WebApp.initDataUnsafe?.user;
+                if (user && user.id) {
+                    setIsAuthorized(true);
+                    console.log('Telegram user authorized:', user.id);
+                    // Store the user ID in localStorage
+                    localStorage.setItem('telegramUserId', user.id.toString());
+                } else {
+                    setIsAuthorized(false);
+                    console.log('Unauthorized access attempt');
+                }
+            } catch (error) {
+                console.error('Authorization check failed:', error);
+                setIsAuthorized(false);
+            } finally {
+                setLoading(false);
+            }
+        };
+
         const timer = setTimeout(checkAuthorization, 100);
         return () => clearTimeout(timer);
     }, []);

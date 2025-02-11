@@ -186,7 +186,7 @@ const Stats: React.FC<StatsProps> = ({
   };
 
   const handlePoolClick = () => {
-    navigate('/latest-booba/stake');
+    navigate('/stake');
   };
 
   return (

@@ -110,7 +110,7 @@ const initialData: Asset[] = [
     symbol: "ETH",
     name: "Ethereum",
         view:"Booba Blip",
-    price:3320.33,
+    price:0,
 
     amount: 0,
     usdValue: 0,
@@ -121,7 +121,7 @@ const initialData: Asset[] = [
     symbol: "BNB",
     name: "Binance Coin",
         view:"Booba Blip",
-    price:720.81,
+    price:0,
 
     amount: 0,
     usdValue: 0,

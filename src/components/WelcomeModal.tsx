@@ -419,7 +419,7 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
         </DialogContent>
 
         {!isAnimating && (
-          <Box 
+          <Box // @ts-ignore
             sx={{ 
               p: 2, 
               display: 'flex', 

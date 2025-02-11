@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Card,CardContent, Typography, Grid,  Box, Button, Drawer, Accordion, AccordionSummary, AccordionDetails, TextField, Modal, LinearProgress, InputAdornment, ToggleButton, ToggleButtonGroup,  CircularProgress, CircularProgressProps } from '@mui/material';
-import { AccessTime,  Lock, Shield, Security } from '@mui/icons-material';
+import { AccessTime,  Lock, Shield, Security, CheckCircle as CheckCircleIcon } from '@mui/icons-material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { doc,  getFirestore, setDoc, updateDoc, increment, arrayUnion, onSnapshot, getDoc } from 'firebase/firestore'; // Import Firestore functions
 import { app } from '../pages/firebaseConfig'; // Import your Firebase app
@@ -1679,7 +1679,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
   }, [navigate, drawerOpen]); // drawerOpen'i bağımlılıklar listesine ekleyin
 
     const handleNavigate = () => {
-    navigate('/latest-booba/spin');
+    navigate('/spin');
   };
 
 
@@ -2151,7 +2151,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
                 {/* Total Repay Section */}
                 <Box sx={{ 
                   p: 2,
-                  backgroundColor: 'rgba(110, 211, 255, 0.02)',
+                  backgroundColor: 'rgba(110, 211, 255, 0.02)', 
                   borderRadius: '12px',
                   border: '1px solid rgba(110, 211, 255, 0.1)',
                   mb: 2
@@ -2708,7 +2708,6 @@ variant="h6"
                       <Box sx={{ display: 'flex', gap: 0.5 }}>
                         {[
                           { value: 0.25, label: '25%' },
-                          { value: 0.5, label: '50%' },
                           { value: 0.75, label: '75%' },
                           { value: 1, label: '100%' }
                         ].map((option) => (
@@ -2881,7 +2880,7 @@ variant="h6"
                 <Button
                   variant="outlined"
                   fullWidth
-                  onClick={() => navigate("/latest-booba/spin")}
+                  onClick={() => navigate("/spin")}
                   sx={{
                     borderColor: '#f44336',
                     color: '#f44336',
@@ -2944,31 +2943,136 @@ variant="h6"
           top: '50%', 
           left: '50%', 
           transform: 'translate(-50%, -50%)', 
-          width: 300, 
-          bgcolor: 'background.paper', 
-          boxShadow: 24, 
+          width: 320,
+          bgcolor: '#1a2126',
+          backgroundImage: 'linear-gradient(180deg, rgba(110, 211, 255, 0.05) 0%, rgba(26, 33, 38, 0) 100%)',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.24)',
+          border: '1px solid rgba(110, 211, 255, 0.1)',
           p: 4, 
-          borderRadius: 2,
-          textAlign: 'center' // Center align text
+          borderRadius: 3,
+          textAlign: 'center',
+          animation: 'fadeIn 0.3s ease-in-out',
+          '@keyframes fadeIn': {
+            '0%': {
+              opacity: 0,
+              transform: 'translate(-50%, -48%)',
+            },
+            '100%': {
+              opacity: 1,
+              transform: 'translate(-50%, -50%)',
+            },
+          },
         }}>
-          <Typography id="success-modal-title" variant="h6" component="h2">
-            {messages[currentMessageIndex]} {/* Display current message */}
-          </Typography>
-          {isLoading && (
-            <Box sx={{ mt: 2 }}>
-              <LinearProgress variant="determinate" value={progress} /> {/* Loading progress bar */}
+          <Box sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 2
+          }}>
+            {/* Icon Container */}
+            <Box sx={{
+              width: 48,
+              height: 48,
+              borderRadius: '50%',
+              backgroundColor: 'rgba(110, 211, 255, 0.1)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              mb: 1
+            }}>
+              {currentMessageIndex < messages.length - 1 ? (
+                <CircularProgress 
+                  size={24}
+                  sx={{ color: '#6ed3ff' }}
+                />
+              ) : (
+                <CheckCircleIcon 
+                  sx={{ 
+                    fontSize: 24,
+                    color: '#4CAF50',
+                    animation: 'scaleIn 0.3s ease-in-out',
+                    '@keyframes scaleIn': {
+                      '0%': {
+                        transform: 'scale(0)',
+                      },
+                      '100%': {
+                        transform: 'scale(1)',
+                      },
+                    },
+                  }}
+                />
+              )}
             </Box>
-          )}
-          {currentMessageIndex === messages.length - 1 && ( // Show close button after last message
-            <Button 
-              variant="contained" 
-              color="primary" 
-              onClick={() => setSuccessModalOpen(false)} 
-              sx={{ mt: 2 }}
+
+            {/* Message */}
+            <Typography 
+              id="success-modal-title" 
+              variant="h6" 
+              component="h2"
+              sx={{
+                color: '#fff',
+                fontWeight: 600,
+                fontSize: '1.1rem',
+                lineHeight: 1.4,
+                mb: 1
+              }}
             >
-              Close
-            </Button>
-          )}
+              {messages[currentMessageIndex]}
+            </Typography>
+
+            {/* Progress Bar */}
+            {isLoading && (
+              <Box sx={{ width: '100%', mt: 1 }}>
+                <LinearProgress 
+                  variant="determinate" 
+                  value={progress}
+                  sx={{
+                    height: 6,
+                    borderRadius: 3,
+                    backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                    '& .MuiLinearProgress-bar': {
+                      borderRadius: 3,
+                      backgroundColor: '#6ed3ff',
+                      backgroundImage: 'linear-gradient(90deg, #6ed3ff 0%, #89d9ff 100%)',
+                    },
+                  }}
+                />
+              </Box>
+            )}
+
+            {/* Close Button */}
+            {currentMessageIndex === messages.length - 1 && (
+              <Button 
+                variant="contained" 
+                onClick={() => setSuccessModalOpen(false)} 
+                sx={{ 
+                  mt: 2,
+                  minWidth: 120,
+                  backgroundColor: '#6ed3ff',
+                  color: '#000',
+                  fontWeight: 600,
+                  borderRadius: 2,
+                  textTransform: 'none',
+                  '&:hover': {
+                    backgroundColor: '#89d9ff',
+                  },
+                  animation: 'fadeInUp 0.3s ease-in-out',
+                  '@keyframes fadeInUp': {
+                    '0%': {
+                      opacity: 0,
+                      transform: 'translateY(10px)',
+                    },
+                    '100%': {
+                      opacity: 1,
+                      transform: 'translateY(0)',
+                    },
+                  },
+                }}
+              >
+                Close
+              </Button>
+            )}
+          </Box>
         </Box>
       </Modal>
 

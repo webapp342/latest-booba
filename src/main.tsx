@@ -6,7 +6,6 @@ import "slick-carousel/slick/slick.css"; // Basic styles for the slider
 import "slick-carousel/slick/slick-theme.css"; // Theme styles for the slider
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import LocalStorageViewer from "./pages/LocalStorageViewer.tsx";
-import WebApp from "@twa-dev/sdk";
 import { Analytics } from '@vercel/analytics/react';
 
 import DealsComponent from "./pages/Tasks.tsx";
@@ -15,23 +14,15 @@ import { SlotMachine } from './pages/spot/SlotMachine';
 import ImageSlider from "./pages/ImageSlider.tsx";
 import NewComponent from "./components/NewComponent.tsx";
 import Layout from "./layouts/StatsLayout.tsx";
+import Stats from "./components/Stats.tsx";
+import Statistics from "./components/Statistics.tsx";
+import TokenSwap from "./pages/SwapComponent.tsx";
 import { OnboardingProvider } from './components/Onboarding/OnboardingProvider'
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import ErrorBoundary from "./components/ErrorBoundary.tsx";
 import { Box, Typography } from '@mui/material';
 import DirectLinkAd from "./components/Ads/DirectLinkAd.tsx";
 import DirectLinkKeys from "./components/Ads/DirectLinkKeys.tsx";
-
-if (WebApp.isVersionAtLeast('8.0') && 
-    WebApp.platform !== 'tdesktop' && 
-    WebApp.platform !== 'weba') {
-    WebApp.expand();
-    WebApp.requestFullscreen();
-    WebApp.enableClosingConfirmation();
-} else {
-    console.warn('Fullscreen mode is not supported on this platform. Using expand() instead.');
-    WebApp.expand();
-}
 
 // MUI theme configuration
 const theme = createTheme({
@@ -88,23 +79,28 @@ const reportWebVitals = (metric: any) => {
   }
 };
 
-// Lazy load the components
-const LazyStats = React.lazy(() => import("./components/Stats.tsx"));
-const LazyStatistics = React.lazy(() => import("./components/Statistics.tsx"));
-const LazyTokenSwap = React.lazy(() => import("./pages/SwapComponent.tsx"));
+// Only lazy load heavy and less frequently used components
 const LazyAdminPanel = React.lazy(() => import("./pages/AdminPanel.tsx"));
 const LazyBoxOpening = React.lazy(() => import("./components/boxOpening/BoxOpening"));
 const LazyBoxDetail = React.lazy(() => import("./components/boxOpening/BoxDetail"));
 
-// Loading component
+// Loading component with better UX
 const LoadingFallback = () => (
   <Box sx={{ 
     display: 'flex', 
     justifyContent: 'center', 
     alignItems: 'center', 
-    height: '100vh' 
+    height: '100vh',
+    backgroundColor: '#1a2126',
   }}>
-    <Typography>Loading...</Typography>
+    <Box sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: 2
+    }}>
+      <Typography sx={{ color: '#6ed3ff' }}>Loading...</Typography>
+    </Box>
   </Box>
 );
 
@@ -114,9 +110,7 @@ const router = createBrowserRouter([
     element: (
       <ErrorBoundary>
         <OnboardingProvider>
-          <Suspense fallback={<LoadingFallback />}>
-            <App />
-          </Suspense>
+          <App />
         </OnboardingProvider>
       </ErrorBoundary>
     ),
@@ -125,14 +119,12 @@ const router = createBrowserRouter([
       {
         path: "",
         element: <Layout>
-          <Suspense fallback={<LoadingFallback />}>
-            <LazyStats
-              totalLockedTon={55320000}
-              totalEarningsDistributed={5532000}
-              totalPools={3}
-              performanceData={[11193, 40083, 90056, 100622, 124722, 132191, 177181,]}
-            />
-          </Suspense>
+          <Stats
+            totalLockedTon={55320000}
+            totalEarningsDistributed={5532000}
+            totalPools={3}
+            performanceData={[11193, 40083, 90056, 100622, 124722, 132191, 177181,]}
+          />
         </Layout>
       },
       {
@@ -141,27 +133,17 @@ const router = createBrowserRouter([
         children: [
           {
             path: "",
-            element: (
-              <Suspense fallback={<LoadingFallback />}>
-                <LazyStats totalLockedTon={0} totalEarningsDistributed={0} totalPools={0} performanceData={[]} />
-              </Suspense>
-            )
+            element: <Stats totalLockedTon={0} totalEarningsDistributed={0} totalPools={0} performanceData={[]} />
           },
           {
             path: "statistics",
-            element: (
-              <Suspense fallback={<LoadingFallback />}>
-                <LazyStatistics />
-              </Suspense>
-            )
+            element: <Statistics />
           }
         ]
       },
       {
         path: "swap",
-        element: <Suspense fallback={<LoadingFallback />}>
-          <LazyTokenSwap />
-        </Suspense>
+        element: <TokenSwap />
       },
       {
         path: "spin",
