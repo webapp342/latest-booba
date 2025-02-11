@@ -503,7 +503,7 @@ useEffect(() => {
       <Box //@ts-ignore
         sx={{ 
           
-         
+          mt:-7,
    
           width: "100vw",
           mb:14,

@@ -1687,7 +1687,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
     const [open3, setOpen3] = useState(false);
 
   return (
-    <Box mt={"12%"} sx={{ 
+    <Box mt={-5} sx={{ 
   marginBottom: '76px', 
   backgroundColor: '#1a2126', 
   padding: 1,

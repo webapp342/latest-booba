@@ -192,7 +192,7 @@ const Stats: React.FC<StatsProps> = ({
   return (
     <WithTourSection sectionId="stats-section">
       <Box 
-       mx={-1} data-tour="stats-section">
+       mx={-1}  data-tour="stats-section">
         <Dashboard data={dashboardData} />
 
         {/* Chart Section */}

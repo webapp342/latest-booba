@@ -411,7 +411,7 @@ const GradientBox = styled(Box)(() => ({
     <WithTourSection sectionId="wallet-section">
       <ThemeProvider theme={theme}>
         <Box // @ts-ignore
-         mt={"5vh"}>
+         mt={-5}>
           <Box px={1} >
             <GradientBox>
               <Box // @ts-ignore

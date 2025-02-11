@@ -9,7 +9,7 @@ const Layout = ({ children }: { children?: ReactNode }) => {
   return (
  <Box sx={{ 
       padding: '16px', 
-      marginTop: 2, 
+      marginTop: -7, 
       backgroundColor: '#1a2126', 
       borderRadius: 2
     }}>

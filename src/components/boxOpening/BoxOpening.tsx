@@ -902,7 +902,7 @@ const BoxOpening: React.FC = () => {
 
   return (
     <Container maxWidth="lg">
-      <Box sx={{ py: 4, pb: 25 }}>
+      <Box sx={{ mt:-5, pb: 25 }}>
         {/* Search Bar - Only show for boxes and drops tabs */}
         {currentTab !== 'craft' && (
           <Box sx={{ mb: 4 }}>

@@ -375,6 +375,7 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
         sx={{
           borderRadius: 2,
           mb: 1,
+      
           width: '95%',
           display: 'flex',
           justifyContent: 'space-between',
@@ -612,7 +613,7 @@ const GradientBox = styled(Box)(() => ({
   return (
     <WithTourSection sectionId="tasks-section">
       <ThemeProvider theme={theme}>
-        <Container maxWidth="lg" sx={{px:1, py: 8, mb:8}}>
+        <Container maxWidth="lg" sx={{px:1,    mt:-5,  mb:12}}>
 
 
             <GradientBox>

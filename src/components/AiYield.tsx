@@ -4,8 +4,8 @@ import { Typography } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 
 const navItems = [
-  { label: 'Boxes', path: '/latest-booba/mystery-box' },
-    { label: 'Games', path: '/latest-booba/games' },
+  { label: 'Boxes', path: '/mystery-box' },
+    { label: 'Games', path: '/games' },
 
   { label: 'Invest', path: '/latest-booba/stake' },
   { label: 'Stats', path: '/latest-booba/' },
@@ -88,7 +88,7 @@ function Brand() {
           '&::before': {
             content: '""',
             position: 'absolute',
-            top: '20%',
+         
             right: '20%',
             width: '150px',
             height: '150px',
@@ -117,21 +117,7 @@ function Brand() {
           }
         }}
       >
-        <Typography 
-          variant="h1"
-          sx={{
-            textAlign: "center",
-            fontFamily: "monospace",
-            fontWeight: 700,
-            fontSize: "1.4rem",
-            letterSpacing: "1px",
-            position: 'relative',
-            color: '#fff',
-            textShadow: '0 0 20px rgba(159,223,255,0.3)'
-          }}
-        >
-          {currentLabel}
-        </Typography>
+    
       </Box>
     </AppBar>
   );
