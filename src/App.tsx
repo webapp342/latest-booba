@@ -92,6 +92,26 @@ const LoadingScreen = () => (
   </Box>
 );
 
+// Initialize WebApp
+useEffect(() => {
+  try {
+    // Expand the WebApp to full height
+    WebApp.expand();
+    
+    // Set viewport settings
+    WebApp.setHeaderColor('#1a2126');
+    WebApp.setBackgroundColor('#1a2126');
+    
+    // Enable closing confirmation if needed
+    WebApp.enableClosingConfirmation();
+    
+    // Ready event
+    WebApp.ready();
+  } catch (error) {
+    console.error('Error initializing WebApp:', error);
+  }
+}, []);
+
 function App() {
     const [loading, setLoading] = useState(true);
     const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
