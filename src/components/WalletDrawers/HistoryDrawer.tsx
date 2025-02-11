@@ -23,7 +23,7 @@ const StyledDrawer = styled(Drawer)(({ }) => ({
     background: 'linear-gradient(180deg, rgba(26, 33, 38, 0.99) 0%, rgba(26, 33, 38, 0.95) 100%)',
     borderRadius: '24px 24px 0 0',
     padding: '24px',
-   maxHeight: '80vh',
+    maxHeight: '100vh',
     minHeight: '60vh',
     border: '1px solid rgba(110, 211, 255, 0.1)',
     

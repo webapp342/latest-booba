@@ -23,7 +23,7 @@ const StyledDrawer = styled(Drawer)(({ }) => ({
     borderRadius: '24px 24px 0 0',
   
     
-     maxHeight: '80vh',
+     maxHeight: '100vh',
     minHeight: '60vh',
     height: 'auto',
     border: '1px solid rgba(110, 211, 255, 0.1)',

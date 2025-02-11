@@ -1,25 +1,10 @@
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
-import { Typography } from '@mui/material';
-import { useLocation } from 'react-router-dom';
 
-const navItems = [
-  { label: 'Boxes', path: '/mystery-box' },
-    { label: 'Games', path: '/games' },
-
-  { label: 'Invest', path: '/latest-booba/stake' },
-  { label: 'Stats', path: '/latest-booba/' },
-  { label: 'Tasks', path: '/latest-booba/tasks' },
-  { label: 'Wallet', path: '/latest-booba/spin' }, 
-    { label: '999x Crash', path: '/latest-booba/slot' }, 
-
-];
 
 function Brand() {
-  const location = useLocation();
   
   // Get current route's label
-  const currentLabel = navItems.find(item => item.path === location.pathname)?.label || 'Stats';
 
   return (
     <AppBar sx={{
