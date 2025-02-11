@@ -1663,7 +1663,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
     if (drawerOpen) {
         backButton.show();
         backButton.onClick(() => {
-            navigate("/latest-booba/stake");
+            navigate("/stake");
         });
     } else {
         backButton.hide(); // Drawer kapalıysa butonu gizle
@@ -1673,7 +1673,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
     return () => {
         backButton.hide();
         backButton.offClick(() => {
-            navigate("/latest-booba/stake"); // Buraya tekrar aynı callback sağlanmalıdır.
+            navigate("/stake"); // Buraya tekrar aynı callback sağlanmalıdır.
         });
     };
   }, [navigate, drawerOpen]); // drawerOpen'i bağımlılıklar listesine ekleyin
