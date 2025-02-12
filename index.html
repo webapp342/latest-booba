@@ -14,47 +14,47 @@
     <script type="text/javascript">
       (function() {
         function cleanUrl() {
-          const currentUrl = window.location.href;
-          const baseUrl = window.location.origin;
-          let path = window.location.pathname;
+          const url = new URL(window.location.href);
+          const path = url.pathname;
           
-          // Remove any query parameters that contain problematic patterns
-          if (window.location.search.includes('~and~') || 
-              window.location.search.includes('?/&/') || 
-              window.location.search.includes('/?/')) {
+          // Eğer URL'de problemli karakterler varsa
+          if (url.search.includes('~and~') || 
+              url.search.includes('?/&/') || 
+              url.search.includes('/?/') ||
+              url.search.includes('%2F')) {
             
-            // Clean the path
-            path = path.replace(/\/+$/, ''); // Remove trailing slashes
-            path = path.replace(/\/+/g, '/'); // Replace multiple slashes with single slash
+            // Path'i temizle
+            let cleanPath = path;
+            cleanPath = cleanPath.replace(/\/+$/, ''); // Sondaki slash'leri kaldır
+            cleanPath = cleanPath.replace(/\/+/g, '/'); // Çoklu slash'leri tekli yap
             
-            // Construct clean URL
-            const cleanUrl = baseUrl + path;
+            // Query parametrelerini tamamen kaldır
+            const cleanUrl = window.location.origin + cleanPath;
             
-            // Update URL without reloading the page
-            window.history.replaceState(null, null, cleanUrl);
+            // URL'i güncelle ve sayfayı yenileme
+            window.history.replaceState({}, '', cleanUrl);
+            
+            // Eğer sayfa yüklendiyse ve path değiştiyse sayfayı yenile
+            if (document.readyState === 'complete' && window.location.href !== cleanUrl) {
+              window.location.href = cleanUrl;
+            }
+            
             return true;
           }
           return false;
         }
 
-        // Clean URL immediately
-        if (cleanUrl()) {
-          console.log('URL was cleaned on load');
-        }
+        // URL'i hemen temizle
+        cleanUrl();
 
-        // Also clean on page load (backup)
-        window.addEventListener('load', function() {
-          if (cleanUrl()) {
-            console.log('URL was cleaned after load');
-          }
-        });
-
-        // Clean on popstate (browser back/forward)
-        window.addEventListener('popstate', function() {
-          if (cleanUrl()) {
-            console.log('URL was cleaned on navigation');
-          }
-        });
+        // Sayfa yüklendiğinde tekrar kontrol et
+        window.addEventListener('DOMContentLoaded', cleanUrl);
+        
+        // Navigasyon değişikliklerinde kontrol et
+        window.addEventListener('popstate', cleanUrl);
+        
+        // Hash değişikliklerinde kontrol et
+        window.addEventListener('hashchange', cleanUrl);
       })();
     </script>
     <script type="module" crossorigin src="/assets/index-BhBkx3lY.js"></script>
