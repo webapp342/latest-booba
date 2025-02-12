@@ -12,31 +12,52 @@
 <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 
     <script type="text/javascript">
-      // Handle SPA routing and clean problematic URLs
       (function() {
-        // Handle direct navigation
-        if (window.location.pathname !== '/' && !window.location.pathname.endsWith('.html')) {
-          sessionStorage.setItem('spa-path', window.location.pathname + window.location.search);
+        function cleanUrl() {
+          const currentUrl = window.location.href;
+          const baseUrl = window.location.origin;
+          let path = window.location.pathname;
+          
+          // Remove any query parameters that contain problematic patterns
+          if (window.location.search.includes('~and~') || 
+              window.location.search.includes('?/&/') || 
+              window.location.search.includes('/?/')) {
+            
+            // Clean the path
+            path = path.replace(/\/+$/, ''); // Remove trailing slashes
+            path = path.replace(/\/+/g, '/'); // Replace multiple slashes with single slash
+            
+            // Construct clean URL
+            const cleanUrl = baseUrl + path;
+            
+            // Update URL without reloading the page
+            window.history.replaceState(null, null, cleanUrl);
+            return true;
+          }
+          return false;
         }
 
-        // Clean problematic URLs
-        if (window.location.search.includes('~and~') || window.location.search.includes('?/&/')) {
-          const currentPath = window.location.pathname;
-          const cleanPath = currentPath.replace(/\/+$/, ''); // Remove trailing slashes
-          window.history.replaceState(null, null, cleanPath);
+        // Clean URL immediately
+        if (cleanUrl()) {
+          console.log('URL was cleaned on load');
         }
 
-        // Restore path after page load if needed
+        // Also clean on page load (backup)
         window.addEventListener('load', function() {
-          const savedPath = sessionStorage.getItem('spa-path');
-          if (savedPath) {
-            sessionStorage.removeItem('spa-path');
-            window.history.replaceState(null, null, savedPath);
+          if (cleanUrl()) {
+            console.log('URL was cleaned after load');
+          }
+        });
+
+        // Clean on popstate (browser back/forward)
+        window.addEventListener('popstate', function() {
+          if (cleanUrl()) {
+            console.log('URL was cleaned on navigation');
           }
         });
       })();
     </script>
-    <script type="module" crossorigin src="/assets/index-Dx-Wo3EE.js"></script>
+    <script type="module" crossorigin src="/assets/index-BhBkx3lY.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/vendor-Btj0IEn_.js">
     <link rel="stylesheet" crossorigin href="/assets/index-CgMCAEZ4.css">
   </head>
