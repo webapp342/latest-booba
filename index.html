@@ -12,50 +12,18 @@
 <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 
     <script type="text/javascript">
-      (function() {
-        function cleanUrl() {
-          const url = new URL(window.location.href);
-          const path = url.pathname;
-          
-          // Eğer URL'de problemli karakterler varsa
-          if (url.search.includes('~and~') || 
-              url.search.includes('?/&/') || 
-              url.search.includes('/?/') ||
-              url.search.includes('%2F')) {
-            
-            // Path'i temizle
-            let cleanPath = path;
-            cleanPath = cleanPath.replace(/\/+$/, ''); // Sondaki slash'leri kaldır
-            cleanPath = cleanPath.replace(/\/+/g, '/'); // Çoklu slash'leri tekli yap
-            
-            // Query parametrelerini tamamen kaldır
-            const cleanUrl = window.location.origin + cleanPath;
-            
-            // URL'i güncelle ve sayfayı yenileme
-            window.history.replaceState({}, '', cleanUrl);
-            
-            // Eğer sayfa yüklendiyse ve path değiştiyse sayfayı yenile
-            if (document.readyState === 'complete' && window.location.href !== cleanUrl) {
-              window.location.href = cleanUrl;
-            }
-            
-            return true;
-          }
-          return false;
+      (function (l) {
+        if (l.search[1] === "/") {
+          var decoded = l.search
+            .slice(1)
+            .split("&")
+            .map(function (s) {
+              return s.replace(/~and~/g, "&");
+            })
+            .join("?");
+          window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash);
         }
-
-        // URL'i hemen temizle
-        cleanUrl();
-
-        // Sayfa yüklendiğinde tekrar kontrol et
-        window.addEventListener('DOMContentLoaded', cleanUrl);
-        
-        // Navigasyon değişikliklerinde kontrol et
-        window.addEventListener('popstate', cleanUrl);
-        
-        // Hash değişikliklerinde kontrol et
-        window.addEventListener('hashchange', cleanUrl);
-      })();
+      })(window.location);
     </script>
   </head>
   <body>
