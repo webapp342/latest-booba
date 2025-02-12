@@ -128,7 +128,7 @@ const router = createBrowserRouter([
         </Layout>
       },
       {
-        path: "stats",
+        path: "/stats",
         element: <Layout />,
         children: [
           {
@@ -136,45 +136,45 @@ const router = createBrowserRouter([
             element: <Stats totalLockedTon={0} totalEarningsDistributed={0} totalPools={0} performanceData={[]} />
           },
           {
-            path: "statistics",
+            path: "/statistics",
             element: <Statistics />
           }
         ]
       },
       {
-        path: "swap",
+        path: "/swap",
         element: <TokenSwap />
       },
       {
-        path: "spin",
+        path: "/spin",
         element: <LocalStorageViewer />
       },
       {
-        path: "stake",
+        path: "/stake",
         element: <NewComponent />
       },
       {
-        path: "test",
+        path: "/test",
         element: <TestComponent />
       },
       {
-        path: "tasks",
+        path: "/tasks",
         element: <DealsComponent />
       },
       {
-        path: "games",
+        path: "/games",
         element: <ImageSlider />
       },
       {
-        path: "ad",
+        path: "/ad",
         element: <DirectLinkAd />
       },
       {
-        path: "adkeys",
+        path: "/adkeys",
         element: <DirectLinkKeys />
       },
       {
-        path: "admin",
+        path: "/admin",
         element: (
           <Suspense fallback={<LoadingFallback />}>
             <LazyAdminPanel />
@@ -182,11 +182,11 @@ const router = createBrowserRouter([
         )
       },
       {
-        path: "slot",
+        path: "/slot",
         element: <SlotMachine />
       },
       {
-        path: "mystery-box",
+        path: "/mystery-box",
         element: (
           <Suspense fallback={<LoadingFallback />}>
             <LazyBoxOpening />
@@ -194,7 +194,7 @@ const router = createBrowserRouter([
         )
       },
       {
-        path: "box/:boxId",
+        path: "/box/:boxId",
         element: (
           <Suspense fallback={<LoadingFallback />}>
             <LazyBoxDetail />
