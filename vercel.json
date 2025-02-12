@@ -1,12 +1,14 @@
 {
-  "rewrites": [
-    { "source": "/:path*", "destination": "/index.html" }
-  ],
-  "redirects": [
-    { 
-      "source": "/:path*\\?/:query*",
-      "destination": "/:path",
-      "permanent": true
+  "version": 2,
+  "routes": [
+    {
+      "src": "/[^.]+",
+      "dest": "/index.html",
+      "status": 200
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ],
   "headers": [
@@ -19,7 +21,5 @@
         }
       ]
     }
-  ],
-  "cleanUrls": true,
-  "trailingSlash": false
+  ]
 } 
