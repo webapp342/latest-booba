@@ -1,8 +1,23 @@
 {
   "rewrites": [
+    { "source": "/:path*", "destination": "/index.html" }
+  ],
+  "redirects": [
+    { 
+      "source": "/:path*\\?/:query*",
+      "destination": "/:path",
+      "permanent": true
+    }
+  ],
+  "headers": [
     {
       "source": "/(.*)",
-      "destination": "/index.html"
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
     }
   ],
   "cleanUrls": true,

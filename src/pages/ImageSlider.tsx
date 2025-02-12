@@ -168,7 +168,7 @@ const Example: React.FC = () => {
     return (
         <ThemeProvider theme={theme}>
             <WithTourSection sectionId="games-section">
-            <Box mt={"7vh"} sx={{                  
+            <Box  sx={{                  
 }} mx={1} borderRadius={5} overflow="hidden">
                 <Box>
                 <Slide 
