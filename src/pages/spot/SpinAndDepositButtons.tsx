@@ -53,7 +53,6 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
   isSpinning,
   showTopUpButton,
   openSwapDrawer,
-  navigateToTasks,
 }): React.ReactElement => {
   const [prevTotal, setPrevTotal] = useState<number>(total);
   const [prevTickets, setPrevTickets] = useState<number>(tickets);

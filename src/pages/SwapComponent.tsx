@@ -1101,7 +1101,7 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ defaultAmount, onClose }) => {
                 </IconButton>
               </Box>
 
-              <Box sx={{ maxHeight: '60vh', overflow: 'auto' }}>
+              <Box sx={{ maxHeight: '60vh', overflow: 'auto', mx:-2, }}>
                 {tokens.map((token) => (
                   <TokenListItem
                     key={token.name}

@@ -58,7 +58,8 @@ const SpinNotification = () => {
       TransitionComponent={Slide}
       sx={{
         '& .MuiSnackbar-root': {
-          width: '100%'
+          width: '100%',
+          
         }
       }}
     >
@@ -83,6 +84,7 @@ const SpinNotification = () => {
           display: 'flex',
           alignItems: 'center',
           gap: 1.5,
+          mb:2,
           cursor: 'pointer',
           transition: 'all 0.2s ease',
        

@@ -165,9 +165,7 @@ export default function Navigation() {
               sx={{
                 backgroundColor: 'rgba(110, 211, 255, 0.1)',
                 color: '#6ed3ff',
-                '&:hover': {
-                  backgroundColor: 'rgba(110, 211, 255, 0.2)',
-                },
+               
               }}
             >
               <HelpCircle size={20} />
@@ -239,9 +237,9 @@ export default function Navigation() {
           onChange={handleChange}
           showLabels
           sx={{
-            height: '75px',
+            height: '65px',
             background: 'transparent',
-            paddingBottom: { xs: '12px', sm: '12px', md: '12px' },
+            paddingBottom: { xs: '10px', sm: '10px', md: '10px' },
             '& .MuiBottomNavigationAction-root': {
               padding: '6px 0',
               minWidth: 'auto',
