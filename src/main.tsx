@@ -136,7 +136,7 @@ const router = createBrowserRouter([
             element: <Stats totalLockedTon={0} totalEarningsDistributed={0} totalPools={0} performanceData={[]} />
           },
           {
-            path: "/statistics",
+            path: "statistics",
             element: <Statistics />
           }
         ]
