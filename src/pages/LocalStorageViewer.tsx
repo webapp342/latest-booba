@@ -79,7 +79,7 @@ const initialData: Asset[] = [
     symbol: "TON",
     name: "Ton",
     view:"Booba Blip",
-    amount: 10000,
+    amount: 0,
     usdValue: 0,
     price:0,
     active: true
@@ -99,7 +99,7 @@ const initialData: Asset[] = [
     symbol: "TICKET",
     name: "Ticket",
         view:"Booba Blip",
-    price:10.46,
+    price:0,
 
     amount: 0,
     usdValue: 0,

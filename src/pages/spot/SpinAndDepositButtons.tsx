@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Tabs, Tab, AppBar, Typography, Box } from '@mui/material';
+import { Button, Tabs, Tab, AppBar, Typography, Box, IconButton } from '@mui/material';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import boobaLogo from '../../assets/booba-logo.png';
 import ticketLogo from '../../assets/ticket.png';
 import tonLogo from '../../assets/ton_symbol.png';
 import DirectLinkAd from '../../components/Ads/DirectLinkAd';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 const theme = createTheme({
   typography: {
@@ -20,12 +22,18 @@ const formatAmount = (amount: number) => {
   return `${parseInt(integerPart, 10)}.${decimalPart}`;
 };
 
+interface SpinAmounts {
+  total: number;
+  bblip: number;
+  ticket: number;
+}
+
 interface SpinAndDepositButtonsProps {
   total: number;
   tickets: number;
   bblip: number;
   selectedSpinType: string;
-  handleSpin: () => void;
+  handleSpin: (amount: number) => void;
   openDepositDrawer: () => void;
   handleSpinTypeChange: (event: React.ChangeEvent<{}>, value: string) => void;
   isSpinning: boolean;
@@ -45,12 +53,17 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
   isSpinning,
   showTopUpButton,
   openSwapDrawer,
- 
-}) => {
-  const [prevTotal, setPrevTotal] = useState(total);
-  const [prevTickets, setPrevTickets] = useState(tickets);
-  const [prevBblip, setPrevBblip] = useState(bblip);
-  const [amountStyle, setAmountStyle] = useState({});
+  navigateToTasks,
+}): React.ReactElement => {
+  const [prevTotal, setPrevTotal] = useState<number>(total);
+  const [prevTickets, setPrevTickets] = useState<number>(tickets);
+  const [prevBblip, setPrevBblip] = useState<number>(bblip);
+  const [amountStyle, setAmountStyle] = useState<Record<string, string>>({});
+  const [spinAmount, setSpinAmount] = useState<SpinAmounts>({
+    total: 200, // 0.2 TON in total
+    bblip: 25000, // 25 BBLIP
+    ticket: 1
+  });
 
   // Balance change effects
   useEffect(() => {
@@ -87,7 +100,10 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
   }, [bblip, prevBblip]);
 
   const handleSpinClick = () => {
-    handleSpin();
+    const amount = selectedSpinType === 'total' ? spinAmount.total :
+                  selectedSpinType === 'bblip' ? spinAmount.bblip :
+                  1; // for tickets
+    handleSpin(amount);
   };
 
   // Format available amount text
@@ -104,6 +120,18 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
     }
   };
 
+  // Get current spin amount display
+  const getCurrentSpinAmount = () => {
+    switch (selectedSpinType) {
+      case 'total':
+        return (spinAmount.total / 1000).toFixed(1);
+      case 'bblip':
+        return Math.floor(spinAmount.bblip / 1000).toString();
+      default:
+        return '1';
+    }
+  };
+
   // Get minimum required amount text
   const getMinimumRequired = () => {
     switch (selectedSpinType) {
@@ -116,6 +144,60 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
       default:
         return '';
     }
+  };
+
+  // Get maximum allowed amount based on selected type
+  const getMaxAmount = () => {
+    switch (selectedSpinType) {
+      case 'total':
+        return total; // Full balance in total
+      case 'ticket':
+        return tickets;
+      case 'bblip':
+        return bblip; // Full balance in bblip
+      default:
+        return 0;
+    }
+  };
+
+  // Handle increment and decrement
+  const handleIncrement = () => {
+    const maxAmount = getMaxAmount();
+    
+    switch (selectedSpinType) {
+      case 'total':
+        const nextTotalAmount = spinAmount.total + 100; // +0.1 TON
+        if (nextTotalAmount <= maxAmount) {
+          setSpinAmount(prev => ({ ...prev, total: nextTotalAmount }));
+        }
+        break;
+      case 'bblip':
+        const nextBblipAmount = spinAmount.bblip + (5 * 1000); // +5 BBLIP
+        if (nextBblipAmount <= maxAmount) {
+          setSpinAmount(prev => ({ ...prev, bblip: nextBblipAmount }));
+        }
+        break;
+    }
+  };
+
+  const handleDecrement = () => {
+    switch (selectedSpinType) {
+      case 'total':
+        if (spinAmount.total > 200) { // Min 0.2 TON
+          setSpinAmount(prev => ({ ...prev, total: prev.total - 100 })); // -0.1 TON
+        }
+        break;
+      case 'bblip':
+        if (spinAmount.bblip > 25000) { // Min 25 BBLIP
+          setSpinAmount(prev => ({ ...prev, bblip: prev.bblip - (5 * 1000) })); // -5 BBLIP
+        }
+        break;
+    }
+  };
+
+  // Check if amount controls should be shown
+  const shouldShowAmountControls = () => {
+    return !showTopUpButton && selectedSpinType !== 'ticket';
   };
 
   return (
@@ -194,38 +276,96 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
           </Tabs>
         </AppBar>
 
-        <Typography
-          variant="body2"
+        <Box
           sx={{
-            color: showTopUpButton ? '#FF6B6B' : 'white',
-            fontSize: '0.8rem',
-            mt: 1.5,
-            mb: 1.5,
-            fontWeight: 500,
-            ...(!showTopUpButton && amountStyle),
-            transition: 'color 0.3s ease',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
+            justifyContent: 'space-between',
+            px: 2,
+            mt: 1.5,
+            mb: 1.5,
           }}
         >
-          {showTopUpButton ? (
-            <>
-              <Box //@ts-ignore
-                sx={{ 
-                  width: '4px',
-                  height: '4px',
-                  backgroundColor: '#FF6B6B',
-                  borderRadius: '50%',
-                  mr: 1,
+          <Typography
+            variant="body2"
+            sx={{
+              color: showTopUpButton ? '#FF6B6B' : 'white',
+              fontSize: '0.8rem',
+              fontWeight: 500,
+              ...(!showTopUpButton && amountStyle),
+              transition: 'color 0.3s ease',
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            {showTopUpButton ? (
+              <>
+                <Box
+                  sx={{ 
+                    width: '4px',
+                    height: '4px',
+                    backgroundColor: '#FF6B6B',
+                    borderRadius: '50%',
+                    mr: 1,
+                  }}
+                />
+                You need at least {getMinimumRequired()} to spin
+              </>
+            ) : (
+              getAvailableAmount()
+            )}
+          </Typography>
+
+          {shouldShowAmountControls() && (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <IconButton
+                size="small"
+                onClick={handleDecrement}
+                disabled={
+                  (selectedSpinType === 'total' && spinAmount.total <= 200) ||
+                  (selectedSpinType === 'bblip' && spinAmount.bblip <= 25000) ||
+                  isSpinning
+                }
+                sx={{
+                  color: 'white',
+                  backgroundColor: 'rgba(255,255,255,0.1)',
+                  '&:hover': { backgroundColor: 'rgba(255,255,255,0.2)' },
+                  '&.Mui-disabled': { color: 'rgba(255,255,255,0.3)' },
                 }}
-              />
-              You need at least {getMinimumRequired()} to spin
-            </>
-          ) : (
-            getAvailableAmount()
+              >
+                <RemoveIcon fontSize="small" />
+              </IconButton>
+              <Typography
+                sx={{
+                  color: 'white',
+                  fontSize: '0.9rem',
+                  fontWeight: 'bold',
+                  minWidth: '45px',
+                  textAlign: 'center',
+                }}
+              >
+                {getCurrentSpinAmount()}
+              </Typography>
+              <IconButton
+                size="small"
+                onClick={handleIncrement}
+                disabled={
+                  (selectedSpinType === 'total' && spinAmount.total + 100 > total) ||
+                  (selectedSpinType === 'bblip' && spinAmount.bblip + (5 * 1000) > bblip) ||
+                  isSpinning
+                }
+                sx={{
+                  color: 'white',
+                  backgroundColor: 'rgba(255,255,255,0.1)',
+                  '&:hover': { backgroundColor: 'rgba(255,255,255,0.2)' },
+                  '&.Mui-disabled': { color: 'rgba(255,255,255,0.3)' },
+                }}
+              >
+                <AddIcon fontSize="small" />
+              </IconButton>
+            </Box>
           )}
-        </Typography>
+        </Box>
 
         {showTopUpButton ? (
           <Box>

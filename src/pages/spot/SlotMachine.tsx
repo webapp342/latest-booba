@@ -282,8 +282,9 @@ export const SlotMachine: FC = () => {
   }, []);
 
   // Handle spin with both local and Firestore updates
-  const handleSpin = useCallback(async () => {
+  const handleSpin = useCallback(async (spinAmount: number) => {
     console.log('=== SPIN BAŞLADI ===');
+    console.log('Spin Amount:', spinAmount);
     
     try {
       // 1. ADIM: Firebase'den kullanıcı bilgilerini al
@@ -297,10 +298,10 @@ export const SlotMachine: FC = () => {
       console.log('İlk spin mi?:', isFirstSpin);
 
       // Bakiye kontrolü
-      if (gameState.selectedSpinType === 'total' && userData.total < 200) {
+      if (gameState.selectedSpinType === 'total' && userData.total < spinAmount) {
         setUiState({ type: 'SET_DRAWER', payload: true });
         return;
-      } else if (gameState.selectedSpinType === 'bblip' && userData.bblip < 25000) {
+      } else if (gameState.selectedSpinType === 'bblip' && userData.bblip < spinAmount) {
         setUiState({ type: 'SET_DRAWER', payload: true });
         return;
       } else if (gameState.selectedSpinType === 'ticket' && userData.tickets < 1) {
@@ -311,12 +312,12 @@ export const SlotMachine: FC = () => {
       // 2. ADIM: Direkt Firebase'den ücreti düş
       if (gameState.selectedSpinType === 'total') {
         await updateDoc(userRef, {
-          total: increment(-200),
+          total: increment(-spinAmount),
           hasSpinned: true // İlk spin işaretini güncelle
         });
       } else if (gameState.selectedSpinType === 'bblip') {
         await updateDoc(userRef, {
-          bblip: increment(-25000),
+          bblip: increment(-spinAmount),
           hasSpinned: true
         });
       } else if (gameState.selectedSpinType === 'ticket') {
