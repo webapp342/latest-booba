@@ -15,6 +15,10 @@ import WebApp from "@twa-dev/sdk";
 import { Box, Typography, Button, CircularProgress } from '@mui/material';
 import { usePerformanceMonitoring } from './hooks/usePerformanceMonitoring';
 import analytics from '@telegram-apps/analytics';
+import { v4 as uuidv4 } from 'uuid';
+
+// Create a session ID for analytics
+const sessionId = uuidv4();
 
 // Initialize analytics before app renders
 analytics.init({
@@ -22,6 +26,40 @@ analytics.init({
     appName: 'BoobaBlip',
     env: process.env.NODE_ENV === 'development' ? 'STG' : 'PROD'
 }).catch(console.error);
+
+// Custom analytics functions
+const sendAnalyticsEvent = async (eventName: string, customData?: Record<string, any>) => {
+    try {
+        if (!WebApp.initData) return;
+
+        const user = WebApp.initDataUnsafe?.user;
+        if (!user?.id) return;
+
+        const eventData = {
+            event_name: eventName,
+            session_id: sessionId,
+            user_id: user.id,
+            app_name: 'BoobaBlip',
+            is_premium: user.is_premium || false,
+            platform: WebApp.platform || 'unknown',
+            locale: user.language_code || 'en',
+            start_param: WebApp.initDataUnsafe?.start_param || '',
+            client_timestamp: Date.now().toString(),
+            custom_data: customData
+        };
+
+        await fetch('https://analytics.tgapps.xyz/api/v1/events', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${process.env.VITE_ANALYTICS_TOKEN || 'eyJhcHBfbmFtZSI6IkJvb2JhQmxpcCIsImFwcF91cmwiOiJodHRwczovL3QubWUvQm9vYmFCbGlwQm90IiwiYXBwX2RvbWFpbiI6Imh0dHBzOi8vYXBwLmJibGlwLmlvIn0=!fwYnpPAfOiM7DtV2126g0WrJPi8o7t+GB8KH3xk9pZw='}`
+            },
+            body: JSON.stringify(eventData)
+        });
+    } catch (error) {
+        console.error('Analytics event error:', error);
+    }
+};
 
 // MUI theme configuration
 const muiTheme = createTheme({
@@ -126,6 +164,9 @@ function App() {
             WebApp.setBackgroundColor('#1a2126');
             WebApp.enableClosingConfirmation();
             WebApp.ready();
+
+            // Send app-init event
+            sendAnalyticsEvent('app-init');
             
             setIsAuthorized(true);
         } catch (error) {
@@ -139,13 +180,29 @@ function App() {
     // Track page views
     useEffect(() => {
         if (isAuthorized) {
-            // @ts-ignore - Types are not properly exported from the package
-            analytics.pageView({
+            sendAnalyticsEvent('custom-event', {
+                type: 'page_view',
                 path: location.pathname,
                 title: document.title
-            }).catch(console.error);
+            });
         }
     }, [location.pathname, isAuthorized]);
+
+    // Track app hide/show
+    useEffect(() => {
+        if (!isAuthorized) return;
+
+        const handleVisibilityChange = () => {
+            if (document.hidden) {
+                sendAnalyticsEvent('app-hide');
+            }
+        };
+
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        return () => {
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+        };
+    }, [isAuthorized]);
 
     // Resource hint'leri ekle
     useEffect(() => {
@@ -222,13 +279,10 @@ function App() {
                         <WelcomeModal onClose={() => {
                             console.log('Welcome modal closed');
                             // Track modal close event
-                            // @ts-ignore - Types are not properly exported from the package
-                            analytics.event({
-                                name: 'welcome_modal_closed',
-                                params: {
-                                    source: 'user_action'
-                                }
-                            }).catch(console.error);
+                            sendAnalyticsEvent('custom-event', {
+                                type: 'modal_closed',
+                                name: 'welcome_modal'
+                            });
                         }} />
                         <Brand />
                         <Outlet />
