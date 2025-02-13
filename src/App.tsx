@@ -44,27 +44,33 @@ const sendAnalyticsEvent = async (eventName: string, customData?: Record<string,
         const eventData = {
             event_name: eventName,
             session_id: sessionId,
-            user_id: user.id,
+            user_id: user.id.toString(),
             app_name: 'BoobaBlip',
             is_premium: user.is_premium || false,
             platform: WebApp.platform || 'unknown',
             locale: user.language_code || 'en',
             start_param: WebApp.initDataUnsafe?.start_param || '',
             client_timestamp: Date.now().toString(),
-            custom_data: customData
+            custom_data: customData || {}
         };
 
-        const response = await fetch('http://analytics.tgapps.xyz/api/v1/events', {
+        // Use the correct analytics endpoint with HTTPS
+        const response = await fetch('https://tganalytics.xyz/events', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${process.env.VITE_ANALYTICS_TOKEN || 'eyJhcHBfbmFtZSI6IkJvb2JhQmxpcCIsImFwcF91cmwiOiJodHRwczovL3QubWUvQm9vYmFCbGlwQm90IiwiYXBwX2RvbWFpbiI6Imh0dHBzOi8vYXBwLmJibGlwLmlvIn0=!AtipScY/ag//8I4N0LwUprrlzN0h6V9p7pWU0FC4gE4='}`
+                'Authorization': `Bearer ${process.env.VITE_ANALYTICS_TOKEN || 'eyJhcHBfbmFtZSI6IkJvb2JhQmxpcCIsImFwcF91cmwiOiJodHRwczovL3QubWUvQm9vYmFCbGlwQm90IiwiYXBwX2RvbWFpbiI6Imh0dHBzOi8vYXBwLmJibGlwLmlvIn0=!AtipScY/ag//8I4N0LwUprrlzN0h6V9p7pWU0FC4gE4='}`,
+                'Origin': 'https://app.bblip.io',
+                'Accept': 'application/json'
             },
-            body: JSON.stringify(eventData)
+            body: JSON.stringify(eventData),
+            mode: 'cors',
+            credentials: 'omit'
         });
 
         if (!response.ok) {
-            throw new Error(`Analytics HTTP error! status: ${response.status}`);
+            const errorText = await response.text();
+            throw new Error(`Analytics HTTP error! status: ${response.status}, details: ${errorText}`);
         }
 
         const result = await response.json();
@@ -74,7 +80,8 @@ const sendAnalyticsEvent = async (eventName: string, customData?: Record<string,
         console.warn('Analytics event error:', {
             eventName,
             error: error instanceof Error ? error.message : 'Unknown error',
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
+            data: customData
         });
     }
 };
