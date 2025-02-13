@@ -109,11 +109,11 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
   const getAvailableAmount = () => {
     switch (selectedSpinType) {
       case 'total':
-        return `Available: ${formatAmount(total)} TON`;
+        return `Balance: ${formatAmount(total)} TON`;
       case 'ticket':
-        return `Available: ${tickets} Tickets`;
+        return `Balance: ${tickets} Tickets`;
       case 'bblip':
-        return `Available: ${formatAmount(bblip)} BBLIP`;
+        return `Balance: ${formatAmount(bblip)} BBLIP`;
       default:
         return '';
     }

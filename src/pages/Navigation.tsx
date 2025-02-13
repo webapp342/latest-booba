@@ -220,7 +220,7 @@ export default function Navigation() {
               onClick={handleTelegramClick}
               startIcon={<ExternalLink size={16} />}
               sx={{
-                bgcolor: '#6ed3ff',
+                bgcolor: '#6ed3ff', 
                 color: '#1a2126',
                 '&:hover': {
                   bgcolor: '#5bc0ff'
