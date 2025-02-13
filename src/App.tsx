@@ -20,13 +20,17 @@ import { v4 as uuidv4 } from 'uuid';
 // Create a session ID for analytics
 const sessionId = uuidv4();
 
-// Initialize analytics before app renders
-analytics.init({
+// Analytics configuration
+const ANALYTICS_CONFIG = {
     token: 'eyJhcHBfbmFtZSI6IkJvb2JhQmxpcCIsImFwcF91cmwiOiJodHRwczovL3QubWUvQm9vYmFCbGlwQm90IiwiYXBwX2RvbWFpbiI6Imh0dHBzOi8vYXBwLmJibGlwLmlvIn0=!AtipScY/ag//8I4N0LwUprrlzN0h6V9p7pWU0FC4gE4=',
     appName: 'BoobaBlip'
-}).catch(console.error);
+};
 
-// Helper function to delay execution
+// Initialize analytics before app renders
+analytics.init({
+    token: ANALYTICS_CONFIG.token,
+    appName: ANALYTICS_CONFIG.appName
+}).catch(console.error);
 
 // Custom analytics functions
 const sendAnalyticsEvent = async (eventName: string, customData?: Record<string, any>) => {
@@ -42,6 +46,12 @@ const sendAnalyticsEvent = async (eventName: string, customData?: Record<string,
             return;
         }
 
+        // Re-initialize analytics before sending event
+        await analytics.init({
+            token: ANALYTICS_CONFIG.token,
+            appName: ANALYTICS_CONFIG.appName
+        });
+
         // Create the event data
         const eventData = {
             event_name: eventName,
@@ -55,18 +65,24 @@ const sendAnalyticsEvent = async (eventName: string, customData?: Record<string,
         };
 
         // Send the event using the SDK
-        await fetch('https://tganalytics.xyz/events', {
+        const response = await fetch('https://tganalytics.xyz/events', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer eyJhcHBfbmFtZSI6IkJvb2JhQmxpcCIsImFwcF91cmwiOiJodHRwczovL3QubWUvQm9vYmFCbGlwQm90IiwiYXBwX2RvbWFpbiI6Imh0dHBzOi8vYXBwLmJibGlwLmlvIn0=!AtipScY/ag//8I4N0LwUprrlzN0h6V9p7pWU0FC4gE4=`,
+                'Authorization': `Bearer ${ANALYTICS_CONFIG.token}`,
                 'Origin': 'https://app.bblip.io',
                 'Accept': 'application/json'
             },
             body: JSON.stringify(eventData)
         });
 
-        console.debug('Analytics event sent successfully:', { eventName, customData });
+        if (!response.ok) {
+            const errorData = await response.text();
+            throw new Error(`Analytics error: ${errorData}`);
+        }
+
+        const result = await response.json();
+        console.debug('Analytics event sent successfully:', { eventName, result });
     } catch (error) {
         console.warn('Analytics event error:', {
             eventName,
