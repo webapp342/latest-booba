@@ -1,0 +1,1 @@
+{"version":3,"file":"firebase-BG-YkMoW.js","sources":["../../src/pages/firebase.ts"],"sourcesContent":["// firebase.ts\nimport { getFirestore } from 'firebase/firestore';\nimport { app } from './firebaseConfig';\n\n// Use the existing Firebase app instance\nexport const db = getFirestore(app);\n"],"names":["db","getFirestore","app"],"mappings":"+CAKa,MAAAA,EAAKC,EAAaC,CAAG"}
