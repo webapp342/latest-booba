@@ -6,6 +6,7 @@ import "slick-carousel/slick/slick.css"; // Basic styles for the slider
 import "slick-carousel/slick/slick-theme.css"; // Theme styles for the slider
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import LocalStorageViewer from "./pages/LocalStorageViewer.tsx";
+import { Analytics } from '@vercel/analytics/react';
 
 import DealsComponent from "./pages/Tasks.tsx";
 import TestComponent from "./pages/TestComponent.tsx";
@@ -73,6 +74,7 @@ const DefaultErrorElement = () => (
 // Performance monitoring function
 const reportWebVitals = (metric: any) => {
   if (metric.label === 'web-vital') {
+    // Analytics'e gönder veya console'a yazdır
     console.log(metric);
   }
 };
@@ -207,6 +209,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <RouterProvider router={router} />
+      <Analytics />
     </ThemeProvider>
   </React.StrictMode>
 );
