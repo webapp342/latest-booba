@@ -30,10 +30,16 @@ analytics.init({
 // Custom analytics functions
 const sendAnalyticsEvent = async (eventName: string, customData?: Record<string, any>) => {
     try {
-        if (!WebApp.initData) return;
+        if (!WebApp.initData) {
+            console.warn('Analytics: WebApp.initData is not available');
+            return;
+        }
 
         const user = WebApp.initDataUnsafe?.user;
-        if (!user?.id) return;
+        if (!user?.id) {
+            console.warn('Analytics: User ID not available');
+            return;
+        }
 
         const eventData = {
             event_name: eventName,
@@ -48,7 +54,7 @@ const sendAnalyticsEvent = async (eventName: string, customData?: Record<string,
             custom_data: customData
         };
 
-        await fetch('https://analytics.tgapps.xyz/api/v1/events', {
+        const response = await fetch('http://analytics.tgapps.xyz/api/v1/events', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -56,8 +62,20 @@ const sendAnalyticsEvent = async (eventName: string, customData?: Record<string,
             },
             body: JSON.stringify(eventData)
         });
+
+        if (!response.ok) {
+            throw new Error(`Analytics HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.debug('Analytics event sent successfully:', { eventName, result });
     } catch (error) {
-        console.error('Analytics event error:', error);
+        // Log the full error details for debugging
+        console.warn('Analytics event error:', {
+            eventName,
+            error: error instanceof Error ? error.message : 'Unknown error',
+            timestamp: new Date().toISOString()
+        });
     }
 };
 
