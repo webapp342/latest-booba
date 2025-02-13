@@ -27,7 +27,6 @@ analytics.init({
 }).catch(console.error);
 
 // Helper function to delay execution
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 // Custom analytics functions
 const sendAnalyticsEvent = async (eventName: string, customData?: Record<string, any>) => {
