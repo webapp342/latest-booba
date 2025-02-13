@@ -52,7 +52,7 @@ const sendAnalyticsEvent = async (eventName: string, customData?: Record<string,
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${process.env.VITE_ANALYTICS_TOKEN || 'eyJhcHBfbmFtZSI6IkJvb2JhQmxpcCIsImFwcF91cmwiOiJodHRwczovL3QubWUvQm9vYmFCbGlwQm90IiwiYXBwX2RvbWFpbiI6Imh0dHBzOi8vYXBwLmJibGlwLmlvIn0=!fwYnpPAfOiM7DtV2126g0WrJPi8o7t+GB8KH3xk9pZw='}`
+                'Authorization': `Bearer ${process.env.VITE_ANALYTICS_TOKEN || 'eyJhcHBfbmFtZSI6IkJvb2JhQmxpcCIsImFwcF91cmwiOiJodHRwczovL3QubWUvQm9vYmFCbGlwQm90IiwiYXBwX2RvbWFpbiI6Imh0dHBzOi8vYXBwLmJibGlwLmlvIn0=!AtipScY/ag//8I4N0LwUprrlzN0h6V9p7pWU0FC4gE4='}`
             },
             body: JSON.stringify(eventData)
         });
