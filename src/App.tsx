@@ -20,69 +20,110 @@ import { v4 as uuidv4 } from 'uuid';
 // Create a session ID for analytics
 const sessionId = uuidv4();
 
+// Analytics configuration
+const ANALYTICS_CONFIG = {
+    MAX_RETRIES: 3,
+    INITIAL_RETRY_DELAY: 1000,
+    MAX_RETRY_DELAY: 5000,
+    TOKEN: 'eyJhcHBfbmFtZSI6IkJvb2JhQmxpcCIsImFwcF91cmwiOiJodHRwczovL3QubWUvQm9vYmFCbGlwQm90IiwiYXBwX2RvbWFpbiI6Imh0dHBzOi8vYXBwLmJibGlwLmlvIn0=!AtipScY/ag//8I4N0LwUprrlzN0h6V9p7pWU0FC4gE4='
+};
+
 // Initialize analytics before app renders
 analytics.init({
-    token: 'eyJhcHBfbmFtZSI6IkJvb2JhQmxpcCIsImFwcF91cmwiOiJodHRwczovL3QubWUvQm9vYmFCbGlwQm90IiwiYXBwX2RvbWFpbiI6Imh0dHBzOi8vYXBwLmJibGlwLmlvIn0=!fwYnpPAfOiM7DtV2126g0WrJPi8o7t+GB8KH3xk9pZw=',
+    token: ANALYTICS_CONFIG.TOKEN,
     appName: 'BoobaBlip',
     env: process.env.NODE_ENV === 'development' ? 'STG' : 'PROD'
 }).catch(console.error);
 
+// Helper function to delay execution
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 // Custom analytics functions
 const sendAnalyticsEvent = async (eventName: string, customData?: Record<string, any>) => {
-    try {
-        if (!WebApp.initData) {
-            console.warn('Analytics: WebApp.initData is not available');
-            return;
+    let retryCount = 0;
+    let lastError: Error | null = null;
+
+    while (retryCount <= ANALYTICS_CONFIG.MAX_RETRIES) {
+        try {
+            if (!WebApp.initData) {
+                console.warn('Analytics: WebApp.initData is not available');
+                return;
+            }
+
+            const user = WebApp.initDataUnsafe?.user;
+            if (!user?.id) {
+                console.warn('Analytics: User ID not available');
+                return;
+            }
+
+            const eventData = {
+                event_name: eventName,
+                session_id: sessionId,
+                user_id: user.id.toString(),
+                app_name: 'BoobaBlip',
+                is_premium: user.is_premium || false,
+                platform: WebApp.platform || 'unknown',
+                locale: user.language_code || 'en',
+                start_param: WebApp.initDataUnsafe?.start_param || '',
+                client_timestamp: Date.now().toString(),
+                custom_data: customData || {}
+            };
+
+            const response = await fetch('https://tganalytics.xyz/events', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${ANALYTICS_CONFIG.TOKEN}`,
+                    'Origin': 'https://app.bblip.io',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(eventData),
+                mode: 'cors',
+                credentials: 'omit'
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                
+                // Handle rate limiting
+                if (response.status === 429) {
+                    const retryAfter = response.headers.get('Retry-After');
+                    const waitTime = retryAfter ? parseInt(retryAfter) * 1000 : ANALYTICS_CONFIG.INITIAL_RETRY_DELAY;
+                    await delay(waitTime);
+                    throw new Error('Rate limited, retrying...');
+                }
+
+                throw new Error(`Analytics HTTP error! status: ${response.status}, details: ${errorText}`);
+            }
+
+            const result = await response.json();
+            console.debug('Analytics event sent successfully:', { eventName, result });
+            return result;
+
+        } catch (error) {
+            lastError = error instanceof Error ? error : new Error('Unknown error');
+            
+            if (retryCount === ANALYTICS_CONFIG.MAX_RETRIES) {
+                console.warn('Analytics event error (final attempt):', {
+                    eventName,
+                    error: lastError.message,
+                    timestamp: new Date().toISOString(),
+                    data: customData,
+                    retryCount
+                });
+                break;
+            }
+
+            // Exponential backoff
+            const backoffDelay = Math.min(
+                ANALYTICS_CONFIG.INITIAL_RETRY_DELAY * Math.pow(2, retryCount),
+                ANALYTICS_CONFIG.MAX_RETRY_DELAY
+            );
+            
+            console.debug(`Retrying analytics event (attempt ${retryCount + 1}/${ANALYTICS_CONFIG.MAX_RETRIES}) after ${backoffDelay}ms`);
+            await delay(backoffDelay);
+            retryCount++;
         }
-
-        const user = WebApp.initDataUnsafe?.user;
-        if (!user?.id) {
-            console.warn('Analytics: User ID not available');
-            return;
-        }
-
-        const eventData = {
-            event_name: eventName,
-            session_id: sessionId,
-            user_id: user.id.toString(),
-            app_name: 'BoobaBlip',
-            is_premium: user.is_premium || false,
-            platform: WebApp.platform || 'unknown',
-            locale: user.language_code || 'en',
-            start_param: WebApp.initDataUnsafe?.start_param || '',
-            client_timestamp: Date.now().toString(),
-            custom_data: customData || {}
-        };
-
-        // Use the correct analytics endpoint with HTTPS
-        const response = await fetch('https://tganalytics.xyz/events', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${process.env.VITE_ANALYTICS_TOKEN || 'eyJhcHBfbmFtZSI6IkJvb2JhQmxpcCIsImFwcF91cmwiOiJodHRwczovL3QubWUvQm9vYmFCbGlwQm90IiwiYXBwX2RvbWFpbiI6Imh0dHBzOi8vYXBwLmJibGlwLmlvIn0=!AtipScY/ag//8I4N0LwUprrlzN0h6V9p7pWU0FC4gE4='}`,
-                'Origin': 'https://app.bblip.io',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify(eventData),
-            mode: 'cors',
-            credentials: 'omit'
-        });
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`Analytics HTTP error! status: ${response.status}, details: ${errorText}`);
-        }
-
-        const result = await response.json();
-        console.debug('Analytics event sent successfully:', { eventName, result });
-    } catch (error) {
-        // Log the full error details for debugging
-        console.warn('Analytics event error:', {
-            eventName,
-            error: error instanceof Error ? error.message : 'Unknown error',
-            timestamp: new Date().toISOString(),
-            data: customData
-        });
     }
 };
 
