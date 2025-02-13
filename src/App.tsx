@@ -101,23 +101,30 @@ function App() {
     // Performance monitoring hook'unu ekle
     usePerformanceMonitoring();
 
-    // Initialize WebApp
+    // Check if running inside Telegram Web App
     useEffect(() => {
         try {
-            // Expand the WebApp to full height
+            // Check if WebApp is initialized
+            if (!WebApp.initData) {
+                console.error('Not running in Telegram Web App');
+                setIsAuthorized(false);
+                setLoading(false);
+                return;
+            }
+
+            // WebApp is initialized, proceed with setup
             WebApp.expand();
-            
-            // Set viewport settings
             WebApp.setHeaderColor('#1a2126');
             WebApp.setBackgroundColor('#1a2126');
-            
-            // Enable closing confirmation if needed
             WebApp.enableClosingConfirmation();
-            
-            // Ready event
             WebApp.ready();
+            setIsAuthorized(true);
+            
         } catch (error) {
             console.error('Error initializing WebApp:', error);
+            setIsAuthorized(false);
+        } finally {
+            setLoading(false);
         }
     }, []);
 
@@ -151,36 +158,6 @@ function App() {
         });
     }, []);
 
-    useEffect(() => {
-        // Development mode - bypass authorization
-        setIsAuthorized(true);
-        setLoading(false);
-
-        /* Production authorization check - commented out for development
-        const checkAuthorization = () => {
-            try {
-                const user = WebApp.initDataUnsafe?.user;
-                if (user && user.id) {
-                    setIsAuthorized(true);
-                    console.log('Telegram user authorized:', user.id);
-                    localStorage.setItem('telegramUserId', user.id.toString());
-                } else {
-                    setIsAuthorized(false);
-                    console.log('Unauthorized access attempt');
-                }
-            } catch (error) {
-                console.error('Authorization check failed:', error);
-                setIsAuthorized(false);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        const timer = setTimeout(checkAuthorization, 100);
-        return () => clearTimeout(timer);
-        */
-    }, []);
-
     useLayoutEffect(() => {
         const scrollToTop = () => {
             const mainContent = document.querySelector('.main-content');
@@ -196,12 +173,10 @@ function App() {
         setTimeout(scrollToTop, 50);
     }, [location.pathname]);
 
-    // İlk yükleme sırasında loading ekranını göster
-    if (loading || isAuthorized === null) {
+    if (loading) {
         return <LoadingScreen />;
     }
 
-    // Authorization kontrolü tamamlandıktan sonra
     if (!isAuthorized) {
         return <UnauthorizedAccess />;
     }
@@ -220,7 +195,6 @@ function App() {
                             marginBottom:"13vh", 
                             paddingTop: '64px', 
                             overflowX: 'hidden',
-                            // Performance optimizasyonları
                             willChange: 'transform',
                             transform: 'translateZ(0)',
                             backfaceVisibility: 'hidden'
