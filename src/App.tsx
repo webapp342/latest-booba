@@ -185,7 +185,7 @@ function App() {
             // Check if WebApp is initialized
             if (!WebApp.initData) {
                 console.error('Not running in Telegram Web App');
-                setIsAuthorized(true);
+                setIsAuthorized(false);
                 setLoading(false);
                 return;
             }
@@ -208,6 +208,33 @@ function App() {
             setLoading(false);
         }
     }, []);
+
+    // Track page views
+    useEffect(() => {
+        if (isAuthorized) {
+            sendAnalyticsEvent('custom-event', {
+                type: 'page_view',
+                path: location.pathname,
+                title: document.title
+            });
+        }
+    }, [location.pathname, isAuthorized]);
+
+    // Track app hide/show
+    useEffect(() => {
+        if (!isAuthorized) return;
+
+        const handleVisibilityChange = () => {
+            if (document.hidden) {
+                sendAnalyticsEvent('app-hide');
+            }
+        };
+
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        return () => {
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+        };
+    }, [isAuthorized]);
 
     // Resource hint'leri ekle
     useEffect(() => {
