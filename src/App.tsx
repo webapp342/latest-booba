@@ -14,6 +14,14 @@ import SpinNotification from './components/Notifications/SpinNotification';
 import WebApp from "@twa-dev/sdk";
 import { Box, Typography, Button, CircularProgress } from '@mui/material';
 import { usePerformanceMonitoring } from './hooks/usePerformanceMonitoring';
+import analytics from '@telegram-apps/analytics';
+
+// Initialize analytics before app renders
+analytics.init({
+    token: 'eyJhcHBfbmFtZSI6IkJvb2JhQmxpcCIsImFwcF91cmwiOiJodHRwczovL3QubWUvQm9vYmFCbGlwQm90IiwiYXBwX2RvbWFpbiI6Imh0dHBzOi8vYXBwLmJibGlwLmlvIn0=!fwYnpPAfOiM7DtV2126g0WrJPi8o7t+GB8KH3xk9pZw=',
+    appName: 'BoobaBlip',
+    env: process.env.NODE_ENV === 'development' ? 'STG' : 'PROD'
+}).catch(console.error);
 
 // MUI theme configuration
 const muiTheme = createTheme({
@@ -98,10 +106,10 @@ function App() {
     const manifestUrl = "https://app.bblip.io/tonconnect-manifest.json";
     const location = useLocation();
 
-    // Performance monitoring hook'unu ekle
+    // Performance monitoring hook
     usePerformanceMonitoring();
 
-    // Check if running inside Telegram Web App
+    // Initialize WebApp
     useEffect(() => {
         try {
             // Check if WebApp is initialized
@@ -118,8 +126,8 @@ function App() {
             WebApp.setBackgroundColor('#1a2126');
             WebApp.enableClosingConfirmation();
             WebApp.ready();
-            setIsAuthorized(true);
             
+            setIsAuthorized(true);
         } catch (error) {
             console.error('Error initializing WebApp:', error);
             setIsAuthorized(false);
@@ -127,6 +135,17 @@ function App() {
             setLoading(false);
         }
     }, []);
+
+    // Track page views
+    useEffect(() => {
+        if (isAuthorized) {
+            // @ts-ignore - Types are not properly exported from the package
+            analytics.pageView({
+                path: location.pathname,
+                title: document.title
+            }).catch(console.error);
+        }
+    }, [location.pathname, isAuthorized]);
 
     // Resource hint'leri ekle
     useEffect(() => {
@@ -202,6 +221,14 @@ function App() {
                     >
                         <WelcomeModal onClose={() => {
                             console.log('Welcome modal closed');
+                            // Track modal close event
+                            // @ts-ignore - Types are not properly exported from the package
+                            analytics.event({
+                                name: 'welcome_modal_closed',
+                                params: {
+                                    source: 'user_action'
+                                }
+                            }).catch(console.error);
                         }} />
                         <Brand />
                         <Outlet />
