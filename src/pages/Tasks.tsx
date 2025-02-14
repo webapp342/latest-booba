@@ -40,6 +40,8 @@ import task8Logo from '../assets/booba-logo.png';
 import watchad from '../assets/watchad.png';
 import freespin from '../assets/freespin.png';
 import firstdeposit from '../assets/firstdeposit.png';
+import aiagent from '../assets/investment.png';
+
 
 
 import task9Logo from '../assets/ton_logo_dark_background.svg';
@@ -129,7 +131,7 @@ const taskLogos = [
   task8Logo, // Watch video
   freespin, // Spin task
   firstdeposit, // Deposit task
-    firstdeposit, // Deposit task
+    aiagent, // Deposit task
 
   comingSoonLogo,
 ];
