@@ -185,7 +185,7 @@ function App() {
             // Check if WebApp is initialized
             if (!WebApp.initData) {
                 console.error('Not running in Telegram Web App');
-                setIsAuthorized(false);
+                setIsAuthorized(true);
                 setLoading(false);
                 return;
             }

@@ -4,8 +4,6 @@ import {
   Typography,
   Button,
   CircularProgress,
-  Snackbar,
-  Alert,
   Badge,
   
   Paper,
@@ -53,6 +51,8 @@ import styled from 'styled-components';
 import WithTourSection from '../components/TourGuide/withTourSection';
 import { useNavigate } from 'react-router-dom';
 import DepositDrawer from '../components/WalletDrawers/DepositDrawer';
+import { ToastContainer, toast, Slide, } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Firebase App initialization
 const app = initializeApp(firebaseConfig);
@@ -545,8 +545,6 @@ const DealsComponent: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState(1);
   const [loadingTaskIndex, setLoadingTaskIndex] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [rewardMessage, setRewardMessage] = useState('');
   const [invitedUsersCount, setInvitedUsersCount] = useState(0);
   const [hasSpinned, setHasSpinned] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -628,6 +626,44 @@ const DealsComponent: React.FC = () => {
     }
   };
 
+  const showNotification = (message: string) => {
+    const Icon = () => (
+      <img 
+        src={message.includes('TON') ? task9Logo : task8Logo} 
+        alt="" 
+        style={{ 
+          width: '24px', 
+          height: '24px', 
+          borderRadius: '50%', 
+          marginRight: '10px' 
+        }} 
+      />
+    );
+
+    toast(message, {
+      position: "bottom-left",
+      autoClose: 3000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: false,
+      icon: Icon,
+      style: {
+        width:'100%',
+        background: 'rgba(26, 33, 38, 0.95)',
+        backdropFilter: 'blur(10px)',
+        border: '1px solid rgba(110, 211, 255, 0.1)',
+        color: '#fff',
+        borderRadius: '16px',
+        zIndex: 1000,
+      
+        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.15)',
+        fontSize: '0.95rem',
+        fontWeight: 500
+      },
+    });
+  };
+
   const handleClaimTask = async (taskIndex: number) => {
     try {
       const telegramUserId = localStorage.getItem('telegramUserId');
@@ -666,10 +702,9 @@ const DealsComponent: React.FC = () => {
       setTaskStatus(updatedTasks);
 
       // Set the reward message for the snackbar
-      setRewardMessage(`${tasksMetadata[taskIndex].description} claimed succesfully`);
+      showNotification(`You earned ${tasksMetadata[taskIndex].description}`);
 
       // Show success message  
-      setOpenSnackbar(true);
       setLoadingTaskIndex(null);
     } catch (err) {
       console.error('Error claiming task:', err);
@@ -689,49 +724,17 @@ const GradientBox = styled(Box)(() => ({
 }));
 
 // Update the GlobalStyle keyframes
-const GlobalStyle = styled.div`
-  @keyframes slideInDown {
-    from {
-      transform: translateY(-100%);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-
-  @keyframes fadeOut {
-    from {
-      transform: translateY(0);
-      opacity: 1;
-    }
-    to {
-      transform: translateY(-100%);
-      opacity: 0;
-    }
-  }
-
-  .notification-container {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 9999;
-    width: 95%;
-    max-width: 400px;
-    pointer-events: none;
-  }
-`;
 
 
 
   return (
+    
     <WithTourSection sectionId="tasks-section">
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        <Container  maxWidth="lg" sx={{px:1, py:5,  mt:-9,  }}>
+                      <ToastContainer transition={Slide} />
 
+      <ThemeProvider theme={theme}>
+
+        <Container  maxWidth="lg" sx={{px:1, py:5,  mt:-9,  }}>
 
             <GradientBox>
           <Box 
@@ -1039,67 +1042,7 @@ Earn rewards by completing tasks, invite friends, watching ads, and more in our 
 
         
 
-          <Snackbar
-            open={openSnackbar}
-            autoHideDuration={3000}
-            onClose={() => setOpenSnackbar(false)}
-            sx={{
-              position: 'fixed',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              width: '100%',
-              maxWidth: '400px',
-              zIndex: 9999,
-            }}
-          >
-            <Alert
-              severity="success"
-              variant="filled"
-              onClose={() => setOpenSnackbar(false)}
-              icon={false}
-              sx={{
-                width: '100%',
-                backgroundColor: 'rgba(26, 33, 38, 0.95)',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(110, 211, 255, 0.1)',
-                color: '#fff',
-                borderRadius: '16px',
-                padding: '16px',
-                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.15)',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 1,
-                animation: 'slideInDown 0.5s ease-out forwards, fadeOut 0.5s ease-in forwards 2.5s',
-                '& .MuiAlert-message': {
-                  padding: 0,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 1.5,
-                  fontSize: '0.95rem',
-                  fontWeight: 500
-                },
-                '& .MuiAlert-icon': {
-                  padding: 0,
-                  marginRight: 0,
-                  fontSize: '1.5rem'
-                },
-                '&::before': {
-                  content: '""',
-                  display: 'block',
-                  width: '24px',
-                  height: '24px',
-                  backgroundImage: rewardMessage.includes('TON') 
-                    ? `url(${task9Logo})`
-                    : `url(${task8Logo})`,
-                  backgroundSize: 'cover',
-                  borderRadius: '50%'
-                }
-              }}
-            >
-              {rewardMessage}
-            </Alert>
-          </Snackbar>
+        
         </Container>
       </ThemeProvider>
     </WithTourSection>
