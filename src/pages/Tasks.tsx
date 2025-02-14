@@ -94,6 +94,8 @@ const tasksMetadata = [
   { title: 'Follow on X',label:'+15 BBLIP', description: '5 BBLIP', link: 'twitter://user?screen_name=BoobaBlip', reward: 15000 },
   { title: 'Like & Repost on X',label:'+10 BBLIP', description: '5 BBLIP', link: 'https://x.com/BoobaBlip/status/1890086943461093812', reward: 10000 },
   { title: 'Join Community',label:'+5 BBLIP', description: '5 BBLIP', link: 'https://t.me/BoobaBlipCommunity', reward: 5000 },
+    { title: 'Visit bblip.io',label:'+5 BBLIP', description: '5 BBLIP', link: 'https://home.bblip.io', reward: 5000 },
+
   { title: 'Invite 1 fren',label:'+5 BBLIP', description: '5 BBLIP', link: '', reward: 5000 },
   { title: 'Invite 5 fren',label:'+0.5 TON', description: '0.5 TON', link: '', reward: 15000 },
   { title: 'Invite 10 fren',label:'+0.75 TON', description: '0.75 TON', link: '', reward: 25000 },
