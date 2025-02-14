@@ -37,7 +37,7 @@ import task5Logo from '../assets/telegram.png';
 import task7Logo from '../assets/booba-logo.png';
 import task8Logo from '../assets/booba-logo.png';
 
-import watchad from '../assets/watchad.png';
+import watchad from '../assets/watchad1.png';
 import freespin from '../assets/freespin.png';
 import firstdeposit from '../assets/firstdeposit.png';
 import aiagent from '../assets/investment.png';
