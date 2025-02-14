@@ -11,12 +11,12 @@ const DEMO_TASKS = [
   },
   {
     id: '2',
-    blockId: 'task-8197', // Replace with your actual block ID
+    blockId: 'task-8201', // Replace with your actual block ID
     reward: '+20 BBLIP'
   },
   {
     id: '3',
-    blockId: 'task-8197', // Replace with your actual block ID
+    blockId: 'task-8200', // Replace with your actual block ID
     reward: '+0.1 TON'
   }
 ];
