@@ -45,6 +45,8 @@ import aiagent from '../assets/investment.png';
 
 
 import task9Logo from '../assets/ton_logo_dark_background.svg';
+import task19Logo from '../assets/income.png';
+
 import comingSoonLogo from '../assets/task1logo.png';
 import UserDataTable from './UserDataTable';
 import { ShowAdButton } from './ShowAdButton';
@@ -120,14 +122,14 @@ const taskLogos = [
   task4Logo,
   task5Logo,
   task7Logo, // Invite 1
-  task9Logo, // Invite 5
-  task9Logo, // Invite 10
-  task9Logo, // Invite 15
-  task9Logo, // Invite 20
-  task9Logo, // Invite 25
-  task9Logo, // Invite 50
-  task9Logo, // Invite 75
-  task9Logo, // Invite 100
+  task19Logo, // Invite 5
+  task19Logo, // Invite 10
+  task19Logo, // Invite 15
+  task19Logo, // Invite 20
+  task19Logo, // Invite 25
+  task19Logo, // Invite 50
+  task19Logo, // Invite 75
+  task19Logo, // Invite 100
   task8Logo, // Watch video
   freespin, // Spin task
   firstdeposit, // Deposit task
