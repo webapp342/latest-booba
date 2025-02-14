@@ -538,6 +538,10 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
   );
 };
 
+// Add this custom Slide transition component at the top level
+const SlideDown = (props: any) => {
+  return <Slide {...props} direction="down" />;
+};
 
 // Ana bileşeni güncelliyorum
 const DealsComponent: React.FC = () => {
@@ -688,11 +692,37 @@ const GradientBox = styled(Box)(() => ({
   boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
 }));
 
+// Add keyframes for the animations in the style block
+const GlobalStyle = styled.div`
+  @keyframes slideInDown {
+    from {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(16px);
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeOut {
+    from {
+      transform: translateY(16px);
+      opacity: 1;
+    }
+    to {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+  }
+`;
+
 
 
   return (
     <WithTourSection sectionId="tasks-section">
       <ThemeProvider theme={theme}>
+        <GlobalStyle />
         <Container  maxWidth="lg" sx={{px:1, py:5,  mt:-9,  }}>
 
 
@@ -1006,12 +1036,12 @@ Earn rewards by completing tasks, invite friends, watching ads, and more in our 
             open={openSnackbar}
             autoHideDuration={3000}
             onClose={() => setOpenSnackbar(false)}
-            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-            TransitionComponent={Slide}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            TransitionComponent={SlideDown}
             sx={{
-              mb: 2,
+              mt: 2,
               '& .MuiSnackbar-root': {
-                minWidth: '300px'
+                width: '100%',
               }
             }}
           >
@@ -1021,7 +1051,9 @@ Earn rewards by completing tasks, invite friends, watching ads, and more in our 
               onClose={() => setOpenSnackbar(false)}
               icon={false}
               sx={{
-width:'100%',                backgroundColor: 'rgba(26, 33, 38, 0.95)',
+                width: '100%',
+                maxWidth: '400px',
+                backgroundColor: 'rgba(26, 33, 38, 0.95)',
                 backdropFilter: 'blur(10px)',
                 border: '1px solid rgba(110, 211, 255, 0.1)',
                 color: '#fff',
@@ -1031,6 +1063,8 @@ width:'100%',                backgroundColor: 'rgba(26, 33, 38, 0.95)',
                 display: 'flex',
                 alignItems: 'center',
                 gap: 1,
+                transform: 'translateY(16px)',
+                animation: 'slideInDown 0.5s ease-out forwards, fadeOut 0.5s ease-in forwards 2.5s',
                 '& .MuiAlert-message': {
                   padding: 0,
                   display: 'flex',
