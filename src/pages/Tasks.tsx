@@ -91,23 +91,24 @@ const theme = createTheme({
 
 // Tasks metadata
 const tasksMetadata = [
-  { title: 'Follow on X',label:'+15 BBLIP', description: '5 BBLIP', link: 'twitter://user?screen_name=BoobaBlip', reward: 15000 },
-  { title: 'Like & Repost on X',label:'+10 BBLIP', description: '5 BBLIP', link: 'https://x.com/BoobaBlip/status/1890086943461093812', reward: 10000 },
+  { title: 'Follow on X',label:'+15 BBLIP', description: '15 BBLIP', link: 'twitter://user?screen_name=BoobaBlip', reward: 15000 },
+  { title: 'Like & Repost on X',label:'+10 BBLIP', description: '10 BBLIP', link: 'https://x.com/BoobaBlip/status/1890086943461093812', reward: 10000 },
   { title: 'Join Community',label:'+5 BBLIP', description: '5 BBLIP', link: 'https://t.me/BoobaBlipCommunity', reward: 5000 },
     { title: 'Visit bblip.io',label:'+5 BBLIP', description: '5 BBLIP', link: 'https://home.bblip.io', reward: 5000 },
 
   { title: 'Invite 1 fren',label:'+5 BBLIP', description: '5 BBLIP', link: '', reward: 5000 },
-  { title: 'Invite 5 fren',label:'+0.5 TON', description: '0.5 TON', link: '', reward: 15000 },
-  { title: 'Invite 10 fren',label:'+0.75 TON', description: '0.75 TON', link: '', reward: 25000 },
+  { title: 'Invite 5 fren',label:'+0.25 TON', description: '0.25 TON', link: '', reward: 250 },
+  { title: 'Invite 10 fren',label:'+0.75 TON', description: '0.75 TON', link: '', reward: 750 },
   { title: 'Invite 15 fren',label:'+1 TON', description: '1 TON', link: '', reward: 1000 },
   { title: 'Invite 20 fren',label:'+1.5 TON', description: '1.5 TON', link: '', reward: 1500 },
-  { title: 'Invite 25 fren',label:'+2.5 TON', description: '2.5 TON', link: '', reward: 2500 },
+  { title: 'Invite 25 fren',label:'+2 TON', description: '2 TON', link: '', reward: 2000 },
   { title: 'Invite 50 fren',label:'+5 TON', description: '5 TON', link: '', reward: 5000 },
   { title: 'Invite 75 fren',label:'+7.5 TON', description: '7.5 TON', link: '', reward: 7500 },
   { title: 'Invite 100 fren',label:'+10 TON', description: '10 TON', link: '', reward: 10000 },
   { title: 'Watch a Video',label:'+10 BBLIP', description: '10 BBLIP', link: 'https://example.com/watch-video', reward: 1000 },
-  { title: 'Spin for Free',label:'+0.5 TON', description: '0.5 TON', link: '', reward: 500 },
+  { title: 'Spin for Free',label:'+0.1 TON', description: '0.1 TON', link: '', reward: 100 },
   { title: 'Make Your First Deposit',label:'+0.5 TON', description: '0.5 TON', link: '', reward: 500 },
+  { title: 'Subscribe to AI agent',label:'+0.5 TON', description: '0.5 TON', link: '', reward: 500 },
   { title: '', description: 'Coming Soon...', link: '' , reward: 100},
 ];
 
@@ -309,6 +310,53 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
           }}
         >
           {loading ? <CircularProgress size={20} color="inherit" /> : 'Spin'}
+        </Button>
+      );
+    }
+
+     if (index === 14) { // Spin task
+      if (hasSpinned) {
+        if (status?.disabled) {
+          return (
+            <Button
+              disabled
+              sx={{
+                mr: 1,
+                opacity: 0.7,
+                '&:disabled': {
+                  color: '#fff',
+                },
+              }}
+            >
+              Completed
+            </Button>
+          );
+        }
+        return (
+          <Button
+            variant="outlined"
+            onClick={onClaim}
+            sx={{
+              borderColor: '#4caf50',
+              color: '#4caf50',
+            }}
+          >
+            {loading ? <CircularProgress size={20} color="inherit" /> : 'Claim'}
+          </Button>
+        );
+      }
+      return (
+        <Button
+          variant="contained"
+          onClick={() => navigate('/stake')}
+          sx={{
+            p: 1,
+            backgroundColor: 'rgba(110, 211, 255, 0.1)',
+            color: '#6ed3ff',
+          
+          }}
+        >
+          {loading ? <CircularProgress size={20} color="inherit" /> : 'Subscribe'}
         </Button>
       );
     }
@@ -713,7 +761,7 @@ Earn rewards by completing tasks, invite friends, watching ads, and more in our 
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <img src={task9Logo} alt="" width={24} />
                 <Typography color="white" variant="h6" sx={{ fontWeight: 600 }}>
-                  50 <span style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '0.9rem' }}>TON</span>
+                  +75 <span style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '0.9rem' }}>TON</span>
                 </Typography>
               </Box>
               </Box>
