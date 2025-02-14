@@ -92,8 +92,9 @@ const theme = createTheme({
 const tasksMetadata = [
   { title: 'Follow on X',label:'+15 BBLIP', description: '15 BBLIP', link: 'twitter://user?screen_name=BoobaBlip', reward: 15000 },
   { title: 'Like & Repost on X',label:'+10 BBLIP', description: '10 BBLIP', link: 'https://x.com/BoobaBlip/status/1890086943461093812', reward: 10000 },
-  { title: 'Join Community',label:'+5 BBLIP', description: '5 BBLIP', link: 'https://t.me/BoobaBlipCommunity', reward: 5000 },
     { title: 'Visit bblip.io',label:'+5 BBLIP', description: '5 BBLIP', link: 'https://home.bblip.io', reward: 5000 },
+      { title: 'Join Community',label:'+5 BBLIP', description: '5 BBLIP', link: 'https://t.me/BoobaBlipCommunity', reward: 5000 },
+
 
   { title: 'Invite 1 fren',label:'+5 BBLIP', description: '5 BBLIP', link: '', reward: 5000 },
   { title: 'Invite 5 fren',label:'+0.25 TON', description: '0.25 TON', link: '', reward: 250 },
@@ -150,7 +151,7 @@ const currencyLogo = [
   task8Logo, // Watch video
   task9Logo, // Spin task
   task9Logo, // Deposit task
-    firstdeposit, // Deposit task
+  task9Logo, // Deposit task
 
   comingSoonLogo,
 ];
@@ -197,7 +198,7 @@ const CategorySelector = ({ category, isSelected, hasBadge, onClick }: {
 );
 
 // Task kartı stilini güncelliyorum
-const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount, requiredCount, hasSpinned, deposits }: {
+const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount, requiredCount, hasSpinned, deposits, stakingHistory }: {
   task: typeof tasksMetadata[0];
   index: number;
   status?: { completed: boolean; disabled: boolean };
@@ -208,6 +209,7 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
   requiredCount: number;
   hasSpinned?: boolean;
   deposits?: Record<string, any[]>;
+  stakingHistory?: any[];
 }) => {
   const navigate = useNavigate();
   const [isDepositDrawerOpen, setIsDepositDrawerOpen] = useState(false);
@@ -217,6 +219,7 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
   };
 
   const hasDeposits = deposits && Object.keys(deposits).length > 0;
+  const hasStakingHistory = stakingHistory && stakingHistory.length > 0;
 
   const renderButton = () => {
     if (index === 15) { // Deposit task
@@ -313,8 +316,8 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
       );
     }
 
-     if (index === 16) { // Spin task
-      if (hasSpinned) {
+     if (index === 16) { // AI agent subscription task
+      if (hasStakingHistory) {
         if (status?.disabled) {
           return (
             <Button
@@ -352,7 +355,6 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
             p: 1,
             backgroundColor: 'rgba(110, 211, 255, 0.1)',
             color: '#6ed3ff',
-          
           }}
         >
           {loading ? <CircularProgress size={20} color="inherit" /> : 'Subscribe'}
@@ -524,6 +526,7 @@ const DealsComponent: React.FC = () => {
   const [hasSpinned, setHasSpinned] = useState(false);
   const [loading, setLoading] = useState(true);
   const [deposits, setDeposits] = useState<Record<string, any[]>>({});
+  const [stakingHistory, setStakingHistory] = useState<any[]>([]);
 
   useEffect(() => {
     const telegramUserId = localStorage.getItem('telegramUserId');
@@ -551,6 +554,10 @@ const DealsComponent: React.FC = () => {
         // Update deposits
         if (data.deposits) {
           setDeposits(data.deposits);
+        }
+        // Update stakingHistory
+        if (data.stakingHistory) {
+          setStakingHistory(data.stakingHistory);
         }
       }
       setLoading(false);
@@ -901,6 +908,7 @@ Earn rewards by completing tasks, invite friends, watching ads, and more in our 
                       }
                       hasSpinned={taskIndex === 14 && hasSpinned}
                       deposits={deposits}
+                      stakingHistory={stakingHistory}
                     />
                   );
                 })}
