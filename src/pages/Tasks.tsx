@@ -539,9 +539,6 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
 };
 
 // Add this custom Slide transition component at the top level
-const SlideDown = (props: any) => {
-  return <Slide {...props} direction="down" />;
-};
 
 // Ana bileşeni güncelliyorum
 const DealsComponent: React.FC = () => {
@@ -692,7 +689,7 @@ const GradientBox = styled(Box)(() => ({
   boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
 }));
 
-// Add keyframes for the animations in the style block
+// Update the GlobalStyle keyframes
 const GlobalStyle = styled.div`
   @keyframes slideInDown {
     from {
@@ -700,14 +697,14 @@ const GlobalStyle = styled.div`
       opacity: 0;
     }
     to {
-      transform: translateY(16px);
+      transform: translateY(0);
       opacity: 1;
     }
   }
 
   @keyframes fadeOut {
     from {
-      transform: translateY(16px);
+      transform: translateY(0);
       opacity: 1;
     }
     to {
@@ -718,15 +715,13 @@ const GlobalStyle = styled.div`
 
   .notification-container {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 9999;
+    width: 100%;
+    max-width: 400px;
     pointer-events: none;
-  }
-  
-  .notification-container > * {
-    pointer-events: auto;
   }
 `;
 
@@ -1049,20 +1044,14 @@ Earn rewards by completing tasks, invite friends, watching ads, and more in our 
             open={openSnackbar}
             autoHideDuration={3000}
             onClose={() => setOpenSnackbar(false)}
-            anchorOrigin={{ vertical: "top", horizontal: "center" }}
-            TransitionComponent={SlideDown}
             sx={{
               position: 'fixed',
-              top: 0,
+              top: '50%',
               left: '50%',
-              transform: 'translateX(-50%)',
+              transform: 'translate(-50%, -50%)',
               width: '100%',
-              maxWidth: '500px',
+              maxWidth: '400px',
               zIndex: 9999,
-              mt: 2,
-              '& .MuiSnackbar-root': {
-                width: '100%',
-              }
             }}
           >
             <Alert
@@ -1071,10 +1060,7 @@ Earn rewards by completing tasks, invite friends, watching ads, and more in our 
               onClose={() => setOpenSnackbar(false)}
               icon={false}
               sx={{
-                position: 'relative',
                 width: '100%',
-                maxWidth: '400px',
-                mx: 'auto',
                 backgroundColor: 'rgba(26, 33, 38, 0.95)',
                 backdropFilter: 'blur(10px)',
                 border: '1px solid rgba(110, 211, 255, 0.1)',
@@ -1085,7 +1071,6 @@ Earn rewards by completing tasks, invite friends, watching ads, and more in our 
                 display: 'flex',
                 alignItems: 'center',
                 gap: 1,
-                transform: 'translateY(16px)',
                 animation: 'slideInDown 0.5s ease-out forwards, fadeOut 0.5s ease-in forwards 2.5s',
                 '& .MuiAlert-message': {
                   padding: 0,
