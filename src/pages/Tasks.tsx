@@ -128,6 +128,8 @@ const taskLogos = [
   task8Logo, // Watch video
   freespin, // Spin task
   firstdeposit, // Deposit task
+    firstdeposit, // Deposit task
+
   comingSoonLogo,
 ];
 
@@ -148,6 +150,8 @@ const currencyLogo = [
   task8Logo, // Watch video
   task9Logo, // Spin task
   task9Logo, // Deposit task
+    firstdeposit, // Deposit task
+
   comingSoonLogo,
 ];
 
@@ -184,9 +188,7 @@ const CategorySelector = ({ category, isSelected, hasBadge, onClick }: {
         py: 1,
         backgroundColor: isSelected ? 'rgba(0, 198, 255, 0.1)' : 'transparent',
         color: isSelected ? '#00c6ff' : 'rgba(255, 255, 255, 0.6)',
-        '&:hover': {
-          backgroundColor: isSelected ? 'rgba(0, 198, 255, 0.15)' : 'rgba(255, 255, 255, 0.05)',
-        },
+       
       }}
     >
       {category.name}
@@ -303,9 +305,7 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
             p: 1,
             backgroundColor: 'rgba(110, 211, 255, 0.1)',
             color: '#6ed3ff',
-            '&:hover': {
-              backgroundColor: 'rgba(110, 211, 255, 0.2)',
-            },
+           
           }}
         >
           {loading ? <CircularProgress size={20} color="inherit" /> : 'Spin'}
@@ -313,7 +313,7 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
       );
     }
 
-     if (index === 14) { // Spin task
+     if (index === 16) { // Spin task
       if (hasSpinned) {
         if (status?.disabled) {
           return (
