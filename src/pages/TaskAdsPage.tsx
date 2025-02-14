@@ -47,10 +47,10 @@ export const Task = ({ debug, blockId }: TaskProps) => {
         10 BBLIP
       </span>
       <div slot="button" className={styles.button}>
-        go
+        Earn
       </div>
       <div slot="done" className={styles.button_done}>
-        done
+        Completed
       </div>
     </adsgram-task>
   );

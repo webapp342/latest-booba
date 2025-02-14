@@ -5,7 +5,7 @@
   --adsgram-task-icon-border-radius: 8px;
   --adsgram-task-button-width: 60px;
   display: block;
-  width: 328px;
+  width: 95%;
   padding: 8px 16px 8px 8px;
   border-radius: 16px;
   background-color: #1d2733;
@@ -24,8 +24,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 60px;
-  padding: 8px 16px;
+  min-width: 40px;
+  padding: 6px 12px;
   border-radius: 8px;
   background-color: rgba(110, 211, 255, 0.1);
   color: #6ed3ff;
@@ -42,12 +42,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 60px;
+  max-width: 50px;
   padding: 8px 16px;
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  background-color: rgba(76, 175, 80, 0.1);
-  color: #4caf50;
+  color: grey;
 } 
