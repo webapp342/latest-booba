@@ -54,7 +54,6 @@ export const TaskAdManager: React.FC<TaskAdManagerProps> = ({
           <TaskAd
             blockId={task.blockId}
             onTaskComplete={() => handleTaskComplete(task.id)}
-            buttonText={completedTasks.has(task.id) ? "Completed" : "Start Task"}
             className="mt-2"
           />
           {completedTasks.has(task.id) && (
