@@ -14,8 +14,8 @@ export const generateSpinNumbers = (selectedBalance: string, selectedSpinType: s
           result = [
             '0',
             '0',
-            generateRandomNumber(1, 5).toString(),
-            generateRandomNumber(1, 9).toString(),
+            generateRandomNumber(0, 1).toString(),
+            generateRandomNumber(1, 6).toString(),
             generateRandomNumber(1, 9).toString(),
             generateRandomNumber(1, 9).toString(),
           ];
@@ -24,8 +24,8 @@ export const generateSpinNumbers = (selectedBalance: string, selectedSpinType: s
           result = [
             '0',
             '0',
-            generateRandomNumber(1, 2).toString(),
-            generateRandomNumber(6, 9).toString(),
+            generateRandomNumber(0, 1).toString(),
+            generateRandomNumber(3, 6).toString(),
             generateRandomNumber(1, 9).toString(),
             generateRandomNumber(1, 9).toString(),
           ];
@@ -83,7 +83,7 @@ export const generateSpinNumbers = (selectedBalance: string, selectedSpinType: s
             '0',
             '0',
             '0',
-            generateRandomNumber(1, 9).toString(),
+            generateRandomNumber(6, 9).toString(),
             generateRandomNumber(1, 9).toString(),
           ];
         } else if (selectedSpinType === 'bblip') {
@@ -113,7 +113,7 @@ export const generateSpinNumbers = (selectedBalance: string, selectedSpinType: s
           result = [
             '0',
             '0',
-            '0',
+            generateRandomNumber(1, 9).toString(),
             generateRandomNumber(1, 9).toString(),
             generateRandomNumber(1, 9).toString(),
             generateRandomNumber(1, 9).toString(),
@@ -133,8 +133,8 @@ export const generateSpinNumbers = (selectedBalance: string, selectedSpinType: s
           result = [
             '0',
             '0',
-            '0',
-            '0',
+            generateRandomNumber(0, 9).toString(),
+            generateRandomNumber(0, 9).toString(),
             generateRandomNumber(1, 9).toString(),
             generateRandomNumber(1, 9).toString(),
           ];
