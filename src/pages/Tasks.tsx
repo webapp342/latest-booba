@@ -718,7 +718,7 @@ const GlobalStyle = styled.div`
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 9999;
-    width: 100%;
+    width: 95%;
     max-width: 400px;
     pointer-events: none;
   }
