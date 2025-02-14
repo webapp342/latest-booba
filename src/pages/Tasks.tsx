@@ -715,6 +715,19 @@ const GlobalStyle = styled.div`
       opacity: 0;
     }
   }
+
+  .notification-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    pointer-events: none;
+  }
+  
+  .notification-container > * {
+    pointer-events: auto;
+  }
 `;
 
 
@@ -1039,6 +1052,13 @@ Earn rewards by completing tasks, invite friends, watching ads, and more in our 
             anchorOrigin={{ vertical: "top", horizontal: "center" }}
             TransitionComponent={SlideDown}
             sx={{
+              position: 'fixed',
+              top: 0,
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: '100%',
+              maxWidth: '500px',
+              zIndex: 9999,
               mt: 2,
               '& .MuiSnackbar-root': {
                 width: '100%',
@@ -1051,15 +1071,17 @@ Earn rewards by completing tasks, invite friends, watching ads, and more in our 
               onClose={() => setOpenSnackbar(false)}
               icon={false}
               sx={{
+                position: 'relative',
                 width: '100%',
                 maxWidth: '400px',
+                mx: 'auto',
                 backgroundColor: 'rgba(26, 33, 38, 0.95)',
                 backdropFilter: 'blur(10px)',
                 border: '1px solid rgba(110, 211, 255, 0.1)',
                 color: '#fff',
                 borderRadius: '16px',
                 padding: '16px',
-                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.15)',
                 display: 'flex',
                 alignItems: 'center',
                 gap: 1,
