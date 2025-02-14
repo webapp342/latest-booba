@@ -183,10 +183,9 @@ const currencyLogo = [
 
 
 const categories = [
-  { id: 1, name: 'New', tasks: [9, 14, 15,16] },
+  { id: 1, name: 'New', tasks: [9, 14, 15, 16] },
   { id: 2, name: 'Socials', tasks: [0,1,2,3] },
   { id: 3, name: 'Frens', tasks: [4,5,6,7,8,10,11,12] },
-  { id: 4, name: 'AdsGram', tasks: [] },
 ];
 
 
@@ -730,14 +729,7 @@ const ADSGRAM_TASKS = [
     id: '1',
     blockId: 'task-8197',
   },
-  {
-    id: '2',
-    blockId: 'task-8200',
-  },
-  {
-    id: '3',
-    blockId: 'task-8201',
-  }
+
 ];
 
   return (
@@ -845,7 +837,7 @@ Earn rewards by completing tasks, invite friends, watching ads, and more in our 
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <img src={task9Logo} alt="" width={24} />
                 <Typography color="white" variant="h6" sx={{ fontWeight: 600 }}>
-                  +75 <span style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '0.9rem' }}>TON</span>
+                  75 <span style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '0.9rem' }}>TON</span>
                 </Typography>
               </Box>
               </Box>
@@ -912,159 +904,219 @@ Earn rewards by completing tasks, invite friends, watching ads, and more in our 
                 </Box>
               ) : (
                 <>
-                  {categories
-                    .find((category) => category.id === selectedCategory)
-                    ?.tasks.map((taskIndex) => {
-                      if (taskIndex === 9) {
-                        return (
-                          <Paper
-                            key="watch-ad"
-                            elevation={0}
+                  {selectedCategory === 1 ? (
+                    // New category tasks
+                    <>
+                      {/* Watch Ad */}
+                      <Paper
+                        key="watch-ad"
+                        elevation={0}
+                        sx={{
+                          borderRadius: 2,
+                          mb: 1,
+                          width: '95%',
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          transition: 'all 0.2s ease',
+                        }}
+                      >
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <Box
+                            component="img"
+                            src={watchad}
+                            alt="Watch Ads"
                             sx={{
-                              borderRadius: 2,
-                              mb: 1,
-                              width: '95%',
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                              alignItems: 'center',
-                              transition: 'all 0.2s ease',
+                              width: 30,
+                              borderRadius: '12px',
+                              p: 0.4,
+                              backgroundColor: 'rgba(0, 198, 255, 0.05)',
+                              border: '1px solid rgba(255, 255, 255, 0.08)',
                             }}
-                          >
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                              <Box
-                                component="img"
-                                src={watchad}
-                                alt="Watch Ads"
-                                sx={{
-                                  width: 30,
-                                  borderRadius: '12px',
-                                  p: 0.4,
-                                  backgroundColor: 'rgba(0, 198, 255, 0.05)',
-                                  border: '1px solid rgba(255, 255, 255, 0.08)',
-                                }}
-                              />
-                              <Box>
-                                <Typography 
-                                  variant="subtitle1"
-                                  textAlign={'left'}
-                                  sx={{
-                                    fontWeight: 400,
-                                    color: '#FFFFFF',
-                                  }}
-                                > Watch Ad
-                                </Typography>
-                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                  <img src={task8Logo} alt="" width={16} style={{ borderRadius: '50%' }} />
-                                  <Typography
-                                    variant="caption"
-                                    sx={{
-                                      color: '#98d974',
-                                      fontWeight: 600,
-                                    }}
-                                  >
-                                    +5 BBLIP
-                                  </Typography>
-                                </Box>
-                              </Box>
-                            </Box>
-                            <ShowAdButton />
-                          </Paper>
-                        );
-                      }
-
-                                                  <TestComponent />
-
-
-                      if (selectedCategory === 3 && taskIndex === 4) {
-                        return (
-                          <Box key="test-component" sx={{ mb: 2 }}>
-                            <TestComponent />
-                          </Box>
-                        );
-                      }
-
-                      return (
-                        <TaskCard
-                          key={taskIndex}
-                          task={tasksMetadata[taskIndex]}
-                          index={taskIndex}
-                          status={taskStatus[taskIndex]}
-                          loading={loadingTaskIndex === taskIndex}
-                          onStart={() => handleTaskCompletion(taskIndex)}
-                          onClaim={() => handleClaimTask(taskIndex)}
-                          invitedCount={invitedUsersCount}
-                          requiredCount={
-                            taskIndex === 4 ? 1 :
-                            taskIndex === 5 ? 5 :
-                            taskIndex === 6 ? 10 :
-                            taskIndex === 7 ? 15 :
-                            taskIndex === 8 ? 20 :
-                            taskIndex === 9 ? 25 :
-                            taskIndex === 10 ? 50 :
-                            taskIndex === 11 ? 75 :
-                            taskIndex === 12 ? 100 : 0
-                          }
-                          hasSpinned={taskIndex === 14 && hasSpinned}
-                          deposits={deposits}
-                          stakingHistory={stakingHistory}
-                        />
-                      );
-                    })}
-
-                  {selectedCategory === 1 && (
-                    <Paper
-                      elevation={0}
-                      sx={{
-                        borderRadius: 2,
-                        mb: 1,
-                        width: '95%',
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        transition: 'all 0.2s ease',
-                      }}
-                    >
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <Box
-                          sx={{
-                            width: 35,
-                            height: 35,
-                            backgroundColor: 'rgba(0, 198, 255, 0.05)',
-                            border: '1px solid rgba(255, 255, 255, 0.08)',
-                            borderRadius: '12px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                          }}
-                        >
-                          <img src={connectwallet} alt="" width={22} />
-                        </Box>
-                        <Box>
-                          <Typography 
-                            variant="subtitle1"
-                            sx={{ 
-                              fontWeight: 400,
-                              color: '#FFFFFF',
-                            }}
-                          >
-                            Connect Wallet
-                          </Typography>
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <img src={task8Logo} alt="" width={16} style={{ borderRadius: '50%' }} />
-                            <Typography
-                              variant="caption"
+                          />
+                          <Box>
+                            <Typography 
+                              variant="subtitle1"
+                              textAlign={'left'}
                               sx={{
-                                color: '#98d974',
-                                fontWeight: 600,
+                                fontWeight: 400,
+                                color: '#FFFFFF',
+                              }}
+                            > Watch Ad
+                            </Typography>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                              <img src={task8Logo} alt="" width={16} style={{ borderRadius: '50%' }} />
+                              <Typography
+                                variant="caption"
+                                sx={{
+                                  color: '#98d974',
+                                  fontWeight: 600,
+                                }}
+                              >
+                                +5 BBLIP
+                              </Typography>
+                            </Box>
+                          </Box>
+                        </Box>
+                        <ShowAdButton />
+                      </Paper>
+
+                      {/* Spin for Free */}
+                      <TaskCard
+                        key={14}
+                        task={tasksMetadata[14]}
+                        index={14}
+                        status={taskStatus[14]}
+                        loading={loadingTaskIndex === 14}
+                        onStart={() => handleTaskCompletion(14)}
+                        onClaim={() => handleClaimTask(14)}
+                        invitedCount={invitedUsersCount}
+                        requiredCount={0}
+                        hasSpinned={hasSpinned}
+                        deposits={deposits}
+                        stakingHistory={stakingHistory}
+                      />
+
+                      {/* Make Your First Deposit */}
+                      <TaskCard
+                        key={15}
+                        task={tasksMetadata[15]}
+                        index={15}
+                        status={taskStatus[15]}
+                        loading={loadingTaskIndex === 15}
+                        onStart={() => handleTaskCompletion(15)}
+                        onClaim={() => handleClaimTask(15)}
+                        invitedCount={invitedUsersCount}
+                        requiredCount={0}
+                        hasSpinned={hasSpinned}
+                        deposits={deposits}
+                        stakingHistory={stakingHistory}
+                      />
+
+                      {/* Subscribe to AI agent */}
+                      <TaskCard
+                        key={16}
+                        task={tasksMetadata[16]}
+                        index={16}
+                        status={taskStatus[16]}
+                        loading={loadingTaskIndex === 16}
+                        onStart={() => handleTaskCompletion(16)}
+                        onClaim={() => handleClaimTask(16)}
+                        invitedCount={invitedUsersCount}
+                        requiredCount={0}
+                        hasSpinned={hasSpinned}
+                        deposits={deposits}
+                        stakingHistory={stakingHistory}
+                      />
+
+                      {/* Connect Wallet */}
+                      <Paper
+                        elevation={0}
+                        sx={{
+                          borderRadius: 2,
+                          mb: 1,
+                          width: '95%',
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          transition: 'all 0.2s ease',
+                        }}
+                      >
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <Box
+                            sx={{
+                              width: 35,
+                              height: 35,
+                              backgroundColor: 'rgba(0, 198, 255, 0.05)',
+                              border: '1px solid rgba(255, 255, 255, 0.08)',
+                              borderRadius: '12px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center'
+                            }}
+                          >
+                            <img src={connectwallet} alt="" width={22} />
+                          </Box>
+                          <Box>
+                            <Typography 
+                              variant="subtitle1"
+                              sx={{ 
+                                fontWeight: 400,
+                                color: '#FFFFFF',
                               }}
                             >
-                              +5 BBLIP
+                              Connect Wallet
                             </Typography>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                              <img src={task8Logo} alt="" width={16} style={{ borderRadius: '50%' }} />
+                              <Typography
+                                variant="caption"
+                                sx={{
+                                  color: '#98d974',
+                                  fontWeight: 600,
+                                }}
+                              >
+                                +5 BBLIP
+                              </Typography>
+                            </Box>
                           </Box>
                         </Box>
-                      </Box>
-                      <Header />
-                    </Paper>
+                        <Header />
+                      </Paper>
+
+                      {/* Partners Section */}
+                      <Typography
+                        sx={{
+                          fontSize: '1.1rem',
+                          fontWeight: 600,
+                          color: '#fff',
+                          mt: 4,
+                          mb: 2,
+                          textAlign: 'left',
+                          width: '95%'
+                        }}
+                      >
+                        Partners
+                      </Typography>
+
+                      {/* AdsGram Task */}
+                      <Task 
+                        blockId="task-8197"
+                        debug={false}
+                      />
+                    </>
+                  ) : (
+                    // Other categories
+                    <>
+                      {categories
+                        .find((category) => category.id === selectedCategory)
+                        ?.tasks.map((taskIndex) => (
+                          <TaskCard
+                            key={taskIndex}
+                            task={tasksMetadata[taskIndex]}
+                            index={taskIndex}
+                            status={taskStatus[taskIndex]}
+                            loading={loadingTaskIndex === taskIndex}
+                            onStart={() => handleTaskCompletion(taskIndex)}
+                            onClaim={() => handleClaimTask(taskIndex)}
+                            invitedCount={invitedUsersCount}
+                            requiredCount={
+                              taskIndex === 4 ? 1 :
+                              taskIndex === 5 ? 5 :
+                              taskIndex === 6 ? 10 :
+                              taskIndex === 7 ? 15 :
+                              taskIndex === 8 ? 20 :
+                              taskIndex === 9 ? 25 :
+                              taskIndex === 10 ? 50 :
+                              taskIndex === 11 ? 75 :
+                              taskIndex === 12 ? 100 : 0
+                            }
+                            hasSpinned={taskIndex === 14 && hasSpinned}
+                            deposits={deposits}
+                            stakingHistory={stakingHistory}
+                          />
+                        ))}
+                    </>
                   )}
                 </>
               )}

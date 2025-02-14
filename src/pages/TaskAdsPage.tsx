@@ -44,13 +44,13 @@ export const Task = ({ debug, blockId }: TaskProps) => {
       ref={taskRef}
     >
       <span slot="reward" className={styles.reward}>
-        10 BBLIP
+        +5 Bblip
       </span>
       <div slot="button" className={styles.button}>
         Earn
       </div>
       <div slot="done" className={styles.button_done}>
-        Completed
+        Done
       </div>
     </adsgram-task>
   );

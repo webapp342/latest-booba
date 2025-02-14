@@ -10,7 +10,6 @@ import { TonConnectUIProvider } from "@tonconnect/ui-react";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Brand from './components/AiYield';
 import WelcomeModal from './components/WelcomeModal';
-import SpinNotification from './components/Notifications/SpinNotification';
 import WebApp from "@twa-dev/sdk";
 import { Box, Typography, Button, CircularProgress } from '@mui/material';
 import { usePerformanceMonitoring } from './hooks/usePerformanceMonitoring';
@@ -321,7 +320,6 @@ function App() {
                     </div>
 
                     <SimpleBottomNavigation />
-                    <SpinNotification />
                 </div>
             </TonConnectUIProvider>
         </ThemeProvider>
