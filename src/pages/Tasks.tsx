@@ -77,11 +77,9 @@ const theme = createTheme({
           letterSpacing: 1.1,
           '&:hover': {
             backgroundColor: 'transparent',
-            opacity: 0.8,
           },
           '&:active': {
             backgroundColor: 'transparent',
-            opacity: 0.7,
           },
           '&.MuiButton-contained': {
             backgroundColor: 'rgba(110, 211, 255, 0.1)',
@@ -95,11 +93,9 @@ const theme = createTheme({
           '&.MuiButton-outlined': {
             '&:hover': {
               backgroundColor: 'transparent',
-              opacity: 0.8,
             },
             '&:active': {
               backgroundColor: 'transparent',
-              opacity: 0.7,
             },
           },
         },
