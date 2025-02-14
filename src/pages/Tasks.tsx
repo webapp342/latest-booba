@@ -70,23 +70,48 @@ const theme = createTheme({
           textTransform: 'none',
           fontWeight: 600,
           boxShadow: 'none',
-                                        color: '#6ed3ff',
-
-          padding:1.5,
-          paddingRight:5,
-          paddingLeft:5,
-          letterSpacing:1.1,
-        
+          color: '#6ed3ff',
+          padding: 1.5,
+          paddingRight: 5,
+          paddingLeft: 5,
+          letterSpacing: 1.1,
+          '&:hover': {
+            backgroundColor: 'transparent',
+            opacity: 0.8,
+          },
+          '&:active': {
+            backgroundColor: 'transparent',
+            opacity: 0.7,
+          },
+          '&.MuiButton-contained': {
+            backgroundColor: 'rgba(110, 211, 255, 0.1)',
+            '&:hover': {
+              backgroundColor: 'transparent',
+            },
+            '&:active': {
+              backgroundColor: 'transparent',
+            },
+          },
+          '&.MuiButton-outlined': {
+            '&:hover': {
+              backgroundColor: 'transparent',
+              opacity: 0.8,
+            },
+            '&:active': {
+              backgroundColor: 'transparent',
+              opacity: 0.7,
+            },
+          },
         },
       },
     },
     MuiPaper: {
       styleOverrides: {
         root: {
-             backgroundColor: 'rgba(110, 211, 255, 0.1)',
-                    padding: '8px',
-                    borderRadius: '12px',
-                             },
+          backgroundColor: 'rgba(110, 211, 255, 0.1)',
+          padding: '8px',
+          borderRadius: '12px',
+        },
       },
     },
   },
