@@ -21,7 +21,6 @@ export const TaskAd: React.FC<TaskAdProps> = ({
     // Create the adsgram-task element
     const taskElement = document.createElement('adsgram-task');
     taskElement.setAttribute('data-block-id', blockId);
-    taskElement.setAttribute('data-debug', 'true'); // Remove in production
     taskElement.className = 'task';
 
     // Create and append slot elements
