@@ -728,18 +728,15 @@ const GradientBox = styled(Box)(() => ({
 const ADSGRAM_TASKS = [
   {
     id: '1',
-    blockId: 'task-7308',
-    reward: '+10 BBLIP'
+    blockId: 'task-8197',
   },
   {
     id: '2',
-    blockId: 'task-7309',
-    reward: '+20 BBLIP'
+    blockId: 'task-8200',
   },
   {
     id: '3',
-    blockId: 'task-7310',
-    reward: '+0.1 TON'
+    blockId: 'task-8201',
   }
 ];
 
