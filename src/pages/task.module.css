@@ -1,0 +1,53 @@
+.task {
+  --adsgram-task-font-size: 16px;
+  --adsgram-task-icon-size: 50px;
+  --adsgram-task-icon-title-gap: 15px;
+  --adsgram-task-icon-border-radius: 8px;
+  --adsgram-task-button-width: 60px;
+  display: block;
+  width: 328px;
+  padding: 8px 16px 8px 8px;
+  border-radius: 16px;
+  background-color: #1d2733;
+  font-family: Roboto;
+  color: white;
+}
+
+.reward {
+  font-size: 14px;
+  color: #98d974;
+  font-weight: 600;
+  margin: 0;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 60px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background-color: rgba(110, 211, 255, 0.1);
+  color: #6ed3ff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.button:hover {
+  background-color: rgba(110, 211, 255, 0.2);
+}
+
+.button_done {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 60px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: rgba(76, 175, 80, 0.1);
+  color: #4caf50;
+} 

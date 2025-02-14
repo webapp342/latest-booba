@@ -53,7 +53,7 @@ import { useNavigate } from 'react-router-dom';
 import DepositDrawer from '../components/WalletDrawers/DepositDrawer';
 import { ToastContainer, toast, Slide, } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { TaskAdsPage } from './TaskAdsPage';
+import {  Task } from './TaskAdsPage';
 
 // Firebase App initialization
 const app = initializeApp(firebaseConfig);
@@ -725,9 +725,23 @@ const GradientBox = styled(Box)(() => ({
   boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
 }));
 
-// Update the GlobalStyle keyframes
-
-
+const ADSGRAM_TASKS = [
+  {
+    id: '1',
+    blockId: 'task-7308',
+    reward: '+10 BBLIP'
+  },
+  {
+    id: '2',
+    blockId: 'task-7309',
+    reward: '+20 BBLIP'
+  },
+  {
+    id: '3',
+    blockId: 'task-7310',
+    reward: '+0.1 TON'
+  }
+];
 
   return (
     
@@ -883,7 +897,22 @@ Earn rewards by completing tasks, invite friends, watching ads, and more in our 
           ) : (
             <Box sx={{ width: '100%' }}>
               {selectedCategory === 4 ? (
-                <TaskAdsPage />
+                <Box sx={{ 
+                  width: '100%', 
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  alignItems: 'center',
+                  gap: 2
+                }}>
+                  {ADSGRAM_TASKS.map((task) => (
+              
+                     
+                      <Task 
+                        blockId={task.blockId}
+                        debug={false}
+                      />
+                  ))}
+                </Box>
               ) : (
                 <>
                   {categories
