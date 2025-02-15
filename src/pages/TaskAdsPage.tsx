@@ -5,7 +5,6 @@ import { getFirestore, doc, updateDoc, increment } from 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './firebaseConfig';
 import DirectLinkAd from "../components/Ads/DirectLinkAd";
-import bblip from '../assets/booba-logo.png';
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -138,27 +137,15 @@ export const Task = ({ debug, blockId }: TaskProps) => {
   return (
     <>
         <>
-          <Typography
-            sx={{
-              fontSize: '1.1rem',
-              fontWeight: 600,
-              color: '#fff',
-              mt: 4,
-              mb: 2,
-              textAlign: 'left',
-              width: '95%'
-            }}
-          >
-            Partners
-          </Typography>
+        
           <adsgram-task
             className={styles.task}
             data-block-id={blockId}
             data-debug={debug}
             ref={taskRef}
           >
-            <span slot="reward" className={styles.reward1}>
-              <img src={bblip} alt="" style={{width: '16px', borderRadius: '50%' , marginBottom: '-4px', marginRight: '4px'}} /> +5 BBLIP
+            <span slot="reward" className={styles.reward}>
+              Get free spins 
             </span>
             <div slot="button" className={styles.button}>
               Go
@@ -190,7 +177,7 @@ export const Task = ({ debug, blockId }: TaskProps) => {
                   mb: 1
                 }}
               >
-                You've earned 5 BBLIP for completing this task !
+                You've earned 25 BBLIP for completing this task !
               </Typography>
               <Typography
                 sx={{
@@ -198,6 +185,7 @@ export const Task = ({ debug, blockId }: TaskProps) => {
                   mb: 3
                 }}
               >
+                Now you can spin with 25 BBLIP !
               </Typography>
               <Button
                 variant="contained"
