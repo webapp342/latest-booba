@@ -113,7 +113,7 @@ export const Task = ({ debug, blockId }: TaskProps) => {
             fontSize: '0.9rem',
             fontWeight: 500,
             textAlign: 'center',
-            width: '100%',
+            width: '90%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
