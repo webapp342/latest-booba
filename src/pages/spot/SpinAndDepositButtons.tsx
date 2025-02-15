@@ -4,9 +4,9 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import boobaLogo from '../../assets/booba-logo.png';
 import ticketLogo from '../../assets/ticket.png';
 import tonLogo from '../../assets/ton_symbol.png';
-import DirectLinkAd from '../../components/Ads/DirectLinkAd';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import { Task } from '../TaskAdsPage';
 
 const theme = createTheme({
   typography: {
@@ -369,7 +369,10 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
         {showTopUpButton ? (
           <Box>
             {selectedSpinType === 'bblip' ? (
-              <DirectLinkAd />
+                <Task 
+                        blockId="task-8227"
+                        debug={false}
+                      />
             ) : (
               <Button
                 onClick={() => {

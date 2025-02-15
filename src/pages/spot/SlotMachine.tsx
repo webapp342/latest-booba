@@ -349,7 +349,7 @@ export const SlotMachine: FC = () => {
         if (!ref) return;
         
         const isRed = (gameState.selectedSpinType === 'total' && index === 0) ||
-                     (gameState.selectedSpinType === 'bblip' && index < 2);
+                     (gameState.selectedSpinType === 'bblip' && index === 0);
         
         if (isRed) {
           ref.startAnimation({

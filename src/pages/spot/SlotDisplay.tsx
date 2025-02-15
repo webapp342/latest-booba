@@ -105,7 +105,7 @@ const SlotDisplay = forwardRef<CounterRef[], SlotDisplayProps>(({ numbers, selec
         >
           {numbers.split('').map((number, index) => {
             const isRed = (selectedSpinType === 'total' && index === 0) ||
-                         (selectedSpinType === 'bblip' && index < 2);
+                         (selectedSpinType === 'bblip' && index < 1);
             
             return (
               <Paper

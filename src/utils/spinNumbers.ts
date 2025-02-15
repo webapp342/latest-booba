@@ -15,9 +15,9 @@ export const generateSpinNumbers = (selectedBalance: string, selectedSpinType: s
             '0',
             '0',
             generateRandomNumber(0, 1).toString(),
-            generateRandomNumber(1, 6).toString(),
-            generateRandomNumber(1, 9).toString(),
-            generateRandomNumber(1, 9).toString(),
+            generateRandomNumber(0, 4).toString(),
+            generateRandomNumber(6, 9).toString(),
+            generateRandomNumber(6, 9).toString(),
           ];
         } else if (selectedSpinType === 'bblip') {
           // TON için BBLIP spin
@@ -82,8 +82,8 @@ export const generateSpinNumbers = (selectedBalance: string, selectedSpinType: s
             '0',
             '0',
             '0',
-            '0',
-            generateRandomNumber(6, 9).toString(),
+            generateRandomNumber(0, 2).toString(),
+            generateRandomNumber(0, 5).toString(),
             generateRandomNumber(1, 9).toString(),
           ];
         } else if (selectedSpinType === 'bblip') {
@@ -122,7 +122,7 @@ export const generateSpinNumbers = (selectedBalance: string, selectedSpinType: s
           // BBLIP için BBLIP spin: 5.000 - 99.999 BBLIP arası
           result = [
             '0',
-            '0',
+            generateRandomNumber(0, 3).toString(),
             generateRandomNumber(0, 3).toString(),
             generateRandomNumber(0, 9).toString(),
             generateRandomNumber(0, 9).toString(),

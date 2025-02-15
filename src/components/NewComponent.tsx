@@ -919,7 +919,7 @@ const RecentStakes = () => {
 
   // Helper function to generate unique TON address with different prefixes
   const generateUniqueTONAddress = () => {
-    const prefixes = ['EQ', 'UQ', 'kQ', 'Ef', 'Uf', 'EQ', 'kf', 'PQ', 'MQ', 'LQ'];
+    const prefixes = ['EQ', 'UQ'];
     const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
     const chars = '0123456789abcdefABCDEFghijklmnopqrstuvwxyzKLMNOPQRSTUVWXYZ';
     let address: string;
@@ -955,19 +955,19 @@ const RecentStakes = () => {
       // Subscribe amounts
       if (random < 0.9) {
         // 90% chance for 20-320 TON
-        return (Math.random() * (320 - 20) + 20).toFixed(2);
+        return (Math.random() * (120 - 20) + 20).toFixed(2);
       } else {
         // 10% chance for 321-1500 TON
-        return (Math.random() * (1500 - 321) + 321).toFixed(2);
+        return (Math.random() * (482 - 120) + 120).toFixed(2);
       }
     } else {
       // Reward Claimed amounts
       if (random < 0.9) {
         // 90% chance for 5-430 TON
-        return (Math.random() * (430 - 5) + 5).toFixed(2);
+        return (Math.random() * (130 - 15) + 15).toFixed(2);
       } else {
         // 10% chance for 431-1500 TON
-        return (Math.random() * (1500 - 431) + 431).toFixed(2);
+        return (Math.random() * (872 - 131) + 131).toFixed(2);
       }
     }
   };
@@ -1011,7 +1011,7 @@ const RecentStakes = () => {
       setTimeout(() => {
         setNewActivityKey(null);
       }, 1000);
-    }, 2000);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, []);

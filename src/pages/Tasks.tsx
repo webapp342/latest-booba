@@ -51,7 +51,7 @@ import WithTourSection from '../components/TourGuide/withTourSection';
 import { useNavigate } from 'react-router-dom';
 import DepositDrawer from '../components/WalletDrawers/DepositDrawer';
 import { NotificationContext } from '../App';
-import {  Task } from './TaskAdsPage';
+import {  Task } from './AdTask';
 
 // Firebase App initialization
 const app = initializeApp(firebaseConfig);
@@ -1020,19 +1020,7 @@ Earn rewards by completing tasks, invite friends, watching ads, and more in our 
                       </Paper>
 
                       {/* Partners Section */}
-                      <Typography
-                        sx={{
-                          fontSize: '1.1rem',
-                          fontWeight: 600,
-                          color: '#fff',
-                          mt: 4,
-                          mb: 2,
-                          textAlign: 'left',
-                          width: '95%'
-                        }}
-                      >
-                        Partners
-                      </Typography>
+                    
 
                       {/* AdsGram Task */}
                       <Task 

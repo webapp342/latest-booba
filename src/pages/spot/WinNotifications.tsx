@@ -70,7 +70,7 @@ const WinNotifications: React.FC = () => {
     // Set amount limits based on spin type
     switch (spinToken) {
       case 'TICKET':
-        maxAmount = 999.99;
+        maxAmount = 99.99;
         // Set minimum amounts for TICKET spins
         if (winToken === 'TON') {
           minAmount = 28.99;
@@ -79,7 +79,7 @@ const WinNotifications: React.FC = () => {
             minAmount = 500.00;
           }
         } else if (winToken === 'BBLIP') {
-          minAmount = 65.99;
+          minAmount = 165.99;
         }
         break;
       case 'TON':
@@ -164,7 +164,7 @@ const WinNotifications: React.FC = () => {
     }
     
     // Ensure we don't have more than 2 high amounts (>500) in the initial set
-    let highAmountCount = tempNotifications.filter(n => parseFloat(n.amount) > 500).length;
+    let highAmountCount = tempNotifications.filter(n => parseFloat(n.amount) > 100).length;
     if (highAmountCount > 2) {
       tempNotifications.forEach((notif, idx) => {
         if (parseFloat(notif.amount) > 500 && highAmountCount > 2) {

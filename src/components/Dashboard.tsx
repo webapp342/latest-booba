@@ -43,7 +43,8 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
         })}
       </Box>
 
-      <Box sx={{ flex: 1 }}>
+      <Box 
+      sx={{ flex: 1 }}>
         <Typography
           sx={{
             color: '#6B7280',
@@ -85,7 +86,8 @@ const Dashboard: React.FC<DashboardProps> = ({ data }) => {
 
   return (
     <Box >
-      <Box sx={{ 
+      <Box 
+      sx={{ 
         borderRadius: 2, 
         border:'1px solid #5d6367',
         p: 1.5,

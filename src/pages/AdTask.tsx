@@ -8,6 +8,7 @@ import { firebaseConfig } from './firebaseConfig';
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+const COOLDOWN_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
 
 /**
   * Check Typescript section
@@ -23,9 +24,37 @@ export const Task = ({ debug, blockId }: TaskProps) => {
   const taskRef = useRef<AdsgramTaskElement>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [lastClaimTime, setLastClaimTime] = useState<number | null>(null);
+  const [timeRemaining, setTimeRemaining] = useState<string>('');
 
+  useEffect(() => {
+    // Load last claim time from localStorage
+    const storedTime = localStorage.getItem('lastAdTaskClaimTime');
+    if (storedTime) {
+      setLastClaimTime(parseInt(storedTime));
+    }
+  }, []);
 
- 
+  useEffect(() => {
+    if (lastClaimTime) {
+      const timer = setInterval(() => {
+        const now = Date.now();
+        const elapsed = now - lastClaimTime;
+        if (elapsed >= COOLDOWN_DURATION) {
+          setLastClaimTime(null);
+          localStorage.removeItem('lastAdTaskClaimTime');
+          setTimeRemaining('');
+        } else {
+          const remaining = COOLDOWN_DURATION - elapsed;
+          const minutes = Math.floor(remaining / (60 * 1000));
+          const seconds = Math.floor((remaining % (60 * 1000)) / 1000);
+          setTimeRemaining(`${minutes}:${seconds.toString().padStart(2, '0')}`);
+        }
+      }, 1000);
+
+      return () => clearInterval(timer);
+    }
+  }, [lastClaimTime]);
 
   const handleClaim = async () => {
     try {
@@ -35,9 +64,12 @@ export const Task = ({ debug, blockId }: TaskProps) => {
 
       const userDocRef = doc(db, 'users', telegramUserId);
       await updateDoc(userDocRef, {
-        bblip: increment(25000)
+        bblip: increment(5000)
       });
 
+      const now = Date.now();
+      setLastClaimTime(now);
+      localStorage.setItem('lastAdTaskClaimTime', now.toString());
       setIsDrawerOpen(false);
     } catch (error) {
       console.error('Error claiming reward:', error);
@@ -48,7 +80,9 @@ export const Task = ({ debug, blockId }: TaskProps) => {
 
   useEffect(() => {
     const handler = (_event: CustomEvent<string>) => {
-      setIsDrawerOpen(true);
+      if (!lastClaimTime || Date.now() - lastClaimTime >= COOLDOWN_DURATION) {
+        setIsDrawerOpen(true);
+      }
     };
     const task = taskRef.current;
 
@@ -61,16 +95,48 @@ export const Task = ({ debug, blockId }: TaskProps) => {
         task.removeEventListener("reward", handler);
       }
     };
-  }, []);
+  }, [lastClaimTime]);
 
   if (!customElements.get("adsgram-task")) {
     return null;
   }
 
+  if (lastClaimTime && Date.now() - lastClaimTime < COOLDOWN_DURATION) {
+    return (
+      <Box
+        sx={{
+          width: '92%',
+          padding: '16px',
+          borderRadius: '12px',
+          backgroundColor: 'rgba(0, 198, 255, 0.05)',
+          color: 'rgba(255, 255, 255, 0.7)',
+          textAlign: 'center',
+          border: '1px solid rgba(110, 211, 255, 0.1)',
+        }}
+      >
+        <Typography>
+          Task will be available in {timeRemaining}
+        </Typography>
+      </Box>
+    );
+  }
+
   return (
     <>
-     
         <>
+          <Typography
+            sx={{
+              fontSize: '1.1rem',
+              fontWeight: 600,
+              color: '#fff',
+              mt: 4,
+              mb: 2,
+              textAlign: 'left',
+              width: '95%'
+            }}
+          >
+            Partners
+          </Typography>
           <adsgram-task
             className={styles.task}
             data-block-id={blockId}
@@ -78,7 +144,7 @@ export const Task = ({ debug, blockId }: TaskProps) => {
             ref={taskRef}
           >
             <span slot="reward" className={styles.reward}>
-              Get free spins 
+              +5 BBLIP
             </span>
             <div slot="button" className={styles.button}>
               Go
@@ -110,7 +176,7 @@ export const Task = ({ debug, blockId }: TaskProps) => {
                   mb: 1
                 }}
               >
-                You've earned 25 BBLIP for completing this task !
+                You've earned 5 BBLIP for completing this task !
               </Typography>
               <Typography
                 sx={{
@@ -118,7 +184,6 @@ export const Task = ({ debug, blockId }: TaskProps) => {
                   mb: 3
                 }}
               >
-                Now you can spin with 25 BBLIP !
               </Typography>
               <Button
                 variant="contained"
@@ -138,7 +203,6 @@ export const Task = ({ debug, blockId }: TaskProps) => {
             </Box>
           </Drawer>
         </>
-     
     </>
   );
 };
