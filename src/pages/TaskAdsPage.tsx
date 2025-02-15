@@ -9,6 +9,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const COOLDOWN_PERIOD = 5 * 1000; // 5 seconds
+const REQUIRED_VIEWS = 5;
 
 /**
   * Check Typescript section
@@ -25,6 +26,15 @@ export const Task = ({ debug, blockId }: TaskProps) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [timeLeft, setTimeLeft] = useState<number>(0);
+  const [viewCount, setViewCount] = useState<number>(0);
+
+  useEffect(() => {
+    // Load saved view count
+    const savedViewCount = localStorage.getItem(`viewCount_${blockId}`);
+    if (savedViewCount) {
+      setViewCount(parseInt(savedViewCount));
+    }
+  }, [blockId]);
 
   useEffect(() => {
     const calculateTimeLeft = () => {
@@ -59,6 +69,22 @@ export const Task = ({ debug, blockId }: TaskProps) => {
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
 
+  const handleViewComplete = () => {
+    if (timeLeft > 0) return;
+
+    const newViewCount = viewCount + 1;
+    setViewCount(newViewCount);
+    localStorage.setItem(`viewCount_${blockId}`, newViewCount.toString());
+    localStorage.setItem(`lastRewardTime_${blockId}`, new Date().toISOString());
+
+    if (newViewCount >= REQUIRED_VIEWS) {
+      setIsDrawerOpen(true);
+      // Reset view count after showing drawer
+      setViewCount(0);
+      localStorage.setItem(`viewCount_${blockId}`, "0");
+    }
+  };
+
   const handleClaim = async () => {
     try {
       setLoading(true);
@@ -81,7 +107,7 @@ export const Task = ({ debug, blockId }: TaskProps) => {
 
   useEffect(() => {
     const handler = (_event: CustomEvent<string>) => {
-      setIsDrawerOpen(true);
+      handleViewComplete();
     };
     const task = taskRef.current;
 
@@ -94,7 +120,7 @@ export const Task = ({ debug, blockId }: TaskProps) => {
         task.removeEventListener("reward", handler);
       }
     };
-  }, []);
+  }, [viewCount]);
 
   if (!customElements.get("adsgram-task")) {
     return null;
@@ -122,6 +148,11 @@ export const Task = ({ debug, blockId }: TaskProps) => {
         </Box>
       ) : (
         <>
+          <Box sx={{ textAlign: 'center', mb: 1 }}>
+            <Typography sx={{ color: 'rgba(255,255,255,0.7)' }}>
+              Progress: {viewCount}/{REQUIRED_VIEWS}
+            </Typography>
+          </Box>
           <adsgram-task
             className={styles.task}
             data-block-id={blockId}
