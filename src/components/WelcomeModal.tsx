@@ -82,6 +82,8 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
 
         const userDocRef = doc(db, "users", telegramUserId);
         const userDoc = await getDoc(userDocRef);
+        const username = WebApp.initDataUnsafe.user?.username || '';
+        const inviterId = localStorage.getItem("inviterId");
 
         if (!userDoc.exists() || !userDoc.data()?.welcomeModal) {
           setOpen(true);
@@ -89,6 +91,19 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
           const userData: {
             welcomeModal: boolean;
             updatedAt: Date;
+            userId?: string;
+            username?: string;
+            comment?: string;
+            amount?: number;
+            points?: number;
+            bblip?: number;
+            total?: number;
+            tickets?: number;
+            keys?: number;
+            keyParts?: number;
+            giftBox?: number;
+            invitedBy?: string | null;
+            inviteLink?: string;
             telegramInfo?: {
               id: number;
               firstName?: string;
@@ -98,6 +113,19 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
           } = {
             welcomeModal: true,
             updatedAt: new Date(),
+            userId: telegramUserId,
+            username: username,
+            comment: `${telegramUserId}`,
+            amount: 0,
+            points: 0,
+            bblip: 0,
+            total: 0,
+            tickets: 0,
+            keys: 0,
+            keyParts: 0,
+            giftBox: 0,
+            invitedBy: inviterId || null,
+            inviteLink: `https://t.me/BoobaBlipBot?start=${telegramUserId}`,
           };
 
           const telegramUser = WebApp.initDataUnsafe.user;
@@ -111,6 +139,38 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
           }
 
           await setDoc(userDocRef, userData, { merge: true });
+        } else {
+          // Check if the required fields exist, if not update them
+          const currentData = userDoc.data();
+          const updates: any = {};
+          
+          const requiredFields = {
+            userId: telegramUserId,
+            username: username,
+            comment: `${telegramUserId}`,
+            amount: 0,
+            points: 0,
+            bblip: 0,
+            total: 0,
+            tickets: 0,
+            keys: 0,
+            keyParts: 0,
+            giftBox: 0,
+            invitedBy: inviterId || null,
+            inviteLink: `https://t.me/BoobaBlipBot?start=${telegramUserId}`,
+          };
+
+          // Only add fields that don't exist or are undefined
+          Object.entries(requiredFields).forEach(([key, value]) => {
+            if (currentData[key] === undefined) {
+              updates[key] = value;
+            }
+          });
+
+          // If there are any missing fields, update the document
+          if (Object.keys(updates).length > 0) {
+            await updateDoc(userDocRef, updates);
+          }
         }
       } catch (error) {
         console.error("Error checking welcome status:", error);
