@@ -8,6 +8,8 @@ import { firebaseConfig } from './firebaseConfig';
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+const COOLDOWN_PERIOD = 60 * 60 * 1000; // 1 hour in milliseconds
+
 /**
   * Check Typescript section
   * and add types for <adsgram-task> typing
@@ -22,6 +24,40 @@ export const Task = ({ debug, blockId }: TaskProps) => {
   const taskRef = useRef<AdsgramTaskElement>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [timeLeft, setTimeLeft] = useState<number>(0);
+
+  useEffect(() => {
+    const calculateTimeLeft = () => {
+      const lastRewardTime = localStorage.getItem('lastTaskRewardTime');
+      if (!lastRewardTime) {
+        setTimeLeft(0);
+        return;
+      }
+
+      const now = new Date().getTime();
+      const lastTime = new Date(lastRewardTime).getTime();
+      const diff = now - lastTime;
+
+      if (diff >= COOLDOWN_PERIOD) {
+        setTimeLeft(0);
+      } else {
+        setTimeLeft(COOLDOWN_PERIOD - diff);
+      }
+    };
+
+    calculateTimeLeft();
+    const timer = setInterval(calculateTimeLeft, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatTimeLeft = (milliseconds: number) => {
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  };
 
   const handleClaim = async () => {
     try {
@@ -34,6 +70,8 @@ export const Task = ({ debug, blockId }: TaskProps) => {
         bblip: increment(5000)
       });
 
+      // Set cooldown time after successful claim
+      localStorage.setItem('lastTaskRewardTime', new Date().toISOString());
       setIsDrawerOpen(false);
     } catch (error) {
       console.error('Error claiming reward:', error);
@@ -63,6 +101,23 @@ export const Task = ({ debug, blockId }: TaskProps) => {
     return null;
   }
 
+  if (timeLeft > 0) {
+    return (
+      <Box sx={{ 
+        color: '#6ed3ff', 
+        fontSize: '1rem',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '12px',
+        backgroundColor: 'rgba(110, 211, 255, 0.1)',
+        borderRadius: '8px'
+      }}>
+        Next reward in: {formatTimeLeft(timeLeft)}
+      </Box>
+    );
+  }
+
   return (
     <>
       <adsgram-task
@@ -72,7 +127,7 @@ export const Task = ({ debug, blockId }: TaskProps) => {
         ref={taskRef}
       >
         <span slot="reward" className={styles.reward}>
-          +5 Bblip
+          +15 Bblip
         </span>
         <div slot="button" className={styles.button}>
           Earn
