@@ -3,7 +3,7 @@ import { Box, Button, Typography, CircularProgress, IconButton } from '@mui/mate
 import { motion } from 'framer-motion';
 import KeyIcon from '@mui/icons-material/Key';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import DirectLinkKeys from '../Ads/DirectLinkKeys';
+import { Task } from '../../pages/TaskAdsKey';
 
 interface KeyCraftingProps {
   keyParts: number;
@@ -203,7 +203,10 @@ const KeyCrafting: React.FC<KeyCraftingProps> = ({ keyParts, onCraftKey, isLoadi
             {/* Open Free Box Button - Only show when can't craft key */}
             {!canCraftKey && (
              
-              <DirectLinkKeys/>
+                <Task 
+                        blockId="task-8200"
+                        debug={false}
+                      />
             )}
           </Box>
         </Box>

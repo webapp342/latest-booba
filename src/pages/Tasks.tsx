@@ -111,8 +111,8 @@ const theme = createTheme({
 
 // Tasks metadata
 const tasksMetadata = [
-  { title: 'Follow on X',label:'+15 BBLIP', description: '15 BBLIP', link: 'twitter://user?screen_name=BoobaBlip', reward: 15000 },
-  { title: 'Like & Repost on X',label:'+10 BBLIP', description: '10 BBLIP', link: 'https://x.com/BoobaBlip/status/1890086943461093812', reward: 10000 },
+  { title: 'Follow on X',label:'+5 BBLIP', description: '5 BBLIP', link: 'twitter://user?screen_name=BoobaBlip', reward: 5000 },
+  { title: 'Like & Repost on X',label:'+5 BBLIP', description: '5 BBLIP', link: 'https://x.com/BoobaBlip/status/1890086943461093812', reward: 10000 },
     { title: 'Visit bblip.io',label:'+5 BBLIP', description: '5 BBLIP', link: 'https://home.bblip.io', reward: 5000 },
       { title: 'Join Community',label:'+5 BBLIP', description: '5 BBLIP', link: 'https://t.me/BoobaBlip_channel', reward: 5000 },
 
@@ -681,13 +681,7 @@ const GradientBox = styled(Box)(() => ({
   boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
 }));
 
-const ADSGRAM_TASKS = [
-  {
-    id: '1',
-    blockId: 'task-8197',
-  },
 
-];
 
   return (
     
@@ -848,14 +842,7 @@ Earn rewards by completing tasks, invite friends, watching ads, and more in our 
                   alignItems: 'center',
                   gap: 2
                 }}>
-                  {ADSGRAM_TASKS.map((task) => (
               
-                     
-                      <Task 
-                        blockId={task.blockId}
-                        debug={false}
-                      />
-                  ))}
                 </Box>
               ) : (
                 <>
