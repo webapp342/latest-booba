@@ -1,60 +1,12 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./task.module.css";
-import { Button, Typography } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import task8Logo from "../assets/booba-logo.png";
-const theme = createTheme({
-  typography: {
-    fontFamily: "Inter, system-ui, -apple-system, sans-serif",
-  },
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          borderRadius: '8px',
-          textTransform: 'none',
-          fontWeight: 600,
-          boxShadow: 'none',
-          color: '#6ed3ff',
-          padding: 1.5,
-          paddingRight: 5,
-          paddingLeft: 5,
-          letterSpacing: 1.1,
-          '&:hover': {
-            backgroundColor: 'transparent',
-          },
-          '&:active': {
-            backgroundColor: 'transparent',
-          },
-          '&.MuiButton-contained': {
-            backgroundColor: 'rgba(110, 211, 255, 0.1)',
-           
-            '&:active': {
-              backgroundColor: 'transparent',
-            },
-          },
-          '&.MuiButton-outlined': {
-            '&:hover': {
-              backgroundColor: 'transparent',
-            },
-            '&:active': {
-              backgroundColor: 'transparent',
-            },
-          },
-        },
-      },
-    },
-    MuiPaper: {
-      styleOverrides: {
-        root: {
-          backgroundColor: 'rgba(110, 211, 255, 0.1)',
-          padding: '8px',
-          borderRadius: '12px',
-        },
-      },
-    },
-  },
-});
+import { Box, Drawer, Typography, Button } from "@mui/material";
+import { getFirestore, doc, updateDoc, increment } from 'firebase/firestore';
+import { initializeApp } from 'firebase/app';
+import { firebaseConfig } from './firebaseConfig';
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 /**
   * Check Typescript section
@@ -68,11 +20,31 @@ interface TaskProps {
 
 export const Task = ({ debug, blockId }: TaskProps) => {
   const taskRef = useRef<AdsgramTaskElement>(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleClaim = async () => {
+    try {
+      setLoading(true);
+      const telegramUserId = localStorage.getItem('telegramUserId');
+      if (!telegramUserId) throw new Error('User ID not found');
+
+      const userDocRef = doc(db, 'users', telegramUserId);
+      await updateDoc(userDocRef, {
+        bblip: increment(5000)
+      });
+
+      setIsDrawerOpen(false);
+    } catch (error) {
+      console.error('Error claiming reward:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const handler = (event: CustomEvent<string>) => {
-      // event.detail contains your block id
-      alert(`reward, detail = ${event.detail}`);
+      setIsDrawerOpen(true);
     };
     const task = taskRef.current;
 
@@ -92,42 +64,73 @@ export const Task = ({ debug, blockId }: TaskProps) => {
   }
 
   return (
-          <ThemeProvider theme={theme}>
+    <>
+      <adsgram-task
+        className={styles.task}
+        data-block-id={blockId}
+        data-debug={debug}
+        ref={taskRef}
+      >
+        <span slot="reward" className={styles.reward}>
+          +5 Bblip
+        </span>
+        <div slot="button" className={styles.button}>
+          Earn
+        </div>
+        <div slot="done" className={styles.button_done}>
+          Done
+        </div>
+      </adsgram-task>
 
-    <adsgram-task
-      className={styles.task}
-      data-block-id={blockId}
-      data-debug={debug}
-      ref={taskRef}
-    >
-      <span slot="reward" >
-        <img src={task8Logo} alt="" width={16} style={{ borderRadius: '50%' }} />
-                              <Typography
-                                variant="caption"
-                                sx={{
-                                  color: '#98d974',
-                                  fontWeight: 600,
-                                }}
-                              >
-                                +5 BBLIP
-                              </Typography>
-      </span>
-      <Button         variant="contained"
- slot="button"   sx={{
-          p: 1,
-          backgroundColor: 'rgba(110, 211, 255, 0.1)',
-          color: '#6ed3ff',
-          '&:disabled': {
-            background: '#2f363a',
-            color: 'rgba(255, 255, 255, 0.3)',
-          },
-        }}>
-        Earn
-      </Button>
-      <div slot="done" className={styles.button_done}>
-        Done
-      </div>
-    </adsgram-task>
-    </ThemeProvider>
+      <Drawer
+        anchor="bottom"
+        open={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        PaperProps={{
+          sx: {
+            backgroundColor: '#1A2126',
+            borderTopLeftRadius: '16px',
+            borderTopRightRadius: '16px',
+            border: '1px solid rgba(110, 211, 255, 0.1)',
+          }
+        }}
+      >
+        <Box sx={{ p: 3, textAlign: 'center' }}>
+          <Typography
+            variant="h6"
+            sx={{
+              color: '#fff',
+              fontWeight: 600,
+              mb: 1
+            }}
+          >
+            Congratulations! 🎉
+          </Typography>
+          <Typography
+            sx={{
+              color: 'rgba(255,255,255,0.7)',
+              mb: 3
+            }}
+          >
+            You've earned 5 BBLIP for completing this task!
+          </Typography>
+          <Button
+            variant="contained"
+            onClick={handleClaim}
+            disabled={loading}
+            sx={{
+              backgroundColor: 'rgba(110, 211, 255, 0.1)',
+              color: '#6ed3ff',
+              '&:hover': {
+                backgroundColor: 'rgba(110, 211, 255, 0.2)',
+              },
+              minWidth: 120,
+            }}
+          >
+            {loading ? 'Claiming...' : 'Claim Reward'}
+          </Button>
+        </Box>
+      </Drawer>
+    </>
   );
 };
