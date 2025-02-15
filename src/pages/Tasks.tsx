@@ -1039,6 +1039,10 @@ Earn rewards by completing tasks, invite friends, watching ads, and more in our 
                         blockId="task-8197"
                         debug={false}
                       />
+                       <Task 
+                        blockId="task-8200"
+                        debug={false}
+                      />
                     </>
                   ) : (
                     // Other categories
