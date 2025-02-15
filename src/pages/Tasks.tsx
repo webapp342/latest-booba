@@ -16,6 +16,7 @@ import connectwallet from '../assets/connectwallet.png';
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Header } from './ConnectButton';
+import TestComponent from '../pages/TestComponent';
 
 
 import {
@@ -30,7 +31,6 @@ import { firebaseConfig } from './firebaseConfig';
 import task1Logo from '../assets/task1logo.png';
 import task4Logo from '../assets/www.png';
 import task5Logo from '../assets/telegram.png';
-import task7Logo from '../assets/booba-logo.png';
 import task8Logo from '../assets/booba-logo.png';
 
 import watchad from '../assets/watchad.png';
@@ -82,9 +82,7 @@ const theme = createTheme({
           },
           '&.MuiButton-contained': {
             backgroundColor: 'rgba(110, 211, 255, 0.1)',
-            '&:hover': {
-              backgroundColor: 'transparent',
-            },
+           
             '&:active': {
               backgroundColor: 'transparent',
             },
@@ -141,7 +139,7 @@ const taskLogos = [
   task1Logo,
   task4Logo,
   task5Logo,
-  task7Logo, // Invite 1
+  task19Logo, // Invite 5
   task19Logo, // Invite 5
   task19Logo, // Invite 10
   task19Logo, // Invite 15
@@ -1087,6 +1085,11 @@ Earn rewards by completing tasks, invite friends, watching ads, and more in our 
                   ) : (
                     // Other categories
                     <>
+                      {selectedCategory === 3 && (
+                        <Box key="test-component" sx={{ mb: 2 }}>
+                          <TestComponent />
+                        </Box>
+                      )}
                       {categories
                         .find((category) => category.id === selectedCategory)
                         ?.tasks.map((taskIndex) => (

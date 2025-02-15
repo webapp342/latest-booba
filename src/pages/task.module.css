@@ -8,7 +8,7 @@
   width: 95%;
   padding: 8px 16px 8px 8px;
   border-radius: 16px;
-  background-color: #1d2733;
+  background-color: rgba(0, 198, 255, 0.05);
   font-family: Roboto;
   color: white;
 }

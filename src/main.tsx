@@ -80,7 +80,6 @@ const reportWebVitals = (metric: any) => {
 };
 
 // Only lazy load heavy and less frequently used components
-const LazyAdminPanel = React.lazy(() => import("./pages/AdminPanel.tsx"));
 const LazyBoxOpening = React.lazy(() => import("./components/boxOpening/BoxOpening"));
 const LazyBoxDetail = React.lazy(() => import("./components/boxOpening/BoxDetail"));
 
@@ -173,14 +172,7 @@ const router = createBrowserRouter([
         path: "/adkeys",
         element: <DirectLinkKeys />
       },
-      {
-        path: "/admin",
-        element: (
-          <Suspense fallback={<LoadingFallback />}>
-            <LazyAdminPanel />
-          </Suspense>
-        )
-      },
+     
       {
         path: "/slot",
         element: <SlotMachine />
