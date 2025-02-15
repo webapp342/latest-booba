@@ -202,7 +202,7 @@ function App() {
       );
 
       toast(message, {
-        position: "bottom-left",
+        position: "top-left",
         autoClose: 3000,
         hideProgressBar: true,
         closeOnClick: true,
@@ -211,6 +211,7 @@ function App() {
         icon: Icon,
         style: {
           width:'100%',
+
           background: 'rgba(26, 33, 38, 0.95)',
           backdropFilter: 'blur(10px)',
           border: '1px solid rgba(110, 211, 255, 0.1)',
