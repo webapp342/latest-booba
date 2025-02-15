@@ -43,7 +43,7 @@ export const Task = ({ debug, blockId }: TaskProps) => {
   };
 
   useEffect(() => {
-    const handler = (event: CustomEvent<string>) => {
+    const handler = (_event: CustomEvent<string>) => {
       setIsDrawerOpen(true);
     };
     const task = taskRef.current;

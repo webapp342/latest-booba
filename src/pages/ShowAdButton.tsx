@@ -47,7 +47,7 @@ export function ShowAdButton(): ReactElement {
     alert(JSON.stringify(result, null, 4));
   }, []);
 
-  const showAd = useAdsgram({ blockId: '6760', onReward, onError });
+  const showAd = useAdsgram({ blockId: '8216', onReward, onError });
 
   const formatTimeLeft = (milliseconds: number) => {
     const totalSeconds = Math.floor(milliseconds / 1000);
