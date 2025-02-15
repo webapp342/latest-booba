@@ -25,7 +25,6 @@ import {
   updateDoc,
   increment,
 } from 'firebase/firestore'; 
-import TestComponent from '../pages/TestComponent';
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './firebaseConfig';
 import task1Logo from '../assets/task1logo.png';
