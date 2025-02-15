@@ -81,10 +81,10 @@ const invitedUsersArray = userData.invitedUsers || [];          console.log('Dav
   const handleCopyLink = () => {
     if (inviteLink) {
       navigator.clipboard.writeText(inviteLink).then(() => {
-        setSnackbarMessage('Link kopyalandı!');
+        setSnackbarMessage('Copied !');
         setSnackbarOpen(true);
       }).catch((err) => {
-        setSnackbarMessage('Link kopyalanırken bir hata oluştu.');
+        setSnackbarMessage('ERROR');
         setSnackbarOpen(true);
         console.error(err);
       });
