@@ -8,7 +8,7 @@ import { firebaseConfig } from './firebaseConfig';
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const COOLDOWN_PERIOD = 60 * 60 * 1000; // 1 hour in milliseconds
+const COOLDOWN_PERIOD = 5 * 1000; // 5 seconds
 
 /**
   * Check Typescript section
@@ -105,7 +105,7 @@ export const Task = ({ debug, blockId }: TaskProps) => {
       {timeLeft > 0 ? (
         <Box
           sx={{
-           
+            p:1,
             backgroundColor: 'rgba(110, 211, 255, 0.1)',
             borderRadius: '12px',
             border: '1px solid rgba(110, 211, 255, 0.1)',
@@ -113,7 +113,7 @@ export const Task = ({ debug, blockId }: TaskProps) => {
             fontSize: '0.9rem',
             fontWeight: 500,
             textAlign: 'center',
-            width: '90%',
+            width: '100%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
