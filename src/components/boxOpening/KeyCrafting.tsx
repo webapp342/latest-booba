@@ -66,7 +66,8 @@ const KeyCrafting: React.FC<KeyCraftingProps> = ({ keyParts, onCraftKey, isLoadi
 
         <Box sx={{ position: 'relative', zIndex: 1 }}>
           {/* Header Section */}
-          <Box sx={{ 
+          <Box 
+          sx={{ 
             display: 'flex', 
             alignItems: 'center', 
             justifyContent: 'space-between',
@@ -115,7 +116,8 @@ const KeyCrafting: React.FC<KeyCraftingProps> = ({ keyParts, onCraftKey, isLoadi
           </Box>
 
           {/* Progress Section */}
-          <Box sx={{ mb: 3 }}>
+          <Box 
+          sx={{ mb: 3 }}>
             <Box sx={{ 
               display: 'flex', 
               justifyContent: 'space-between',
@@ -158,7 +160,8 @@ const KeyCrafting: React.FC<KeyCraftingProps> = ({ keyParts, onCraftKey, isLoadi
           </Box>
 
           {/* Action Buttons */}
-          <Box sx={{ mt: 3, display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <Box 
+          sx={{ mt: 3, display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Button
               variant="contained"
               onClick={onCraftKey}
