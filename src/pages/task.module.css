@@ -18,6 +18,14 @@
   margin: 0;
 }
 
+.reward1 {
+  color: #98d974;
+  margin: 0;
+  font-size: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 100;
+}
+
 .button {
   display: inline-flex;
   align-items: center;

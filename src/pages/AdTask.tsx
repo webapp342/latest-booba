@@ -4,6 +4,7 @@ import { Box, Drawer, Typography, Button } from "@mui/material";
 import { getFirestore, doc, updateDoc, increment } from 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './firebaseConfig';
+import bblip from '../assets/booba-logo.png';
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -143,8 +144,8 @@ export const Task = ({ debug, blockId }: TaskProps) => {
             data-debug={debug}
             ref={taskRef}
           >
-            <span slot="reward" className={styles.reward}>
-              +5 BBLIP
+            <span slot="reward" className={styles.reward1}>
+             <img src={bblip} alt="" style={{width: '16px', borderRadius: '50%' , marginBottom: '-4px', marginRight: '4px'}} /> +5 BBLIP
             </span>
             <div slot="button" className={styles.button}>
               Go
