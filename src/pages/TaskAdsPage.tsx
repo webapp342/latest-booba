@@ -106,9 +106,6 @@ export const Task = ({ debug, blockId }: TaskProps) => {
         <Box
           sx={{
             p:1,
-            backgroundColor: 'rgba(110, 211, 255, 0.1)',
-            borderRadius: '12px',
-            border: '1px solid rgba(110, 211, 255, 0.1)',
             color: '#6ed3ff',
             fontSize: '0.9rem',
             fontWeight: 500,
