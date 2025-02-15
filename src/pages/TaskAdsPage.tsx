@@ -27,9 +27,10 @@ export const Task = ({ debug, blockId }: TaskProps) => {
   const [loading, setLoading] = useState(false);
   const [timeLeft, setTimeLeft] = useState<number>(0);
   const { showNotification } = useContext(NotificationContext);
+  const lastCheckRef = useRef<number>(0);
 
   useEffect(() => {
-    const calculateTimeLeft = () => {
+    const checkCooldown = () => {
       const lastRewardTime = localStorage.getItem('lastTaskRewardTime');
       if (!lastRewardTime) {
         setTimeLeft(0);
@@ -42,16 +43,20 @@ export const Task = ({ debug, blockId }: TaskProps) => {
 
       if (diff >= COOLDOWN_PERIOD) {
         setTimeLeft(0);
+        if (lastCheckRef.current === 0 || (now - lastCheckRef.current) > COOLDOWN_PERIOD) {
+          showNotification('🎮 Task is now available! Complete it to earn rewards!');
+          lastCheckRef.current = now;
+        }
       } else {
         setTimeLeft(COOLDOWN_PERIOD - diff);
       }
     };
 
-    calculateTimeLeft();
-    const timer = setInterval(calculateTimeLeft, 1000);
+    checkCooldown();
+    const timer = setInterval(checkCooldown, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [showNotification]);
 
   const formatTimeLeft = (milliseconds: number) => {
     const totalSeconds = Math.floor(milliseconds / 1000);
@@ -67,13 +72,17 @@ export const Task = ({ debug, blockId }: TaskProps) => {
       const telegramUserId = localStorage.getItem('telegramUserId');
       if (!telegramUserId) throw new Error('User ID not found');
 
+      const now = new Date();
       const userDocRef = doc(db, 'users', telegramUserId);
+      
+      // BBLIP artışını sunucu tarafında yap
       await updateDoc(userDocRef, {
         bblip: increment(15000)
       });
 
-      // Set cooldown time after successful claim
-      localStorage.setItem('lastTaskRewardTime', new Date().toISOString());
+      // Sadece cooldown süresini localStorage'da tut
+      localStorage.setItem('lastTaskRewardTime', now.toISOString());
+
       showNotification('🎉 Successfully claimed 15 BBLIP!');
       setIsDrawerOpen(false);
     } catch (error) {
@@ -107,7 +116,8 @@ export const Task = ({ debug, blockId }: TaskProps) => {
 
   if (timeLeft > 0) {
     return (
-      <Box sx={{ 
+      <Box // @ts-ignore
+      sx={{ 
         color: '#6ed3ff', 
         fontSize: '1rem',
         display: 'flex',
@@ -154,7 +164,8 @@ export const Task = ({ debug, blockId }: TaskProps) => {
           }
         }}
       >
-        <Box sx={{ p: 3, textAlign: 'center' }}>
+        <Box 
+        sx={{ p: 3, textAlign: 'center' }}>
           <Typography
             variant="h6"
             sx={{

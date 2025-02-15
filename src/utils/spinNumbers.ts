@@ -24,8 +24,8 @@ export const generateSpinNumbers = (selectedBalance: string, selectedSpinType: s
           result = [
             '0',
             '0',
-            generateRandomNumber(0, 1).toString(),
-            generateRandomNumber(3, 6).toString(),
+            '0',
+            generateRandomNumber(6, 9).toString(),
             generateRandomNumber(1, 9).toString(),
             generateRandomNumber(1, 9).toString(),
           ];

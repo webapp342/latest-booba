@@ -193,7 +193,7 @@ function App() {
             pauseOnHover: true,
             draggable: false,
             style: {
-                background: '#1A2126',
+                background: '#1a2126',
                 color: '#6ed3ff',
                 borderRadius: '12px',
                 padding: '16px',
@@ -201,10 +201,10 @@ function App() {
                 fontWeight: 500,
                 border: '1px solid rgba(110, 211, 255, 0.1)',
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-                minWidth: '95vw',
+                minWidth: '100vw',
                 width: 'fit-content',
                 margin: '0 auto',
-                marginTop: '20px',
+                marginTop: '5px',
                 textAlign: 'center'
             }
         });
@@ -365,7 +365,7 @@ function App() {
                             pauseOnFocusLoss
                             draggable={false}
                             pauseOnHover
-                            theme="dark"
+                            theme="light"
                             limit={3}
                             style={{
                                 

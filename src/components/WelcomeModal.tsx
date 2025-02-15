@@ -165,7 +165,7 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
       if (!telegramUserId || !finalBoxId) {
         setOpen(false);
         onClose();
-        navigate('/latest-booba/mystery-box');
+        navigate('/mystery-box');
         return;
       }
 
@@ -174,7 +174,7 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
       if (!selectedBox) {
         setOpen(false);
         onClose();
-        navigate('/latest-booba/mystery-box');
+        navigate('/mystery-box');
         return;
       }
 
@@ -196,21 +196,21 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
       setTimeout(() => {
         setOpen(false);
         onClose();
-        navigate('/latest-booba/mystery-box');
+        navigate('/mystery-box');
       }, 2000);
 
     } catch (error) {
       console.error("Error giving welcome bonus:", error);
       setOpen(false);
       onClose();
-      navigate('/latest-booba/mystery-box');
+      navigate('/mystery-box');
     } finally {
       setIsProcessing(false);
     }
   };
 
   const handleClaim = async () => {
-    if (isClaiming || !finalBoxId) return;
+    if (isClaiming || !finalBoxId || claimed) return;
     
     try {
       setIsClaiming(true);
@@ -218,7 +218,15 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
       if (!telegramUserId) {
         setOpen(false);
         onClose();
-        navigate('/latest-booba/mystery-box');
+        navigate('/mystery-box');
+        return;
+      }
+
+      const userRef = doc(db, "users", telegramUserId);
+      // Check if already claimed
+      const userDoc = await getDoc(userRef);
+      if (userDoc.exists() && userDoc.data()?.welcomeBonus) {
+        setClaimed(true);
         return;
       }
 
@@ -226,11 +234,10 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
       if (!selectedBox) {
         setOpen(false);
         onClose();
-        navigate('/latest-booba/mystery-box');
+        navigate('/mystery-box');
         return;
       }
 
-      const userRef = doc(db, "users", telegramUserId);
       const updates: any = {
         [`boxes.${selectedBox.title}`]: increment(1),
         welcomeBonus: true,
@@ -244,7 +251,7 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
       setTimeout(() => {
         setOpen(false);
         onClose();
-        navigate('/latest-booba/mystery-box');
+        navigate('/mystery-box');
       }, 2000);
 
     } catch (error) {
@@ -431,7 +438,7 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
           >
                 <Button
                 onClick={handleClaim}
-                disabled={isClaiming}
+                disabled={isClaiming || claimed}
                 sx={{
                   backgroundColor: 'rgba(110,211,255,0.15)',
                   color: '#6ed3ff',

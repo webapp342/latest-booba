@@ -577,14 +577,19 @@ const DealsComponent: React.FC = () => {
       return;
     }
 
+    // Load task status from localStorage
+    const loadLocalState = () => {
+      const savedTasks = localStorage.getItem('taskStatus');
+      if (savedTasks) {
+        setTaskStatus(JSON.parse(savedTasks));
+      }
+    };
+
+    // Load critical data from Firestore
     const userDocRef = doc(db, 'users', telegramUserId);
     const unsubscribe = onSnapshot(userDocRef, (doc) => {
       if (doc.exists()) {
         const data = doc.data();
-        // Update task status
-        if (data.tasks) {
-          setTaskStatus(data.tasks);
-        }
         // Update invited users count
         if (data.invitedUsers) {
           setInvitedUsersCount(data.invitedUsers.length);
@@ -605,6 +610,7 @@ const DealsComponent: React.FC = () => {
       setLoading(false);
     });
 
+    loadLocalState();
     return () => unsubscribe();
   }, []);
 
@@ -615,24 +621,20 @@ const DealsComponent: React.FC = () => {
 
       setLoadingTaskIndex(taskIndex);
 
-      // Update Firestore with only the completed field
-      const userDocRef = doc(db, 'users', telegramUserId);
       if (taskIndex === 14) {
-        // For spin task, only update hasSpinned field, not the completed status
+        // For spin task, update hasSpinned in Firestore
+        const userDocRef = doc(db, 'users', telegramUserId);
         await updateDoc(userDocRef, {
-          hasSpinned: true,
+          hasSpinned: true
         });
-        setHasSpinned(true); // Update local state
       } else {
-        await updateDoc(userDocRef, {
-          [`tasks.${taskIndex}.completed`]: true,
-        });
-        // Update local state
+        // Update task status in localStorage
         const updatedTasks = {
           ...taskStatus,
           [taskIndex]: { ...taskStatus[taskIndex], completed: true },
         };
         setTaskStatus(updatedTasks);
+        localStorage.setItem('taskStatus', JSON.stringify(updatedTasks));
       }
 
       setTimeout(() => {
@@ -665,16 +667,19 @@ const DealsComponent: React.FC = () => {
 
       const userDocRef = doc(db, 'users', telegramUserId);
       
+      // Update token balance and task status in Firestore
       await updateDoc(userDocRef, {
-        [`tasks.${taskIndex}.disabled`]: true,
-        [isTON ? 'total' : 'bblip']: increment(rewardAmount)
+        [isTON ? 'total' : 'bblip']: increment(rewardAmount),
+        [`tasks.${taskIndex}.disabled`]: true
       });
 
+      // Update task status in localStorage
       const updatedTasks = {
         ...taskStatus,
         [taskIndex]: { ...taskStatus[taskIndex], disabled: true },
       };
       setTaskStatus(updatedTasks);
+      localStorage.setItem('taskStatus', JSON.stringify(updatedTasks));
 
       showNotification(`🎉 You earned ${tasksMetadata[taskIndex].description}!`);
       setLoadingTaskIndex(null);
