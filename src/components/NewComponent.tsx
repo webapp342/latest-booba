@@ -67,7 +67,7 @@ const calculateAPY = (amount: number, period: string): number => {
 const calculateLeverage = (amount: number, period: string): number => {
     if (period === '1 D') {
         // 1 günlük için özel leverage değerleri (min yatırım 50 TON)
-        if (amount < 100) return 25;
+        if (amount < 100) return 5;
         if (amount < 250) return 20;
         if (amount < 500) return 15;
         if (amount < 1000) return 12;
@@ -1312,11 +1312,11 @@ const NewComponent: React.FC<NewComponentProps> = () => {
     // 1 günlük stake için özel VIP hesaplama (miktar bazlı kademeli kazanç)
     if (duration === 1) {
         if (amount >= 500 && amount <= 1500) {
-            return Number((amount * 0.293).toFixed(2)); // 500-1500 TON arası günlük %23
+            return Number((amount * 0.07566).toFixed(2)); // 500-1500 TON arası günlük %23
         } else if (amount > 150) {
-            return Number((amount * 0.13).toFixed(2)); // 150 TON üzeri günlük %13
+            return Number((amount * 0.070244).toFixed(2)); // 150 TON üzeri günlük %13
         } else {
-            return Number((amount * 0.276).toFixed(2)); // Normal miktar için günlük %2
+            return Number((amount * 0.056675).toFixed(2)); // Normal miktar için günlük %2
         }
     }
     
