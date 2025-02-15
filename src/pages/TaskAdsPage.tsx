@@ -102,72 +102,97 @@ export const Task = ({ debug, blockId }: TaskProps) => {
 
   return (
     <>
-      <adsgram-task
-        className={styles.task}
-        data-block-id={blockId}
-        data-debug={debug}
-        ref={taskRef}
-      >
-        <span slot="reward" className={styles.reward}>
-          +15 Bblip
-        </span>
-        <div slot="button" className={styles.button}>
-          {timeLeft > 0 ? formatTimeLeft(timeLeft) : 'Earn'}
-        </div>
-        <div slot="done" className={styles.button_done}>
-          Done
-        </div>
-      </adsgram-task>
-
-      <Drawer
-        anchor="bottom"
-        open={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
-        PaperProps={{
-          sx: {
-            backgroundColor: '#1A2126',
-            borderTopLeftRadius: '16px',
-            borderTopRightRadius: '16px',
+      {timeLeft > 0 ? (
+        <Box
+          sx={{
+            p: 2,
+            backgroundColor: 'rgba(110, 211, 255, 0.1)',
+            borderRadius: '12px',
             border: '1px solid rgba(110, 211, 255, 0.1)',
-          }
-        }}
-      >
-        <Box sx={{ p: 3, textAlign: 'center' }}>
-          <Typography
-            variant="h6"
-            sx={{
-              color: '#fff',
-              fontWeight: 600,
-              mb: 1
-            }}
-          >
-            Congratulations! 🎉
-          </Typography>
-          <Typography
-            sx={{
-              color: 'rgba(255,255,255,0.7)',
-              mb: 3
-            }}
-          >
-            You've earned 5 BBLIP for completing this task!
-          </Typography>
-          <Button
-            variant="contained"
-            onClick={handleClaim}
-            disabled={loading}
-            sx={{
-              backgroundColor: 'rgba(110, 211, 255, 0.1)',
-              color: '#6ed3ff',
-              '&:hover': {
-                backgroundColor: 'rgba(110, 211, 255, 0.2)',
-              },
-              minWidth: 120,
-            }}
-          >
-            {loading ? 'Claiming...' : 'Claim Reward'}
-          </Button>
+            color: '#6ed3ff',
+            fontSize: '0.9rem',
+            fontWeight: 500,
+            textAlign: 'center',
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 1
+          }}
+        >
+          <Typography sx={{ color: 'rgba(255,255,255,0.7)' }}>Next reward in:</Typography>
+          {formatTimeLeft(timeLeft)}
         </Box>
-      </Drawer>
+      ) : (
+        <>
+          <adsgram-task
+            className={styles.task}
+            data-block-id={blockId}
+            data-debug={debug}
+            ref={taskRef}
+          >
+            <span slot="reward" className={styles.reward}>
+              +15 Bblip
+            </span>
+            <div slot="button" className={styles.button}>
+              Earn
+            </div>
+            <div slot="done" className={styles.button_done}>
+              Done
+            </div>
+          </adsgram-task>
+
+          <Drawer
+            anchor="bottom"
+            open={isDrawerOpen}
+            onClose={() => setIsDrawerOpen(false)}
+            PaperProps={{
+              sx: {
+                backgroundColor: '#1A2126',
+                borderTopLeftRadius: '16px',
+                borderTopRightRadius: '16px',
+                border: '1px solid rgba(110, 211, 255, 0.1)',
+              }
+            }}
+          >
+            <Box sx={{ p: 3, textAlign: 'center' }}>
+              <Typography
+                variant="h6"
+                sx={{
+                  color: '#fff',
+                  fontWeight: 600,
+                  mb: 1
+                }}
+              >
+                Congratulations! 🎉
+              </Typography>
+              <Typography
+                sx={{
+                  color: 'rgba(255,255,255,0.7)',
+                  mb: 3
+                }}
+              >
+                You've earned 5 BBLIP for completing this task!
+              </Typography>
+              <Button
+                variant="contained"
+                onClick={handleClaim}
+                disabled={loading}
+                sx={{
+                  backgroundColor: 'rgba(110, 211, 255, 0.1)',
+                  color: '#6ed3ff',
+                  '&:hover': {
+                    backgroundColor: 'rgba(110, 211, 255, 0.2)',
+                  },
+                  minWidth: 120,
+                }}
+              >
+                {loading ? 'Claiming...' : 'Claim Reward'}
+              </Button>
+            </Box>
+          </Drawer>
+        </>
+      )}
     </>
   );
 };
