@@ -105,7 +105,7 @@ export const Task = ({ debug, blockId }: TaskProps) => {
       {timeLeft > 0 ? (
         <Box
           sx={{
-            p:1,
+  
             backgroundColor: 'rgba(110, 211, 255, 0.1)',
             borderRadius: '12px',
             border: '1px solid rgba(110, 211, 255, 0.1)',
