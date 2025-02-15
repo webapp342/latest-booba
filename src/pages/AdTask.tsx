@@ -27,6 +27,7 @@ export const Task = ({ debug, blockId }: TaskProps) => {
   const [loading, setLoading] = useState(false);
   const [lastClaimTime, setLastClaimTime] = useState<number | null>(null);
   const [timeRemaining, setTimeRemaining] = useState<string>('');
+  const [isTaskAvailable, setIsTaskAvailable] = useState(true);
 
   useEffect(() => {
     // Load last claim time from localStorage
@@ -80,25 +81,32 @@ export const Task = ({ debug, blockId }: TaskProps) => {
   };
 
   useEffect(() => {
-    const handler = (_event: CustomEvent<string>) => {
+    const rewardHandler = (_event: CustomEvent<string>) => {
       if (!lastClaimTime || Date.now() - lastClaimTime >= COOLDOWN_DURATION) {
         setIsDrawerOpen(true);
       }
     };
+
+    const bannerNotFoundHandler = () => {
+      setIsTaskAvailable(false);
+    };
+
     const task = taskRef.current;
 
     if (task) {
-      task.addEventListener("reward", handler);
+      task.addEventListener("reward", rewardHandler);
+      task.addEventListener("onBannerNotFound", bannerNotFoundHandler);
     }
 
     return () => {
       if (task) {
-        task.removeEventListener("reward", handler);
+        task.removeEventListener("reward", rewardHandler);
+        task.removeEventListener("onBannerNotFound", bannerNotFoundHandler);
       }
     };
   }, [lastClaimTime]);
 
-  if (!customElements.get("adsgram-task")) {
+  if (!customElements.get("adsgram-task") || !isTaskAvailable) {
     return null;
   }
 
@@ -145,7 +153,7 @@ export const Task = ({ debug, blockId }: TaskProps) => {
             ref={taskRef}
           >
             <span slot="reward" className={styles.reward1}>
-             <img src={bblip} alt="" style={{width: '16px', borderRadius: '50%' , marginBottom: '-4px', marginRight: '4px'}} /> +5 BBLIP
+              <img src={bblip} alt="" style={{width: '16px', borderRadius: '50%' , marginBottom: '-4px', marginRight: '4px'}} /> +5 BBLIP
             </span>
             <div slot="button" className={styles.button}>
               Go
