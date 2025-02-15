@@ -370,7 +370,7 @@ const SpinAndDepositButtons: React.FC<SpinAndDepositButtonsProps> = ({
           <Box>
             {selectedSpinType === 'bblip' ? (
                 <Task 
-                        blockId="task-8197"
+                        blockId="task-8229"
                         debug={false}
                       />
             ) : (
