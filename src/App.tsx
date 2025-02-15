@@ -15,6 +15,9 @@ import { Box, Typography, Button, CircularProgress } from '@mui/material';
 import { usePerformanceMonitoring } from './hooks/usePerformanceMonitoring';
 import analytics from '@telegram-apps/analytics';
 import { v4 as uuidv4 } from 'uuid';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import React from 'react';
 
 // Create a session ID for analytics
 const sessionId = uuidv4();
@@ -169,11 +172,43 @@ const LoadingScreen = () => (
   </Box>
 );
 
+// Create notification context
+export const NotificationContext = React.createContext({
+  showNotification: (_message: string) => {},
+});
+
 function App() {
     const [loading, setLoading] = useState(true);
     const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
     const manifestUrl = "https://app.bblip.io/tonconnect-manifest.json";
     const location = useLocation();
+
+    // Notification function
+    const showNotification = (message: string) => {
+        toast.success(message, {
+            position: "top-left",
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: false,
+            style: {
+                background: '#1A2126',
+                color: '#6ed3ff',
+                borderRadius: '12px',
+                padding: '16px',
+                fontSize: '14px',
+                fontWeight: 500,
+                border: '1px solid rgba(110, 211, 255, 0.1)',
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                minWidth: '95vw',
+                width: 'fit-content',
+                margin: '0 auto',
+                marginTop: '20px',
+                textAlign: 'center'
+            }
+        });
+    };
 
     // Performance monitoring hook
     usePerformanceMonitoring();
@@ -293,34 +328,53 @@ function App() {
             <TonConnectUIProvider manifestUrl={manifestUrl} actionsConfiguration={{
                 twaReturnUrl: 'https://t.me/BoobaBlipBot'
             }}>
-                <div id="root">
-                    {loading && <Loading onLoadComplete={() => setLoading(false)} />}
+                <NotificationContext.Provider value={{ showNotification }}>
+                    <div id="root">
+                        {loading && <Loading onLoadComplete={() => setLoading(false)} />}
 
-                    <div 
-                        className={`main-content ${loading ? "hidden" : ""}`} 
-                        style={{
-                            marginBottom:"13vh", 
-                            paddingTop: '64px', 
-                            overflowX: 'hidden',
-                            willChange: 'transform',
-                            transform: 'translateZ(0)',
-                            backfaceVisibility: 'hidden'
-                        }}
-                    >
-                        <WelcomeModal onClose={() => {
-                            console.log('Welcome modal closed');
-                            // Track modal close event
-                            sendAnalyticsEvent('custom-event', {
-                                type: 'modal_closed',
-                                name: 'welcome_modal'
-                            });
-                        }} />
-                        <Brand />
-                        <Outlet />
+                        <div 
+                            className={`main-content ${loading ? "hidden" : ""}`} 
+                            style={{
+                                marginBottom:"13vh", 
+                                paddingTop: '64px', 
+                                overflowX: 'hidden',
+                                willChange: 'transform',
+                                transform: 'translateZ(0)',
+                                backfaceVisibility: 'hidden'
+                            }}
+                        >
+                            <WelcomeModal onClose={() => {
+                                console.log('Welcome modal closed');
+                                sendAnalyticsEvent('custom-event', {
+                                    type: 'modal_closed',
+                                    name: 'welcome_modal'
+                                });
+                            }} />
+                            <Brand />
+                            <Outlet />
+                        </div>
+
+                        <SimpleBottomNavigation />
+                        <ToastContainer
+                            position="top-left"
+                            autoClose={3000}
+                            hideProgressBar
+                            newestOnTop={false}
+                            closeOnClick
+                            rtl={false}
+                            pauseOnFocusLoss
+                            draggable={false}
+                            pauseOnHover
+                            theme="dark"
+                            limit={3}
+                            style={{
+                                
+                                
+                                zIndex: 9999
+                            }}
+                        />
                     </div>
-
-                    <SimpleBottomNavigation />
-                </div>
+                </NotificationContext.Provider>
             </TonConnectUIProvider>
         </ThemeProvider>
     );

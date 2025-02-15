@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
   Box,
   Typography,
@@ -50,9 +50,8 @@ import styled from 'styled-components';
 import WithTourSection from '../components/TourGuide/withTourSection';
 import { useNavigate } from 'react-router-dom';
 import DepositDrawer from '../components/WalletDrawers/DepositDrawer';
-import { ToastContainer, toast, Slide, } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import {  Task } from './TaskAdsPage';
+import { Task } from './TaskAdsPage';
+import { NotificationContext } from '../App';
 
 // Firebase App initialization
 const app = initializeApp(firebaseConfig);
@@ -118,8 +117,8 @@ const tasksMetadata = [
       { title: 'Join Community',label:'+5 BBLIP', description: '5 BBLIP', link: 'https://t.me/BoobaBlip_channel', reward: 5000 },
 
 
-  { title: 'Invite 1 fren',label:'+5 BBLIP', description: '5 BBLIP', link: '', reward: 5000 },
-  { title: 'Invite 5 fren',label:'+0.25 TON', description: '0.25 TON', link: '', reward: 250 },
+  { title: 'Invite 1 fren',label:'+10 BBLIP', description: '10 BBLIP', link: '', reward: 10000 },
+  { title: 'Invite 5 fren',label:'+25 BBLIP', description: '25 BBLIP', link: '', reward: 25000 },
   { title: 'Invite 10 fren',label:'+0.75 TON', description: '0.75 TON', link: '', reward: 750 },
   { title: 'Invite 15 fren',label:'+1 TON', description: '1 TON', link: '', reward: 1000 },
   { title: 'Invite 20 fren',label:'+1.5 TON', description: '1.5 TON', link: '', reward: 1500 },
@@ -162,7 +161,7 @@ const currencyLogo = [
   task8Logo, // Follow Tiktok
   task8Logo, // Join Community
   task8Logo, // Invite 1
-  task9Logo, // Invite 5
+  task8Logo, // Invite 1
   task9Logo, // Invite 10
   task9Logo, // Invite 15
   task9Logo, // Invite 20
@@ -235,9 +234,30 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
 }) => {
   const navigate = useNavigate();
   const [isDepositDrawerOpen, setIsDepositDrawerOpen] = useState(false);
+  const { showNotification } = useContext(NotificationContext);
 
   const handleDepositClick = () => {
     setIsDepositDrawerOpen(true);
+    showNotification('💰 Opening deposit drawer...');
+  };
+
+  const handleTaskAction = () => {
+    if (status?.completed) {
+      showNotification('✅ Task already completed!');
+      return;
+    }
+
+    if (status?.disabled) {
+      showNotification('⏳ Task is currently unavailable');
+      return;
+    }
+
+    if (task.link) {
+      window.open(task.link, '_blank');
+      showNotification('🔗 Opening external link...');
+    } else {
+      onStart();
+    }
   };
 
   const hasDeposits = deposits && Object.keys(deposits).length > 0;
@@ -419,7 +439,7 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
     return (
       <Button
         variant="contained"
-        onClick={onStart}
+        onClick={handleTaskAction}
         disabled={index >= 4 && index <= 12 && invitedCount < requiredCount}
         component={index <= 3 ? 'a' : 'button'}
         href={index <= 3 ? task.link : undefined}
@@ -548,6 +568,7 @@ const DealsComponent: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [deposits, setDeposits] = useState<Record<string, any[]>>({});
   const [stakingHistory, setStakingHistory] = useState<any[]>([]);
+  const { showNotification } = useContext(NotificationContext);
 
   useEffect(() => {
     const telegramUserId = localStorage.getItem('telegramUserId');
@@ -624,67 +645,24 @@ const DealsComponent: React.FC = () => {
     }
   };
 
-  const showNotification = (message: string) => {
-    const Icon = () => (
-      <img 
-        src={message.includes('TON') ? task9Logo : task8Logo} 
-        alt="" 
-        style={{ 
-          width: '24px', 
-          height: '24px', 
-          borderRadius: '50%', 
-          marginRight: '10px' 
-        }} 
-      />
-    );
-
-    toast(message, {
-      position: "bottom-left",
-      autoClose: 3000,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: false,
-      icon: Icon,
-      style: {
-        width:'100%',
-        background: 'rgba(26, 33, 38, 0.95)',
-        backdropFilter: 'blur(10px)',
-        border: '1px solid rgba(110, 211, 255, 0.1)',
-        color: '#fff',
-        borderRadius: '16px',
-        zIndex: 1000,
-      
-        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.15)',
-        fontSize: '0.95rem',
-        fontWeight: 500
-      },
-    });
-  };
-
   const handleClaimTask = async (taskIndex: number) => {
     try {
       const telegramUserId = localStorage.getItem('telegramUserId');
       if (!telegramUserId) throw new Error('User ID not found.');
 
-      // For spin task, check if user has actually spun
       if (taskIndex === 14 && !hasSpinned) {
-        setError('Please spin first before claiming the reward.');
+        showNotification('⚠️ Please spin first before claiming the reward.');
         return;
       }
 
       setLoadingTaskIndex(taskIndex);
 
-      // Get the reward and description for the selected task
       const reward = tasksMetadata[taskIndex].description;
       const isTON = reward.includes('TON');
-      
-      // Convert TON amount to the correct value (e.g., "1.5 TON" -> 1.5)
       const rewardAmount = isTON 
-        ? parseFloat(reward.split(' ')[0]) * 1000 // Convert TON to millitokens
+        ? parseFloat(reward.split(' ')[0]) * 1000
         : tasksMetadata[taskIndex].reward;
 
-      // Update Firestore with the claim action and reward
       const userDocRef = doc(db, 'users', telegramUserId);
       
       await updateDoc(userDocRef, {
@@ -692,21 +670,17 @@ const DealsComponent: React.FC = () => {
         [isTON ? 'total' : 'bblip']: increment(rewardAmount)
       });
 
-      // Update local state
       const updatedTasks = {
         ...taskStatus,
         [taskIndex]: { ...taskStatus[taskIndex], disabled: true },
       };
       setTaskStatus(updatedTasks);
 
-      // Set the reward message for the snackbar
-      showNotification(`You earned ${tasksMetadata[taskIndex].description}`);
-
-      // Show success message  
+      showNotification(`🎉 You earned ${tasksMetadata[taskIndex].description}!`);
       setLoadingTaskIndex(null);
     } catch (err) {
       console.error('Error claiming task:', err);
-      setError('An error occurred while claiming the task. Please try again.');
+      showNotification('❌ An error occurred while claiming the task. Please try again.');
       setLoadingTaskIndex(null);
     }
   };
@@ -732,8 +706,6 @@ const ADSGRAM_TASKS = [
   return (
     
     <WithTourSection sectionId="tasks-section">
-                      <ToastContainer transition={Slide} />
-
       <ThemeProvider theme={theme}>
 
         <Container  maxWidth="lg" sx={{px:1, py:5,  mt:-9,  }}>

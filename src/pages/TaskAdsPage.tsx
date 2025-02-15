@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import styles from "./task.module.css";
 import { Box, Drawer, Typography, Button } from "@mui/material";
 import { getFirestore, doc, updateDoc, increment } from 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './firebaseConfig';
+import { NotificationContext } from '../App';
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -25,6 +26,7 @@ export const Task = ({ debug, blockId }: TaskProps) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [timeLeft, setTimeLeft] = useState<number>(0);
+  const { showNotification } = useContext(NotificationContext);
 
   useEffect(() => {
     const calculateTimeLeft = () => {
@@ -67,14 +69,16 @@ export const Task = ({ debug, blockId }: TaskProps) => {
 
       const userDocRef = doc(db, 'users', telegramUserId);
       await updateDoc(userDocRef, {
-        bblip: increment(5000)
+        bblip: increment(15000)
       });
 
       // Set cooldown time after successful claim
       localStorage.setItem('lastTaskRewardTime', new Date().toISOString());
+      showNotification('🎉 Successfully claimed 15 BBLIP!');
       setIsDrawerOpen(false);
     } catch (error) {
       console.error('Error claiming reward:', error);
+      showNotification('❌ Error claiming reward. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -119,16 +123,16 @@ export const Task = ({ debug, blockId }: TaskProps) => {
   }
 
   return (
-    <>
+    <Box>
       <adsgram-task
         className={styles.task}
         data-block-id={blockId}
         data-debug={debug}
         ref={taskRef}
       >
-        <span slot="reward" className={styles.reward}>
-          +15 Bblip
-        </span>
+        <Typography slot="reward" className={styles.reward}>
+          +15 BBLIP
+        </Typography>
         <div slot="button" className={styles.button}>
           Earn
         </div>
@@ -167,7 +171,7 @@ export const Task = ({ debug, blockId }: TaskProps) => {
               mb: 3
             }}
           >
-            You've earned 5 BBLIP for completing this task!
+            You've earned 15 BBLIP for completing this task!
           </Typography>
           <Button
             variant="contained"
@@ -186,6 +190,6 @@ export const Task = ({ debug, blockId }: TaskProps) => {
           </Button>
         </Box>
       </Drawer>
-    </>
+    </Box>
   );
 };
