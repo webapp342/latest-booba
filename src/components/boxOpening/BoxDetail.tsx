@@ -96,13 +96,13 @@ const BoxDetail: React.FC = () => {
             usdt: data.usdt ?? 0,
           } as UserStats);
         } else {
-          setError('Kullanıcı verisi bulunamadı');
+          setError('User data not found');
         }
         setLoading(false);
       },
       (error) => {
         console.error('Error fetching user stats:', error);
-        setError('Veriler yüklenirken hata oluştu');
+        setError('Error loading data');
         setLoading(false);
       }
     );
@@ -181,9 +181,9 @@ const BoxDetail: React.FC = () => {
   };
 
   const getBoxOpeningStatus = (stats: UserStats | null) => {
-    if (!stats) return { canOpen: false, message: 'Veriler yükleniyor...' };
+    if (!stats) return { canOpen: false, message: 'Loading data...' };
     
-    // Mystery Gift Box için özel kontrol
+    // Special check for Mystery Gift Box
     if (boxId === 'mystery-gift') {
       const hasGiftBox = stats.giftBox > 0;
       const hasKeys = stats.keys > 0;
@@ -191,58 +191,58 @@ const BoxDetail: React.FC = () => {
       if (!hasGiftBox && !hasKeys) {
         return { 
           canOpen: false, 
-          message: 'Kutu açmak için Gift Box ve anahtarınız olması gerekiyor' 
+          message: 'You need a Gift Box and keys to open' 
         };
       }
       
       if (!hasGiftBox) {
         return { 
           canOpen: false, 
-          message: `${stats.keys} anahtarınız var fakat Gift Box'ınız yok` 
+          message: `You have ${stats.keys} keys but no Gift Box` 
         };
       }
       
       if (!hasKeys) {
         return { 
           canOpen: false, 
-          message: `${stats.giftBox} Gift Box'ınız var fakat anahtarınız yok` 
+          message: `You have ${stats.giftBox} Gift Box but no keys` 
         };
       }
       
       return { 
         canOpen: true, 
-        message: `${stats.giftBox} Gift Box ve ${stats.keys} anahtarınız var` 
+        message: `You have ${stats.giftBox} Gift Box and ${stats.keys} keys` 
       };
     }
 
-    // Diğer kutular için normal kontrol
+    // Normal check for other boxes
     const boxCount = stats.boxes?.[boxData?.title || ''] || 0;
     const hasKeys = stats.keys > 0;
 
     if (boxCount === 0 && !hasKeys) {
       return { 
         canOpen: false, 
-        message: 'Kutu açmak için kutunuz ve anahtarınız olması gerekiyor' 
+        message: 'You need a box and keys to open' 
       };
     }
     
     if (boxCount === 0) {
       return { 
         canOpen: false, 
-        message: `${stats.keys} anahtarınız var fakat ${boxData?.title} kutunuz yok` 
+        message: `You have ${stats.keys} keys but no ${boxData?.title} box` 
       };
     }
     
     if (!hasKeys) {
       return { 
         canOpen: false, 
-        message: `${boxCount} ${boxData?.title} kutunuz var fakat anahtarınız yok` 
+        message: `You have ${boxCount} ${boxData?.title} box but no keys` 
       };
     }
     
     return { 
       canOpen: true, 
-      message: `${boxCount} ${boxData?.title} kutu ve ${stats.keys} anahtarınız var` 
+      message: `You have ${boxCount} ${boxData?.title} box and ${stats.keys} keys` 
     };
   };
 
@@ -1335,7 +1335,6 @@ borderBottom:'2px solid',                    borderColor: () => {
                   }}>
                     Insufficient Balance
                   </Typography>
-                 
                 </Box>
               </Box>
             ) : (

@@ -127,8 +127,8 @@ export const Task = ({ debug, blockId }: TaskProps) => {
           border: '1px solid rgba(110, 211, 255, 0.1)',
         }}
       >
-        <Typography>
-          Task will be available in {timeRemaining}
+        <Typography fontSize={'0.8rem'}>
+          Next free spins will be available in {timeRemaining}
         </Typography>
       </Box>
     );
