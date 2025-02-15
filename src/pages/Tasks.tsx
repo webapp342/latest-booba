@@ -50,8 +50,8 @@ import styled from 'styled-components';
 import WithTourSection from '../components/TourGuide/withTourSection';
 import { useNavigate } from 'react-router-dom';
 import DepositDrawer from '../components/WalletDrawers/DepositDrawer';
-import { Task } from './TaskAdsPage';
 import { NotificationContext } from '../App';
+import {  Task } from './TaskAdsPage';
 
 // Firebase App initialization
 const app = initializeApp(firebaseConfig);
@@ -117,8 +117,8 @@ const tasksMetadata = [
       { title: 'Join Community',label:'+5 BBLIP', description: '5 BBLIP', link: 'https://t.me/BoobaBlip_channel', reward: 5000 },
 
 
-  { title: 'Invite 1 fren',label:'+10 BBLIP', description: '10 BBLIP', link: '', reward: 10000 },
-  { title: 'Invite 5 fren',label:'+25 BBLIP', description: '25 BBLIP', link: '', reward: 25000 },
+  { title: 'Invite 1 fren',label:'+5 BBLIP', description: '5 BBLIP', link: '', reward: 5000 },
+  { title: 'Invite 5 fren',label:'+0.25 TON', description: '0.25 TON', link: '', reward: 250 },
   { title: 'Invite 10 fren',label:'+0.75 TON', description: '0.75 TON', link: '', reward: 750 },
   { title: 'Invite 15 fren',label:'+1 TON', description: '1 TON', link: '', reward: 1000 },
   { title: 'Invite 20 fren',label:'+1.5 TON', description: '1.5 TON', link: '', reward: 1500 },
@@ -161,7 +161,7 @@ const currencyLogo = [
   task8Logo, // Follow Tiktok
   task8Logo, // Join Community
   task8Logo, // Invite 1
-  task8Logo, // Invite 1
+  task9Logo, // Invite 5
   task9Logo, // Invite 10
   task9Logo, // Invite 15
   task9Logo, // Invite 20
@@ -234,30 +234,9 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
 }) => {
   const navigate = useNavigate();
   const [isDepositDrawerOpen, setIsDepositDrawerOpen] = useState(false);
-  const { showNotification } = useContext(NotificationContext);
 
   const handleDepositClick = () => {
     setIsDepositDrawerOpen(true);
-    showNotification('💰 Opening deposit drawer...');
-  };
-
-  const handleTaskAction = () => {
-    if (status?.completed) {
-      showNotification('✅ Task already completed!');
-      return;
-    }
-
-    if (status?.disabled) {
-      showNotification('⏳ Task is currently unavailable');
-      return;
-    }
-
-    if (task.link) {
-      window.open(task.link, '_blank');
-      showNotification('🔗 Opening external link...');
-    } else {
-      onStart();
-    }
   };
 
   const hasDeposits = deposits && Object.keys(deposits).length > 0;
@@ -439,7 +418,7 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
     return (
       <Button
         variant="contained"
-        onClick={handleTaskAction}
+        onClick={onStart}
         disabled={index >= 4 && index <= 12 && invitedCount < requiredCount}
         component={index <= 3 ? 'a' : 'button'}
         href={index <= 3 ? task.link : undefined}
@@ -555,8 +534,6 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
   );
 };
 
-// Add this custom Slide transition component at the top level
-
 // Ana bileşeni güncelliyorum
 const DealsComponent: React.FC = () => {
   const [taskStatus, setTaskStatus] = useState<{ [key: number]: { completed: boolean; disabled: boolean } }>({});
@@ -577,19 +554,14 @@ const DealsComponent: React.FC = () => {
       return;
     }
 
-    // Load task status from localStorage
-    const loadLocalState = () => {
-      const savedTasks = localStorage.getItem('taskStatus');
-      if (savedTasks) {
-        setTaskStatus(JSON.parse(savedTasks));
-      }
-    };
-
-    // Load critical data from Firestore
     const userDocRef = doc(db, 'users', telegramUserId);
     const unsubscribe = onSnapshot(userDocRef, (doc) => {
       if (doc.exists()) {
         const data = doc.data();
+        // Update task status
+        if (data.tasks) {
+          setTaskStatus(data.tasks);
+        }
         // Update invited users count
         if (data.invitedUsers) {
           setInvitedUsersCount(data.invitedUsers.length);
@@ -610,7 +582,6 @@ const DealsComponent: React.FC = () => {
       setLoading(false);
     });
 
-    loadLocalState();
     return () => unsubscribe();
   }, []);
 
@@ -621,20 +592,24 @@ const DealsComponent: React.FC = () => {
 
       setLoadingTaskIndex(taskIndex);
 
+      // Update Firestore with only the completed field
+      const userDocRef = doc(db, 'users', telegramUserId);
       if (taskIndex === 14) {
-        // For spin task, update hasSpinned in Firestore
-        const userDocRef = doc(db, 'users', telegramUserId);
+        // For spin task, only update hasSpinned field, not the completed status
         await updateDoc(userDocRef, {
-          hasSpinned: true
+          hasSpinned: true,
         });
+        setHasSpinned(true); // Update local state
       } else {
-        // Update task status in localStorage
+        await updateDoc(userDocRef, {
+          [`tasks.${taskIndex}.completed`]: true,
+        });
+        // Update local state
         const updatedTasks = {
           ...taskStatus,
           [taskIndex]: { ...taskStatus[taskIndex], completed: true },
         };
         setTaskStatus(updatedTasks);
-        localStorage.setItem('taskStatus', JSON.stringify(updatedTasks));
       }
 
       setTimeout(() => {
@@ -652,40 +627,46 @@ const DealsComponent: React.FC = () => {
       const telegramUserId = localStorage.getItem('telegramUserId');
       if (!telegramUserId) throw new Error('User ID not found.');
 
+      // For spin task, check if user has actually spun
       if (taskIndex === 14 && !hasSpinned) {
-        showNotification('⚠️ Please spin first before claiming the reward.');
+        setError('Please spin first before claiming the reward.');
         return;
       }
 
       setLoadingTaskIndex(taskIndex);
 
+      // Get the reward and description for the selected task
       const reward = tasksMetadata[taskIndex].description;
       const isTON = reward.includes('TON');
+      
+      // Convert TON amount to the correct value (e.g., "1.5 TON" -> 1.5)
       const rewardAmount = isTON 
-        ? parseFloat(reward.split(' ')[0]) * 1000
+        ? parseFloat(reward.split(' ')[0]) * 1000 // Convert TON to millitokens
         : tasksMetadata[taskIndex].reward;
 
+      // Update Firestore with the claim action and reward
       const userDocRef = doc(db, 'users', telegramUserId);
       
-      // Update token balance and task status in Firestore
       await updateDoc(userDocRef, {
-        [isTON ? 'total' : 'bblip']: increment(rewardAmount),
-        [`tasks.${taskIndex}.disabled`]: true
+        [`tasks.${taskIndex}.disabled`]: true,
+        [isTON ? 'total' : 'bblip']: increment(rewardAmount)
       });
 
-      // Update task status in localStorage
+      // Update local state
       const updatedTasks = {
         ...taskStatus,
         [taskIndex]: { ...taskStatus[taskIndex], disabled: true },
       };
       setTaskStatus(updatedTasks);
-      localStorage.setItem('taskStatus', JSON.stringify(updatedTasks));
 
-      showNotification(`🎉 You earned ${tasksMetadata[taskIndex].description}!`);
+      // Set the reward message for the snackbar
+      showNotification(`You earned ${tasksMetadata[taskIndex].description}`);
+
+      // Show success message  
       setLoadingTaskIndex(null);
     } catch (err) {
       console.error('Error claiming task:', err);
-      showNotification('❌ An error occurred while claiming the task. Please try again.');
+      setError('An error occurred while claiming the task. Please try again.');
       setLoadingTaskIndex(null);
     }
   };

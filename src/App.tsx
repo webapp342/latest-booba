@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useLayoutEffect, useEffect } from "react";
+import { useState, useLayoutEffect, useEffect, createContext } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import SimpleBottomNavigation from "./pages/Navigation";
 import Loading from "./pages/Loading";
@@ -15,9 +15,17 @@ import { Box, Typography, Button, CircularProgress } from '@mui/material';
 import { usePerformanceMonitoring } from './hooks/usePerformanceMonitoring';
 import analytics from '@telegram-apps/analytics';
 import { v4 as uuidv4 } from 'uuid';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import React from 'react';
+import task8Logo from './assets/booba-logo.png';
+import task9Logo from './assets/ton_logo_dark_background.svg';
+
+// Create NotificationContext
+export const NotificationContext = createContext<{
+  showNotification: (message: string) => void;
+}>({
+  showNotification: () => {},
+});
 
 // Create a session ID for analytics
 const sessionId = uuidv4();
@@ -172,11 +180,6 @@ const LoadingScreen = () => (
   </Box>
 );
 
-// Create notification context
-export const NotificationContext = React.createContext({
-  showNotification: (_message: string) => {},
-});
-
 function App() {
     const [loading, setLoading] = useState(true);
     const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
@@ -185,29 +188,40 @@ function App() {
 
     // Notification function
     const showNotification = (message: string) => {
-        toast.success(message, {
-            position: "top-left",
-            autoClose: 3000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: false,
-            style: {
-                background: '#1a2126',
-                color: '#6ed3ff',
-                borderRadius: '12px',
-                padding: '16px',
-                fontSize: '14px',
-                fontWeight: 500,
-                border: '1px solid rgba(110, 211, 255, 0.1)',
-                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-                minWidth: '100vw',
-                width: 'fit-content',
-                margin: '0 auto',
-                marginTop: '5px',
-                textAlign: 'center'
-            }
-        });
+      const Icon = () => (
+        <img 
+          src={message.includes('TON') ? task9Logo : task8Logo} 
+          alt="" 
+          style={{ 
+            width: '24px', 
+            height: '24px', 
+            borderRadius: '50%', 
+            marginRight: '10px' 
+          }} 
+        />
+      );
+
+      toast(message, {
+        position: "bottom-left",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        icon: Icon,
+        style: {
+          width:'100%',
+          background: 'rgba(26, 33, 38, 0.95)',
+          backdropFilter: 'blur(10px)',
+          border: '1px solid rgba(110, 211, 255, 0.1)',
+          color: '#fff',
+          borderRadius: '16px',
+          zIndex: 1000,
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.15)',
+          fontSize: '0.95rem',
+          fontWeight: 500
+        },
+      });
     };
 
     // Performance monitoring hook
@@ -345,6 +359,7 @@ function App() {
                         >
                             <WelcomeModal onClose={() => {
                                 console.log('Welcome modal closed');
+                                // Track modal close event
                                 sendAnalyticsEvent('custom-event', {
                                     type: 'modal_closed',
                                     name: 'welcome_modal'
@@ -355,24 +370,7 @@ function App() {
                         </div>
 
                         <SimpleBottomNavigation />
-                        <ToastContainer
-                            position="top-left"
-                            autoClose={3000}
-                            hideProgressBar
-                            newestOnTop={false}
-                            closeOnClick
-                            rtl={false}
-                            pauseOnFocusLoss
-                            draggable={false}
-                            pauseOnHover
-                            theme="light"
-                            limit={3}
-                            style={{
-                                
-                                
-                                zIndex: 9999
-                            }}
-                        />
+                        <ToastContainer transition={Slide} />
                     </div>
                 </NotificationContext.Provider>
             </TonConnectUIProvider>
