@@ -74,7 +74,7 @@ export function ShowAdButton(): ReactElement {
         },
       }}
     >
-      Start
+      Earn
     </Button>
   );
 }

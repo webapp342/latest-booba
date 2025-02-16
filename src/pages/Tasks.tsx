@@ -284,7 +284,7 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
            
           }}
         >
-          {loading ? <CircularProgress size={20} color="inherit" /> : 'Deposit'}
+          {loading ? <CircularProgress size={20} color="inherit" /> : 'Earn'}
         </Button>
       );
     }
@@ -292,7 +292,7 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
     if (index === 14) { // Spin task
       if (hasSpinned) {
         if (status?.disabled) {
-          return (
+          return ( 
             <Button
               disabled
               sx={{
@@ -331,7 +331,7 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
            
           }}
         >
-          {loading ? <CircularProgress size={20} color="inherit" /> : 'Spin'}
+          {loading ? <CircularProgress size={20} color="inherit" /> : 'Earn'}
         </Button>
       );
     }
@@ -377,7 +377,7 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
             color: '#6ed3ff',
           }}
         >
-          {loading ? <CircularProgress size={20} color="inherit" /> : 'Subscribe'}
+          {loading ? <CircularProgress size={20} color="inherit" /> : 'Earn'}
         </Button>
       );
     }
@@ -433,7 +433,7 @@ const TaskCard = ({ task, index, status, loading, onStart, onClaim, invitedCount
           },
         }}
       >
-        {loading ? <CircularProgress size={20} color="inherit" /> : 'Start'}
+        {loading ? <CircularProgress size={20} color="inherit" /> : 'Earn'}
       </Button>
     );
   };

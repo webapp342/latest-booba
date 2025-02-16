@@ -221,6 +221,7 @@ const Stats: React.FC<StatsProps> = ({
                   aria-label="chart type"
                   size={isMobile ? "small" : "medium"}
                   sx={{
+                    textTransform: 'none',
                     backgroundColor: 'transparent',
                     '& .MuiToggleButton-root': {
                       color: '#ffffff',
@@ -237,7 +238,9 @@ const Stats: React.FC<StatsProps> = ({
                   <ToggleButton value="tvl" aria-label="TVL">
                     TVL
                   </ToggleButton>
-                  <ToggleButton value="earnings" aria-label="24H Earnings">
+                  <ToggleButton value="earnings" sx={{
+                    textTransform: 'none',
+                  }} aria-label="24H Earnings">
                     24H Earnings
                   </ToggleButton>
                 </ToggleButtonGroup>

@@ -172,14 +172,14 @@ const HistoryDrawer: React.FC<HistoryDrawerProps> = ({ open, onClose }) => {
         >
           <ToggleButton 
             value="withdrawals"
-            sx={{ px: 3, py: 1, display: 'flex', gap: 1 }}
+            sx={{ px: 3, py: 1, display: 'flex', gap: 1,textTransform: 'none' }}
           >
             <ArrowUpCircle size={18} />
             Withdrawals
           </ToggleButton>
           <ToggleButton 
             value="deposits"
-            sx={{ px: 3, py: 1, display: 'flex', gap: 1 }}
+            sx={{ px: 3, py: 1, display: 'flex', gap: 1,textTransform: 'none' }}
           >
             <ArrowDownCircle size={18} />
             Deposits
