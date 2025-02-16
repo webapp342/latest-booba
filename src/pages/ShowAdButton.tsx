@@ -4,7 +4,7 @@ import { ShowPromiseResult } from './adsgram';
 import { updateUserBblip } from '../utils/database';
 import { Button } from '@mui/material';
 
-const COOLDOWN_PERIOD = 60 * 60 * 1000; // 1 hour in milliseconds
+const COOLDOWN_PERIOD = 15 * 60 * 1000; // 1 hour in milliseconds
 
 export function ShowAdButton(): ReactElement {
   const [timeLeft, setTimeLeft] = useState<number>(0);

@@ -3,15 +3,14 @@ import { Box, Container, Typography, Button, CircularProgress, Grid, Card, TextF
 import { motion } from 'framer-motion';
 import gsap from 'gsap';
 import BoxOpenAnimation from './BoxOpenAnimation';
-import RewardDisplay from './RewardDisplay';
+import RewardDisplay from './RewardDisplay'; 
 import KeyCrafting from './KeyCrafting';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { db } from '../../pages/firebase';
 import { doc, updateDoc, increment, onSnapshot, getDoc } from 'firebase/firestore';
 import { boxesData } from '../../data/boxesData';
 import SearchIcon from '@mui/icons-material/Search';
-import { PackageOpenIcon } from 'lucide-react';
-import StarIcon from '@mui/icons-material/Star';
+import { PackageOpenIcon , Crown } from 'lucide-react';
 import SwapDrawer from '../WalletDrawers/SwapDrawer';
 import ticketImage from '../../assets/ticket.png';
 import LevelUpgrade from '../Ads/1levelupgrade';
@@ -1709,11 +1708,7 @@ const BoxOpening: React.FC = () => {
               justifyContent: 'center',
               animation: 'pulse 1s ease-out'
             }}>
-              <StarIcon sx={{ 
-                fontSize: 40, 
-                color: '#6ed3ff',
-                animation: 'rotate 1s ease-out'
-              }} />
+              <Crown size={40} color="#6ed3ff" />
             </Box>
             <Typography sx={{ 
               color: '#6ed3ff',

@@ -5,7 +5,6 @@ import { Box, Button, Typography } from '@mui/material';
 import { FaArrowRight, FaArrowLeft } from 'react-icons/fa';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom'; // Import the useNavigate hook
-import { WithTourSection } from '../components/TourGuide/withTourSection';
 
 // lucky games
 import image1 from '../assets/206379314452739466.webp';
@@ -167,7 +166,6 @@ const images: { src: string, text: string, additionalText1: string, additionalTe
 const Example: React.FC = () => {
     return (
         <ThemeProvider theme={theme}>
-            <WithTourSection sectionId="games-section">
             <Box  sx={{                  
 }} mx={1} borderRadius={5} overflow="hidden">
                 <Box>
@@ -722,7 +720,6 @@ const Example: React.FC = () => {
 
 
             
-        </WithTourSection>
         </ThemeProvider>
     );
 };

@@ -6,7 +6,6 @@ import BarChartComponent from './charts/BarChartComponent';
 import "./text.css";
 import Dashboard from './Dashboard';
 import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
-import { WithTourSection } from './TourGuide/withTourSection';
 import AddIcon from '@mui/icons-material/Add';
 import CreatePoolModal from './CreatePool/CreatePoolModal';
 import { useNavigate } from 'react-router-dom';
@@ -190,9 +189,8 @@ const Stats: React.FC<StatsProps> = ({
   };
 
   return (
-    <WithTourSection sectionId="stats-section">
       <Box 
-       mx={-1}  data-tour="stats-section">
+       mx={-1}  >
         <Dashboard data={dashboardData} />
 
         {/* Chart Section */}
@@ -445,7 +443,6 @@ const Stats: React.FC<StatsProps> = ({
           onClose={() => setIsCreatePoolModalOpen(false)}
         />
       </Box>
-    </WithTourSection>
   );
 };
 

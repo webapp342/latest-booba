@@ -802,7 +802,7 @@ borderBottom:'2px solid',                    borderColor: () => {
           '& .MuiDrawer-paper': {
             background: 'linear-gradient(145deg, rgba(26,27,35,0.95) 0%, rgba(26,27,35,0.98) 100%)',
             borderLeft: `1px solid ${commonStyles.borderColor}`,
-            maxHeight: '80vh'
+            maxHeight: '90vh'
           }
         }}
       >
@@ -813,7 +813,7 @@ borderBottom:'2px solid',                    borderColor: () => {
           borderTopLeftRadius: '20px',
           borderTopRightRadius: '20px',
           position: 'relative',
-          height: '80vh',
+          height: '90vh',
           overflowY: 'auto'
         }}>
           <IconButton
@@ -1100,12 +1100,11 @@ borderBottom:'2px solid',                    borderColor: () => {
           {error && !error.includes('Successfully') && (
             <Box sx={{ 
               width: '100%', 
-              mb: 3,
-              background: 'linear-gradient(135deg, rgba(244, 67, 54, 0.05), rgba(244, 67, 54, 0.02))',
+              mb: 1,
               backdropFilter: 'blur(10px)',
               border: '1px solid rgba(244, 67, 54, 0.2)',
               borderRadius: '16px',
-              p: 3,
+              p: 1,
               boxShadow: '0 8px 32px rgba(244, 67, 54, 0.1)',
               animation: 'slideIn 0.3s ease',
               display: 'flex',
@@ -1123,8 +1122,7 @@ borderBottom:'2px solid',                    borderColor: () => {
                 gap: 1
               }}>
                 <Box component="span" sx={{
-                  width: '24px',
-                  height: '24px',
+               
                   borderRadius: '50%',
                   background: 'rgba(244, 67, 54, 0.1)',
                   display: 'flex',
@@ -1140,7 +1138,6 @@ borderBottom:'2px solid',                    borderColor: () => {
               {neededAmount > 0 && (
                 <Box sx={{ 
                   display: 'flex',
-                  gap: 2,
                   width: '100%',
                   maxWidth: '400px'
                 }}>
@@ -1151,19 +1148,14 @@ borderBottom:'2px solid',                    borderColor: () => {
                       sx={{
                         background: 'linear-gradient(135deg, #0088CC, #00A3FF)',
                         color: 'white',
-                        py: 1.5,
-                        px: 4,
+                      
                         borderRadius: '12px',
                         fontSize: '1rem',
                         fontWeight: 'bold',
                         textTransform: 'none',
                         transition: 'all 0.3s ease',
                         boxShadow: '0 4px 15px rgba(0, 136, 204, 0.3)',
-                        '&:hover': {
-                          background: 'linear-gradient(135deg, #00A3FF, #0088CC)',
-                          transform: 'translateY(-2px)',
-                          boxShadow: '0 6px 20px rgba(0, 136, 204, 0.4)'
-                        },
+                       
                         '&:active': {
                           transform: 'translateY(0)'
                         }
@@ -1178,19 +1170,14 @@ borderBottom:'2px solid',                    borderColor: () => {
                       sx={{
                         background: 'linear-gradient(135deg, #26A17B, #32D6A6)',
                         color: 'white',
-                        py: 1.5,
-                        px: 4,
+                        padding: 1,
                         borderRadius: '12px',
                         fontSize: '1rem',
                         fontWeight: 'bold',
                         textTransform: 'none',
                         transition: 'all 0.3s ease',
                         boxShadow: '0 4px 15px rgba(38, 161, 123, 0.3)',
-                        '&:hover': {
-                          background: 'linear-gradient(135deg, #32D6A6, #26A17B)',
-                          transform: 'translateY(-2px)',
-                          boxShadow: '0 6px 20px rgba(38, 161, 123, 0.4)'
-                        },
+                     
                         '&:active': {
                           transform: 'translateY(0)'
                         }
@@ -1240,7 +1227,7 @@ borderBottom:'2px solid',                    borderColor: () => {
               position: 'relative',
               overflow: 'hidden',
               background: !canPurchase()
-                ? 'rgba(110, 211, 255, 0.05)'
+                ? 'rgba(255, 110, 110, 0.05)'
                 : selectedPayment === 'USDT'
                   ? 'linear-gradient(135deg, #26A17B 0%, #32D6A6 100%)'
                   : 'linear-gradient(135deg, #6ed3ff 0%, #6ed3ff80 100%)',
@@ -1249,7 +1236,7 @@ borderBottom:'2px solid',                    borderColor: () => {
                 : 'white',
               fontSize: { xs: '1.2rem', sm: '1.4rem' },
               fontWeight: 'bold',
-              py: { xs: 2, sm: 2.5 },
+              py: { xs: 1, sm: 1 },
               borderRadius: '16px',
               textTransform: 'none',
               boxShadow: !canPurchase() 
@@ -1269,7 +1256,7 @@ borderBottom:'2px solid',                    borderColor: () => {
                 left: '-100%',
                 width: '200%',
                 height: '100%',
-                background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
+                background: 'transparent',
                 transition: 'all 0.5s ease',
               },
               '&:hover': {
@@ -1303,7 +1290,6 @@ borderBottom:'2px solid',                    borderColor: () => {
                   left: '-10px',
                   right: '-10px',
                   bottom: '-2px',
-                  background: 'linear-gradient(90deg, transparent, rgba(110, 211, 255, 0.1), transparent)',
                   animation: 'pulse 2s infinite'
                 }
               }}>

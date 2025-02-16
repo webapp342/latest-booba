@@ -100,6 +100,7 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
             total?: number;
             tickets?: number;
             keys?: number;
+            lbTON?: number;
             keyParts?: number;
             giftBox?: number;
             invitedBy?: string | null;
@@ -122,6 +123,7 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ onClose }) => {
             total: 0,
             tickets: 0,
             keys: 0,
+            lbTON: 0,
             keyParts: 0,
             giftBox: 0,
             invitedBy: inviterId || null,

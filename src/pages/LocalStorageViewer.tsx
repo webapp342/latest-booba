@@ -21,9 +21,8 @@ import DepositDrawer from '../components/WalletDrawers/DepositDrawer';
 import WithdrawDrawer from '../components/WalletDrawers/WithdrawDrawer';
 import HistoryDrawer from '../components/WalletDrawers/HistoryDrawer';
 import SwapDrawer from '../components/WalletDrawers/SwapDrawer';
-import { WithTourSection } from '../components/TourGuide/withTourSection';
 import axios from 'axios';
-
+import tonlogo from '../assets/kucukTON.png';
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -75,7 +74,7 @@ const initialData: Asset[] = [
     active: true
   },
   {
-    logo: "https://cryptologos.cc/logos/toncoin-ton-logo.png?v=040",
+    logo: tonlogo,
     symbol: "TON",
     name: "Ton",
     view:"Booba Blip",
@@ -408,7 +407,6 @@ const GradientBox = styled(Box)(() => ({
 
 
   return (
-    <WithTourSection sectionId="wallet-section">
       <ThemeProvider theme={theme}>
         <Box // @ts-ignore
          mt={-5}>
@@ -724,7 +722,6 @@ const GradientBox = styled(Box)(() => ({
       />
     </Snackbar>
   </ThemeProvider>
-</WithTourSection>
 );
 };
 

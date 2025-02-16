@@ -43,7 +43,7 @@ const ADSTERRA_DIRECT_LINK = 'https://www.effectiveratecpm.com/rfzqpxh9b5?key=36
 const TOTAL_REQUIRED_VIEWS = 2;
 const VIEW_COUNT_KEY = 'keyAdViewCount';
 const LAST_CLAIM_KEY = 'lastKeyAdClaim';
-const COOLDOWN_TIME = 60 * 1000; // 1 minute in milliseconds
+const COOLDOWN_TIME = 15 *60 * 1000; // 1 minute in milliseconds
 
 const DirectLinkKeys: React.FC<DirectLinkKeysProps> = ({ onAdComplete, disabled }) => {
   const [loading, setLoading] = useState(false);

@@ -9,7 +9,7 @@ import bblip from '../assets/booba-logo.png';
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const COOLDOWN_DURATION = 5 * 1000; // 1 hour in milliseconds
+const COOLDOWN_DURATION = 15 * 60 * 1000; // 1 hour in milliseconds
 
 /**
   * Check Typescript section

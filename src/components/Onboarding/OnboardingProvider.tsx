@@ -2,7 +2,6 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Box } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import OnboardingSlides from './OnboardingSlides';
-import TourGuide from '../TourGuide/TourGuide';
 
 interface OnboardingContextType {
   isFirstVisit: boolean;
@@ -91,7 +90,6 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children
             </motion.div>
           )}
         </AnimatePresence>
-        <TourGuide isOpen={isTourActive} onComplete={completeTour} />
         {children}
       </Box>
     </OnboardingContext.Provider>

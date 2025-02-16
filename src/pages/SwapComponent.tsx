@@ -17,7 +17,6 @@ import {
 } from "@mui/material";
 import SwapVertRoundedIcon from '@mui/icons-material/SwapVertRounded';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
 import axios from "axios";
 import logo5 from '../assets/booba-logo.png';     
 import ticket from '../assets/ticket.png'; 
@@ -29,7 +28,6 @@ import { CheckCircleOutline } from '@mui/icons-material';
 import { TransitionProps } from '@mui/material/transitions';
 import { firebaseConfig } from "./firebaseConfig";
 import BackspaceIcon from '@mui/icons-material/Backspace';
-import WithTourSection from '../components/TourGuide/withTourSection';
 import { motion, AnimatePresence } from "framer-motion";
 import DoneIcon from '@mui/icons-material/Done';
 
@@ -792,7 +790,6 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ defaultAmount, onClose }) => {
   };
 
   return (
-    <WithTourSection sectionId="swap-section">
       <ThemeProvider theme={theme}>
         <Box //@ts-ignore
         sx={{ 
@@ -804,7 +801,7 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ defaultAmount, onClose }) => {
         }}>
           {/* Content Area */}
           <Box sx={{ 
-            pt: 2,
+            pt: 1,
             pb: 'calc(320px + env(safe-area-inset-bottom, 16px))',
             height: '80%',
             overflow: 'auto',
@@ -815,31 +812,7 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ defaultAmount, onClose }) => {
             msOverflowStyle: 'none'
           }}>
             {/* Header */}
-            <Box sx={{
-              mx: 2,
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              mb: 1
-            }}>
-              <Typography variant="h6" sx={{ 
-                fontWeight: '600',
-                fontSize: '20px',
-                color: '#6ed3ff',
-                letterSpacing: '0.5px'
-              }}>
-                Swap
-              </Typography>
-              <IconButton 
-                size="small" 
-                sx={{ 
-                  color: '#6ed3ff',
-                
-                }}
-              >
-                <TuneRoundedIcon fontSize="small" />
-              </IconButton>
-            </Box>
+         
 
             {/* From Token Box */}
             <TokenBox sx={{ mb: -4 }}>
@@ -1219,7 +1192,6 @@ const TokenSwap: React.FC<TokenSwapProps> = ({ defaultAmount, onClose }) => {
           </SwapModal>
         </Box>
       </ThemeProvider>
-    </WithTourSection>
   );
 };
 

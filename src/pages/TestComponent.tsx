@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Box,  CircularProgress, Button, Snackbar, Alert ,ThemeProvider, createTheme } from '@mui/material';
+import { Box, CircularProgress, Button, Snackbar, Alert, ThemeProvider, createTheme, Typography } from '@mui/material';
 import { getFirestore, doc, getDoc } from 'firebase/firestore'; // Firestore metodları
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './firebaseConfig'; // Firebase yapılandırma
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import { Copy, Share2, UserPlus } from 'lucide-react';
+import task1Logo from '../assets/income.png';
 
 
 // Firebase App başlat
@@ -13,6 +14,23 @@ const db = getFirestore(app);
 const theme = createTheme({
   typography: {
     fontFamily: "monospace",
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 8,
+          textTransform: 'none',
+          fontSize: '0.95rem',
+          padding: '10px 20px',
+          transition: 'all 0.2s ease-in-out',
+          '&:hover': {
+            transform: 'translateY(-2px)',
+            boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+          },
+        },
+      },
+    },
   },
 });
 
@@ -33,7 +51,7 @@ const [, setInvitedUsers] = useState<number[]>([]);
         // localStorage'den Telegram kullanıcı kimliğini al, bulamazsa varsayılan ID'yi kullan
         const telegramUserId = localStorage.getItem('telegramUserId') || '1421109983'; // Varsayılan ID
         if (!telegramUserId) {
-          setError('Kullanıcı ID’si bulunamadı. Lütfen tekrar giriş yapın.');
+          setError("Kullanıcı ID'si bulunamadı. Lütfen tekrar giriş yapın.");
           setInvitedUsers([]);
           setLoading(false);
           return;
@@ -105,105 +123,108 @@ const invitedUsersArray = userData.invitedUsers || [];          console.log('Dav
   };
 
   return (
-            <ThemeProvider theme={theme}>
-
-               
-    
-    <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center',
-       mb:-1,
-              overflow: "hidden",
+    <ThemeProvider theme={theme}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          textAlign: 'center',
           width: '100%',
-      }}
-    >
+          gap: 1,
+        }}
+      >
+        {/* Header Section */}
+        <Box sx={{ mb: 2 }}>
+          <img src={task1Logo} alt="Task 1" width={80}  />
+          <Typography variant="h6" sx={{ mt: 1, color: 'white', fontWeight: 600 }}>
+            Invite Your Friends
+          </Typography>
+          <Typography variant="body2" sx={{ color: 'gray', mt: 0.5 }}>
+            Share the link and earn rewards together
+          </Typography>
+        </Box>
 
-    
-      {/* PNG Görseli */}
-    
-    
-
-
-
-      {/* Link Kopyalama ve Paylaşma Butonları */}
-      <Box sx={{ display: 'flex', gap: 1,  width: '100%' }}>
-
-       
-        {/* Copy Link Butonu */}
-
-
+        {/* Buttons Section */}
+        <Box sx={{ 
+          display: 'flex', 
+          gap: 1.5, 
+          mt:-2,
+          width: '100%',
+          maxWidth: '400px',
+        }}>
+          <Button 
+            onClick={handleShareLink}
+            disabled={loading}
+            startIcon={<UserPlus size={20} />}
+            sx={{ 
+              flexGrow: 1,
+              bgcolor: '#89d9ff',
+              color: '#000',
+              
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1,
+            }}
+          >
+            {loading ? <CircularProgress size={24} /> : 'Invite Friends'}
+          </Button>
 
           <Button 
-          onClick={handleShareLink}
-          disabled={loading}
-          
-          sx={{ flexGrow: 1, width:'70%' , bgcolor:'#89d9ff', color:'black' , textTransform:'none'}}
+            onClick={handleCopyLink}
+            disabled={loading}
+            sx={{ 
+              border: '1px solid #89d9ff',
+              color: '#89d9ff',
+              minWidth: '50px',
+              width: 'auto',
+              '&:hover': {
+                bgcolor: 'rgba(137, 217, 255, 0.1)',
+              },
+            }}
+          >
+            {loading ? <CircularProgress size={24} /> : <Copy size={20} />}
+          </Button>
+
+          <Button 
+            onClick={handleShareLink}
+            disabled={loading}
+            sx={{ 
+              border: '1px solid #89d9ff',
+              color: '#89d9ff',
+              minWidth: '50px',
+              width: 'auto',
+              '&:hover': {
+                bgcolor: 'rgba(137, 217, 255, 0.1)',
+              },
+            }}
+          >
+            {loading ? <CircularProgress size={24} /> : <Share2 size={20} />}
+          </Button>
+        </Box>
+
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={3000}
+          onClose={handleCloseSnackbar}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         >
-          {loading ? <CircularProgress size={24} /> : 'Invite Friends'}
-        </Button>
-        <Button 
-          onClick={handleCopyLink}
-          disabled={loading}
-          sx={{ flexGrow: 1 , width:'30%', border:'1px solid #89d9ff'}}
-        >
-
-          
-          {loading ? <CircularProgress size={24} /> : <ContentCopyIcon sx={{color:'#89d9ff'}} />}
-        </Button>
-
-        {/* Share Link Butonu */}
-     
+          <Alert 
+            onClose={handleCloseSnackbar} 
+            severity="success" 
+            sx={{ 
+              width: '100%',
+              '& .MuiAlert-icon': {
+                fontSize: '24px'
+              }
+            }}
+          >
+            {snackbarMessage}
+          </Alert>
+        </Snackbar>
       </Box>
-
-      {/* İçerik 
-      <Box sx={{ mt: 4, width: '100%' }}>
-        {loading ? (
-          <CircularProgress /> // Yükleniyor animasyonu
-        ) : error ? (
-          <Typography color="error">{error}</Typography> // Hata mesajı
-        ) : invitedUsers.length === 0 ? (
-          <Typography>Henüz kimseyi davet etmediniz.</Typography>
-        ) : (
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell align="left">#</TableCell>
-                <TableCell align="left">Invited Users</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {invitedUsers.map((userId, index) => (
-                <TableRow key={index}>
-                  <TableCell align="left">{index + 1}</TableCell>
-                  <TableCell align="left">{userId}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        )}
-      </Box>
-      */}
-
-
-
-      {/* Snackbar bildirimi */}
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={3000}
-        onClose={handleCloseSnackbar}
-                anchorOrigin={{ vertical: 'top', horizontal: 'center' }} // Display on top
-
-      >
-        <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
-    </Box>
-            </ThemeProvider>
-    
+    </ThemeProvider>
   );
 };
 
