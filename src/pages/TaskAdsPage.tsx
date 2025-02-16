@@ -9,7 +9,7 @@ import DirectLinkAd from "../components/Ads/DirectLinkAd";
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const COOLDOWN_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
+const COOLDOWN_DURATION = 5 * 1000; // 1 hour in milliseconds
 
 /**
   * Check Typescript section
