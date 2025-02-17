@@ -83,7 +83,9 @@ export const Task = ({ debug, blockId }: TaskProps) => {
   useEffect(() => {
     const rewardHandler = (_event: CustomEvent<string>) => {
       if (!lastClaimTime || Date.now() - lastClaimTime >= COOLDOWN_DURATION) {
-        setIsDrawerOpen(true);
+        setTimeout(() => {
+          setIsDrawerOpen(true);
+        }, 15000); // 15 seconds delay
       }
     };
 
