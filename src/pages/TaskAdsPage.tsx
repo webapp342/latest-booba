@@ -118,7 +118,7 @@ export const Task = ({ debug, blockId }: TaskProps) => {
 
   if (lastClaimTime && Date.now() - lastClaimTime < COOLDOWN_DURATION) {
     return (
-      <Box
+      <Box //@ts-ignore
         sx={{
           width: '92%',
           padding: '16px',

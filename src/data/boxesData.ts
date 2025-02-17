@@ -824,8 +824,8 @@ export const boxesData: Record<string, BoxData> = {
     title: 'Prime',
     image: primeBoxImage,
     description: 'Premium luxury themed box',
-    normalPrice: '199.99',
-    salePrice: '179.99',
+    normalPrice: '39.99',
+    salePrice: '35.99',
     drops: [
   { name: 'PRM-LUX-SET-PRO-LTD', image: primeBoxImage1, price: '2999.99', rarity: 0.0007, code: 'PRM-PLATINUM-LUX-01' },
   { name: 'PRM-VIP-COL-PRO-LTD', image: primeBoxImage2, price: '2499.99', rarity: 0.0012, code: 'PRM-PLATINUM-VIP-02' },
@@ -851,8 +851,8 @@ export const boxesData: Record<string, BoxData> = {
     title: 'Sneakers',
     image: sneakersBoxImage,
     description: 'Premium sneakers themed box',
-    normalPrice: '149.99',
-    salePrice: '129.99',
+    normalPrice: '29.99',
+    salePrice: '19.99',
     drops: [
   { name: 'SNK-TRV-SCT-HYP-LTD', image: sneakersBoxImage1, price: '2499.99', rarity: 0.0008, code: 'SNK-PLATINUM-TRV-01' },
   { name: 'SNK-OFF-WHT-PRO-LTD', image: sneakersBoxImage2, price: '2199.99', rarity: 0.0013, code: 'SNK-PLATINUM-OFF-02' },
@@ -905,8 +905,8 @@ export const boxesData: Record<string, BoxData> = {
     title: 'Corsair',
     image: corsairBoxImage,
     description: 'Premium gaming peripherals themed box',
-    normalPrice: '89.99',
-    salePrice: '69.99',
+    normalPrice: '49.99',
+    salePrice: '45.99',
     drops: [
   { name: 'CSR-K100-RGB-PRO-LTD', image: corsairBoxImage1, price: '1499.99', rarity: 0.0004, code: 'CSR-PLATINUM-K100-01' },
   { name: 'CSR-K95-PLT-PRO-LTD', image: corsairBoxImage2, price: '1199.99', rarity: 0.0008, code: 'CSR-PLATINUM-K95-02' },
@@ -937,8 +937,8 @@ export const boxesData: Record<string, BoxData> = {
     title: 'Top G',
     image: topgBoxImage,
     description: 'Premium luxury lifestyle themed box',
-    normalPrice: '199.99',
-    salePrice: '169.99',
+    normalPrice: '49.99',
+    salePrice: '45.50',
     drops: [
   { name: 'TPG-BUG-CHR-PRO-LTD', image: topgBoxImage1, price: '3499.99', rarity: 0.0003, code: 'TPG-PLATINUM-BUG-01' },
   { name: 'TPG-FER-F40-PRO-LTD', image: topgBoxImage2, price: '2999.99', rarity: 0.0007, code: 'TPG-PLATINUM-F40-02' },
@@ -1000,7 +1000,7 @@ export const boxesData: Record<string, BoxData> = {
     image: cartierBoxImage,
     description: 'Premium Cartier jewelry themed box',
     normalPrice: '199.99',
-    salePrice: '169.99',
+    salePrice: '149.99',
     drops: [
   { name: 'CTR-PNT-DIA-PRO-LTD', image: cartierBoxImage1, price: '2999.99', rarity: 0.0002, code: 'CTR-PLATINUM-PNT-01' },
   { name: 'CTR-LVE-DIA-PRO-LTD', image: cartierBoxImage2, price: '2499.99', rarity: 0.0006, code: 'CTR-PLATINUM-LVE-02' },
