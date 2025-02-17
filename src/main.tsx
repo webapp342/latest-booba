@@ -23,6 +23,7 @@ import ErrorBoundary from "./components/ErrorBoundary.tsx";
 import { Box, Typography } from '@mui/material';
 import DirectLinkAd from "./components/Ads/DirectLinkAd.tsx";
 import DirectLinkKeys from "./components/Ads/DirectLinkKeys.tsx";
+import GlassOverlay from "./components/GlassOverlay";
 
 // MUI theme configuration
 const theme = createTheme({
@@ -150,7 +151,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/stake",
-        element: <NewComponent />
+        element: <GlassOverlay><NewComponent /></GlassOverlay>
       },
       {
         path: "/test",
