@@ -890,7 +890,7 @@ const StatsAndTrust = () => {
           <TrustIndicator 
             icon={<Shield />}
             label="Audited"
-            value="CertiK"
+            value="Deloitte"
           />
         </Grid>
         <Grid item xs={4}> 
