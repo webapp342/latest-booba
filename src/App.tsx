@@ -13,12 +13,11 @@ import WelcomeModal from './components/WelcomeModal';
 import WebApp from "@twa-dev/sdk";
 import { Box, Typography, Button, CircularProgress } from '@mui/material';
 import { usePerformanceMonitoring } from './hooks/usePerformanceMonitoring';
-import analytics from '@telegram-apps/analytics';
-import { v4 as uuidv4 } from 'uuid';
 import { ToastContainer, toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import task8Logo from './assets/booba-logo.png';
 import task9Logo from './assets/ton_logo_dark_background.svg';
+import { sendAnalyticsEvent } from './main';
 
 // Create NotificationContext
 export const NotificationContext = createContext<{
@@ -26,82 +25,6 @@ export const NotificationContext = createContext<{
 }>({
   showNotification: () => {},
 });
-
-// Create a session ID for analytics
-const sessionId = uuidv4();
-
-// Analytics configuration
-const ANALYTICS_CONFIG = {
-    token: 'eyJhcHBfbmFtZSI6IkJvb2JhQmxpcCIsImFwcF91cmwiOiJodHRwczovL3QubWUvQm9vYmFCbGlwQm90IiwiYXBwX2RvbWFpbiI6Imh0dHBzOi8vYXBwLmJibGlwLmlvIn0=!AtipScY/ag//8I4N0LwUprrlzN0h6V9p7pWU0FC4gE4=',
-    appName: 'BoobaBlip'
-};
-
-// Initialize analytics before app renders
-analytics.init({
-    token: ANALYTICS_CONFIG.token,
-    appName: ANALYTICS_CONFIG.appName
-}).catch(console.error);
-
-// Custom analytics functions
-const sendAnalyticsEvent = async (eventName: string, customData?: Record<string, any>) => {
-    try {
-        if (!WebApp.initData) {
-            console.warn('Analytics: WebApp.initData is not available');
-            return;
-        }
-
-        const user = WebApp.initDataUnsafe?.user;
-        if (!user?.id) {
-            console.warn('Analytics: User ID not available');
-            return;
-        }
-
-        // Re-initialize analytics before sending event
-        await analytics.init({
-            token: ANALYTICS_CONFIG.token,
-            appName: ANALYTICS_CONFIG.appName
-        });
-
-        // Create the event data
-        const eventData = {
-            event_name: eventName,
-            session_id: sessionId,
-            user_id: user.id.toString(),
-            is_premium: user.is_premium || false,
-            platform: WebApp.platform || 'unknown',
-            locale: user.language_code || 'en',
-            start_param: WebApp.initDataUnsafe?.start_param || '',
-            ...customData
-        };
-
-        // Send the event using the SDK
-        const response = await fetch('https://tganalytics.xyz/events', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${ANALYTICS_CONFIG.token}`,
-                'Origin': 'https://app.bblip.io',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify(eventData)
-        });
-
-        if (!response.ok) {
-            const errorData = await response.text();
-            throw new Error(`Analytics error: ${errorData}`);
-        }
-
-        const result = await response.json();
-        console.debug('Analytics event sent successfully:', { eventName, result });
-    } catch (error) {
-        console.warn('Analytics event error:', {
-            eventName,
-            error: error instanceof Error ? error.message : 'Unknown error',
-            timestamp: new Date().toISOString(),
-            data: customData
-        });
-    }
-};
 
 // MUI theme configuration
 const muiTheme = createTheme({

@@ -7,6 +7,57 @@ import "slick-carousel/slick/slick-theme.css"; // Theme styles for the slider
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import LocalStorageViewer from "./pages/LocalStorageViewer.tsx";
 import { Analytics } from '@vercel/analytics/react';
+import analytics from '@telegram-apps/analytics';
+import WebApp from "@twa-dev/sdk";
+
+// Initialize analytics
+const ANALYTICS_TOKEN = 'eyJhcHBfbmFtZSI6IkJvb2JhQmxpcCIsImFwcF91cmwiOiJodHRwczovL3QubWUvQm9vYmFCbGlwQm90IiwiYXBwX2RvbWFpbiI6Imh0dHBzOi8vYXBwLmJibGlwLmlvIn0=!AtipScY/ag//8I4N0LwUprrlzN0h6V9p7pWU0FC4gE4='; // Replace with your actual token from t.me/mini_apps_analytics_bot
+
+analytics.init({
+  token: ANALYTICS_TOKEN,
+  appName: 'BoobaBlip'
+}).catch(console.error);
+
+// Analytics event sending function
+export const sendAnalyticsEvent = async (eventName: string, customData?: Record<string, any>) => {
+  try {
+    if (!WebApp.initData) {
+      console.warn('Analytics: WebApp.initData is not available');
+      return;
+    }
+
+    await analytics.init({
+      token: ANALYTICS_TOKEN,
+      appName: 'BoobaBlip'
+    });
+
+    const eventData = {
+      event_name: eventName,
+      user_id: WebApp.initDataUnsafe?.user?.id?.toString(),
+      platform: WebApp.platform || 'unknown',
+      start_param: WebApp.initDataUnsafe?.start_param || '',
+      ...customData
+    };
+
+    const response = await fetch('https://tganalytics.xyz/events', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${ANALYTICS_TOKEN}`,
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(eventData)
+    });
+
+    if (!response.ok) {
+      throw new Error(`Analytics error: ${await response.text()}`);
+    }
+
+    console.debug('Analytics event sent successfully:', eventName);
+  } catch (error) {
+    console.warn('Analytics event error:', error);
+  }
+};
 
 import DealsComponent from "./pages/Tasks.tsx";
 import TestComponent from "./pages/TestComponent.tsx";
