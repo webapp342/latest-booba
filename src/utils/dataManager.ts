@@ -16,6 +16,8 @@ interface UserData {
   transaction_hashes?: string[];
   lastUpdate?: number;
   lastSync?: number;
+  comment?: string;
+  [key: string]: any;
 }
 
 interface CacheItem<T> {

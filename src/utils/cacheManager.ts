@@ -23,6 +23,7 @@ interface UserData {
   }>;
   transaction_hashes?: string[];
   lastUpdate?: number;
+  comment?: string;
 }
 
 const CACHE_TTL: CacheConfig = {
