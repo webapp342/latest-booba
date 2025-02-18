@@ -409,11 +409,11 @@ const Stats: React.FC<StatsProps> = ({
 
           {/* Mevcut Pool'lar */}
           <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
-            <PoolStats poolName="Pools" totalPools={totalPools} apy={84.17} fillPercentage={74.72} tvl='93.15K' badgeText="Daily" leverage={175}/>
+            <PoolStats poolName="Pools" totalPools={totalPools} apy={84.17} fillPercentage={91.63} tvl='102.15K' badgeText="Daily" leverage={175}/>
           </Grid>
           
           <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
-            <PoolStats poolName="Pools" totalPools={totalPools} apy={107.62} fillPercentage={94.11} tvl='106.02K' badgeText="30D" leverage={150}/>
+            <PoolStats poolName="Pools" totalPools={totalPools} apy={107.62} fillPercentage={100} tvl='110.0K' badgeText="30D" leverage={150}/>
           </Grid>
           
              <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>

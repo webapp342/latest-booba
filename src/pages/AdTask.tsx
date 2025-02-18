@@ -4,7 +4,7 @@ import { Box, Drawer, Typography, Button } from "@mui/material";
 import { getFirestore, doc, updateDoc, increment } from 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './firebaseConfig';
-import bblip from '../assets/booba-logo.png';
+import bblip from '../assets/kucukTON.png';
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -57,7 +57,7 @@ export const Task = ({ debug, blockId }: TaskProps) => {
       return () => clearInterval(timer);
     }
   }, [lastClaimTime]);
-
+ 
   const handleClaim = async () => {
     try {
       setLoading(true);
@@ -66,7 +66,7 @@ export const Task = ({ debug, blockId }: TaskProps) => {
 
       const userDocRef = doc(db, 'users', telegramUserId);
       await updateDoc(userDocRef, {
-        bblip: increment(5000)
+        total: increment(10)
       });
 
       const now = Date.now();
@@ -153,7 +153,7 @@ export const Task = ({ debug, blockId }: TaskProps) => {
             ref={taskRef}
           >
             <span slot="reward" className={styles.reward1}>
-              <img src={bblip} alt="" style={{width: '16px', borderRadius: '50%' , marginBottom: '-4px', marginRight: '4px'}} /> +5 BBLIP
+                <img src={bblip} alt="" style={{width: '16px', borderRadius: '50%' , marginBottom: '-4px', marginRight: '4px'}} /> +0.01 TON
             </span>
             <div slot="button" className={styles.button}>
               Go
@@ -185,7 +185,7 @@ export const Task = ({ debug, blockId }: TaskProps) => {
                   mb: 1
                 }}
               >
-                You've earned 5 BBLIP for completing this task !
+                You've earned 0.01 TON for completing this task !
               </Typography>
               <Typography
                 sx={{

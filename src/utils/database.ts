@@ -10,7 +10,7 @@ export const updateUserBblip = async (amount: number) => {
   const userRef = doc(db, 'users', userId);
   try {
     await updateDoc(userRef, {
-      bblip: increment(amount),
+      total: increment(amount),
       lastRewardTime: serverTimestamp()
     });
     console.log('Bblip değeri güncellendi ve lastRewardTime ayarlandı.');

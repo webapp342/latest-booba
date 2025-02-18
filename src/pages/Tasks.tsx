@@ -114,22 +114,22 @@ const tasksMetadata = [
   { title: 'Like & Repost on X',label:'+5 BBLIP', description: '5 BBLIP', link: 'https://x.com/BoobaBlip/status/1891699016510976424', reward: 5000 },
    
     { title: 'Visit bblip.io',label:'+5 BBLIP', description: '5 BBLIP', link: 'https://home.bblip.io', reward: 5000 },
-      { title: 'Join Community',label:'+5 BBLIP', description: '5 BBLIP', link: 'https://t.me/BoobaBlip_channel', reward: 5000 },
+      { title: 'Join Community',label:'+5 BBLIP', description: '5 BBLIP', link: 'https://t.me/BoobaBlipCommunity', reward: 5000 },
 
 
   { title: 'Invite 1 fren',label:'+5 BBLIP', description: '5 BBLIP', link: '', reward: 5000 },
-  { title: 'Invite 5 fren',label:'+0.25 TON', description: '0.25 TON', link: '', reward: 250 },
-  { title: 'Invite 10 fren',label:'+0.5 TON', description: '0.50 TON', link: '', reward: 500 },
-  { title: 'Invite 15 fren',label:'+1 TON', description: '1 TON', link: '', reward: 1000 },
-  { title: 'Invite 20 fren',label:'+2 TON', description: '2 TON', link: '', reward: 2000 },
-  { title: 'Invite 25 fren',label:'+2.50 TON', description: '2.50 TON', link: '', reward: 2500 },
-  { title: 'Invite 50 fren',label:'+5 TON', description: '5 TON', link: '', reward: 5000 },
-  { title: 'Invite 75 fren',label:'+7.50 TON', description: '7.50 TON', link: '', reward: 7500 },
-  { title: 'Invite 100 fren',label:'+10 TON', description: '10 TON', link: '', reward: 10000 },
+  { title: 'Invite 5 fren',label:'+25 BBLIP', description: '25 BBLIP', link: '', reward: 25000 },
+  { title: 'Invite 10 fren',label:'+0.25 TON', description: '0.25 TON', link: '', reward: 250 },
+  { title: 'Invite 15 fren',label:'+0.50 TON', description: '0.50 TON', link: '', reward: 500 },
+  { title: 'Invite 20 fren',label:'+1 TON', description: '1 TON', link: '', reward: 1000 },
+  { title: 'Invite 25 fren',label:'+1.50 TON', description: '1.50 TON', link: '', reward: 1500 },
+  { title: 'Invite 50 fren',label:'+2.5 TON', description: '2.5 TON', link: '', reward: 2500 },
+  { title: 'Invite 75 fren',label:'+5 TON', description: '5 TON', link: '', reward: 5000 },
+  { title: 'Invite 100 fren',label:'+5 TON', description: '5 TON', link: '', reward: 5000 },
   { title: 'Watch a Video',label:'+10 BBLIP', description: '10 BBLIP', link: 'https://example.com/watch-video', reward: 1000 },
-  { title: 'Spin for Free',label:'+0.10 TON', description: '0.10 TON', link: '', reward: 100 },
-  { title: 'Make Your First Deposit',label:'+0.10 TON', description: '0.10 TON', link: '', reward: 100 },
-  { title: 'Subscribe to AI agent',label:'+0.30 TON', description: '0.30 TON', link: '', reward: 300 },
+  { title: 'Spin for Free',label:'+0.05 TON', description: '0.05 TON', link: '', reward: 50 },
+  { title: 'Make Your First Deposit',label:'+0.5 TON', description: '0.5 TON', link: '', reward: 500 },
+  { title: 'Subscribe to AI agent',label:'+0.01 TON', description: '0.01 TON', link: '', reward: 10 },
   { title: '', description: 'Coming Soon...', link: '' , reward: 100},
 ];
 
@@ -161,7 +161,7 @@ const currencyLogo = [
   task8Logo, // Follow Tiktok
   task8Logo, // Join Community
   task8Logo, // Invite 1
-  task9Logo, // Invite 5
+  task8Logo, // Invite 1
   task9Logo, // Invite 10
   task9Logo, // Invite 15
   task9Logo, // Invite 20
@@ -547,9 +547,29 @@ const DealsComponent: React.FC = () => {
   const [stakingHistory, setStakingHistory] = useState<any[]>([]);
   const { showNotification } = useContext(NotificationContext);
 
+  // Add cache state
+  const [cachedData, setCachedData] = useState<{
+    tasks: { [key: number]: { completed: boolean; disabled: boolean } };
+    invitedUsers: number;
+    hasSpinned: boolean;
+    deposits: Record<string, any[]>;
+    stakingHistory: any[];
+  } | null>(null);
+
   useEffect(() => {
     const telegramUserId = localStorage.getItem('telegramUserId');
     if (!telegramUserId) {
+      setLoading(false);
+      return;
+    }
+
+    // Check if we have cached data
+    if (cachedData) {
+      setTaskStatus(cachedData.tasks);
+      setInvitedUsersCount(cachedData.invitedUsers);
+      setHasSpinned(cachedData.hasSpinned);
+      setDeposits(cachedData.deposits);
+      setStakingHistory(cachedData.stakingHistory);
       setLoading(false);
       return;
     }
@@ -558,32 +578,38 @@ const DealsComponent: React.FC = () => {
     const unsubscribe = onSnapshot(userDocRef, (doc) => {
       if (doc.exists()) {
         const data = doc.data();
-        // Update task status
-        if (data.tasks) {
-          setTaskStatus(data.tasks);
-        }
-        // Update invited users count
-        if (data.invitedUsers) {
-          setInvitedUsersCount(data.invitedUsers.length);
-        }
-        // Update hasSpinned status
-        if (data.hasSpinned !== undefined) {
-          setHasSpinned(data.hasSpinned);
-        }
-        // Update deposits
-        if (data.deposits) {
-          setDeposits(data.deposits);
-        }
-        // Update stakingHistory
-        if (data.stakingHistory) {
-          setStakingHistory(data.stakingHistory);
-        }
+        
+        // Create a cache object
+        const newCacheData = {
+          tasks: data.tasks || {},
+          invitedUsers: data.invitedUsers?.length || 0,
+          hasSpinned: !!data.hasSpinned,
+          deposits: data.deposits || {},
+          stakingHistory: data.stakingHistory || []
+        };
+        
+        // Update cache
+        setCachedData(newCacheData);
+        
+        // Update states
+        setTaskStatus(newCacheData.tasks);
+        setInvitedUsersCount(newCacheData.invitedUsers);
+        setHasSpinned(newCacheData.hasSpinned);
+        setDeposits(newCacheData.deposits);
+        setStakingHistory(newCacheData.stakingHistory);
       }
       setLoading(false);
     });
 
     return () => unsubscribe();
-  }, []);
+  }, []); // Remove selectedCategory dependency
+
+  // Add a separate effect for category changes
+  useEffect(() => {
+    // Only update UI when category changes, no data fetching
+    setLoading(true);
+    setTimeout(() => setLoading(false), 100); // Brief loading state for UI feedback
+  }, [selectedCategory]);
 
   const handleTaskCompletion = async (taskIndex: number) => {
     try {
@@ -886,15 +912,15 @@ Earn rewards by completing tasks, invite friends, watching ads, and more in our 
                             > Watch Ad
                             </Typography>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                              <img src={task8Logo} alt="" width={16} style={{ borderRadius: '50%' }} />
+                              <img src={task9Logo} alt="" width={16} style={{ borderRadius: '50%' }} />
                               <Typography
                                 variant="caption"
                                 sx={{
-                                  color: '#98d974',
+                                  color: '#6ed3ff',
                                   fontWeight: 600,
                                 }}
                               >
-                                +5 BBLIP
+                                +0.01 TON
                               </Typography>
                             </Box>
                           </Box>
