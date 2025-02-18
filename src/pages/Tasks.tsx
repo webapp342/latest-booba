@@ -44,7 +44,6 @@ import task9Logo from '../assets/ton_logo_dark_background.svg';
 import task19Logo from '../assets/income.png';
 
 import comingSoonLogo from '../assets/task1logo.png';
-import UserDataTable from './UserDataTable';
 import { ShowAdButton } from './ShowAdButton';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
@@ -821,9 +820,7 @@ Earn rewards by completing tasks, invite friends, watching ads, and more in our 
           </Box>
         </GradientBox>
     
-          <Box sx={{ width: '100%', mb: 4 }}>
-            <UserDataTable />
-          </Box>
+       
 
           <Box
             sx={{

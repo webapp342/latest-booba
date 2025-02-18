@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { ThemeProvider, createTheme, Tooltip } from "@mui/material";
 import QRCode from 'qrcode';
-import { Box, Typography, Button, Avatar,  Snackbar, SnackbarContent } from "@mui/material";
-import SwapHorizontalCircleIcon from '@mui/icons-material/SwapHorizontalCircle';import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
+import { Box, Typography, Button, Avatar, Snackbar, SnackbarContent } from "@mui/material";
+import SwapHorizontalCircleIcon from '@mui/icons-material/SwapHorizontalCircle';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import OutboundIcon from '@mui/icons-material/Outbound';
 import { CheckCircleOutline } from '@mui/icons-material';
-import AddCircleIcon from '@mui/icons-material/AddCircle';import { useNavigate } from 'react-router-dom';
-import TokenSwap from "./SwapComponent"; // TokenSwap bileşenini eklediğiniz yer
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { useNavigate } from 'react-router-dom';
+import TokenSwap from "./SwapComponent";
 import logo5 from '../assets/booba-logo.png';
 import ticket from '../assets/ticket.png';
-
 import SettingsIcon from '@mui/icons-material/Settings';
-import { doc, onSnapshot, getFirestore, getDoc } from "firebase/firestore"; 
-import { initializeApp } from 'firebase/app';
-import { firebaseConfig } from './firebaseConfig';
 import WebApp from "@twa-dev/sdk";
 import UserAvatar from "./UserAvatar";
 import styled from "styled-components";
@@ -24,12 +22,7 @@ import SwapDrawer from '../components/WalletDrawers/SwapDrawer';
 import axios from 'axios';
 import tonlogo from '../assets/kucukTON.png';
 import UserAgreementModal from '../components/modals/UserAgreementModal';
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-
-
+import { getUserData } from '../utils/cacheManager';
 
 
 // Tema oluşturma
@@ -49,7 +42,6 @@ const theme = createTheme({
     fontFamily: "monospace",
   },
 });
-
 
 interface Asset {
   logo: string;
@@ -142,9 +134,7 @@ const initialData: Asset[] = [
 
 const AccountEquityCard: React.FC = () => {
 
-
   const [searchQuery] = useState("");
-  const [] = useState(false); // Arama moduna girildi mi?
   const [showTokenSwap, setShowTokenSwap] = useState(false);
   const [openDepositDrawer, setOpenDepositDrawer] = useState(false);
   const [openWithdrawDrawer, setOpenWithdrawDrawer] = useState(false);
@@ -155,38 +145,30 @@ const AccountEquityCard: React.FC = () => {
   const [, setQrCodeUrl] = useState<string>('');
   const [data, setData] = useState<Asset[]>(initialData); // Initialize with initialData
   const [totalEquity, setTotalEquity] = useState<string>("0.00");
-   const navigate = useNavigate();
+  const navigate = useNavigate();
 
-       const [] = useState(false);
-
-  const [] = useState(false);
   const [openSwapDrawer, setOpenSwapDrawer] = useState(false);
   const [showAgreement, setShowAgreement] = useState(false);
 
-useEffect(() => {
-      const backButton = WebApp.BackButton;
-  
-      // BackButton'u görünür yap ve tıklanma işlevi ekle
-      backButton.show();
-      backButton.onClick(() => {
-        navigate("/");
+  useEffect(() => {
+    const backButton = WebApp.BackButton;
+
+    // BackButton'u görünür yap ve tıklanma işlevi ekle
+    backButton.show();
+    backButton.onClick(() => {
+      navigate("/");
+    });
+
+    // Cleanup: Bileşen unmount olduğunda butonu gizle ve event handler'ı kaldır
+    return () => {
+      backButton.hide();
+      backButton.offClick(() => {
+        navigate("/"); // Buraya tekrar aynı callback sağlanmalıdır.
       });
-  
-      // Cleanup: Bileşen unmount olduğunda butonu gizle ve event handler'ı kaldır
-      return () => {
-        backButton.hide();
-        backButton.offClick(() => {
-          navigate("/"); // Buraya tekrar aynı callback sağlanmalıdır.
-        });
-      };
-    }, [navigate]);
+    };
+  }, [navigate]);
 
   // Drawer'ı açma/kapama işlevi
-
-
-  
-
-  
 
   // Calculate the total USD value
   useEffect(() => {
@@ -264,19 +246,16 @@ useEffect(() => {
   }, []); // Empty dependency array since we're managing all updates internally
 
   // Update data when Firestore changes
-  useEffect(() => {
-    const telegramUserId = localStorage.getItem("telegramUserId");
-    if (!telegramUserId) {
-      console.error("Telegram User ID not found!");
-      return;
-    }
+  const fetchUserData = async () => {
+    try {
+      const telegramUserId = localStorage.getItem("telegramUserId");
+      if (!telegramUserId) {
+        throw new Error("Telegram User ID not found!");
+      }
 
-    const docRef = doc(db, "users", telegramUserId);
-    const unsubscribe = onSnapshot(docRef, (docSnap) => {
-      if (docSnap.exists()) {
-        const userData = docSnap.data();
-        
-        setData(prevData => 
+      const userData = await getUserData(telegramUserId);
+      if (userData) {
+        setData(prevData =>
           prevData.map(item => {
             let newAmount = item.amount;
             
@@ -323,10 +302,18 @@ useEffect(() => {
           })
         );
       }
-    });
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      setComment('Failed to fetch user data');
+    }
+  };
 
-    return () => unsubscribe();
-  }, [tonPrice]); // Add tonPrice as dependency since we use it in calculations
+  useEffect(() => {
+    fetchUserData();
+    // Refresh data every minute
+    const interval = setInterval(fetchUserData, 60000);
+    return () => clearInterval(interval);
+  }, [tonPrice]);
 
   // Arama filtreleme fonksiyonu
   const filteredData = data.filter(
@@ -335,52 +322,37 @@ useEffect(() => {
       item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-
-
-   // Handle deposit drawer toggle
-
-
-   // Snackbar for copy confirmation
-   const handleSnackbarClose = () => {
+  // Snackbar for copy confirmation
+  const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
 
-  useEffect(() => {
   const generateQRCode = async () => {
     try {
       const telegramUserId = localStorage.getItem("telegramUserId");
       if (!telegramUserId) {
-        console.error("Telegram User ID not found!");
-        setComment("Error: User ID not found"); // Set error message
-        return;
+        throw new Error("Telegram User ID not found!");
       }
 
-      // Firestore query to fetch the comment
-      const docRef = doc(db, "users", telegramUserId);
-      const docSnap = await getDoc(docRef);
-
-      if (docSnap.exists()) {
-        const fetchedComment = docSnap.data().comment || "No comment available";
-        setComment(fetchedComment); // Set the fetched comment
+      const userData = await getUserData(telegramUserId);
+      if (userData) {
+        const fetchedComment = userData.comment || "No comment available";
+        setComment(fetchedComment);
         const address = 'UQDppAsjyioMu23LIEaFBm5g5o5oNjRft99oe4gfv-c9BNn2';
         const encodedComment = encodeURIComponent(fetchedComment);
         const uri = `https://app.tonkeeper.com/transfer/${address}?text=${encodedComment}`;
-
-        // Generate QR Code
         const qrCode = await QRCode.toDataURL(uri);
-        setQrCodeUrl(qrCode); // Save QR Code URL to state
-      } else {
-        console.error("User document not found in Firestore!");
-        setComment("Error: Document not found"); // Set error message
+        setQrCodeUrl(qrCode);
       }
     } catch (error) {
       console.error("Error generating QR code:", error);
-      setComment("Error fetching comment"); // Set error message
+      setComment("Error fetching comment");
     }
   };
 
-  generateQRCode();
-}, []);
+  useEffect(() => {
+    generateQRCode();
+  }, []);
 
   const telegramUser = WebApp.initDataUnsafe.user;
 
@@ -395,74 +367,72 @@ useEffect(() => {
     return amount;
   };
 
- 
+  const GradientBox = styled(Box)(() => ({
+    background: 'linear-gradient(180deg, rgba(110, 211, 255, 0.08) 0%, rgba(26, 33, 38, 0) 100%)',
+    borderRadius: '24px',
+    padding: '24px 16px',
+    marginBottom: '24px',
+    
+    border: '1px solid rgba(110, 211, 255, 0.1)',
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
+  }));
 
-const GradientBox = styled(Box)(() => ({
-  background: 'linear-gradient(180deg, rgba(110, 211, 255, 0.08) 0%, rgba(26, 33, 38, 0) 100%)',
-  borderRadius: '24px',
-  padding: '24px 16px',
-  marginBottom: '24px',
-  
-  border: '1px solid rgba(110, 211, 255, 0.1)',
-  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
-}));
+  useEffect(() => {
+    // Check if user has accepted the agreement
+    const hasAcceptedAgreement = localStorage.getItem('userAgreementAccepted');
+    if (!hasAcceptedAgreement) {
+      setShowAgreement(true);
+    }
+  }, []);
 
-useEffect(() => {
-  // Check if user has accepted the agreement
-  const hasAcceptedAgreement = localStorage.getItem('userAgreementAccepted');
-  if (!hasAcceptedAgreement) {
-    setShowAgreement(true);
-  }
-}, []);
-
-const handleAgreementAccept = () => {
-  localStorage.setItem('userAgreementAccepted', 'true');
-  setShowAgreement(false);
-};
+  const handleAgreementAccept = () => {
+    localStorage.setItem('userAgreementAccepted', 'true');
+    setShowAgreement(false);
+  };
 
   return (
-      <ThemeProvider theme={theme}>
-        <Box // @ts-ignore
-         mt={-5}>
-          <Box px={1} >
-            <GradientBox>
-              <Box // @ts-ignore
-                sx={{ 
-                  display: 'flex', 
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: { xs: 2, sm: 3 },
-                }}
-              >
-                <Box width={'100%'}  display={'flex'} justifyContent={'space-between'}>
-                  <SettingsIcon sx={{ fontSize: '1.5rem', color:"white",       p:0.5,          
-                  }} />
-                  <UserAvatar 
-                    telegramUserId={telegramUser?.id?.toString() ?? ''}
-                    displayName={telegramUser?.first_name ?? 'User'}
-                  />
-                </Box>
-                {/* Live Stats Badge */}
-                <Box sx={{ display: 'flex', justifyContent: 'center' }}>           
-                </Box>
+    <ThemeProvider theme={theme}>
+      <Box // @ts-ignore
+       mt={-5}>
+        <Box px={1} >
+          <GradientBox>
+            <Box // @ts-ignore
+              sx={{ 
+                display: 'flex', 
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: { xs: 2, sm: 3 },
+              }}
+            >
+              <Box width={'100%'}  display={'flex'} justifyContent={'space-between'}>
+                <SettingsIcon sx={{ fontSize: '1.5rem', color:"white",       p:0.5,          
+                }} />
+                <UserAvatar 
+                  telegramUserId={telegramUser?.id?.toString() ?? ''}
+                  displayName={telegramUser?.first_name ?? 'User'}
+                />
+              </Box>
+              {/* Live Stats Badge */}
+              <Box sx={{ display: 'flex', justifyContent: 'center' }}>           
+              </Box>
 
-                <Typography mb={-2} mt={-2} className="total-equity"
-                    variant="subtitle2"
-                    sx={{ color: "white" }}
-                    align="center"
-                  >
-                    My Balance
-                  </Typography>
+              <Typography mb={-2} mt={-2} className="total-equity"
+                  variant="subtitle2"
+                  sx={{ color: "white" }}
+                  align="center"
+                >
+                  My Balance
+                </Typography>
 
-                {/* Main Title */}
-                 <Typography  mb={-2} variant="subtitle1" align="center" gutterBottom>
-                    <span style={{ fontSize: "2.5rem" ,color:"grey"}}>$</span>
-                    <span style={{ fontSize: "2.5rem", fontWeight:"bold" }}>{totalEquity.split('.')[0]}</span>
-                    <span style={{ fontSize: "1.6rem" }}>.{totalEquity.split('.')[1]}</span>
-                  </Typography>
-                  {/* İlk Kart */}
-                  <Box  sx={{ borderRadius: 3 }}>            {/* Total Account Equity */}
-                    
+              {/* Main Title */}
+               <Typography  mb={-2} variant="subtitle1" align="center" gutterBottom>
+                  <span style={{ fontSize: "2.5rem" ,color:"grey"}}>$</span>
+                  <span style={{ fontSize: "2.5rem", fontWeight:"bold" }}>{totalEquity.split('.')[0]}</span>
+                  <span style={{ fontSize: "1.6rem" }}>.{totalEquity.split('.')[1]}</span>
+                </Typography>
+                {/* İlk Kart */}
+                <Box  sx={{ borderRadius: 3 }}>            {/* Total Account Equity */}
+                  
                   
 
                 

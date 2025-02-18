@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { Card,CardContent, Typography, Grid,  Box, Button, Drawer, Accordion, AccordionSummary, AccordionDetails, TextField, Modal, LinearProgress, InputAdornment, ToggleButton, ToggleButtonGroup,  CircularProgress, CircularProgressProps } from '@mui/material';
 import { AccessTime,  Lock, Shield, Security, CheckCircle as CheckCircleIcon } from '@mui/icons-material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { doc,  getFirestore, setDoc, updateDoc, increment, arrayUnion, onSnapshot, getDoc } from 'firebase/firestore'; // Import Firestore functions
+import { doc,  getFirestore, setDoc, updateDoc, increment, arrayUnion, getDoc } from 'firebase/firestore'; // Import Firestore functions
 import { app } from '../pages/firebaseConfig'; // Import your Firebase app
 import { v4 as uuidv4 } from 'uuid'; // Import UUID for generating unique IDs
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
@@ -20,6 +20,7 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 import { TrustIndicator } from './TrustIndicator'; // Import TrustIndicator component
 import {  DatabaseZap } from 'lucide-react';
+import { getStakingData } from '../utils/cacheManager';
 
 
 
@@ -1134,32 +1135,33 @@ const NewComponent: React.FC<NewComponentProps> = () => {
 
    const db = getFirestore(app); // Define the Firestore database instance
   const [totalBalance, setTotalBalance] = useState<number | null>(null);
+  const [lbBalance, setlbBalance] = useState<number>(0);
+  const [stakingHistory, setStakingHistory] = useState<any[]>([]);
 
-// Fetch total balance and staking history from Firestore when the component mounts
-  useEffect(() => {
-    const telegramUserId = localStorage.getItem("telegramUserId");
-    if (!telegramUserId) {
-      console.error("Telegram User ID not found!");
-      return;
-    }
-
-    const userDocRef = doc(db, 'users', telegramUserId); // Adjust the path as necessary
-
-    // Set up a real-time listener
-    const unsubscribe = onSnapshot(userDocRef, (userDoc) => {
-      if (userDoc.exists()) {
-        const data = userDoc.data();
-        setTotalBalance(data.total / 1000); // Divide the total by 1000 before setting
-        setlbBalance(data.lbTON ); // Divide the total by 1000 before setting
-        setStakingHistory(data.stakingHistory || []); // Set staking history
-      } else {
-        console.error("No such document!");
+  const fetchData = async () => {
+    try {
+      const telegramUserId = localStorage.getItem("telegramUserId");
+      if (!telegramUserId) {
+        console.error("Telegram User ID not found!");
+        return;
       }
-    });
 
-    // Cleanup function to unsubscribe from the listener
-    return () => unsubscribe();
+      const stakingData = await getStakingData(telegramUserId);
+      setTotalBalance(stakingData.total / 1000);
+      setlbBalance(stakingData.lbTON);
+      setStakingHistory(stakingData.stakingHistory);
+    } catch (error) {
+      console.error("Error fetching staking data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+    // Refresh data every 2 minutes
+    const interval = setInterval(fetchData, 120000);
+    return () => clearInterval(interval);
   }, []);
+
   // Staking verilerini tutan state
   const [stakingData, setStakingData] = useState(
     stakingOptions.map(option => ({
@@ -1188,9 +1190,6 @@ const NewComponent: React.FC<NewComponentProps> = () => {
     };
   } | null>(null);
 
-  // Add a new state to hold the total balance
-  const [lbBalance, setlbBalance] = useState<number | null>(null);
-
   const [errorMessage, setErrorMessage] = useState<string | null>(null); // New state for error message
   const [successModalOpen, setSuccessModalOpen] = useState(false); // New state for modal visibility
   const [isLoading, setIsLoading] = useState(false); // New state for loading animation
@@ -1207,7 +1206,6 @@ const NewComponent: React.FC<NewComponentProps> = () => {
     "Your stake has been processed successfully."
   ]; // Array of messages
 
-  const [stakingHistory, setStakingHistory] = useState<any[]>([]); // New state for staking history
   const [isUnstaking, setIsUnstaking] = useState(false); // New state for unstaking mode
 
   // New state to manage the selected action

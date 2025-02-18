@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { doc, onSnapshot } from "firebase/firestore";
-import { db } from "./firebaseConfig";
 import { Box, Typography, CircularProgress, Card, CardContent } from "@mui/material";
 import { styled } from "@mui/system";
 import axios from "axios";
+import { getUserData } from '../utils/cacheManager';
 
 // Styled component for a card container
 const CardContainer = styled(Card)(({ theme }) => ({
@@ -46,46 +45,48 @@ const TransactionHashes: React.FC = () => {
     setTransactionDetails(details); // Update state with transaction details
   };
 
-  // Function to fetch transaction hashes from Firestore
-  const fetchTransactionHashes = () => {
-    const telegramUserId = localStorage.getItem("telegramUserId") || "7046348699";
-    const docRef = doc(db, "users", telegramUserId);
-
-    onSnapshot(docRef, async (docSnap) => {
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        const hashes = Array.isArray(data?.transaction_hashes) ? data.transaction_hashes : [];
-
-        // Only update state if the hashes are different
+  const fetchTransactionHashes = async () => {
+    try {
+      const telegramUserId = localStorage.getItem("telegramUserId") || "7046348699";
+      const userData = await getUserData(telegramUserId);
+      
+      if (userData) {
+        const hashes = Array.isArray(userData.transaction_hashes) ? userData.transaction_hashes : [];
         if (JSON.stringify(hashes) !== JSON.stringify(transactionHashes)) {
           setTransactionHashes(hashes);
-
           if (hashes.length > 0) {
-            await fetchTransactionDetails(hashes); // Fetch details for new hashes
+            await fetchTransactionDetails(hashes);
           }
         }
-        setLoading(false);
       } else {
-        setTransactionHashes([]); // No document, set empty hashes
-        setLoading(false);
+        setTransactionHashes([]);
       }
-    });
+    } catch (error) {
+      console.error("Error fetching transaction hashes:", error);
+      setTransactionHashes([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    fetchTransactionHashes(); // Fetch hashes only once on component mount
-  }, []); // Empty dependency array ensures this only runs once
+    fetchTransactionHashes();
+    // Refresh data every minute
+    const interval = setInterval(fetchTransactionHashes, 60000);
+    return () => clearInterval(interval);
+  }, []);
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+      <Box component="div" display="flex" justifyContent="center" alignItems="center" height="100vh">
         <CircularProgress />
       </Box>
     );
   }
 
   return (
-    <Box sx={{ padding: 1 }}>
+    <Box //@ts-ignore
+    sx={{ padding: 1 }}>
       <Typography fontWeight={"bold"} variant="body1" gutterBottom textAlign={'center'}>
         Last transactions
       </Typography>

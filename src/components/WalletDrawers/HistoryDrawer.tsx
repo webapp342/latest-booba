@@ -9,14 +9,11 @@ import {
   ToggleButtonGroup,
   ToggleButton,
 } from '@mui/material';
-import { doc, getFirestore, onSnapshot } from 'firebase/firestore';
-import { app } from '../../pages/firebaseConfig';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CloseIcon from '@mui/icons-material/Close';
 import { ArrowDownCircle, ArrowUpCircle } from 'lucide-react';
-
-const db = getFirestore(app);
+import { getTransactionData } from '../../utils/cacheManager';
 
 const StyledDrawer = styled(Drawer)(({ }) => ({
   '& .MuiDrawer-paper': {
@@ -26,7 +23,6 @@ const StyledDrawer = styled(Drawer)(({ }) => ({
     maxHeight: '100vh',
     minHeight: '60vh',
     border: '1px solid rgba(110, 211, 255, 0.1)',
-    
   }
 }));
 
@@ -72,25 +68,32 @@ const HistoryDrawer: React.FC<HistoryDrawerProps> = ({ open, onClose }) => {
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState<'withdrawals' | 'deposits'>('withdrawals');
 
-  useEffect(() => {
-    const telegramUserId = localStorage.getItem("telegramUserId");
-    if (!telegramUserId) {
-      console.error("Telegram User ID not found!");
-      return;
-    }
-
-    const docRef = doc(db, "users", telegramUserId);
-    const unsubscribe = onSnapshot(docRef, (docSnap) => {
-      if (docSnap.exists()) {
-        const userData = docSnap.data();
-        setTransactions(userData.fields || {});
-        setDeposits(userData.deposits || []);
+  const fetchTransactions = async () => {
+    try {
+      const telegramUserId = localStorage.getItem("telegramUserId");
+      if (!telegramUserId) {
+        console.error("Telegram User ID not found!");
+        return;
       }
-      setLoading(false);
-    });
 
-    return () => unsubscribe();
-  }, []);
+      const transactionData = await getTransactionData(telegramUserId);
+      setTransactions(transactionData.fields);
+      setDeposits(transactionData.deposits);
+    } catch (error) {
+      console.error("Error fetching transaction data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (open) {
+      fetchTransactions();
+      // Refresh data every 30 seconds while drawer is open
+      const interval = setInterval(fetchTransactions, 30000);
+      return () => clearInterval(interval);
+    }
+  }, [open]);
 
   const handleViewChange = (_: React.MouseEvent<HTMLElement>, newView: 'withdrawals' | 'deposits') => {
     if (newView !== null) {
