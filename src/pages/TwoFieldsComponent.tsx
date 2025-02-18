@@ -1141,11 +1141,12 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
       >
         <StarsModalContent>
           <Box sx={{ 
+            position: 'relative', 
+            width: '100%', 
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: 3,
-            width: '100%'
+            gap: 3
           }}>
             {/* Header Section */}
             <Box sx={{ 
@@ -1208,17 +1209,121 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
                   fontWeight: '600',
                   mb: 1
                 }}>
-                  Level Upgrade Required
+                  Withdrawal Requirements
                 </Typography>
                 <Typography sx={{ 
                   color: 'rgba(255, 255, 255, 0.7)', 
                   fontSize: '14px',
-                  lineHeight: 1.5
+                  lineHeight: 1.5,
+                  mb: 2
                 }}>
-                  {(() => {
-                    return `You need to upgrade your level to withdraw !`;
-                  })()}
+                  to Withdraw Rewards, you need either:
                 </Typography>
+                <Box sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 2,
+                  alignItems: 'center',
+                 
+                }}>
+                  <Box sx={{
+                    background: 'linear-gradient(145deg, rgba(110, 211, 255, 0.1) 0%, rgba(110, 211, 255, 0.05) 100%)',
+                    borderRadius: '12px',
+                    padding: '12px 16px',
+                    border: '1px solid rgba(110, 211, 255, 0.1)',
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 2
+                  }}>
+                    <Box sx={{
+                      minWidth: '24px',
+                      height: '24px',
+                      borderRadius: '50%',
+                      backgroundColor: 'rgba(110, 211, 255, 0.2)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '14px',
+                      color: '#6ed3ff',
+                      fontWeight: '600'
+                    }}>
+                      1
+                    </Box>
+                    <Typography sx={{
+                      color: '#6ed3ff',
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      textAlign: 'left'
+                    }}>
+                    10,000 BBLIP Balance
+                      <Typography component="span" sx={{
+                        display: 'block',
+                        color: 'rgba(255, 255, 255, 0.5)',
+                        fontSize: '12px',
+                        mt: 0.5
+                      }}>
+                        Current balance: {userData?.bblip ? (userData.bblip / 1000).toLocaleString()  : '0'} BBLIP
+                      </Typography>
+                    </Typography>
+                  </Box>
+                  <Box sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    color: 'rgba(255, 255, 255, 0.5)',
+                    fontSize: '14px',
+                    fontWeight: '500'
+                  }}>
+                    OR
+                  </Box>
+                  <Box sx={{
+                    background: 'linear-gradient(145deg, rgba(110, 211, 255, 0.1) 0%, rgba(110, 211, 255, 0.05) 100%)',
+                    borderRadius: '12px',
+                    padding: '12px 16px',
+                    border: '1px solid rgba(110, 211, 255, 0.1)',
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 2
+                  }}>
+                    <Box sx={{
+                      minWidth: '24px',
+                      height: '24px',
+                      borderRadius: '50%',
+                      backgroundColor: 'rgba(110, 211, 255, 0.2)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '14px',
+                      color: '#6ed3ff',
+                      fontWeight: '600'
+                    }}>
+                      2
+                    </Box>
+                    <Typography sx={{
+                      color: '#6ed3ff',
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      textAlign: 'left'
+                    }}>
+                      Level Up Using Tickets
+                      <Typography component="span" sx={{
+                        display: 'block',
+                        color: 'rgba(255, 255, 255, 0.5)',
+                        fontSize: '12px',
+                        mt: 0.5
+                      }}>
+                        {(() => {
+                          const currentLevel = userData?.level || 0;
+                          const nextLevel = currentLevel + 1;
+                          const currentTickets = userData?.tickets || 0;
+                          const neededTickets = nextLevel - currentTickets;
+                          return `Need ${neededTickets} ticket${neededTickets > 1 ? 's' : ''} to reach Level ${nextLevel}`;
+                        })()}
+                      </Typography>
+                    </Typography>
+                  </Box>
+                </Box>
               </Box>
             </Box>
 
@@ -1238,24 +1343,7 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: 1,
-                position: 'relative',
-                overflow: 'hidden',
-                '&::before': {
-                  content: '""',
-                  position: 'absolute',
-                  top: 0,
-                  left: '-100%',
-                  width: '100%',
-                  height: '100%',
-                  background: 'linear-gradient(90deg, transparent, rgba(110, 211, 255, 0.1), transparent)',
-                  animation: 'shine 2s infinite',
-                },
-                '@keyframes shine': {
-                  '100%': {
-                    left: '100%',
-                  },
-                },
+                gap: 1
               }}>
                 <Typography sx={{ 
                   color: 'rgba(255, 255, 255, 0.7)',
@@ -1283,19 +1371,7 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: 1,
-                position: 'relative',
-                overflow: 'hidden',
-                '&::before': {
-                  content: '""',
-                  position: 'absolute',
-                  top: 0,
-                  left: '-100%',
-                  width: '100%',
-                  height: '100%',
-                  background: 'linear-gradient(90deg, transparent, rgba(110, 211, 255, 0.1), transparent)',
-                  animation: 'shine 2s infinite 1s',
-                },
+                gap: 1
               }}>
                 <Typography sx={{ 
                   color: 'rgba(255, 255, 255, 0.7)',
@@ -1364,17 +1440,7 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
                   '&:disabled': {
                     background: 'rgba(110, 211, 255, 0.1)',
                     color: 'rgba(255, 255, 255, 0.3)',
-                  },
-                  '&::before': {
-                    content: '""',
-                    position: 'absolute',
-                    top: 0,
-                    left: '-100%',
-                    width: '100%',
-                    height: '100%',
-                    background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)',
-                    animation: 'shine 2s infinite',
-                  },
+                  }
                 }}
               >
                 {isUpgrading ? (
@@ -1383,7 +1449,7 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
                     Processing...
                   </Box>
                 ) : (
-                  'Use Upgrade Ticket'
+                  'Level Up Using Ticket'
                 )}
               </Button>
 
@@ -1402,38 +1468,11 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
                   overflow: 'hidden',
                   '&:hover': {
                     background: 'linear-gradient(90deg, #00A3FF, #0088CC)',
-                  },
-                  '&::before': {
-                    content: '""',
-                    position: 'absolute',
-                    top: 0,
-                    left: '-100%',
-                    width: '100%',
-                    height: '100%',
-                    background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)',
-                    animation: 'shine 2s infinite',
-                  },
+                  }
                 }}
               >
                 Get More Tickets
               </Button>
-
-              <Typography sx={{ 
-                color: 'rgba(255, 255, 255, 0.7)', 
-                fontSize: '14px',
-                textAlign: 'center',
-                padding: '8px 12px',
-                borderRadius: '8px',
-        
-              }}>
-                {(() => {
-                  const currentLevel = userData?.level || 0;
-                  const nextLevel = currentLevel + 1;
-                  const currentTickets = userData?.tickets || 0;
-                  const neededTickets = nextLevel - currentTickets;
-                  return `Need ${neededTickets} more ticket${neededTickets > 1 ? 's' : ''} to reach Level ${nextLevel}`;
-                })()}
-              </Typography>
 
               <Button
                 fullWidth

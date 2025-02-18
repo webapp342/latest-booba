@@ -850,7 +850,7 @@ const PulsingDot = styled(Box)({
 
 // Add this new component for live stats
 const LiveStats = () => {
-  const [currentUsers, setCurrentUsers] = useState(1247);
+  const [currentUsers, setCurrentUsers] = useState(3816);
   
   
   useEffect(() => {
@@ -1792,7 +1792,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
                     lineHeight: 1.2
                   }}
                 >
-                  $275.9M
+                  $382.7M
                 </Typography>
                 <Typography 
                   sx={{
@@ -1820,7 +1820,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
                     lineHeight: 1.2
                   }}
                 >
-                  76,822
+                  104,271
                 </Typography>
                 <Typography 
                   sx={{

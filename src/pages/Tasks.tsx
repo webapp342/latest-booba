@@ -119,17 +119,17 @@ const tasksMetadata = [
 
   { title: 'Invite 1 fren',label:'+5 BBLIP', description: '5 BBLIP', link: '', reward: 5000 },
   { title: 'Invite 5 fren',label:'+25 BBLIP', description: '25 BBLIP', link: '', reward: 25000 },
-  { title: 'Invite 10 fren',label:'+0.25 TON', description: '0.25 TON', link: '', reward: 250 },
-  { title: 'Invite 15 fren',label:'+0.50 TON', description: '0.50 TON', link: '', reward: 500 },
-  { title: 'Invite 20 fren',label:'+1 TON', description: '1 TON', link: '', reward: 1000 },
-  { title: 'Invite 25 fren',label:'+1.50 TON', description: '1.50 TON', link: '', reward: 1500 },
-  { title: 'Invite 50 fren',label:'+2.5 TON', description: '2.5 TON', link: '', reward: 2500 },
-  { title: 'Invite 75 fren',label:'+5 TON', description: '5 TON', link: '', reward: 5000 },
-  { title: 'Invite 100 fren',label:'+5 TON', description: '5 TON', link: '', reward: 5000 },
+  { title: 'Invite 10 fren',label:'+50 BBLIP', description: '50 BBLIP', link: '', reward: 50000 },
+  { title: 'Invite 15 fren',label:'+75 BBLIP', description: '75 BBLIP', link: '', reward: 75000 },
+  { title: 'Invite 20 fren',label:'+100 BBLIP', description: '100 BBLIP', link: '', reward: 100000 },
+  { title: 'Invite 25 fren',label:'+125 BBLIP', description: '125 BBLIP', link: '', reward: 125000 },
+  { title: 'Invite 50 fren',label:'+250 BBLIP', description: '250 BBLIP', link: '', reward: 250000 },
+  { title: 'Invite 75 fren',label:'+375 BBLIP', description: '375 BBLIP', link: '', reward: 375000 },
+  { title: 'Invite 100 fren',label:'+10 TON', description: '10 TON', link: '', reward: 10000 },
   { title: 'Watch a Video',label:'+10 BBLIP', description: '10 BBLIP', link: 'https://example.com/watch-video', reward: 1000 },
-  { title: 'Spin for Free',label:'+0.05 TON', description: '0.05 TON', link: '', reward: 50 },
-  { title: 'Make Your First Deposit',label:'+0.5 TON', description: '0.5 TON', link: '', reward: 500 },
-  { title: 'Subscribe to AI agent',label:'+0.01 TON', description: '0.01 TON', link: '', reward: 10 },
+  { title: 'Spin for Free',label:'+15 BBLIP', description: '15 BBLIP', link: '', reward: 15000 },
+  { title: 'Make Your First Deposit',label:'+150 BBLIP', description: '150 BBLIP', link: '', reward: 150000 },
+  { title: 'Subscribe to AI agent',label:'+25 BBLIP', description: '25 BBLIP', link: '', reward: 25000 },
   { title: '', description: 'Coming Soon...', link: '' , reward: 100},
 ];
 
@@ -162,17 +162,17 @@ const currencyLogo = [
   task8Logo, // Join Community
   task8Logo, // Invite 1
   task8Logo, // Invite 1
-  task9Logo, // Invite 10
-  task9Logo, // Invite 15
-  task9Logo, // Invite 20
-  task9Logo, // Invite 25
-  task9Logo, // Invite 50
-  task9Logo, // Invite 75
+  task8Logo, // Follow X
+  task8Logo, // Follow X
+  task8Logo, // Follow X
+  task8Logo, // Follow X
+  task8Logo, // Follow X
+  task8Logo, // Follow X
   task9Logo, // Invite 100
   task8Logo, // Watch video
-  task9Logo, // Spin task
-  task9Logo, // Deposit task
-  task9Logo, // Deposit task
+  task8Logo, // Follow X
+  task8Logo, // Follow X
+  task8Logo, // Follow X
 
   comingSoonLogo,
 ];
@@ -912,15 +912,15 @@ Earn rewards by completing tasks, invite friends, watching ads, and more in our 
                             > Watch Ad
                             </Typography>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                              <img src={task9Logo} alt="" width={16} style={{ borderRadius: '50%' }} />
+                              <img src={task8Logo} alt="" width={16} style={{ borderRadius: '50%' }} />
                               <Typography
                                 variant="caption"
                                 sx={{
-                                  color: '#6ed3ff',
+                                  color: '#98d974',
                                   fontWeight: 600,
                                 }}
                               >
-                                +0.01 TON
+                                +25 BBLIP
                               </Typography>
                             </Box>
                           </Box>

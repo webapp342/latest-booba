@@ -71,7 +71,7 @@ const initialData: Asset[] = [
     name: "BBLIP",
     amount: 0,
     usdValue: 0,
-    price:0.07,
+    price:0.007,
     active: true
   },
   {
@@ -224,7 +224,7 @@ useEffect(() => {
               break;
             case "BBLIP":
               amount = amount / 1000; // Convert to actual amount
-              usdValue = amount * 0.07;
+              usdValue = amount * 0.007;
               break;
             case "USDT":
               newPrice = 1.00;
@@ -305,7 +305,7 @@ useEffect(() => {
                 usdValue = actualAmount;
                 break;
               case "BBLIP":
-                usdValue = actualAmount * 0.07;
+                usdValue = actualAmount * 0.007;
                 break;
               case "TON":
                 usdValue = actualAmount * tonPrice;

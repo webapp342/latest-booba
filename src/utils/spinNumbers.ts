@@ -45,7 +45,7 @@ export const generateSpinNumbers = (selectedBalance: string, selectedSpinType: s
           // BBLIP için TON spin
           result = [
             '0',
-            generateRandomNumber(1, 4).toString(),
+            '0',
             generateRandomNumber(5, 9).toString(),
             generateRandomNumber(1, 9).toString(),
             generateRandomNumber(1, 9).toString(),
@@ -55,7 +55,7 @@ export const generateSpinNumbers = (selectedBalance: string, selectedSpinType: s
           // BBLIP için BBLIP spin
           result = [
             '0',
-            generateRandomNumber(1, 5).toString(),
+            '0',
             generateRandomNumber(0, 9).toString(),
             generateRandomNumber(0, 9).toString(),
             generateRandomNumber(0, 9).toString(),
@@ -113,7 +113,7 @@ export const generateSpinNumbers = (selectedBalance: string, selectedSpinType: s
           result = [
             '0',
             '0',
-            generateRandomNumber(1, 9).toString(),
+            '0',
             generateRandomNumber(1, 9).toString(),
             generateRandomNumber(1, 9).toString(),
             generateRandomNumber(1, 9).toString(),
@@ -122,8 +122,8 @@ export const generateSpinNumbers = (selectedBalance: string, selectedSpinType: s
           // BBLIP için BBLIP spin: 5.000 - 99.999 BBLIP arası
           result = [
             '0',
-            generateRandomNumber(0, 3).toString(),
-            generateRandomNumber(0, 3).toString(),
+            '0',
+            '0',
             generateRandomNumber(0, 9).toString(),
             generateRandomNumber(0, 9).toString(),
             generateRandomNumber(0, 9).toString(),
@@ -133,7 +133,7 @@ export const generateSpinNumbers = (selectedBalance: string, selectedSpinType: s
           result = [
             '0',
             '0',
-            generateRandomNumber(0, 9).toString(),
+            '0',
             generateRandomNumber(0, 9).toString(),
             generateRandomNumber(1, 9).toString(),
             generateRandomNumber(1, 9).toString(),

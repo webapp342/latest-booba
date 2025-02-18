@@ -408,24 +408,17 @@ const Stats: React.FC<StatsProps> = ({
        
 
           {/* Mevcut Pool'lar */}
-          <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
-            <PoolStats poolName="Pools" totalPools={totalPools} apy={84.17} fillPercentage={91.63} tvl='102.15K' badgeText="Daily" leverage={175}/>
-          </Grid>
-          
-          <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
-            <PoolStats poolName="Pools" totalPools={totalPools} apy={107.62} fillPercentage={100} tvl='110.0K' badgeText="30D" leverage={150}/>
-          </Grid>
+      
           
              <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
             <PoolStats 
               poolName="Pools" 
               totalPools={totalPools} 
               apy={128.29} 
-              fillPercentage={0} 
-              tvl="---" 
+              fillPercentage={12.54} 
+              tvl="21.6K" 
               badgeText="1D" 
               leverage={300}
-              endTime={new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)} // 2 gün sonra açılacak
             />
           </Grid>
 
@@ -436,11 +429,10 @@ const Stats: React.FC<StatsProps> = ({
               poolName="Pools" 
               totalPools={totalPools} 
               apy={225.85} 
-              fillPercentage={0} 
-              tvl="---" 
+              fillPercentage={24.21} 
+              tvl="5.21k" 
               badgeText="30D" 
               leverage={320}
-              endTime={new Date(Date.now() + 2 * 8 * 60 * 60 * 1000)} // 2 gün sonra açılacak
             />
           </Grid>
 
@@ -449,11 +441,10 @@ const Stats: React.FC<StatsProps> = ({
               poolName="Pools" 
               totalPools={totalPools} 
               apy={1425.85} 
-              fillPercentage={0} 
-              tvl="---" 
+              fillPercentage={39.21} 
+              tvl="12.94K" 
               badgeText="90D" 
               leverage={225}
-              endTime={new Date(Date.now() + 2 * 6 * 60 * 60 * 1000)} // 2 gün sonra açılacak
             />
           </Grid>
 
