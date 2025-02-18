@@ -110,7 +110,7 @@ const theme = createTheme({
 
 // Tasks metadata
 const tasksMetadata = [
-  { title: 'Like & Repost on X',label:'+5 BBLIP', description: '5 BBLIP', link: 'https://x.com/BoobaBlip/status/1891552200582648207', reward: 5000 },
+  { title: 'Like & Repost on X',label:'+5 BBLIP', description: '5 BBLIP', link: 'https://x.com/BoobaBlip/status/1891573592963400187', reward: 5000 },
   { title: 'Like & Repost on X',label:'+5 BBLIP', description: '5 BBLIP', link: 'https://x.com/BoobaBlip/status/1891699016510976424', reward: 5000 },
    
     { title: 'Visit bblip.io',label:'+5 BBLIP', description: '5 BBLIP', link: 'https://home.bblip.io', reward: 5000 },
