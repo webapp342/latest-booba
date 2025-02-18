@@ -1375,11 +1375,11 @@ const NewComponent: React.FC<NewComponentProps> = () => {
     },
     {
       question: "What is the staking duration?",
-      answer: "You can choose from various staking periods, ranging from 7 days to 365 days. Each duration offers different Annual Percentage Yields (APY). Longer durations typically provide higher APYs."
+      answer: "You can choose from various staking periods, ranging from 1 Day to 90 Days. Each duration offers different Annual Percentage Yields (APY). Longer durations typically provide higher APYs."
     },
     {
       question: "About Our Staking System",
-      answer: "Our staking system allows users to earn rewards by locking their TON coins for a specified duration. You can choose from various staking periods, ranging from 7 days to 365 days, each offering different Annual Percentage Yields (APY)."
+      answer: "Our staking system allows users to earn rewards by locking their TON coins for a specified duration. You can choose from various staking periods, ranging from 1 Day to 90 Days, each offering different Annual Percentage Yields (APY)."
     },
  
   ];

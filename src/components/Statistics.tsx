@@ -65,6 +65,27 @@ const StatItem = ({ title, value, change, isRightAligned = false }: {
   </Box>
 );
 
+const formatTVL = (value: number) => {
+  const tvlValue = value * 3.68;
+  if (tvlValue >= 1000000) {
+    return `$${(tvlValue / 1000000).toFixed(2)}M`;
+  } else if (tvlValue >= 1000) {
+    return `$${(tvlValue / 1000).toFixed(2)}k`;
+  }
+  return `$${tvlValue.toFixed(2)}`;
+};
+
+const calculateFees = (currentCapacity: number) => {
+  const tvlValue = currentCapacity * 3.68;
+  const feesValue = tvlValue * 0.28; // TVL'nin %28'i
+  if (feesValue >= 1000000) {
+    return `$${(feesValue / 1000000).toFixed(2)}M`;
+  } else if (feesValue >= 1000) {
+    return `$${(feesValue / 1000).toFixed(2)}K`;
+  }
+  return `$${feesValue.toFixed(2)}`;
+};
+
 const CryptoCard = ({ 
   symbol, 
   icon1,
@@ -461,114 +482,146 @@ const Statistics: React.FC = () => {
   const poolData = [
     {
       symbol: "TON/USDT",
-      apy: 1247.89,
-      tvl: "$3.12M",
-      price: "7 Day",
+      apy: 1019.16,
+      price: "14 Day",
       poolStats: {
         volume24h: '$2.8M',
-        fees24h: '$8.4K',
-        change24h: 12.8,
-        totalUsers: '38.2K',
-        currentCapacity: 934827,
-        maxCapacity: 1100000
+        currentCapacity: 10082,
+        maxCapacity: 14000,
+        change24h: 19.17,
+        totalUsers: '8.62K',
+        get fees24h() {
+          return calculateFees(this.currentCapacity);
+        }
+      },
+      get tvl() {
+        return formatTVL(this.poolStats.currentCapacity);
       }
     },
     {
       symbol: "TON/USDT",
-      apy: 968.45,
-      tvl: "$1.85M",
+      apy: 902.45,
       price: "14 Day",
       poolStats: {
         volume24h: '$1.9M',
-        fees24h: '$5.7K',
-        change24h: -3.2,
-        totalUsers: '2.13K',
-        currentCapacity: 756392,
-        maxCapacity: 1000000
+        currentCapacity: 19150,
+        maxCapacity: 25000,
+        change24h: 1.26,
+        totalUsers: '22.13K',
+        get fees24h() {
+          return calculateFees(this.currentCapacity);
+        }
+      },
+      get tvl() {
+        return formatTVL(this.poolStats.currentCapacity);
       }
     },
     {
       symbol: "TON/USDT",
       apy: 886.32,
-      tvl: "$942.5K",
       price: "30 Day",
       poolStats: {
         volume24h: '$1.2M',
-        fees24h: '$3.6K',
+        currentCapacity: 7563,
+        maxCapacity: 10000,
         change24h: 5.7,
         totalUsers: '1.8K',
-        currentCapacity: 478563,
-        maxCapacity: 1000000
+        get fees24h() {
+          return calculateFees(this.currentCapacity);
+        }
+      },
+      get tvl() {
+        return formatTVL(this.poolStats.currentCapacity);
       }
     },
     {
       symbol: "TON/USDT",
       apy: 754.18,
-      tvl: "$685.2K",
       price: "90 Day",
       poolStats: {
         volume24h: '$980.5K',
-        fees24h: '$2.9K',
-        change24h: -1.8,
+        change24h: 3.8,
         totalUsers: '1.4K',
-        currentCapacity: 623847,
-        maxCapacity: 1000000
+        currentCapacity: 6847,
+        maxCapacity: 10000,
+         get fees24h() {
+          return calculateFees(this.currentCapacity);
+        }
+      },
+      get tvl() {
+        return formatTVL(this.poolStats.currentCapacity);
       }
     },
     {
       symbol: "TON/USDT",
       apy: 692.75,
-      tvl: "$524.8K",
-      price: "3 Day",
+      price: "14 Day",
       poolStats: {
         volume24h: '$845.2K',
-        fees24h: '$2.5K',
-        change24h: 7.2,
+        change24h: -2.2,
         totalUsers: '1.1K',
-        currentCapacity: 892436,
-        maxCapacity: 1000000
+        currentCapacity: 8936,
+        maxCapacity: 10000,
+         get fees24h() {
+          return calculateFees(this.currentCapacity);
+        }
+      },
+      get tvl() {
+        return formatTVL(this.poolStats.currentCapacity);
       }
     },
     {
       symbol: "TON/USDT",
       apy: 578.90,
-      tvl: "$398.4K",
       price: "1 Day",
       poolStats: {
         volume24h: '$632.8K',
-        fees24h: '$1.9K',
-        change24h: -2.4,
+        change24h: 12.4,
         totalUsers: '928',
-        currentCapacity: 267893,
-        maxCapacity: 1000000
+        currentCapacity: 2893,
+        maxCapacity: 10000,
+         get fees24h() {
+          return calculateFees(this.currentCapacity);
+        }
+      },
+      get tvl() {
+        return formatTVL(this.poolStats.currentCapacity);
       }
     },
     {
       symbol: "TON/USDT",
       apy: 486.45,
-      tvl: "$286.6K",
       price: "1 Day",
       poolStats: {
         volume24h: '$485.3K',
-        fees24h: '$1.4K',
         change24h: 4.3,
         totalUsers: '880',
-        currentCapacity: 745218,
-        maxCapacity: 1000000
+        currentCapacity: 7218,
+        maxCapacity: 10000,
+         get fees24h() {
+          return calculateFees(this.currentCapacity);
+        }
+      },
+      get tvl() {
+        return formatTVL(this.poolStats.currentCapacity);
       }
     },
     {
       symbol: "TON/USDT",
       apy: 423.30,
-      tvl: "$195.2K",
       price: "1 Day",
       poolStats: {
         volume24h: '$324.5K',
-        fees24h: '$972',
-        change24h: -0.8,
+        change24h: 3.8,
         totalUsers: '647',
-        currentCapacity: 534692,
-        maxCapacity: 1000000
+        currentCapacity: 5692,
+        maxCapacity: 10000,
+         get fees24h() {
+          return calculateFees(this.currentCapacity);
+        }
+      },
+      get tvl() {
+        return formatTVL(this.poolStats.currentCapacity);
       }
     }
   ];

@@ -167,20 +167,20 @@ const Stats: React.FC<StatsProps> = ({
       change: Number(tvlChange.toFixed(2)),
     },
     volume: {
-      value: '51.16M',
-      change: 11.90,
+      value: '58.16M',
+      change: 26.39,
     },
     openInterest: {
-      value: '129.3K',
-      change: 0.1,
+      value: '183.14K',
+      change: 0.8,
     },
     totalEarning: {
       value: formatValue(currentEarningsValue),
       change: Number(earningsChange.toFixed(2)),
     },
     users: {
-      value: '162K',
-      change: 0.00,
+      value: '212K',
+      change: 4.81,
     },
   };
 
@@ -192,6 +192,8 @@ const Stats: React.FC<StatsProps> = ({
       <Box 
        mx={-1}  >
         <Dashboard data={dashboardData} />
+
+     
 
         {/* Chart Section */}
         <Box //@ts-ignore
@@ -357,6 +359,8 @@ const Stats: React.FC<StatsProps> = ({
             </Box>
           </Grid>
 
+          
+
           <Grid item>
             <Box 
               sx={{ 
@@ -395,28 +399,113 @@ const Stats: React.FC<StatsProps> = ({
           </Grid>
         </Grid>
 
+
+        
+
         {/* Pool Kartları */}
         <Grid container spacing={1} justifyContent="center">
-          {/* 1 Günlük Havuz */}
+          {/* Yakında Açılacak Pool */}
+       
+
+          {/* Mevcut Pool'lar */}
           <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
-            <PoolStats poolName="Pools" totalPools={totalPools} apy={109.21} fillPercentage={49.72} tvl='53.84K' badgeText="Daily" leverage={220}/>
+            <PoolStats poolName="Pools" totalPools={totalPools} apy={84.17} fillPercentage={74.72} tvl='93.15K' badgeText="Daily" leverage={175}/>
           </Grid>
           
-          {/* 14 Günlük Havuz */}
           <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
-            <PoolStats poolName="Pools" totalPools={totalPools} apy={129.44} fillPercentage={64.11} tvl='106.02K' badgeText="30D" leverage={220}/>
+            <PoolStats poolName="Pools" totalPools={totalPools} apy={107.62} fillPercentage={94.11} tvl='106.02K' badgeText="30D" leverage={150}/>
           </Grid>
-          {/* 30 Günlük Havuz */}
+          
+             <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
+            <PoolStats 
+              poolName="Pools" 
+              totalPools={totalPools} 
+              apy={128.29} 
+              fillPercentage={0} 
+              tvl="---" 
+              badgeText="1D" 
+              leverage={300}
+              endTime={new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)} // 2 gün sonra açılacak
+            />
+          </Grid>
+
+
+
+             <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
+            <PoolStats 
+              poolName="Pools" 
+              totalPools={totalPools} 
+              apy={225.85} 
+              fillPercentage={0} 
+              tvl="---" 
+              badgeText="30D" 
+              leverage={320}
+              endTime={new Date(Date.now() + 2 * 8 * 60 * 60 * 1000)} // 2 gün sonra açılacak
+            />
+          </Grid>
+
+            <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
+            <PoolStats 
+              poolName="Pools" 
+              totalPools={totalPools} 
+              apy={1425.85} 
+              fillPercentage={0} 
+              tvl="---" 
+              badgeText="90D" 
+              leverage={225}
+              endTime={new Date(Date.now() + 2 * 6 * 60 * 60 * 1000)} // 2 gün sonra açılacak
+            />
+          </Grid>
+
+           <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
+            <PoolStats 
+              poolName="Pools" 
+              totalPools={totalPools} 
+              apy={407.19} 
+              fillPercentage={0} 
+              tvl="---" 
+              badgeText="14D" 
+              leverage={225}
+              endTime={new Date(Date.now() + 2 * 6 * 60 * 60 * 1000)} // 2 gün sonra açılacak
+            />
+          </Grid>
+
+              <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
+            <PoolStats 
+              poolName="Pools" 
+              totalPools={totalPools} 
+              apy={1928.18} 
+              fillPercentage={0} 
+              tvl="---" 
+              badgeText="1D" 
+              leverage={75}
+              endTime={new Date(Date.now() + 1 * 24 * 60 * 60 * 1000)} // 2 gün sonra açılacak
+            />
+          </Grid>
+
+
+               <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
+            <PoolStats 
+              poolName="Pools" 
+              totalPools={totalPools} 
+              apy={1125.85} 
+              fillPercentage={0} 
+              tvl="---" 
+              badgeText="90D" 
+              leverage={25}
+              endTime={new Date(Date.now() + 3 * 24 * 60 * 60 * 1000)} // 2 gün sonra açılacak
+            />
+          </Grid>
         
           {/* 90 Günlük Havuz - Full olarak göster */}
           <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
-            <PoolStats poolName="Pools" totalPools={totalPools} apy={220.68} fillPercentage={91.79} tvl='251.53K' badgeText="1D" leverage={75} />
+            <PoolStats poolName="Pools" totalPools={totalPools} apy={220.68} fillPercentage={100} tvl='351.70K' badgeText="1D" leverage={175} />
           </Grid>
           <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
-            <PoolStats poolName="Pools" totalPools={totalPools} apy={167.99} fillPercentage={79.53} tvl='183.22K' badgeText="1D" leverage={75} />
+            <PoolStats poolName="Pools" totalPools={totalPools} apy={167.99} fillPercentage={100} tvl='383.00K' badgeText="1D" leverage={175} />
           </Grid>
           <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
-            <PoolStats poolName="Pools" totalPools={totalPools} apy={108.52} fillPercentage={26.21} tvl='37.81K' badgeText="1D" leverage={75} />
+            <PoolStats poolName="Pools" totalPools={totalPools} apy={148.52} fillPercentage={100} tvl='137.81K' badgeText="1D" leverage={175} />
           </Grid>
             <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
             <PoolStats poolName="Pools" totalPools={12} apy={178.99} fillPercentage={100} tvl='294.73K' badgeText="30D" leverage={200} />
@@ -437,7 +526,7 @@ const Stats: React.FC<StatsProps> = ({
             <PoolStats poolName="Pools" totalPools={12} apy={132.72} fillPercentage={100} tvl='132.22K' badgeText="14D" leverage={100}/>
           </Grid>
             <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
-            <PoolStats poolName="Pools" totalPools={1.08} apy={363.01} fillPercentage={100} tvl='2.83M' badgeText="1D" leverage={75}/>
+            <PoolStats poolName="Pools" totalPools={1.08} apy={363.01} fillPercentage={100} tvl='173.83K' badgeText="1D" leverage={175}/>
           </Grid>
         </Grid>
 
