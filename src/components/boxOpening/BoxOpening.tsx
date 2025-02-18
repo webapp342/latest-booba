@@ -14,6 +14,7 @@ import { PackageOpenIcon , Crown } from 'lucide-react';
 import SwapDrawer from '../WalletDrawers/SwapDrawer';
 import ticketImage from '../../assets/ticket.png';
 import LevelUpgrade from '../Ads/1levelupgrade';
+import UserAgreementModal from '../modals/UserAgreementModal';
 
 // Import all box images
 import alienwareImage from '../../assets/boxes/ALIENWARE.png';
@@ -351,6 +352,7 @@ const BoxOpening: React.FC = () => {
   const [ticketError, setTicketError] = useState('');
   const [showLevelUpSuccess, setShowLevelUpSuccess] = useState(false);
   const [showSwapDrawer, setShowSwapDrawer] = useState(false);
+  const [showAgreement, setShowAgreement] = useState(false);
 
   // Get box count helper function
   const getBoxCount = React.useCallback((card: GameCard) => {
@@ -407,6 +409,14 @@ const BoxOpening: React.FC = () => {
 
     return () => unsubscribe();
   }, [navigate]);
+
+  useEffect(() => {
+    // Check if user has already accepted the agreement
+    const hasAccepted = localStorage.getItem('userAgreementAccepted');
+    if (!hasAccepted) {
+      setShowAgreement(true);
+    }
+  }, []);
 
   const handleCardClick = (cardId: string) => {
     navigate(`/box/${cardId}`);
@@ -879,6 +889,11 @@ const BoxOpening: React.FC = () => {
 
     // TODO: Implement actual sell functionality
     console.log('Selling item:', drop);
+  };
+
+  const handleAgreementAccept = () => {
+    localStorage.setItem('userAgreementAccepted', 'true');
+    setShowAgreement(false);
   };
 
   if (loading) {
@@ -1727,6 +1742,13 @@ const BoxOpening: React.FC = () => {
             </Typography>
           </Box>
         </Modal>
+
+        {/* User Agreement Modal */}
+        <UserAgreementModal
+          open={showAgreement}
+          onClose={() => setShowAgreement(false)}
+          onAccept={handleAgreementAccept}
+        />
       </Box>
     </Container>
   );

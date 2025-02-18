@@ -23,6 +23,7 @@ import HistoryDrawer from '../components/WalletDrawers/HistoryDrawer';
 import SwapDrawer from '../components/WalletDrawers/SwapDrawer';
 import axios from 'axios';
 import tonlogo from '../assets/kucukTON.png';
+import UserAgreementModal from '../components/modals/UserAgreementModal';
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -160,6 +161,7 @@ const AccountEquityCard: React.FC = () => {
 
   const [] = useState(false);
   const [openSwapDrawer, setOpenSwapDrawer] = useState(false);
+  const [showAgreement, setShowAgreement] = useState(false);
 
 useEffect(() => {
       const backButton = WebApp.BackButton;
@@ -405,6 +407,18 @@ const GradientBox = styled(Box)(() => ({
   boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
 }));
 
+useEffect(() => {
+  // Check if user has accepted the agreement
+  const hasAcceptedAgreement = localStorage.getItem('userAgreementAccepted');
+  if (!hasAcceptedAgreement) {
+    setShowAgreement(true);
+  }
+}, []);
+
+const handleAgreementAccept = () => {
+  localStorage.setItem('userAgreementAccepted', 'true');
+  setShowAgreement(false);
+};
 
   return (
       <ThemeProvider theme={theme}>
@@ -721,6 +735,13 @@ const GradientBox = styled(Box)(() => ({
         }
       />
     </Snackbar>
+
+    {/* Add UserAgreementModal */}
+    <UserAgreementModal
+      open={showAgreement}
+      onClose={() => {}} // Empty function since we don't want to allow closing without accepting
+      onAccept={handleAgreementAccept}
+    />
   </ThemeProvider>
 );
 };
