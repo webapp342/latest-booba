@@ -1001,7 +1001,7 @@ Earn rewards by completing tasks, invite friends, watching ads, and more in our 
 
                       {/* AdsGram Task */}
                       <Task 
-                        blockId="task-8227"
+                        blockId="task-8200"
                         debug={false}
                       />
                     
