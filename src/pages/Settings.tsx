@@ -190,7 +190,6 @@ const Settings: React.FC = () => {
         const nextLevelIndex = LEVEL_THRESHOLDS.findIndex(level => !level.isUnlocked);
         if (nextLevelIndex !== -1) {
           const nextLevel = LEVEL_THRESHOLDS[nextLevelIndex];
-          const currentThreshold = currentLvl.threshold;
 
           // Calculate BBLIP progress first
           const bblipProgress = (bblipAmount / nextLevel.threshold) * 100;
@@ -401,7 +400,7 @@ const Settings: React.FC = () => {
       )}
 
       {/* Level Cards */}
-      {LEVEL_THRESHOLDS.map((level, index) => (
+      {LEVEL_THRESHOLDS.map((level) => (
         <LevelCard 
           key={level.level}
           isActive={currentLevel.level === level.level}
