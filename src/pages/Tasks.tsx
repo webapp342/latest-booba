@@ -546,29 +546,9 @@ const DealsComponent: React.FC = () => {
   const [stakingHistory, setStakingHistory] = useState<any[]>([]);
   const { showNotification } = useContext(NotificationContext);
 
-  // Add cache state
-  const [cachedData, setCachedData] = useState<{
-    tasks: { [key: number]: { completed: boolean; disabled: boolean } };
-    invitedUsers: number;
-    hasSpinned: boolean;
-    deposits: Record<string, any[]>;
-    stakingHistory: any[];
-  } | null>(null);
-
   useEffect(() => {
     const telegramUserId = localStorage.getItem('telegramUserId');
     if (!telegramUserId) {
-      setLoading(false);
-      return;
-    }
-
-    // Check if we have cached data
-    if (cachedData) {
-      setTaskStatus(cachedData.tasks);
-      setInvitedUsersCount(cachedData.invitedUsers);
-      setHasSpinned(cachedData.hasSpinned);
-      setDeposits(cachedData.deposits);
-      setStakingHistory(cachedData.stakingHistory);
       setLoading(false);
       return;
     }
@@ -577,38 +557,17 @@ const DealsComponent: React.FC = () => {
     const unsubscribe = onSnapshot(userDocRef, (doc) => {
       if (doc.exists()) {
         const data = doc.data();
-        
-        // Create a cache object
-        const newCacheData = {
-          tasks: data.tasks || {},
-          invitedUsers: data.invitedUsers?.length || 0,
-          hasSpinned: !!data.hasSpinned,
-          deposits: data.deposits || {},
-          stakingHistory: data.stakingHistory || []
-        };
-        
-        // Update cache
-        setCachedData(newCacheData);
-        
-        // Update states
-        setTaskStatus(newCacheData.tasks);
-        setInvitedUsersCount(newCacheData.invitedUsers);
-        setHasSpinned(newCacheData.hasSpinned);
-        setDeposits(newCacheData.deposits);
-        setStakingHistory(newCacheData.stakingHistory);
+        setTaskStatus(data.tasks || {});
+        setInvitedUsersCount(data.invitedUsers?.length || 0);
+        setHasSpinned(!!data.hasSpinned);
+        setDeposits(data.deposits || {});
+        setStakingHistory(data.stakingHistory || []);
       }
       setLoading(false);
     });
 
     return () => unsubscribe();
-  }, []); // Remove selectedCategory dependency
-
-  // Add a separate effect for category changes
-  useEffect(() => {
-    // Only update UI when category changes, no data fetching
-    setLoading(true);
-    setTimeout(() => setLoading(false), 100); // Brief loading state for UI feedback
-  }, [selectedCategory]);
+  }, []);
 
   const handleTaskCompletion = async (taskIndex: number) => {
     try {
@@ -617,29 +576,19 @@ const DealsComponent: React.FC = () => {
 
       setLoadingTaskIndex(taskIndex);
 
-      // Update Firestore with only the completed field
       const userDocRef = doc(db, 'users', telegramUserId);
       if (taskIndex === 14) {
-        // For spin task, only update hasSpinned field, not the completed status
         await updateDoc(userDocRef, {
           hasSpinned: true,
         });
-        setHasSpinned(true); // Update local state
       } else {
         await updateDoc(userDocRef, {
           [`tasks.${taskIndex}.completed`]: true,
+          [`tasks.${taskIndex}.completedAt`]: new Date().toISOString()
         });
-        // Update local state
-        const updatedTasks = {
-          ...taskStatus,
-          [taskIndex]: { ...taskStatus[taskIndex], completed: true },
-        };
-        setTaskStatus(updatedTasks);
       }
 
-      setTimeout(() => {
-        setLoadingTaskIndex(null);
-      }, 15000);
+      setLoadingTaskIndex(null);
     } catch (err) {
       console.error('Error completing task:', err);
       setError('An error occurred. Please try again.');
@@ -652,42 +601,60 @@ const DealsComponent: React.FC = () => {
       const telegramUserId = localStorage.getItem('telegramUserId');
       if (!telegramUserId) throw new Error('User ID not found.');
 
-      // For spin task, check if user has actually spun
+      if (!taskStatus[taskIndex]) {
+        setError('Task status not found.');
+        return;
+      }
+
+      if (!taskStatus[taskIndex].completed || taskStatus[taskIndex].disabled) {
+        setError('This task cannot be claimed. Make sure you have completed it and haven\'t claimed it before.');
+        return;
+      }
+
       if (taskIndex === 14 && !hasSpinned) {
         setError('Please spin first before claiming the reward.');
         return;
       }
 
+      if (taskIndex >= 4 && taskIndex <= 12) {
+        const inviteRequirements: Record<number, number> = {
+          4: 1, 5: 5, 6: 10, 7: 15, 8: 20, 9: 25, 10: 50, 11: 75, 12: 100
+        };
+        const requiredInvites = inviteRequirements[taskIndex];
+        
+        if (typeof requiredInvites === 'number' && invitedUsersCount < requiredInvites) {
+          setError(`You need ${requiredInvites} invites to claim this reward. Current: ${invitedUsersCount}`);
+          return;
+        }
+      }
+
+      if (taskIndex === 15 && (!deposits || Object.keys(deposits).length === 0)) {
+        setError('You need to make a deposit first to claim this reward.');
+        return;
+      }
+
+      if (taskIndex === 16 && (!stakingHistory || stakingHistory.length === 0)) {
+        setError('You need to subscribe to AI agent first to claim this reward.');
+        return;
+      }
+
       setLoadingTaskIndex(taskIndex);
 
-      // Get the reward and description for the selected task
       const reward = tasksMetadata[taskIndex].description;
       const isTON = reward.includes('TON');
-      
-      // Convert TON amount to the correct value (e.g., "1.5 TON" -> 1.5)
       const rewardAmount = isTON 
-        ? parseFloat(reward.split(' ')[0]) * 1000 // Convert TON to millitokens
+        ? parseFloat(reward.split(' ')[0]) * 1000
         : tasksMetadata[taskIndex].reward;
 
-      // Update Firestore with the claim action and reward
       const userDocRef = doc(db, 'users', telegramUserId);
       
       await updateDoc(userDocRef, {
         [`tasks.${taskIndex}.disabled`]: true,
+        [`tasks.${taskIndex}.claimedAt`]: new Date().toISOString(),
         [isTON ? 'total' : 'bblip']: increment(rewardAmount)
       });
 
-      // Update local state
-      const updatedTasks = {
-        ...taskStatus,
-        [taskIndex]: { ...taskStatus[taskIndex], disabled: true },
-      };
-      setTaskStatus(updatedTasks);
-
-      // Set the reward message for the snackbar
-      showNotification(`You earned ${tasksMetadata[taskIndex].description}`);
-
-      // Show success message  
+      showNotification(`Successfully claimed ${tasksMetadata[taskIndex].description}!`);
       setLoadingTaskIndex(null);
     } catch (err) {
       console.error('Error claiming task:', err);
@@ -765,7 +732,8 @@ const GradientBox = styled(Box)(() => ({
             </Typography>
 
             {/* Description */}
-            <Box sx={{ 
+            <Box 
+            sx={{ 
               display: 'flex',
               flexDirection: 'column',
               gap: 2

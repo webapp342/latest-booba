@@ -22,8 +22,14 @@ import SwapDrawer from '../components/WalletDrawers/SwapDrawer';
 import axios from 'axios';
 import tonlogo from '../assets/kucukTON.png';
 import UserAgreementModal from '../components/modals/UserAgreementModal';
-import { getUserData } from '../utils/cacheManager';
+import { getFirestore, doc, onSnapshot } from 'firebase/firestore';
+import { firebaseConfig } from './firebaseConfig';
+import { initializeApp } from 'firebase/app';
+import { getUserData } from "../utils/cacheManager";
 
+// Firebase initialization
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 // Tema oluşturma
 const theme = createTheme({
@@ -245,75 +251,72 @@ const AccountEquityCard: React.FC = () => {
     return () => clearInterval(interval);
   }, []); // Empty dependency array since we're managing all updates internally
 
-  // Update data when Firestore changes
-  const fetchUserData = async () => {
-    try {
-      const telegramUserId = localStorage.getItem("telegramUserId");
-      if (!telegramUserId) {
-        throw new Error("Telegram User ID not found!");
-      }
-
-      const userData = await getUserData(telegramUserId);
-      if (userData) {
-        setData(prevData =>
-          prevData.map(item => {
-            let newAmount = item.amount;
-            
-            switch(item.symbol) {
-              case "BBLIP":
-                newAmount = userData.bblip || 0;
-                break;
-              case "USDT":
-                newAmount = userData.usdt || 0;
-                break;
-              case "TICKET":
-                newAmount = userData.tickets || 0;
-                break;
-              case "TON":
-                newAmount = userData.total || 0;
-                break;
-            }
-
-            const actualAmount = item.symbol === "BBLIP" || item.symbol === "TON" 
-              ? newAmount / 1000 
-              : newAmount;
-
-            let usdValue = 0;
-            switch(item.symbol) {
-              case "USDT":
-                usdValue = actualAmount;
-                break;
-              case "BBLIP":
-                usdValue = actualAmount * 0.007;
-                break;
-              case "TON":
-                usdValue = actualAmount * tonPrice;
-                break;
-              case "TICKET":
-                usdValue = actualAmount * (tonPrice * 2.5);
-                break;
-            }
-
-            return {
-              ...item,
-              amount: newAmount,
-              usdValue: usdValue
-            };
-          })
-        );
-      }
-    } catch (error) {
-      console.error('Error fetching user data:', error);
-      setComment('Failed to fetch user data');
-    }
-  };
-
+  // Firebase real-time listener
   useEffect(() => {
-    fetchUserData();
-    // Refresh data every minute
-    const interval = setInterval(fetchUserData, 60000);
-    return () => clearInterval(interval);
-  }, [tonPrice]);
+    const telegramUserId = localStorage.getItem('telegramUserId');
+    if (!telegramUserId) {
+      return;
+    }
+
+    const userDocRef = doc(db, 'users', telegramUserId);
+    const unsubscribe = onSnapshot(userDocRef, (docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const userData = docSnapshot.data();
+        
+        // Update data state with user's balances and calculate USD values
+        setData(prevData => prevData.map(item => {
+          let newAmount = 0;
+          
+          switch(item.symbol) {
+            case 'BBLIP':
+              newAmount = userData.bblip || 0;
+              break;
+            case 'TON':
+              newAmount = userData.total || 0;
+              break;
+            case 'USDT':
+              newAmount = userData.usdt || 0;
+              break;
+            case 'TICKET':
+              newAmount = userData.ticket || 0;
+              break;
+            default:
+              newAmount = item.amount;
+          }
+
+          // Convert amounts for BBLIP and TON
+          const actualAmount = item.symbol === 'BBLIP' || item.symbol === 'TON' 
+            ? newAmount / 1000 
+            : newAmount;
+
+          // Calculate USD value
+          let usdValue = 0;
+          switch(item.symbol) {
+            case 'USDT':
+              usdValue = actualAmount;
+              break;
+            case 'BBLIP':
+              usdValue = actualAmount * 0.007;
+              break;
+            case 'TON':
+              usdValue = actualAmount * tonPrice;
+              break;
+            case 'TICKET':
+              usdValue = actualAmount * (tonPrice * 2.5);
+              break;
+          }
+          
+          return {
+            ...item,
+            amount: newAmount,
+            usdValue: usdValue
+          };
+        }));
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   // Arama filtreleme fonksiyonu
   const filteredData = data.filter(

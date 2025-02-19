@@ -41,7 +41,7 @@ const content: ContentType = {
       },
       {
         title: "Earning Methods & Tasks",
-        description: "Complete daily tasks, engage with the community, and earn BBLIP rewards. Your contributions are recognized, with rewards calculated at $0.07 USDT per BBLIP, ensuring transparent and fair distribution.",
+        description: "Complete daily tasks, engage with the community, and earn BBLIP rewards. Your contributions are recognized, with rewards calculated at $0.007 USDT per BBLIP, ensuring transparent and fair distribution.",
         highlight: "Daily Engagement • Task-Based Rewards"
       },
       {
