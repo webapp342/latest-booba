@@ -1256,7 +1256,7 @@ const TwoFieldsComponent: React.FC<TwoFieldsComponentProps> = ({ open, onClose }
                       fontWeight: '500',
                       textAlign: 'left'
                     }}>
-                    10,000 BBLIP Balance
+                    25,000 BBLIP Balance
                       <Typography component="span" sx={{
                         display: 'block',
                         color: 'rgba(255, 255, 255, 0.5)',
