@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ThemeProvider, createTheme, Tooltip } from "@mui/material";
+import { ThemeProvider, createTheme, Tooltip, Badge } from "@mui/material";
 import QRCode from 'qrcode';
 import { Box, Typography, Button, Avatar, Snackbar, SnackbarContent } from "@mui/material";
 import SwapHorizontalCircleIcon from '@mui/icons-material/SwapHorizontalCircle';
@@ -150,10 +150,12 @@ const AccountEquityCard: React.FC = () => {
   const [, setQrCodeUrl] = useState<string>('');
   const [data, setData] = useState<Asset[]>(initialData); // Initialize with initialData
   const [totalEquity, setTotalEquity] = useState<string>("0.00");
+  const [userData, setUserData] = useState<any>(null);
   const navigate = useNavigate();
 
   const [openSwapDrawer, setOpenSwapDrawer] = useState(false);
   const [showAgreement, setShowAgreement] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
     const backButton = WebApp.BackButton;
@@ -175,94 +177,47 @@ const AccountEquityCard: React.FC = () => {
 
   // Drawer'ı açma/kapama işlevi
 
-  // Calculate the total USD value
-  useEffect(() => {
-    const totalUsdValue = data.reduce((sum, item) => sum + item.usdValue, 0);
-    setTotalEquity(totalUsdValue.toLocaleString(undefined, { 
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2 
-    })); // Format with commas and 2 decimal places
-  }, [data]);
-
   // Combine price fetching and data update in one effect
   useEffect(() => {
-    const updatePricesAndCalculateValues = async () => {
+    let isMounted = true;
+
+    const fetchTonPrice = async () => {
       try {
         const response = await axios.get(`https://api.binance.com/api/v3/ticker/price`, {
           params: { symbol: 'TONUSDT' },
         });
-        const newTonPrice = parseFloat(response.data.price);
-        setTonPrice(newTonPrice);
-
-        const updatedData = data.map(item => {
-          let newPrice = item.price;
-          let amount = item.amount;
-          let usdValue = 0;
-
-          switch(item.symbol) {
-            case "TON":
-              newPrice = newTonPrice;
-              amount = amount / 1000; // Convert to actual amount
-              usdValue = amount * newTonPrice;
-              break;
-            case "TICKET":
-              newPrice = newTonPrice * 2.5;
-              usdValue = amount * (newTonPrice * 2.5);
-              break;
-            case "BBLIP":
-              amount = amount / 1000; // Convert to actual amount
-              usdValue = amount * 0.007;
-              break;
-            case "USDT":
-              newPrice = 1.00;
-              usdValue = amount;
-              break;
-            default:
-              usdValue = amount * newPrice;
-          }
-
-          return {
-            ...item,
-            price: newPrice,
-            usdValue: usdValue
-          };
-        });
-
-        setData(updatedData);
-
-        // Calculate total equity
-        const newTotalEquity = updatedData.reduce((sum, item) => sum + item.usdValue, 0);
-        setTotalEquity(newTotalEquity.toLocaleString(undefined, {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2
-        }));
-
+        if (isMounted) {
+          const newTonPrice = parseFloat(response.data.price);
+          setTonPrice(newTonPrice);
+          setIsInitialized(true);
+        }
       } catch (error) {
         console.error("Error updating prices:", error);
       }
     };
 
-    // Initial update
-    updatePricesAndCalculateValues();
+    fetchTonPrice();
+    const priceInterval = setInterval(fetchTonPrice, 60000);
 
-    // Set up interval for updates
-    const interval = setInterval(updatePricesAndCalculateValues, 60000);
-    return () => clearInterval(interval);
-  }, []); // Empty dependency array since we're managing all updates internally
+    return () => {
+      isMounted = false;
+      clearInterval(priceInterval);
+    };
+  }, []);
 
-  // Firebase real-time listener
+  // Firebase listener effect
   useEffect(() => {
+    if (!isInitialized) return; // Wait for tonPrice to be initialized
+
     const telegramUserId = localStorage.getItem('telegramUserId');
-    if (!telegramUserId) {
-      return;
-    }
+    if (!telegramUserId) return;
 
     const userDocRef = doc(db, 'users', telegramUserId);
     const unsubscribe = onSnapshot(userDocRef, (docSnapshot) => {
       if (docSnapshot.exists()) {
         const userData = docSnapshot.data();
+        setUserData(userData); // Store the entire user data
         
-        // Update data state with user's balances and calculate USD values
         setData(prevData => prevData.map(item => {
           let newAmount = 0;
           
@@ -283,12 +238,10 @@ const AccountEquityCard: React.FC = () => {
               newAmount = item.amount;
           }
 
-          // Convert amounts for BBLIP and TON
           const actualAmount = item.symbol === 'BBLIP' || item.symbol === 'TON' 
             ? newAmount / 1000 
             : newAmount;
 
-          // Calculate USD value
           let usdValue = 0;
           switch(item.symbol) {
             case 'USDT':
@@ -308,14 +261,24 @@ const AccountEquityCard: React.FC = () => {
           return {
             ...item,
             amount: newAmount,
-            usdValue: usdValue
+            usdValue: usdValue,
+            price: item.symbol === 'TON' ? tonPrice : item.price
           };
         }));
       }
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [isInitialized, tonPrice]);
+
+  // Calculate total equity whenever data changes
+  useEffect(() => {
+    const newTotalEquity = data.reduce((sum, item) => sum + item.usdValue, 0);
+    setTotalEquity(newTotalEquity.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }));
+  }, [data]);
 
   // Arama filtreleme fonksiyonu
   const filteredData = data.filter(
@@ -410,8 +373,33 @@ const AccountEquityCard: React.FC = () => {
               }}
             >
               <Box width={'100%'}  display={'flex'} justifyContent={'space-between'}>
-                <SettingsIcon sx={{ fontSize: '1.5rem', color:"white",       p:0.5,          
-                }} />
+                <Badge 
+                  badgeContent={!userData?.airdropAddress || !userData?.xUsername ? "Airdrop" : 0}
+                  sx={{
+                    '& .MuiBadge-badge': {
+                      backgroundColor: '#EF5350',
+                      color: 'white',
+                      fontSize: '0.7rem',
+                      padding: '0 6px',
+                      minWidth: '45px',
+                      height: '20px',
+                      borderRadius: '10px'
+                    }
+                  }}
+                >
+                  <SettingsIcon 
+                    sx={{ 
+                      fontSize: '1.5rem', 
+                      color:"white",       
+                      p:0.5,
+                      cursor: 'pointer',
+                      '&:hover': {
+                        opacity: 0.8
+                      }
+                    }} 
+                    onClick={() => navigate('/settings')}
+                  />
+                </Badge>
                 <UserAvatar 
                   telegramUserId={telegramUser?.id?.toString() ?? ''}
                   displayName={telegramUser?.first_name ?? 'User'}

@@ -74,7 +74,7 @@ import ErrorBoundary from "./components/ErrorBoundary.tsx";
 import { Box, Typography } from '@mui/material';
 import DirectLinkAd from "./components/Ads/DirectLinkAd.tsx";
 import DirectLinkKeys from "./components/Ads/DirectLinkKeys.tsx";
-
+import Settings from "./pages/Settings.tsx";
 // MUI theme configuration
 const theme = createTheme({
   palette: {
@@ -202,6 +202,10 @@ const router = createBrowserRouter([
       {
         path: "/stake",
         element: <NewComponent />
+      },
+         {
+        path: "/settings",
+        element: <Settings />
       },
       {
         path: "/test",
