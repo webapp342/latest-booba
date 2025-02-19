@@ -36,7 +36,7 @@ export function ShowAdButton(): ReactElement {
 
   const onReward = useCallback(() => {
     localStorage.setItem('lastRewardTime', new Date().toISOString());
-    updateUserBblip(10).catch((error) => {
+    updateUserBblip(10000).catch((error) => {
       console.error('Bblip güncellenirken hata oluştu:', error);
       alert('Bblip güncellenirken bir hata oluştu.');
     });

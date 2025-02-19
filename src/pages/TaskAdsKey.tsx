@@ -33,7 +33,7 @@ export const Task = ({ debug, blockId }: TaskProps) => {
 
       const userDocRef = doc(db, 'users', telegramUserId);
       await updateDoc(userDocRef, {
-        keyParts: increment(5)
+        keyParts: increment(2)
       });
 
       setIsDrawerOpen(false);
@@ -118,16 +118,9 @@ export const Task = ({ debug, blockId }: TaskProps) => {
                   mb: 1
                 }}
               >
-                You've earned 5 key parts for completing this task !
+                You've earned 2 key parts for completing this task !
               </Typography>
-              <Typography
-                sx={{
-                  color: 'rgba(255,255,255,0.7)',
-                  mb: 3
-                }}
-              >
-                Now you can craft a KEY with 5 key parts !
-              </Typography>
+          
               <Button
                 variant="contained"
                 onClick={handleClaim}

@@ -601,19 +601,33 @@ const DealsComponent: React.FC = () => {
       const telegramUserId = localStorage.getItem('telegramUserId');
       if (!telegramUserId) throw new Error('User ID not found.');
 
-      if (!taskStatus[taskIndex]) {
-        setError('Task status not found.');
-        return;
-      }
+      // Special handling for spin, deposit and AI agent tasks
+      if (taskIndex === 14 || taskIndex === 15 || taskIndex === 16) {
+        if (taskIndex === 14 && !hasSpinned) {
+          setError('Please spin first before claiming the reward.');
+          return;
+        }
 
-      if (!taskStatus[taskIndex].completed || taskStatus[taskIndex].disabled) {
-        setError('This task cannot be claimed. Make sure you have completed it and haven\'t claimed it before.');
-        return;
-      }
+        if (taskIndex === 15 && (!deposits || Object.keys(deposits).length === 0)) {
+          setError('You need to make a deposit first to claim this reward.');
+          return;
+        }
 
-      if (taskIndex === 14 && !hasSpinned) {
-        setError('Please spin first before claiming the reward.');
-        return;
+        if (taskIndex === 16 && (!stakingHistory || stakingHistory.length === 0)) {
+          setError('You need to subscribe to AI agent first to claim this reward.');
+          return;
+        }
+      } else {
+        // For other tasks, check task status
+        if (!taskStatus[taskIndex]) {
+          setError('Task status not found.');
+          return;
+        }
+
+        if (!taskStatus[taskIndex].completed || taskStatus[taskIndex].disabled) {
+          setError('This task cannot be claimed. Make sure you have completed it and haven\'t claimed it before.');
+          return;
+        }
       }
 
       if (taskIndex >= 4 && taskIndex <= 12) {
@@ -626,16 +640,6 @@ const DealsComponent: React.FC = () => {
           setError(`You need ${requiredInvites} invites to claim this reward. Current: ${invitedUsersCount}`);
           return;
         }
-      }
-
-      if (taskIndex === 15 && (!deposits || Object.keys(deposits).length === 0)) {
-        setError('You need to make a deposit first to claim this reward.');
-        return;
-      }
-
-      if (taskIndex === 16 && (!stakingHistory || stakingHistory.length === 0)) {
-        setError('You need to subscribe to AI agent first to claim this reward.');
-        return;
       }
 
       setLoadingTaskIndex(taskIndex);
