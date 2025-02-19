@@ -127,7 +127,7 @@ const tasksMetadata = [
   { title: 'Invite 100 fren',label:'+10 TON', description: '10 TON', link: '', reward: 10000 },
   { title: 'Watch a Video',label:'+10 BBLIP', description: '10 BBLIP', link: 'https://example.com/watch-video', reward: 1000 },
   { title: 'Spin for Free',label:'+15 BBLIP', description: '15 BBLIP', link: '', reward: 15000 },
-  { title: 'Make Your First Deposit',label:'+150 BBLIP', description: '150 BBLIP', link: '', reward: 150000 },
+  { title: 'Make Your First Deposit',label:'+75 BBLIP', description: '75 BBLIP', link: '', reward: 75000 },
   { title: 'Subscribe to AI agent',label:'+25 BBLIP', description: '25 BBLIP', link: '', reward: 25000 },
   { title: '', description: 'Coming Soon...', link: '' , reward: 100},
 ];
@@ -885,7 +885,7 @@ Earn rewards by completing tasks, invite friends, watching ads, and more in our 
                                   fontWeight: 600,
                                 }}
                               >
-                                +25 BBLIP
+                                +10 BBLIP
                               </Typography>
                             </Box>
                           </Box>

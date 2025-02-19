@@ -66,7 +66,7 @@ export const Task = ({ debug, blockId }: TaskProps) => {
 
       const userDocRef = doc(db, 'users', telegramUserId);
       await updateDoc(userDocRef, {
-        bblip: increment(50000)
+        bblip: increment(25000)
       });
 
       const now = Date.now();
@@ -153,7 +153,7 @@ export const Task = ({ debug, blockId }: TaskProps) => {
             ref={taskRef}
           >
             <span slot="reward" className={styles.reward1}>
-                <img src={bblip} alt="" style={{width: '16px', borderRadius: '50%' , marginBottom: '-4px', marginRight: '4px'}} /> +50 BBLIP
+                <img src={bblip} alt="" style={{width: '16px', borderRadius: '50%' , marginBottom: '-4px', marginRight: '4px'}} /> +25 BBLIP
             </span>
             <div slot="button" className={styles.button}>
               Go
