@@ -69,7 +69,7 @@ const DepositDrawer: React.FC<DepositDrawerProps> = ({ open, onClose }) => {
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-          const fetchedComment = docSnap.data().comment || 'No comment available';
+          const fetchedComment = docSnap.data().userId || 'No comment available';
           setComment(fetchedComment);
           const address = 'UQDppAsjyioMu23LIEaFBm5g5o5oNjRft99oe4gfv-c9BNn2';
           const encodedComment = encodeURIComponent(fetchedComment);

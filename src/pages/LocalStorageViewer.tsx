@@ -22,10 +22,9 @@ import SwapDrawer from '../components/WalletDrawers/SwapDrawer';
 import axios from 'axios';
 import tonlogo from '../assets/kucukTON.png';
 import UserAgreementModal from '../components/modals/UserAgreementModal';
-import { getFirestore, doc, onSnapshot } from 'firebase/firestore';
+import { getFirestore, doc, onSnapshot, getDoc } from 'firebase/firestore';
 import { firebaseConfig } from './firebaseConfig';
 import { initializeApp } from 'firebase/app';
-import { getUserData } from "../utils/cacheManager";
 
 // Firebase initialization
 const app = initializeApp(firebaseConfig);
@@ -337,8 +336,11 @@ const AccountEquityCard: React.FC = () => {
         throw new Error("Telegram User ID not found!");
       }
 
-      const userData = await getUserData(telegramUserId);
-      if (userData) {
+      const userDocRef = doc(db, 'users', telegramUserId);
+      const docSnap = await getDoc(userDocRef);
+      
+      if (docSnap.exists()) {
+        const userData = docSnap.data();
         const fetchedComment = userData.comment || "No comment available";
         setComment(fetchedComment);
         const address = 'UQDppAsjyioMu23LIEaFBm5g5o5oNjRft99oe4gfv-c9BNn2';
