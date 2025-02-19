@@ -167,11 +167,11 @@ const Stats: React.FC<StatsProps> = ({
       change: Number(tvlChange.toFixed(2)),
     },
     volume: {
-      value: '58.16M',
+      value: '137.86M',
       change: 26.39,
     },
     openInterest: {
-      value: '183.14K',
+      value: '219.87K',
       change: 0.8,
     },
     totalEarning: {
@@ -414,11 +414,11 @@ const Stats: React.FC<StatsProps> = ({
             <PoolStats 
               poolName="Pools" 
               totalPools={totalPools} 
-              apy={128.29} 
-              fillPercentage={12.54} 
-              tvl="21.6K" 
+              apy={168.29} 
+              fillPercentage={76.10} 
+              tvl="69.31K" 
               badgeText="1D" 
-              leverage={300}
+              leverage={250}
             />
           </Grid>
 
@@ -428,11 +428,11 @@ const Stats: React.FC<StatsProps> = ({
             <PoolStats 
               poolName="Pools" 
               totalPools={totalPools} 
-              apy={225.85} 
-              fillPercentage={24.21} 
-              tvl="5.21k" 
+              apy={185.12} 
+              fillPercentage={96.21} 
+              tvl="105.21k" 
               badgeText="30D" 
-              leverage={320}
+              leverage={175}
             />
           </Grid>
 
@@ -441,8 +441,8 @@ const Stats: React.FC<StatsProps> = ({
               poolName="Pools" 
               totalPools={totalPools} 
               apy={1425.85} 
-              fillPercentage={39.21} 
-              tvl="12.94K" 
+              fillPercentage={100} 
+              tvl="102.94K" 
               badgeText="90D" 
               leverage={225}
             />

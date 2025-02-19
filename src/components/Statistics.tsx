@@ -482,14 +482,14 @@ const Statistics: React.FC = () => {
   const poolData = [
     {
       symbol: "TON/USDT",
-      apy: 1019.16,
+      apy: 1280.16,
       price: "14 Day",
       poolStats: {
-        volume24h: '$2.8M',
-        currentCapacity: 10082,
+        volume24h: '$4.53M',
+        currentCapacity: 13082,
         maxCapacity: 14000,
         change24h: 19.17,
-        totalUsers: '8.62K',
+        totalUsers: '9.14K',
         get fees24h() {
           return calculateFees(this.currentCapacity);
         }
@@ -500,14 +500,14 @@ const Statistics: React.FC = () => {
     },
     {
       symbol: "TON/USDT",
-      apy: 902.45,
+      apy: 1843.45,
       price: "14 Day",
       poolStats: {
         volume24h: '$1.9M',
-        currentCapacity: 19150,
+        currentCapacity: 24741,
         maxCapacity: 25000,
         change24h: 1.26,
-        totalUsers: '22.13K',
+        totalUsers: '41.96K',
         get fees24h() {
           return calculateFees(this.currentCapacity);
         }

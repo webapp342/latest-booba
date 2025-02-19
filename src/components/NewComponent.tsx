@@ -734,7 +734,7 @@ const calculateRemainingSeconds = (timestamp: string, duration: number): number 
 
 // Add this function to calculate the total staked amount
 
-// Accrued Earnings hesaplaması
+// Accrued Earnings hesaplaması 
 const calculateAccruedEarnings = (stake: any) => {
     const totalEarnings = stake.earnings; // Toplam kazanç
     const durationInDays = stake.duration; // Staking süresi (gün cinsinden)
@@ -898,14 +898,14 @@ const StatsAndTrust = () => {
           <TrustIndicator 
             icon={<Security />}
             label="Covers"
-            value="$275M+"
+            value="$585M+"
           />
         </Grid>
         <Grid item xs={4}>
           <TrustIndicator 
             icon={<Lock />}
             label="TVL"
-            value="$1.2B+"
+            value="$1.85B+"
           />
         </Grid>
       </Grid>
@@ -1818,7 +1818,7 @@ const handleUnstake = async (amount: number): Promise<void> => {
                     lineHeight: 1.2
                   }}
                 >
-                  104,271
+                  219,874
                 </Typography>
                 <Typography 
                   sx={{
