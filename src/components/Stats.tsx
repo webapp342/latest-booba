@@ -410,15 +410,51 @@ const Stats: React.FC<StatsProps> = ({
           {/* Mevcut Pool'lar */}
       
           
+               <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
+            <PoolStats 
+              poolName="Pools" 
+              totalPools={totalPools} 
+              apy={1125.85} 
+              fillPercentage={53.81} 
+              tvl="42.72K" 
+              badgeText="90D" 
+              leverage={25}
+            />
+          </Grid>
+
              <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
             <PoolStats 
               poolName="Pools" 
               totalPools={totalPools} 
               apy={168.29} 
-              fillPercentage={76.10} 
-              tvl="69.31K" 
+              fillPercentage={86.10} 
+              tvl="99.31K" 
               badgeText="1D" 
               leverage={250}
+            />
+          </Grid>
+
+               <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
+            <PoolStats 
+              poolName="Pools" 
+              totalPools={totalPools} 
+              apy={407.19} 
+              fillPercentage={69.72} 
+              tvl="56.18K" 
+              badgeText="14D" 
+              leverage={225}
+            />
+          </Grid>
+
+              <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
+            <PoolStats 
+              poolName="Pools" 
+              totalPools={totalPools} 
+              apy={1728.18} 
+              fillPercentage={13.94} 
+              tvl="18.83K" 
+              badgeText="1D" 
+              leverage={75}
             />
           </Grid>
 
@@ -429,8 +465,8 @@ const Stats: React.FC<StatsProps> = ({
               poolName="Pools" 
               totalPools={totalPools} 
               apy={185.12} 
-              fillPercentage={96.21} 
-              tvl="105.21k" 
+              fillPercentage={100} 
+              tvl="125.21k" 
               badgeText="30D" 
               leverage={175}
             />
@@ -448,45 +484,10 @@ const Stats: React.FC<StatsProps> = ({
             />
           </Grid>
 
-           <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
-            <PoolStats 
-              poolName="Pools" 
-              totalPools={totalPools} 
-              apy={407.19} 
-              fillPercentage={0} 
-              tvl="---" 
-              badgeText="14D" 
-              leverage={225}
-              endTime={new Date(Date.now() + 2 * 6 * 60 * 60 * 1000)} // 2 gün sonra açılacak
-            />
-          </Grid>
-
-              <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
-            <PoolStats 
-              poolName="Pools" 
-              totalPools={totalPools} 
-              apy={1928.18} 
-              fillPercentage={0} 
-              tvl="---" 
-              badgeText="1D" 
-              leverage={75}
-              endTime={new Date(Date.now() + 1 * 24 * 60 * 60 * 1000)} // 2 gün sonra açılacak
-            />
-          </Grid>
+      
 
 
-               <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
-            <PoolStats 
-              poolName="Pools" 
-              totalPools={totalPools} 
-              apy={1125.85} 
-              fillPercentage={0} 
-              tvl="---" 
-              badgeText="90D" 
-              leverage={25}
-              endTime={new Date(Date.now() + 3 * 24 * 60 * 60 * 1000)} // 2 gün sonra açılacak
-            />
-          </Grid>
+          
         
           {/* 90 Günlük Havuz - Full olarak göster */}
           <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
@@ -504,6 +505,9 @@ const Stats: React.FC<StatsProps> = ({
             <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
             <PoolStats poolName="Pools" totalPools={12} apy={152.87} fillPercentage={100} tvl='89.62K' badgeText="14D" leverage={75}/>
           </Grid>
+          <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
+            <PoolStats poolName="Pools" totalPools={12} apy={282.87} fillPercentage={100} tvl='109.15K' badgeText="14D" leverage={25}/>
+          </Grid>
             <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
             <PoolStats poolName="Pools" totalPools={12} apy={221.07} fillPercentage={100} tvl='231.62K' badgeText="1D" leverage={220} />
           </Grid>
@@ -515,6 +519,9 @@ const Stats: React.FC<StatsProps> = ({
           </Grid>
             <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
             <PoolStats poolName="Pools" totalPools={12} apy={132.72} fillPercentage={100} tvl='132.22K' badgeText="14D" leverage={100}/>
+          </Grid>
+            <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
+            <PoolStats poolName="Pools" totalPools={12} apy={232.72} fillPercentage={100} tvl='92.69K' badgeText="14D" leverage={100}/>
           </Grid>
             <Grid item xs={6} sm={3} onClick={handlePoolClick} sx={{ cursor: 'pointer' }}>
             <PoolStats poolName="Pools" totalPools={1.08} apy={363.01} fillPercentage={100} tvl='173.83K' badgeText="1D" leverage={175}/>
