@@ -16,7 +16,7 @@ import WebApp from "@twa-dev/sdk";
 import UserAvatar from "./UserAvatar";
 import styled from "styled-components";
 import DepositDrawer from '../components/WalletDrawers/DepositDrawer';
-import WithdrawDrawer from '../components/WalletDrawers/WithdrawDrawer';
+import ComingSoonDrawer from '../components/WalletDrawers/ComingSoonDrawer';
 import HistoryDrawer from '../components/WalletDrawers/HistoryDrawer';
 import SwapDrawer from '../components/WalletDrawers/SwapDrawer';
 import axios from 'axios';
@@ -659,7 +659,7 @@ const AccountEquityCard: React.FC = () => {
     onClose={() => setOpenDepositDrawer(false)}
   /> 
 
-  <WithdrawDrawer
+  <ComingSoonDrawer
     open={openWithdrawDrawer}
     onClose={() => setOpenWithdrawDrawer(false)}
   />
